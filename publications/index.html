@@ -10,7 +10,12 @@
   <header class="masthead">
     <nav class="nav" aria-label="Primary navigation">
       <a class="brand" href="/">Tianyu Xie <small>谢天宇</small></a>
-      <div class="links"><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a href="/notes/">Notes</a><a href="/cv/">CV</a></div>
+      <div class="links">
+        <a class="active" href="/publications/">Publications</a>
+        <a href="/projects/">Projects</a>
+        <a href="/notes/">Notes</a>
+        <a href="/cv/">CV</a>
+      </div>
     </nav>
   </header>
   <main class="shell">
@@ -18,69 +23,113 @@
       <section class="profile-card">
         <img class="avatar" src="/images/profile.png" alt="Tianyu Xie profile photo">
         <h2 class="name">Tianyu Xie</h2>
-        <p class="bio">MSc student at Xiamen University. Multimodal systems, evaluation, orchestration, and long-video understanding.</p>
+        <p class="bio">School of Mathematical Sciences, Peking University. Generative modeling, variational inference, discrete diffusion, and flow matching.</p>
         <ul class="profile-links">
-          <li><span class="icon">⌂</span><a href="https://scholar.google.com/citations?user=_vZWAnkAAAAJ&amp;hl=zh-CN">Google Scholar</a></li>
-          <li><span class="icon">◈</span><a href="https://github.com/Alexisxty">GitHub</a></li>
+          <li><span class="icon">⌂</span><a href="https://scholar.google.com/citations?user=qbJJBPwAAAAJ&amp;hl=en">Google Scholar</a></li>
+          <li><span class="icon">◈</span><a href="https://github.com/teeryxie">GitHub</a></li>
         </ul>
       </section>
     </aside>
     <article class="content">
       <h1 class="page-title">Publications</h1>
-      <p class="lead">A curated list from my Google Scholar profile and public paper indexes. Symbols mark research areas: ★ orchestration, ◆ omni-model evaluation, ▣ video understanding, □ reasoning.</p>
+      <p class="lead">Selected publications and preprints in generative modeling, variational inference, flow matching, discrete diffusion, and phylogenetic inference.</p>
       <div class="cards">
         <article class="paper">
-          <div class="paper-symbol">★</div>
+          <div class="paper-symbol iclr">📷</div>
           <div>
-            <h3>Training-Free Multimodal Large Language Model Orchestration</h3>
-            <div class="meta">ICML 2026 · Tianyu Xie, Yuexiao Ma, Yuhang Wu, Wang Chen, Jiayi Ji, Tat-Seng Chua, Xiawu Zheng, Rongrong Ji</div>
-            <p>Coordinates specialized multimodal experts through explicit workflows, cross-modal memory, and streaming interaction without extra training.</p>
-            <div class="actions"><a class="action" href="https://arxiv.org/abs/2508.10016">arXiv</a><a class="action" href="https://github.com/MAC-AutoML/Trainingfree-LLM-Orchestration">Code</a><a class="action" href="https://openreview.net/forum?id=V2fTGbSD7Q">OpenReview</a></div>
+            <div class="venue hot">🔥 ICLR-26 · The Fourteenth International Conference on Learning Representations</div>
+            <h3><a href="https://openreview.net/forum?id=Qcg7FmNF4P">Variational Autoencoding Discrete Diffusion with Enhanced Dimensional Correlations Modeling</a></h3>
+            <div class="meta">Wenhao Zhu, Tianyu Xie, Yihao Xue, Cheng Zhang</div>
+            <p>Discrete diffusion and variational autoencoding with stronger dimensional correlation modeling.</p>
+            <div class="actions"><a class="action" href="https://openreview.net/forum?id=Qcg7FmNF4P">OpenReview</a></div>
           </div>
         </article>
+
         <article class="paper">
-          <div class="paper-symbol">□</div>
+          <div class="paper-symbol iclr">📷</div>
           <div>
-            <h3>A2RBench: An Automatic Paradigm for Formally Verifiable Abstract Reasoning Benchmark Generation</h3>
-            <div class="meta">ICML 2026 · Qingchuan Ma, Yuexiao Ma, Yongkang Xie, Tianyu Xie, Xiawu Zheng, Rongrong Ji</div>
-            <p>An automated benchmark generation pipeline for abstract reasoning with programmatic verification and cycle consistency.</p>
-            <div class="actions"><a class="action" href="https://arxiv.org/abs/2605.17278">arXiv</a></div>
+            <div class="venue hot">🔥 ICLR-25 · The Thirteenth International Conference on Learning Representations</div>
+            <h3><a href="https://openreview.net/forum?id=HEJ3rsMt2N">PhyloVAE: Unsupervised Learning of Phylogenetic Trees via Variational Autoencoders</a></h3>
+            <div class="meta">Tianyu Xie, Cheng Zhang</div>
+            <p>Unsupervised phylogenetic tree learning with a variational autoencoder formulation.</p>
+            <div class="actions"><a class="action" href="https://openreview.net/forum?id=HEJ3rsMt2N">OpenReview</a></div>
           </div>
         </article>
+
         <article class="paper">
-          <div class="paper-symbol">◆</div>
+          <div class="paper-symbol icml">𝛻</div>
           <div>
-            <h3>SocialOmni: Benchmarking Audio-Visual Social Interactivity in Omni Models</h3>
-            <div class="meta">arXiv 2026 · Tianyu Xie, Jinfa Huang, Yuexiao Ma, Rongfang Luo, Yan Yang, Wang Chen, Yuhui Zeng, Ruize Fang, Yixuan Zou, Xiawu Zheng, Jiebo Luo, Rongrong Ji</div>
-            <p>Evaluates omni-modal models on who is speaking, when to interrupt, and how to phrase socially appropriate interruptions.</p>
-            <div class="actions"><a class="action" href="https://arxiv.org/abs/2603.16859">arXiv</a><a class="action" href="https://github.com/MAC-AutoML/SocialOmni">Code</a><a class="action" href="https://huggingface.co/datasets/alexisty/SocialOmni">Dataset</a></div>
+            <div class="venue green">ICML-24 · The Forty-first International Conference on Machine Learning</div>
+            <h3><a href="https://openreview.net/forum?id=XVF0t7fs7l">Reflected Flow Matching</a></h3>
+            <div class="meta">Tianyu Xie, Xiwei Cheng, Cheng Zhang</div>
+            <p>Flow matching with reflected dynamics for constrained or structured generative modeling.</p>
+            <div class="actions"><a class="action" href="https://openreview.net/forum?id=XVF0t7fs7l">OpenReview</a></div>
           </div>
         </article>
+
         <article class="paper">
-          <div class="paper-symbol">▣</div>
+          <div class="paper-symbol icml">∫</div>
           <div>
-            <h3>Event-Anchored Frame Selection for Effective Long-Video Understanding</h3>
-            <div class="meta">arXiv 2026 · Wang Chen, Yongdong Luo, Yuhui Zeng, Luojun Lin, Tianyu Xie, Fei Chao, Rongrong Ji, Xiawu Zheng</div>
-            <p>Partitions video into event-like segments and selects query-relevant anchors for efficient long-video reasoning.</p>
-            <div class="actions"><a class="action" href="https://arxiv.org/abs/2603.00983">arXiv</a></div>
+            <div class="venue green">ICML-24 · The Forty-first International Conference on Machine Learning</div>
+            <h3><a href="https://openreview.net/forum?id=K3ZxRno7Nk">Kernel Semi-Implicit Variational Inference</a></h3>
+            <div class="meta">Tianyu Xie, Cheng Zhang</div>
+            <p>Semi-implicit variational inference with kernelized objectives and flexible approximate posteriors.</p>
+            <div class="actions"><a class="action" href="https://openreview.net/forum?id=K3ZxRno7Nk">OpenReview</a></div>
           </div>
         </article>
+
         <article class="paper">
-          <div class="paper-symbol">▣</div>
+          <div class="paper-symbol neurips">🌲</div>
           <div>
-            <h3>Wavelet-based Frame Selection by Detecting Semantic Boundary for Long Video Understanding</h3>
-            <div class="meta">arXiv 2026 · Wang Chen, Yuhui Zeng, Yongdong Luo, Tianyu Xie, Luojun Lin, Jiayi Ji, Yan Zhang, Xiawu Zheng</div>
-            <p>Uses wavelet analysis to identify semantic boundaries and allocate frame budgets across coherent clips.</p>
-            <div class="actions"><a class="action" href="https://arxiv.org/abs/2603.00512">arXiv</a><a class="action" href="https://github.com/MAC-AutoML/WFS-SB">Code</a></div>
+            <div class="venue violet">NeurIPS-23 · Advances in Neural Information Processing Systems</div>
+            <h3><a href="https://openreview.net/forum?id=5ZAzG7tJlE">ARTree: A Deep Autoregressive Model for Phylogenetic Inference</a></h3>
+            <div class="meta">Tianyu Xie, Xiwei Cheng, Cheng Zhang</div>
+            <p>A deep autoregressive model for phylogenetic inference and tree-structured probabilistic modeling.</p>
+            <div class="actions"><a class="action" href="https://openreview.net/forum?id=5ZAzG7tJlE">OpenReview</a></div>
           </div>
         </article>
+
         <article class="paper">
-          <div class="paper-symbol">□</div>
+          <div class="paper-symbol neurips">∞</div>
           <div>
-            <h3>CrystaL: Spontaneous Emergence of Visual Latents in MLLMs</h3>
-            <div class="meta">arXiv 2026 · Yang Zhang, Danyang Li, Yuxuan Li, Xin Zhang, Tianyu Xie, Mingming Cheng, Xiang Li</div>
-            <p>Crystallized latent reasoning for preserving task-relevant visual semantics in multimodal models.</p>
-            <div class="actions"><a class="action" href="https://arxiv.org/abs/2602.20980">arXiv</a></div>
+            <div class="venue violet">NeurIPS-25 · Advances in Neural Information Processing Systems</div>
+            <h3><a href="https://openreview.net/forum?id=AJfrqlbCJB">Continuous Semi-Implicit Models</a></h3>
+            <div class="meta">Ziheng Cheng, Tianyu Xie, Shiyue Zhang, Cheng Zhang</div>
+            <p>Continuous semi-implicit modeling for flexible generative distributions.</p>
+            <div class="actions"><a class="action" href="https://openreview.net/forum?id=AJfrqlbCJB">OpenReview</a></div>
+          </div>
+        </article>
+
+        <article class="paper">
+          <div class="paper-symbol">⚑</div>
+          <div>
+            <div class="venue gray">Submitted · ICLR-26</div>
+            <h3><a href="https://openreview.net/forum?id=UVjEsHxHzQ">Any-Order GPT as Masked Diffusion Model: Decoupling Formulation and Architecture</a></h3>
+            <div class="meta">Zhangyang Gao, Tianyu Xie, Cheng Zhang</div>
+            <p>Studies the relationship between any-order GPT formulation and masked diffusion modeling.</p>
+            <div class="actions"><a class="action" href="https://openreview.net/forum?id=UVjEsHxHzQ">OpenReview</a></div>
+          </div>
+        </article>
+
+        <article class="paper">
+          <div class="paper-symbol">⊕</div>
+          <div>
+            <div class="venue gray">Preprint</div>
+            <h3><a href="https://arxiv.org/abs/2508.12990">Constraint-Aware Flow Matching</a></h3>
+            <div class="meta">Tianyu Xie, Hanjun Dai, Cheng Zhang</div>
+            <p>Flow matching under explicit constraints for structured generative modeling.</p>
+            <div class="actions"><a class="action" href="https://arxiv.org/abs/2508.12990">arXiv</a></div>
+          </div>
+        </article>
+
+        <article class="paper">
+          <div class="paper-symbol">∂</div>
+          <div>
+            <div class="venue gray">Preprint</div>
+            <h3><a href="https://arxiv.org/abs/2410.24287">Diffusion-PINN Sampler</a></h3>
+            <div class="meta">Tianyu Xie, Yihong Gu, Jianfeng Lu, Cheng Zhang</div>
+            <p>Diffusion-based sampling for physics-informed neural networks and scientific machine learning.</p>
+            <div class="actions"><a class="action" href="https://arxiv.org/abs/2410.24287">arXiv</a></div>
           </div>
         </article>
       </div>

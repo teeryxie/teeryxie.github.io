@@ -1,6 +1,5 @@
-# Alexisxty.github.io
+# teeryxie.github.io
 
-Personal academic homepage for Tianyu Xie / Teery Xie.
+Personal academic homepage for Tianyu Xie.
 
-Live site: https://alexisxty.github.io/
-
+Live site: https://teeryxie.github.io/

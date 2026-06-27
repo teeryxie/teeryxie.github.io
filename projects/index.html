@@ -7,36 +7,52 @@
   <link rel="stylesheet" href="/site.css">
 </head>
 <body>
-  <header class="masthead"><nav class="nav"><a class="brand" href="/">Tianyu Xie <small>谢天宇</small></a><div class="links"><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a href="/notes/">Notes</a><a href="/cv/">CV</a></div></nav></header>
+  <header class="masthead">
+    <nav class="nav">
+      <a class="brand" href="/">Tianyu Xie <small>谢天宇</small></a>
+      <div class="links">
+        <a href="/publications/">Publications</a>
+        <a class="active" href="/projects/">Projects</a>
+        <a href="/notes/">Notes</a>
+        <a href="/cv/">CV</a>
+      </div>
+    </nav>
+  </header>
   <main class="shell">
-    <aside class="sidebar"><section class="profile-card"><img class="avatar" src="/images/profile.png" alt="Tianyu Xie profile photo"><h2 class="name">Tianyu Xie</h2><p class="bio">Research code, benchmarks, and static systems for multimodal AI.</p></section></aside>
+    <aside class="sidebar">
+      <section class="profile-card">
+        <img class="avatar" src="/images/profile.png" alt="Tianyu Xie profile photo">
+        <h2 class="name">Projects</h2>
+        <p class="bio">Research artifacts and project pages for generative modeling, inference, and phylogenetic learning.</p>
+      </section>
+    </aside>
     <article class="content">
       <h1 class="page-title">Projects</h1>
-      <p class="lead">Implementation-centered work behind the papers and experiments.</p>
+      <p class="lead">Clickable project cards for papers, code, and research notes. More implementation links can be added as repositories become public.</p>
       <div class="project-grid">
         <section class="project">
-          <h3>◆ SocialOmni</h3>
-          <p>A benchmark pipeline for audio-visual social interactivity in omni-modal dialogue interaction.</p>
-          <div class="actions"><a class="action" href="https://github.com/MAC-AutoML/SocialOmni">GitHub</a><a class="action" href="https://huggingface.co/datasets/alexisty/SocialOmni">Dataset</a></div>
-          <div class="tag-row"><span class="tag">Benchmark</span><span class="tag">Omni-modal</span><span class="tag">Evaluation</span></div>
+          <h3><a href="https://openreview.net/forum?id=HEJ3rsMt2N">📷 PhyloVAE</a></h3>
+          <p>Variational autoencoding framework for unsupervised phylogenetic tree learning.</p>
+          <div class="actions"><a class="action" href="https://openreview.net/forum?id=HEJ3rsMt2N">OpenReview</a></div>
+          <div class="tag-row"><span class="tag">ICLR 2025</span><span class="tag">Phylogenetics</span><span class="tag">VAE</span></div>
         </section>
         <section class="project">
-          <h3>★ Training-Free LLM Orchestration</h3>
-          <p>Training-free multimodal orchestration with routing, memory, streaming interaction, and modular expert calls.</p>
-          <div class="actions"><a class="action" href="https://github.com/MAC-AutoML/Trainingfree-LLM-Orchestration">GitHub</a><a class="action" href="https://arxiv.org/abs/2508.10016">arXiv</a></div>
-          <div class="tag-row"><span class="tag">LLM</span><span class="tag">Orchestration</span><span class="tag">Training-free</span></div>
+          <h3><a href="https://openreview.net/forum?id=XVF0t7fs7l">𝛻 Reflected Flow Matching</a></h3>
+          <p>Flow matching method with reflected dynamics for constrained generative modeling.</p>
+          <div class="actions"><a class="action" href="https://openreview.net/forum?id=XVF0t7fs7l">OpenReview</a></div>
+          <div class="tag-row"><span class="tag">ICML 2024</span><span class="tag">Flow Matching</span><span class="tag">Constraints</span></div>
         </section>
         <section class="project">
-          <h3>▣ Long-video Frame Selection</h3>
-          <p>Event-anchored and semantic-boundary frame selection methods for efficient LVLM reasoning over long videos.</p>
-          <div class="actions"><a class="action" href="https://arxiv.org/abs/2603.00983">EFS</a><a class="action" href="https://arxiv.org/abs/2603.00512">WFS-SB</a></div>
-          <div class="tag-row"><span class="tag">Long Video</span><span class="tag">LVLM</span><span class="tag">Frame Selection</span></div>
+          <h3><a href="https://openreview.net/forum?id=K3ZxRno7Nk">∫ Kernel Semi-Implicit VI</a></h3>
+          <p>Kernelized semi-implicit variational inference for expressive posterior approximation.</p>
+          <div class="actions"><a class="action" href="https://openreview.net/forum?id=K3ZxRno7Nk">OpenReview</a></div>
+          <div class="tag-row"><span class="tag">ICML 2024</span><span class="tag">Variational Inference</span><span class="tag">Kernels</span></div>
         </section>
         <section class="project">
-          <h3>□ Abstract Reasoning Benchmarks</h3>
-          <p>Scalable benchmark construction for formally verifiable abstract reasoning tasks.</p>
-          <div class="actions"><a class="action" href="https://arxiv.org/abs/2605.17278">A2RBench</a></div>
-          <div class="tag-row"><span class="tag">Reasoning</span><span class="tag">Verification</span><span class="tag">Benchmark Generation</span></div>
+          <h3><a href="https://openreview.net/forum?id=5ZAzG7tJlE">🌲 ARTree</a></h3>
+          <p>Deep autoregressive modeling for phylogenetic inference.</p>
+          <div class="actions"><a class="action" href="https://openreview.net/forum?id=5ZAzG7tJlE">OpenReview</a></div>
+          <div class="tag-row"><span class="tag">NeurIPS 2023</span><span class="tag">Autoregressive</span><span class="tag">Trees</span></div>
         </section>
       </div>
     </article>
