@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tianyu Xie | 谢天宇</title>
-  <meta name="description" content="Tianyu Xie's academic homepage: multimodal systems, long-video understanding, large language models, and efficient inference.">
+  <meta name="description" content="Tianyu Xie's academic homepage on multimodal large language models, long-video understanding, omni-modal orchestration, and efficient inference.">
   <link rel="icon" href="/images/profile.png">
   <link rel="stylesheet" href="/site.css">
 </head>
@@ -28,11 +28,7 @@
         <div>
           <h2 class="name">Tianyu Xie</h2>
           <div class="cn-name">谢天宇 · Teery Xie</div>
-          <p class="bio">M.S. student admitted in 2025 at the MAC Lab, Xiamen University. I work on multimodal large language models, long-video understanding, efficient omni-modal orchestration, and benchmark construction for interactive AI systems.</p>
-          <div class="school-strip" aria-label="Education">
-            <span><img src="/images/logos/xmu.svg" alt="Xiamen University logo">XMU · 985/211</span>
-            <span><img src="/images/logos/sicau.svg" alt="Sichuan Agricultural University logo">SICAU · 211</span>
-          </div>
+          <p class="bio">M.S. student admitted in 2025 at the MAC Lab, Xiamen University.</p>
           <div class="profile-focus">
             <div class="focus-label">Research Focus</div>
             <div class="focus-tags">
@@ -55,7 +51,7 @@
 
     <article class="content">
       <section class="hero">
-        <p class="hero-intro">I work on multimodal large language models, long-video understanding, efficient omni-modal orchestration, and benchmark construction for interactive AI systems.</p>
+        <p class="hero-intro">I work on multimodal large language models, long-video understanding, efficient omni-modal orchestration, and benchmark construction for interactive AI systems. My current research focuses on training-free omni-modal systems, audio-visual social interaction benchmarks, and efficient frame selection for long-video reasoning.</p>
         <div class="cta-row">
           <a class="button primary" href="/publications/">✦ Publications</a>
           <a class="button" href="/projects/">▣ Projects</a>
@@ -69,19 +65,19 @@
         <div class="project-grid">
           <div class="project">
             <h3>★ Multimodal orchestration</h3>
-            <p>Training-free systems that coordinate modality experts with LLM routing, memory, and streaming interaction.</p>
+            <p>Training-free systems that coordinate modality experts through LLM routing, persistent memory, and streaming interaction.</p>
           </div>
           <div class="project">
             <h3>▣ Long-video understanding</h3>
-            <p>Event-aware and semantic-boundary-aware frame selection for efficient LVLM reasoning.</p>
+            <p>Event-aware and semantic-boundary-aware frame selection for efficient long-video reasoning.</p>
           </div>
           <div class="project">
             <h3>⚡ Efficient inference</h3>
-            <p>Speculative decoding and online drafting methods for faster large language model generation.</p>
+            <p>Speculative decoding and online drafting methods that accelerate large language model generation.</p>
           </div>
           <div class="project">
             <h3>🧩 Mixture-of-experts</h3>
-            <p>Routing-guided expert selection and gradient-interference mitigation for MoE models.</p>
+            <p>Routing-guided expert selection and gradient-interference mitigation for mixture-of-experts models.</p>
           </div>
         </div>
       </section>
@@ -92,34 +88,36 @@
           <a href="/publications/">View all</a>
         </div>
         <div class="cards">
-          <article class="paper">
+          <article class="paper selected-paper">
+            <div class="corner-badge">CCF-A</div>
             <div class="paper-symbol">◆</div>
             <div>
               <div class="venue green">Representative · ICML-26 · First Author</div>
               <h3><a href="https://openreview.net/forum?id=V2fTGbSD7Q">Training-Free Multimodal Large Language Model Orchestration</a></h3>
               <div class="meta"><span class="me">Tianyu Xie</span>, Yuexiao Ma, Yuhang Wu, Wang Chen, Jiayi Ji, Tat-Seng Chua, Xiawu Zheng, Rongrong Ji</div>
-              <p>Training-free omni-modal orchestration with LLM routing, full-duplex streaming interaction, and cross-modal memory.</p>
-              <div class="actions"><a class="action" href="/blog/training-free-orchestration/">Blog</a><a class="action" href="https://openreview.net/forum?id=V2fTGbSD7Q">OpenReview</a><a class="action" href="https://arxiv.org/abs/2508.10016">arXiv</a><a class="action" href="https://github.com/MAC-AutoML/Trainingfree-LLM-Orchestration">Code</a></div>
+              <p>A training-free orchestration framework with LLM routing, full-duplex streaming interaction, and cross-modal memory.</p>
+              <div class="actions"><button class="action cite-action" type="button" data-bib="@article{xie2025trainingfree,&#10;  title={Training-Free Multimodal Large Language Model Orchestration},&#10;  author={Xie, Tianyu and Ma, Yuexiao and Wu, Yuhang and Chen, Wang and Ji, Jiayi and Chua, Tat-Seng and Zheng, Xiawu and Ji, Rongrong},&#10;  journal={arXiv preprint arXiv:2508.10016},&#10;  year={2025}&#10;}">Cite</button><a class="action" href="/blog/training-free-orchestration/">Blog</a><a class="action" href="https://openreview.net/forum?id=V2fTGbSD7Q">OpenReview</a><a class="action" href="https://arxiv.org/abs/2508.10016">arXiv</a><a class="action" href="https://github.com/MAC-AutoML/Trainingfree-LLM-Orchestration">Code</a></div>
             </div>
           </article>
           <article class="paper">
             <div class="paper-symbol">◆</div>
             <div>
-              <div class="venue gray">Representative · ECCV-26 submission · First Author</div>
+              <div class="venue gray">Representative · arXiv · First Author</div>
               <h3><a href="https://arxiv.org/abs/2603.16859">SocialOmni: Benchmarking Audio-Visual Social Interactivity in Omni Models</a></h3>
               <div class="meta"><span class="me">Tianyu Xie</span>, Jinfa Huang, Yuexiao Ma, Rongfang Luo, Yan Yang, Wang Chen, Yuhui Zeng, Ruize Fang, Yixuan Zou, Xiawu Zheng, Jiebo Luo, Rongrong Ji</div>
-              <p>Audio-visual social interactivity benchmark for omni models, matching my current multimodal evaluation direction.</p>
-              <div class="actions"><a class="action" href="/blog/socialomni/">Blog</a><a class="action" href="https://arxiv.org/abs/2603.16859">arXiv</a><a class="action" href="https://github.com/MAC-AutoML/SocialOmni">Code</a><a class="action" href="https://huggingface.co/datasets/alexisty/SocialOmni">Dataset</a></div>
+              <p>An audio-visual benchmark for social interactivity in omni models, aligned with my current work on multimodal evaluation.</p>
+              <div class="actions"><button class="action cite-action" type="button" data-bib="@article{xie2026socialomni,&#10;  title={SocialOmni: Benchmarking Audio-Visual Social Interactivity in Omni Models},&#10;  author={Xie, Tianyu and Huang, Jinfa and Ma, Yuexiao and Luo, Rongfang and Yang, Yan and Chen, Wang and Zeng, Yuhui and Fang, Ruize and Zou, Yixuan and Zheng, Xiawu and Luo, Jiebo and Ji, Rongrong},&#10;  journal={arXiv preprint arXiv:2603.16859},&#10;  year={2026}&#10;}">Cite</button><a class="action" href="/blog/socialomni/">Blog</a><a class="action" href="https://arxiv.org/abs/2603.16859">arXiv</a><a class="action" href="https://github.com/MAC-AutoML/SocialOmni">Code</a><a class="action" href="https://huggingface.co/datasets/alexisty/SocialOmni">Dataset</a></div>
             </div>
           </article>
-          <article class="paper">
+          <article class="paper selected-paper">
+            <div class="corner-badge">CCF-A</div>
             <div class="paper-symbol">▣</div>
             <div>
               <div class="venue hot">Representative · CVPR-26 · CCF-A</div>
               <h3><a href="https://arxiv.org/abs/2603.00512">Wavelet-based Frame Selection by Detecting Semantic Boundary for Long Video Understanding</a></h3>
               <div class="meta">Wang Chen, Yuhui Zeng, Yongdong Luo, <span class="me">Tianyu Xie</span>, Luojun Lin, Jiayi Ji, Yan Zhang, Xiawu Zheng</div>
-              <p>Wavelet-based semantic boundary detection for long-video frame selection, paired with the event-anchored line.</p>
-              <div class="actions"><a class="action" href="/blog/wfs-sb/">Blog</a><a class="action" href="https://arxiv.org/abs/2603.00512">arXiv</a><a class="action" href="https://github.com/MAC-AutoML/WFS-SB">Code</a></div>
+              <p>Wavelet-based semantic boundary detection for efficient long-video frame selection.</p>
+              <div class="actions"><button class="action cite-action" type="button" data-bib="@article{chen2026wavelet,&#10;  title={Wavelet-based Frame Selection by Detecting Semantic Boundary for Long Video Understanding},&#10;  author={Chen, Wang and Zeng, Yuhui and Luo, Yongdong and Xie, Tianyu and Lin, Luojun and Ji, Jiayi and Zhang, Yan and Zheng, Xiawu},&#10;  journal={arXiv preprint arXiv:2603.00512},&#10;  year={2026}&#10;}">Cite</button><a class="action" href="/blog/wfs-sb/">Blog</a><a class="action" href="https://arxiv.org/abs/2603.00512">arXiv</a><a class="action" href="https://github.com/MAC-AutoML/WFS-SB">Code</a></div>
             </div>
           </article>
         </div>
@@ -129,10 +127,10 @@
         <div class="section-head"><h2>News</h2></div>
         <ul class="timeline">
           <li><strong>2025.09.</strong> Joined Xiamen University MAC Lab as a master's student in Artificial Intelligence.</li>
-          <li><strong>2026.</strong> Training-Free Multimodal Large Language Model Orchestration accepted to ICML 2026 as first-author work.</li>
-          <li><strong>2026.</strong> SocialOmni submitted to ECCV 2026 as first-author work.</li>
-          <li><strong>2026.</strong> WFS-SB appears as a CVPR 2026 long-video understanding paper.</li>
-          <li><strong>2025.</strong> MoE gradient interference work submitted to ICLR 2025.</li>
+          <li><strong>2026.</strong> Training-Free Multimodal Large Language Model Orchestration was accepted to ICML 2026 as first-author work.</li>
+          <li><strong>2026.</strong> SocialOmni was released on arXiv as a first-author benchmark for audio-visual social interactivity.</li>
+          <li><strong>2026.</strong> WFS-SB was accepted to CVPR 2026 for efficient long-video understanding.</li>
+          <li><strong>2025.</strong> Submitted routing-guided expert selection work for mitigating gradient interference in MoE models.</li>
         </ul>
       </section>
     </article>
@@ -141,5 +139,6 @@
   <footer class="footer">
     <div class="footer-inner">© 2026 Tianyu Xie. Last updated June 2026.</div>
   </footer>
+  <script src="/cite.js"></script>
 </body>
 </html>

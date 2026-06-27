@@ -512,6 +512,8 @@ a:hover {
   padding: 3px 9px;
   font-size: 13px;
   color: #314050;
+  font-family: inherit;
+  cursor: pointer;
   transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
 }
 
@@ -524,6 +526,26 @@ a:hover {
 
 .paper-with-thumb {
   grid-template-columns: 178px auto minmax(0, 1fr);
+}
+
+.selected-paper {
+  padding-top: 28px;
+}
+
+.corner-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  border: 1px solid #f0c8b8;
+  border-radius: 999px;
+  background: #fff3ee;
+  color: #9a332c;
+  font-size: 12px;
+  font-weight: 820;
+  line-height: 1;
+  padding: 6px 9px;
+  box-shadow: 0 6px 16px rgba(154, 51, 44, 0.08);
 }
 
 .paper-thumb {
@@ -566,6 +588,105 @@ a:hover {
   padding: 18px;
   position: relative;
   transition: transform 170ms ease, box-shadow 170ms ease, border-color 170ms ease;
+}
+
+.service-list {
+  display: grid;
+  gap: 14px;
+}
+
+.service-card {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 184px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px;
+  transition: transform 170ms ease, box-shadow 170ms ease, border-color 170ms ease;
+}
+
+.service-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid rgba(110, 88, 168, 0.32);
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 170ms ease;
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: #c5b8e5;
+}
+
+.service-card:hover::before {
+  opacity: 1;
+}
+
+.service-logo {
+  display: grid;
+  place-items: center;
+  min-height: 132px;
+  border: 1px solid #ddd5f0;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #faf8ff, #ffffff);
+  padding: 18px;
+}
+
+.service-logo img {
+  display: block;
+  width: min(100%, 148px);
+  height: auto;
+}
+
+.service-body h3 {
+  margin: 0 0 4px;
+  font-size: 21px;
+  line-height: 1.35;
+}
+
+.cn-line {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.service-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.service-meta div {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8fbff;
+  padding: 10px 12px;
+}
+
+.service-meta dt {
+  color: #526070;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.service-meta dd {
+  margin: 0;
+  color: #2d3845;
+  font-weight: 680;
+  overflow-wrap: anywhere;
 }
 
 .blog-list {
@@ -799,6 +920,62 @@ a:hover {
   margin-top: 0;
 }
 
+.award-list {
+  display: grid;
+  gap: 10px;
+}
+
+.award-list article {
+  display: grid;
+  grid-template-columns: 42px minmax(180px, 240px) minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  padding: 13px;
+  transition: transform 170ms ease, box-shadow 170ms ease, border-color 170ms ease;
+}
+
+.award-list article:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: #b6c7dc;
+}
+
+.award-list strong {
+  color: #101d2d;
+  line-height: 1.35;
+}
+
+.award-list ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.award-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--soft);
+  color: #465260;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.3;
+  padding: 4px 8px;
+}
+
+.award-list li span {
+  color: var(--blue);
+  font-weight: 850;
+}
+
 .tag-row {
   display: flex;
   flex-wrap: wrap;
@@ -959,6 +1136,19 @@ a:hover {
   .edu-card,
   .cv-list article {
     grid-template-columns: 1fr;
+  }
+
+  .award-list article {
+    grid-template-columns: 1fr;
+  }
+
+  .service-card,
+  .service-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .service-logo {
+    min-height: 104px;
   }
 
   .cv-list.compact {

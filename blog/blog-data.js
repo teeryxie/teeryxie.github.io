@@ -5,15 +5,15 @@ window.BLOG_POSTS = [
     date: "2026",
     category: "Paper",
     status: "ICML-26 · First Author",
-    summary: "A practical route to interactive omni-modal assistants without expensive end-to-end retraining.",
+    summary: "A modular route to interactive omni-modal assistants without expensive end-to-end retraining.",
   },
   {
     slug: "socialomni",
     title: "SocialOmni: Audio-Visual Social Interactivity for Omni Models",
     date: "2026",
     category: "Benchmark",
-    status: "ECCV-26 submission · First Author",
-    summary: "A benchmark for testing whether omni models understand social interaction from audio and video together.",
+    status: "arXiv · First Author",
+    summary: "A benchmark for evaluating whether omni models understand social interaction from synchronized audio and video.",
   },
   {
     slug: "wfs-sb",
@@ -21,7 +21,7 @@ window.BLOG_POSTS = [
     date: "2026",
     category: "Paper",
     status: "CVPR-26 · CCF-A",
-    summary: "Wavelet-based boundary detection for selecting compact, informative frames in long-video understanding.",
+    summary: "Wavelet-based semantic boundary detection for selecting compact, informative frames in long-video understanding.",
   },
   {
     slug: "a2rbench",
@@ -29,7 +29,7 @@ window.BLOG_POSTS = [
     date: "2026",
     category: "Benchmark",
     status: "ICML-26",
-    summary: "An automatic paradigm for generating abstract reasoning tasks with formal verification.",
+    summary: "An automatic paradigm for generating abstract reasoning tasks with formal verification and scalable answer checking.",
   },
   {
     slug: "fold",
@@ -37,7 +37,7 @@ window.BLOG_POSTS = [
     date: "2026",
     category: "Paper Intro",
     status: "ICLR-26 withdrawn submission",
-    summary: "Online learning and drafting for faster LLM decoding while keeping the correctness guarantee explicit.",
+    summary: "Online learning and adaptive drafting for faster LLM decoding with an explicit correctness guarantee.",
   },
   {
     slug: "homepage",
@@ -45,6 +45,6 @@ window.BLOG_POSTS = [
     date: "2026-06",
     category: "Log",
     status: "Website",
-    summary: "A short log on turning papers, projects, CV, and blog entries into a compact academic homepage.",
+    summary: "A short log on turning papers, projects, CV materials, and blog entries into a compact academic homepage.",
   },
 ];

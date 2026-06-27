@@ -1,6 +1,6 @@
 # SocialOmni: Benchmarking Audio-Visual Social Interactivity
 
-Social interaction is naturally multimodal. Facial expressions, gaze, body movement, speech tone, timing, and scene context all matter. A model that only reads text or isolated frames can miss the social signal that humans use to understand what is happening.
+Social interaction is naturally multimodal. Facial expressions, gaze, body movement, speech tone, timing, and scene context all matter. A model that reads only text or isolated frames can miss the social signals people use to understand what is happening.
 
 **SocialOmni** is built around this gap. It evaluates omni models on audio-visual social interactivity, asking whether a system can reason over synchronized cues rather than treating each modality as a separate input stream.
 

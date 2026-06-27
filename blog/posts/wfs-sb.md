@@ -8,7 +8,7 @@ Long-video understanding is not only a context-length problem. If a system feeds
 
 - It reduces redundant visual input before expensive LVLM reasoning.
 - It focuses the model on event transitions and semantic boundaries.
-- It makes long-video inference more efficient without relying only on larger context windows.
+- It improves long-video inference efficiency without relying only on larger context windows.
 - It connects naturally with event-anchored frame selection work.
 
 ## Links

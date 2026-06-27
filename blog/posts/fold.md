@@ -2,7 +2,7 @@
 
 Large language model inference is often limited by decoding latency. Speculative decoding is attractive because it can accelerate generation while preserving correctness when verification is handled carefully.
 
-**FOLD** studies fast correct speculative decoding through online learning and drafting. The important part is not just speed, but the combination of faster generation with an explicit correctness path.
+**FOLD** studies fast, correctness-preserving speculative decoding through online learning and adaptive drafting. The important part is not just speed, but the combination of faster generation with an explicit verification path.
 
 ## Research angle
 
