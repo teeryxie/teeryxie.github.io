@@ -439,6 +439,15 @@ a:hover {
   line-height: 1.35;
 }
 
+.paper-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  max-width: calc(100% - 86px);
+  margin-bottom: 8px;
+}
+
 .venue {
   display: inline-flex;
   align-items: center;
@@ -476,6 +485,26 @@ a:hover {
   background: #f4f6f8;
   border-color: #d7dde5;
   color: #4f5c68;
+}
+
+.role-badge,
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: #465260;
+  font-size: 12px;
+  font-weight: 720;
+  line-height: 1.3;
+  padding: 3px 8px;
+}
+
+.status-badge {
+  background: #f8fbff;
+  color: #596675;
 }
 
 .meta {
@@ -525,7 +554,7 @@ a:hover {
 }
 
 .paper-with-thumb {
-  grid-template-columns: 190px auto minmax(0, 1fr);
+  grid-template-columns: 184px auto minmax(0, 1fr);
 }
 
 .selected-paper,
@@ -553,7 +582,7 @@ a:hover {
 .paper-thumb {
   display: block;
   align-self: start;
-  height: 238px;
+  height: 240px;
   border: 1px solid var(--line);
   border-radius: 8px;
   overflow: hidden;
@@ -1109,7 +1138,11 @@ a:hover {
 
   .paper-thumb {
     margin-bottom: 12px;
-    height: 360px;
+    height: 410px;
+  }
+
+  .paper-status {
+    max-width: calc(100% - 78px);
   }
 
   .paper-symbol {
