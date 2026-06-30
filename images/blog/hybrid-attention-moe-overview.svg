@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 620" role="img" aria-labelledby="title desc">
+  <title id="title">Hybrid Attention MoE overview</title>
+  <desc id="desc">A schematic of hybrid attention and sparse mixture-of-experts in a long-context omni model.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbfcff"/>
+      <stop offset="1" stop-color="#eef6f2"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1f8a70"/>
+      <stop offset="1" stop-color="#4aa3a2"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#1f252d" flood-opacity=".12"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#738aa4"/>
+    </marker>
+  </defs>
+  <rect width="1180" height="620" fill="url(#bg)"/>
+  <text x="60" y="62" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#172033">Hybrid Attention MoE for Long-Context Omni Models</text>
+  <text x="60" y="96" font-family="Inter, Arial, sans-serif" font-size="16" fill="#5d6876">Dense global attention is reserved for hard alignment and reasoning, while efficient attention and sparse experts carry the long stream.</text>
+  <g filter="url(#shadow)">
+    <rect x="60" y="150" width="260" height="300" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="92" y="192" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="800" fill="#172033">Omni Token Stream</text>
+    <rect x="92" y="228" width="184" height="34" rx="17" fill="#edf8f2" stroke="#bdddcf"/>
+    <text x="120" y="250" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#21664e">Text turns</text>
+    <rect x="92" y="278" width="184" height="34" rx="17" fill="#ecf4ff" stroke="#c8d9ee"/>
+    <text x="120" y="300" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#215fa8">Video frames</text>
+    <rect x="92" y="328" width="184" height="34" rx="17" fill="#fff1ed" stroke="#f2c7bd"/>
+    <text x="120" y="350" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#9a332c">Audio frames</text>
+    <rect x="92" y="378" width="184" height="34" rx="17" fill="#f4efff" stroke="#d5c9f2"/>
+    <text x="120" y="400" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#5d4695">Tool / memory</text>
+  </g>
+  <path d="M330 300 C370 300 390 300 430 300" stroke="#738aa4" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+  <g filter="url(#shadow)">
+    <rect x="440" y="132" width="330" height="336" rx="16" fill="#fff" stroke="#dce4ee"/>
+    <text x="472" y="176" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#172033">Hybrid Attention Blocks</text>
+    <text x="472" y="204" font-family="Inter, Arial, sans-serif" font-size="14" fill="#5d6876">alternate global reasoning with efficient sequence mixing</text>
+    <rect x="476" y="244" width="250" height="54" rx="12" fill="#f4fbff" stroke="#c8d9ee"/>
+    <text x="506" y="277" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="800" fill="#215fa8">Global / gated attention</text>
+    <rect x="476" y="322" width="250" height="54" rx="12" fill="#f0fbf7" stroke="#bdddcf"/>
+    <text x="506" y="355" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="800" fill="#21664e">Linear / recurrent mixing</text>
+    <rect x="476" y="400" width="250" height="36" rx="18" fill="#fff8ed" stroke="#efcf9c"/>
+    <text x="520" y="423" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#8a5a16">lower KV cache and long-context cost</text>
+  </g>
+  <path d="M780 300 C820 300 840 300 880 300" stroke="#738aa4" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+  <g filter="url(#shadow)">
+    <rect x="890" y="150" width="230" height="300" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="920" y="192" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="800" fill="#172033">Sparse MoE FFN</text>
+    <rect x="928" y="230" width="154" height="42" rx="10" fill="url(#green)" opacity=".9"/>
+    <text x="960" y="257" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="800" fill="#fff">Router</text>
+    <circle cx="952" cy="326" r="28" fill="#edf8f2" stroke="#bdddcf" stroke-width="2"/>
+    <circle cx="1006" cy="326" r="28" fill="#ecf4ff" stroke="#c8d9ee" stroke-width="2"/>
+    <circle cx="1060" cy="326" r="28" fill="#fff1ed" stroke="#f2c7bd" stroke-width="2"/>
+    <text x="942" y="332" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#21664e">E1</text>
+    <text x="996" y="332" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#215fa8">E2</text>
+    <text x="1050" y="332" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#9a332c">E3</text>
+    <text x="936" y="398" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="800" fill="#172033">activate only a few experts</text>
+  </g>
+</svg>

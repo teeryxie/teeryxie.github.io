@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 620" role="img" aria-labelledby="title desc">
+  <title id="title">Qwen2.5-Omni TMRoPE overview</title>
+  <desc id="desc">A schematic of multimodal inputs, TMRoPE alignment, Thinker, Talker, and streaming text and speech outputs.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fbff"/>
+      <stop offset="1" stop-color="#eef5fc"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a6fb5"/>
+      <stop offset="1" stop-color="#57a0c2"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#1f252d" flood-opacity=".12"/>
+    </filter>
+  </defs>
+  <rect width="1180" height="620" fill="url(#bg)"/>
+  <text x="60" y="62" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#172033">Qwen2.5-Omni: TMRoPE in the Omni Pipeline</text>
+  <text x="60" y="96" font-family="Inter, Arial, sans-serif" font-size="16" fill="#5d6876">Time-aligned Multimodal RoPE gives audio and video a shared temporal reference before joint reasoning.</text>
+  <g filter="url(#shadow)">
+    <rect x="60" y="150" width="250" height="280" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="88" y="190" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="800" fill="#172033">Inputs</text>
+    <rect x="88" y="222" width="194" height="38" rx="19" fill="#edf8f2" stroke="#bdddcf"/>
+    <text x="118" y="247" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#21664e">Text</text>
+    <rect x="88" y="278" width="194" height="38" rx="19" fill="#ecf4ff" stroke="#c8d9ee"/>
+    <text x="118" y="303" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#215fa8">Image / Video</text>
+    <rect x="88" y="334" width="194" height="38" rx="19" fill="#fff1ed" stroke="#f2c7bd"/>
+    <text x="118" y="359" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#9a332c">Audio</text>
+  </g>
+  <path d="M320 290 C365 290 380 290 425 290" fill="none" stroke="#7892b0" stroke-width="4" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#7892b0"/>
+    </marker>
+  </defs>
+  <g filter="url(#shadow)">
+    <rect x="430" y="132" width="320" height="316" rx="16" fill="#fff" stroke="#dce4ee"/>
+    <text x="462" y="176" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#172033">TMRoPE</text>
+    <text x="462" y="204" font-family="Inter, Arial, sans-serif" font-size="14" fill="#5d6876">Time-aligned Multimodal RoPE</text>
+    <line x1="478" y1="358" x2="704" y2="358" stroke="#b8c8dc" stroke-width="3"/>
+    <line x1="478" y1="358" x2="478" y2="242" stroke="#b8c8dc" stroke-width="3"/>
+    <circle cx="520" cy="332" r="16" fill="#fff1ed" stroke="#9a332c" stroke-width="4"/>
+    <circle cx="588" cy="300" r="16" fill="#ecf4ff" stroke="#215fa8" stroke-width="4"/>
+    <circle cx="656" cy="268" r="16" fill="#edf8f2" stroke="#21664e" stroke-width="4"/>
+    <text x="506" y="390" font-family="Inter, Arial, sans-serif" font-size="13" fill="#5d6876">time</text>
+    <text x="454" y="250" font-family="Inter, Arial, sans-serif" font-size="13" fill="#5d6876">h / w</text>
+    <rect x="462" y="408" width="252" height="24" rx="12" fill="#f8fbff" stroke="#dce4ee"/>
+    <text x="482" y="425" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#334154">shared temporal IDs for A/V sync</text>
+  </g>
+  <path d="M760 290 C805 290 820 290 865 290" fill="none" stroke="#7892b0" stroke-width="4" marker-end="url(#arrow)"/>
+  <g filter="url(#shadow)">
+    <rect x="870" y="132" width="250" height="316" rx="16" fill="#fff" stroke="#dce4ee"/>
+    <text x="902" y="176" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#172033">Thinker</text>
+    <text x="902" y="203" font-family="Inter, Arial, sans-serif" font-size="14" fill="#5d6876">LLM reasoning over aligned tokens</text>
+    <rect x="910" y="246" width="170" height="48" rx="10" fill="url(#blue)" opacity=".9"/>
+    <text x="944" y="276" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800" fill="#fff">Text stream</text>
+    <rect x="910" y="328" width="170" height="48" rx="10" fill="#f4efff" stroke="#d5c9f2"/>
+    <text x="946" y="358" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800" fill="#5d4695">Talker</text>
+  </g>
+  <path d="M995 378 C995 426 995 456 995 504" fill="none" stroke="#7892b0" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="882" y="548" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="800" fill="#172033">Streaming speech output</text>
+</svg>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 560" role="img" aria-labelledby="title desc">
+  <title id="title">TMRoPE temporal height width axes</title>
+  <desc id="desc">Comparison of text, audio, image, and video position IDs across temporal, height, and width components.</desc>
+  <rect width="1180" height="560" fill="#ffffff"/>
+  <text x="60" y="60" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#172033">How TMRoPE assigns position IDs</text>
+  <text x="60" y="94" font-family="Inter, Arial, sans-serif" font-size="16" fill="#5d6876">TMRoPE decomposes rotary position into temporal, height, and width components, then adapts each modality to that coordinate system.</text>
+  <g font-family="Inter, Arial, sans-serif" font-size="14">
+    <rect x="80" y="150" width="240" height="300" rx="14" fill="#f8fbff" stroke="#dce4ee"/>
+    <text x="112" y="190" font-size="20" font-weight="800" fill="#172033">Text</text>
+    <text x="112" y="232" fill="#465260">t = h = w = token index</text>
+    <text x="112" y="270" fill="#667280">Equivalent to 1D RoPE</text>
+    <rect x="112" y="320" width="176" height="46" rx="8" fill="#edf8f2" stroke="#bdddcf"/>
+    <text x="142" y="349" font-weight="800" fill="#21664e">1D sequence</text>
+    <rect x="350" y="150" width="240" height="300" rx="14" fill="#f8fbff" stroke="#dce4ee"/>
+    <text x="382" y="190" font-size="20" font-weight="800" fill="#172033">Audio</text>
+    <text x="382" y="232" fill="#465260">t = h = w per frame</text>
+    <text x="382" y="270" fill="#667280">one temporal ID roughly</text>
+    <text x="382" y="294" fill="#667280">corresponds to 40 ms</text>
+    <rect x="382" y="330" width="34" height="34" rx="8" fill="#fff1ed" stroke="#f2c7bd"/>
+    <rect x="426" y="330" width="34" height="34" rx="8" fill="#fff1ed" stroke="#f2c7bd"/>
+    <rect x="470" y="330" width="34" height="34" rx="8" fill="#fff1ed" stroke="#f2c7bd"/>
+    <rect x="514" y="330" width="34" height="34" rx="8" fill="#fff1ed" stroke="#f2c7bd"/>
+    <rect x="620" y="150" width="240" height="300" rx="14" fill="#f8fbff" stroke="#dce4ee"/>
+    <text x="652" y="190" font-size="20" font-weight="800" fill="#172033">Image</text>
+    <text x="652" y="232" fill="#465260">constant temporal ID</text>
+    <text x="652" y="270" fill="#667280">height and width vary</text>
+    <g fill="#ecf4ff" stroke="#9fbce0">
+      <rect x="654" y="318" width="42" height="42" rx="6"/>
+      <rect x="704" y="318" width="42" height="42" rx="6"/>
+      <rect x="754" y="318" width="42" height="42" rx="6"/>
+      <rect x="654" y="368" width="42" height="42" rx="6"/>
+      <rect x="704" y="368" width="42" height="42" rx="6"/>
+      <rect x="754" y="368" width="42" height="42" rx="6"/>
+    </g>
+    <rect x="890" y="150" width="240" height="300" rx="14" fill="#f8fbff" stroke="#dce4ee"/>
+    <text x="922" y="190" font-size="20" font-weight="800" fill="#172033">Video + Audio</text>
+    <text x="922" y="232" fill="#465260">video frame IDs follow</text>
+    <text x="922" y="256" fill="#465260">actual timestamps</text>
+    <text x="922" y="294" fill="#667280">audio IDs share the</text>
+    <text x="922" y="318" fill="#667280">same time scale</text>
+    <path d="M930 376 C978 320 1030 430 1088 344" fill="none" stroke="#215fa8" stroke-width="5"/>
+    <circle cx="930" cy="376" r="8" fill="#215fa8"/>
+    <circle cx="1006" cy="374" r="8" fill="#215fa8"/>
+    <circle cx="1088" cy="344" r="8" fill="#215fa8"/>
+  </g>
+</svg>

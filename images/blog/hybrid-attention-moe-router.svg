@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 560" role="img" aria-labelledby="title desc">
+  <title id="title">Sparse MoE routing for multimodal tokens</title>
+  <desc id="desc">A diagram showing that different multimodal tokens can be routed to different expert subsets.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbfcff"/>
+      <stop offset="1" stop-color="#f4f0ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#1f252d" flood-opacity=".10"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#738aa4"/>
+    </marker>
+  </defs>
+  <rect width="1180" height="560" fill="url(#bg)"/>
+  <text x="60" y="60" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#172033">Sparse Experts as Conditional Capacity</text>
+  <text x="60" y="94" font-family="Inter, Arial, sans-serif" font-size="16" fill="#5d6876">MoE does not make every token use the entire model. A router selects a small expert subset, so capacity grows faster than active computation.</text>
+  <g filter="url(#shadow)">
+    <rect x="70" y="160" width="240" height="250" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="104" y="202" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="800" fill="#172033">Tokens</text>
+    <rect x="105" y="238" width="150" height="34" rx="17" fill="#edf8f2" stroke="#bdddcf"/>
+    <text x="130" y="260" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#21664e">text query</text>
+    <rect x="105" y="286" width="150" height="34" rx="17" fill="#ecf4ff" stroke="#c8d9ee"/>
+    <text x="130" y="308" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#215fa8">visual event</text>
+    <rect x="105" y="334" width="150" height="34" rx="17" fill="#fff1ed" stroke="#f2c7bd"/>
+    <text x="130" y="356" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#9a332c">audio cue</text>
+  </g>
+  <path d="M320 286 C368 286 390 286 438 286" stroke="#738aa4" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+  <g filter="url(#shadow)">
+    <rect x="450" y="180" width="250" height="210" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="502" y="226" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#172033">Router</text>
+    <text x="496" y="258" font-family="Inter, Arial, sans-serif" font-size="14" fill="#5d6876">scores experts per token</text>
+    <rect x="500" y="292" width="150" height="40" rx="20" fill="#f4efff" stroke="#d5c9f2"/>
+    <text x="536" y="318" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="800" fill="#5d4695">top-k select</text>
+  </g>
+  <path d="M710 286 C758 286 780 286 828 286" stroke="#738aa4" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+  <g filter="url(#shadow)">
+    <rect x="840" y="135" width="270" height="300" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="888" y="178" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="800" fill="#172033">Expert Pool</text>
+    <g font-family="Inter, Arial, sans-serif" font-size="13" font-weight="800">
+      <rect x="884" y="220" width="70" height="54" rx="10" fill="#edf8f2" stroke="#bdddcf"/><text x="903" y="252" fill="#21664e">E01</text>
+      <rect x="970" y="220" width="70" height="54" rx="10" fill="#ecf4ff" stroke="#c8d9ee"/><text x="989" y="252" fill="#215fa8">E02</text>
+      <rect x="884" y="292" width="70" height="54" rx="10" fill="#fff1ed" stroke="#f2c7bd"/><text x="903" y="324" fill="#9a332c">E03</text>
+      <rect x="970" y="292" width="70" height="54" rx="10" fill="#f4efff" stroke="#d5c9f2"/><text x="989" y="324" fill="#5d4695">E04</text>
+    </g>
+    <text x="876" y="388" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="800" fill="#172033">shared backbone, specialized FFNs</text>
+  </g>
+</svg>

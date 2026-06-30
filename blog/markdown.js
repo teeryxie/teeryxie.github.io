@@ -78,6 +78,17 @@ function renderMarkdown(markdown) {
       continue;
     }
 
+    const image = /^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]+)")?\)$/.exec(line.trim());
+    if (image) {
+      flushParagraph();
+      flushList();
+      const alt = escapeHtml(image[1] || "");
+      const src = escapeHtml(image[2]);
+      const caption = escapeHtml(image[3] || image[1] || "");
+      html.push(`<figure><img src="${src}" alt="${alt}">${caption ? `<figcaption>${caption}</figcaption>` : ""}</figure>`);
+      continue;
+    }
+
     const bullet = /^[-*]\s+(.+)$/.exec(line);
     if (bullet) {
       flushParagraph();

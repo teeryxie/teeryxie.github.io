@@ -1,5 +1,21 @@
 window.BLOG_POSTS = [
   {
+    slug: "hybrid-attention-moe",
+    title: "Hybrid Attention MoE: Toward Efficient Long-Context Omni Models",
+    date: "2026-06",
+    category: "Research Note",
+    status: "Hybrid Attention · MoE",
+    summary: "A Chinese research note on hybrid attention, sparse experts, and why omni models need both global reasoning and efficient sequence modeling.",
+  },
+  {
+    slug: "tmrope-qwen25-omni",
+    title: "TMRoPE in Qwen2.5-Omni: Time-Aligned Position Encoding for Omni Models",
+    date: "2026-06",
+    category: "Research Note",
+    status: "Qwen2.5-Omni",
+    summary: "A Chinese deep-dive into TMRoPE, time-aligned multimodal position encoding, and what it means for omni-modal systems.",
+  },
+  {
     slug: "training-free-orchestration",
     title: "Training-Free Multimodal LLM Orchestration",
     date: "2026",

@@ -876,6 +876,31 @@ a:hover {
   padding-left: 22px;
 }
 
+.markdown-body figure {
+  margin: 24px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(31, 37, 45, 0.06);
+}
+
+.markdown-body figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #f8fbff;
+}
+
+.markdown-body figcaption {
+  border-top: 1px solid var(--line);
+  color: #5d6876;
+  background: #f8fbff;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 9px 12px;
+}
+
 .markdown-body pre {
   overflow: auto;
   border: 1px solid var(--line);

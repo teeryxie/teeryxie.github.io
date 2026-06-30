@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 560" role="img" aria-labelledby="title desc">
+  <title id="title">Time interleaving in TMRoPE</title>
+  <desc id="desc">A schematic showing audio and video chunks aligned by temporal IDs.</desc>
+  <rect width="1180" height="560" fill="#f8fbff"/>
+  <text x="60" y="58" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#172033">Time Interleaving: align audio and video by actual time</text>
+  <text x="60" y="90" font-family="Inter, Arial, sans-serif" font-size="16" fill="#5d6876">Qwen2.5-Omni segments audio-video representations by time, then arranges visual tokens and audio tokens inside each segment.</text>
+  <line x1="100" y1="190" x2="1080" y2="190" stroke="#b8c8dc" stroke-width="4"/>
+  <g font-family="Inter, Arial, sans-serif" font-size="13" fill="#526070">
+    <text x="96" y="170">0s</text>
+    <text x="342" y="170">2s</text>
+    <text x="588" y="170">4s</text>
+    <text x="834" y="170">6s</text>
+    <text x="1068" y="170">8s</text>
+  </g>
+  <g stroke="#7892b0" stroke-width="2">
+    <line x1="100" y1="180" x2="100" y2="202"/>
+    <line x1="346" y1="180" x2="346" y2="202"/>
+    <line x1="592" y1="180" x2="592" y2="202"/>
+    <line x1="838" y1="180" x2="838" y2="202"/>
+    <line x1="1080" y1="180" x2="1080" y2="202"/>
+  </g>
+  <g>
+    <text x="60" y="260" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#172033">Video tokens</text>
+    <text x="60" y="350" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#172033">Audio tokens</text>
+    <text x="60" y="444" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#172033">Interleaved order</text>
+  </g>
+  <g>
+    <rect x="220" y="230" width="104" height="54" rx="10" fill="#ecf4ff" stroke="#9fbce0"/>
+    <rect x="350" y="230" width="104" height="54" rx="10" fill="#ecf4ff" stroke="#9fbce0"/>
+    <rect x="480" y="230" width="104" height="54" rx="10" fill="#ecf4ff" stroke="#9fbce0"/>
+    <rect x="610" y="230" width="104" height="54" rx="10" fill="#ecf4ff" stroke="#9fbce0"/>
+    <rect x="740" y="230" width="104" height="54" rx="10" fill="#ecf4ff" stroke="#9fbce0"/>
+    <rect x="870" y="230" width="104" height="54" rx="10" fill="#ecf4ff" stroke="#9fbce0"/>
+    <text x="256" y="263" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#215fa8">V0</text>
+    <text x="386" y="263" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#215fa8">V1</text>
+    <text x="516" y="263" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#215fa8">V2</text>
+    <text x="646" y="263" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#215fa8">V3</text>
+    <text x="776" y="263" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#215fa8">V4</text>
+    <text x="906" y="263" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#215fa8">V5</text>
+  </g>
+  <g>
+    <rect x="220" y="320" width="104" height="54" rx="10" fill="#fff1ed" stroke="#f2c7bd"/>
+    <rect x="350" y="320" width="104" height="54" rx="10" fill="#fff1ed" stroke="#f2c7bd"/>
+    <rect x="480" y="320" width="104" height="54" rx="10" fill="#fff1ed" stroke="#f2c7bd"/>
+    <rect x="610" y="320" width="104" height="54" rx="10" fill="#fff1ed" stroke="#f2c7bd"/>
+    <rect x="740" y="320" width="104" height="54" rx="10" fill="#fff1ed" stroke="#f2c7bd"/>
+    <rect x="870" y="320" width="104" height="54" rx="10" fill="#fff1ed" stroke="#f2c7bd"/>
+    <text x="256" y="353" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#9a332c">A0</text>
+    <text x="386" y="353" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#9a332c">A1</text>
+    <text x="516" y="353" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#9a332c">A2</text>
+    <text x="646" y="353" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#9a332c">A3</text>
+    <text x="776" y="353" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#9a332c">A4</text>
+    <text x="906" y="353" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#9a332c">A5</text>
+  </g>
+  <g>
+    <rect x="220" y="414" width="236" height="58" rx="12" fill="#fff" stroke="#dce4ee"/>
+    <text x="250" y="449" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="800" fill="#172033">[V0,V1] then [A0,A1]</text>
+    <rect x="500" y="414" width="236" height="58" rx="12" fill="#fff" stroke="#dce4ee"/>
+    <text x="530" y="449" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="800" fill="#172033">[V2,V3] then [A2,A3]</text>
+    <rect x="780" y="414" width="236" height="58" rx="12" fill="#fff" stroke="#dce4ee"/>
+    <text x="810" y="449" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="800" fill="#172033">[V4,V5] then [A4,A5]</text>
+  </g>
+</svg>
