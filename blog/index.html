@@ -38,8 +38,73 @@
 
     <article class="content">
       <h1 class="page-title">Blog</h1>
-      <p class="lead">A compact list of paper introductions, project logs, and research writing. Each row opens a Markdown-rendered article.</p>
-      <div class="blog-list" data-blog-list></div>
+      <p class="lead">A compact index of paper introductions, project logs, and research writing. Use the category filters to scan by topic.</p>
+      <div class="blog-filter" data-blog-filter aria-label="Blog category filters">
+        <button class="active" type="button" data-category="all">All</button>
+        <button type="button" data-category="Research Note">Research Notes</button>
+        <button type="button" data-category="Paper">Papers</button>
+        <button type="button" data-category="Benchmark">Benchmarks</button>
+        <button type="button" data-category="Paper Intro">Paper Intros</button>
+        <button type="button" data-category="Log">Logs</button>
+      </div>
+      <div class="blog-list" data-blog-list>
+        <a class="blog-row" href="/blog/hybrid-attention-moe/" data-category="Research Note">
+          <span class="blog-row-main">
+            <strong>Hybrid Attention MoE: Toward Efficient Long-Context Omni Models</strong>
+            <span>A Chinese research note on hybrid attention, sparse experts, and why omni models need both global reasoning and efficient sequence modeling.</span>
+          </span>
+          <span class="blog-row-meta"><span>Research Note</span><span>Hybrid Attention · MoE</span><time>2026-06</time></span>
+        </a>
+        <a class="blog-row" href="/blog/tmrope-qwen25-omni/" data-category="Research Note">
+          <span class="blog-row-main">
+            <strong>TMRoPE in Qwen2.5-Omni: Time-Aligned Position Encoding for Omni Models</strong>
+            <span>A Chinese deep-dive into TMRoPE, time-aligned multimodal position encoding, and what it means for omni-modal systems.</span>
+          </span>
+          <span class="blog-row-meta"><span>Research Note</span><span>Qwen2.5-Omni</span><time>2026-06</time></span>
+        </a>
+        <a class="blog-row" href="/blog/training-free-orchestration/" data-category="Paper">
+          <span class="blog-row-main">
+            <strong>Training-Free Multimodal LLM Orchestration</strong>
+            <span>A modular route to interactive omni-modal assistants without expensive end-to-end retraining.</span>
+          </span>
+          <span class="blog-row-meta"><span>Paper</span><span>ICML-26 · First Author</span><time>2026</time></span>
+        </a>
+        <a class="blog-row" href="/blog/socialomni/" data-category="Benchmark">
+          <span class="blog-row-main">
+            <strong>SocialOmni: Audio-Visual Social Interactivity for Omni Models</strong>
+            <span>A benchmark for evaluating whether omni models understand social interaction from synchronized audio and video.</span>
+          </span>
+          <span class="blog-row-meta"><span>Benchmark</span><span>arXiv · First Author</span><time>2026</time></span>
+        </a>
+        <a class="blog-row" href="/blog/wfs-sb/" data-category="Paper">
+          <span class="blog-row-main">
+            <strong>WFS-SB: Semantic-Boundary Frame Selection for Long Video</strong>
+            <span>Wavelet-based semantic boundary detection for selecting compact, informative frames in long-video understanding.</span>
+          </span>
+          <span class="blog-row-meta"><span>Paper</span><span>CVPR-26 · CCF-A</span><time>2026</time></span>
+        </a>
+        <a class="blog-row" href="/blog/a2rbench/" data-category="Benchmark">
+          <span class="blog-row-main">
+            <strong>A2RBench: Formally Verifiable Abstract Reasoning Benchmarks</strong>
+            <span>An automatic paradigm for generating abstract reasoning tasks with formal verification and scalable answer checking.</span>
+          </span>
+          <span class="blog-row-meta"><span>Benchmark</span><span>ICML-26</span><time>2026</time></span>
+        </a>
+        <a class="blog-row" href="/blog/fold/" data-category="Paper Intro">
+          <span class="blog-row-main">
+            <strong>FOLD: Fast Correct Speculative Decoding</strong>
+            <span>Online learning and adaptive drafting for faster LLM decoding with an explicit correctness guarantee.</span>
+          </span>
+          <span class="blog-row-meta"><span>Paper Intro</span><span>ICLR-26 withdrawn submission</span><time>2026</time></span>
+        </a>
+        <a class="blog-row" href="/blog/homepage/" data-category="Log">
+          <span class="blog-row-main">
+            <strong>Building a Research Homepage That Does Not Feel Like a Template</strong>
+            <span>A short log on turning papers, projects, CV materials, and blog entries into a compact academic homepage.</span>
+          </span>
+          <span class="blog-row-meta"><span>Log</span><span>Website</span><time>2026-06</time></span>
+        </a>
+      </div>
     </article>
   </main>
 

@@ -765,6 +765,36 @@ a:hover {
   gap: 9px;
 }
 
+.blog-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 18px;
+}
+
+.blog-filter button {
+  appearance: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: #455365;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 8px 12px;
+  transition: transform 170ms ease, border-color 170ms ease, background 170ms ease, color 170ms ease;
+}
+
+.blog-filter button:hover,
+.blog-filter button.active {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
 .blog-row {
   position: relative;
   display: grid;
@@ -778,6 +808,10 @@ a:hover {
   color: var(--ink);
   box-shadow: 0 4px 14px rgba(31, 37, 45, 0.04);
   transition: transform 170ms ease, box-shadow 170ms ease, border-color 170ms ease, background 170ms ease;
+}
+
+.blog-row[hidden] {
+  display: none;
 }
 
 .blog-row::after {

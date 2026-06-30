@@ -110,7 +110,7 @@ function renderBlogIndex() {
   if (!list || !window.BLOG_POSTS) return;
 
   list.innerHTML = window.BLOG_POSTS.map((post) => `
-    <a class="blog-row" href="/blog/${post.slug}/">
+    <a class="blog-row" href="/blog/${post.slug}/" data-category="${escapeHtml(post.category)}">
       <span class="blog-row-main">
         <strong>${escapeHtml(post.title)}</strong>
         <span>${escapeHtml(post.summary)}</span>
@@ -122,6 +122,28 @@ function renderBlogIndex() {
       </span>
     </a>
   `).join("");
+}
+
+function bindBlogFilters() {
+  const filter = document.querySelector("[data-blog-filter]");
+  const list = document.querySelector("[data-blog-list]");
+  if (!filter || !list) return;
+
+  const buttons = [...filter.querySelectorAll("[data-category]")];
+  const applyFilter = (category) => {
+    for (const button of buttons) {
+      button.classList.toggle("active", button.dataset.category === category);
+    }
+    for (const row of list.querySelectorAll(".blog-row")) {
+      row.hidden = category !== "all" && row.dataset.category !== category;
+    }
+  };
+
+  filter.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-category]");
+    if (!button) return;
+    applyFilter(button.dataset.category);
+  });
 }
 
 async function renderBlogArticle() {
@@ -152,5 +174,6 @@ async function renderBlogArticle() {
 
 document.addEventListener("DOMContentLoaded", () => {
   renderBlogIndex();
+  bindBlogFilters();
   renderBlogArticle();
 });
