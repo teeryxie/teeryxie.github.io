@@ -1,5 +1,13 @@
 window.BLOG_POSTS = [
   {
+    slug: "omni-model-research-survey",
+    title: "From GPT-4o to Omni Models: A Research Roadmap",
+    date: "2026-07",
+    category: "Survey",
+    status: "Omni Models · GPT-4o",
+    summary: "A Chinese survey of omni models from GPT-4o to open-source systems, covering timeline, architecture shifts, benchmarks, papers, and future directions.",
+  },
+  {
     slug: "verl-omni-rl-framework",
     title: "VeRL-Omni: RL Infrastructure for Multimodal Generative Models",
     date: "2026-07",

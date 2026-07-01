@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 620" role="img" aria-labelledby="title desc">
+  <title id="title">Omni model research timeline</title>
+  <desc id="desc">A timeline from GPT-4o to open-source omni models and Qwen3.5-Omni.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbfcff"/>
+      <stop offset="1" stop-color="#eef6fb"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#1f252d" flood-opacity=".10"/>
+    </filter>
+  </defs>
+  <rect width="1180" height="620" fill="url(#bg)"/>
+  <text x="60" y="62" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#172033">Omni Model Timeline: From GPT-4o to Native Multimodal Agents</text>
+  <text x="60" y="96" font-family="Inter, Arial, sans-serif" font-size="16" fill="#5d6876">The field moves from pipeline multimodality to real-time speech, audio-video grounding, native output, and long-context interaction.</text>
+  <line x1="120" y1="320" x2="1060" y2="320" stroke="#b8c8dc" stroke-width="4"/>
+  <g font-family="Inter, Arial, sans-serif" filter="url(#shadow)">
+    <g transform="translate(105 166)">
+      <rect width="190" height="116" rx="12" fill="#fff" stroke="#dce4ee"/>
+      <text x="20" y="34" font-size="18" font-weight="800" fill="#172033">May 2024</text>
+      <text x="20" y="62" font-size="15" font-weight="800" fill="#215fa8">GPT-4o</text>
+      <text x="20" y="86" font-size="13" fill="#5d6876">real-time audio, vision, text</text>
+    </g>
+    <circle cx="200" cy="320" r="10" fill="#2a6fb5"/>
+    <g transform="translate(300 360)">
+      <rect width="190" height="116" rx="12" fill="#fff" stroke="#dce4ee"/>
+      <text x="20" y="34" font-size="18" font-weight="800" fill="#172033">Aug-Oct 2024</text>
+      <text x="20" y="62" font-size="15" font-weight="800" fill="#21664e">VITA / Mini-Omni</text>
+      <text x="20" y="86" font-size="13" fill="#5d6876">open-source speech interaction</text>
+    </g>
+    <circle cx="395" cy="320" r="10" fill="#1f8a70"/>
+    <g transform="translate(495 166)">
+      <rect width="210" height="116" rx="12" fill="#fff" stroke="#dce4ee"/>
+      <text x="20" y="34" font-size="18" font-weight="800" fill="#172033">Late 2024</text>
+      <text x="20" y="62" font-size="15" font-weight="800" fill="#9a332c">Realtime APIs</text>
+      <text x="20" y="86" font-size="13" fill="#5d6876">interruptions, streaming, agents</text>
+    </g>
+    <circle cx="600" cy="320" r="10" fill="#9a332c"/>
+    <g transform="translate(710 360)">
+      <rect width="190" height="116" rx="12" fill="#fff" stroke="#dce4ee"/>
+      <text x="20" y="34" font-size="18" font-weight="800" fill="#172033">Mar 2025</text>
+      <text x="20" y="62" font-size="15" font-weight="800" fill="#5d4695">Qwen2.5-Omni</text>
+      <text x="20" y="86" font-size="13" fill="#5d6876">TMRoPE + Thinker-Talker</text>
+    </g>
+    <circle cx="805" cy="320" r="10" fill="#5d4695"/>
+    <g transform="translate(900 166)">
+      <rect width="210" height="116" rx="12" fill="#fff" stroke="#dce4ee"/>
+      <text x="20" y="34" font-size="18" font-weight="800" fill="#172033">2025-2026</text>
+      <text x="20" y="62" font-size="15" font-weight="800" fill="#8a5a16">Omni benchmarks + RL</text>
+      <text x="20" y="86" font-size="13" fill="#5d6876">long audio-video, social, agents</text>
+    </g>
+    <circle cx="1005" cy="320" r="10" fill="#8a5a16"/>
+  </g>
+</svg>

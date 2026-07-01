@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 620" role="img" aria-labelledby="title desc">
+  <title id="title">Omni model research map</title>
+  <desc id="desc">A research map for omni model directions including streaming, alignment, benchmarks, long video, RL, and safety.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbfcff"/>
+      <stop offset="1" stop-color="#f4f0ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#1f252d" flood-opacity=".10"/>
+    </filter>
+  </defs>
+  <rect width="1180" height="620" fill="url(#bg)"/>
+  <text x="60" y="62" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#172033">Current Research Map for Omni Models</text>
+  <text x="60" y="96" font-family="Inter, Arial, sans-serif" font-size="16" fill="#5d6876">Omni research is no longer only model architecture; it includes data, time alignment, interaction, benchmarks, post-training, and safety.</text>
+  <g filter="url(#shadow)" font-family="Inter, Arial, sans-serif">
+    <rect x="470" y="250" width="240" height="110" rx="20" fill="#fff" stroke="#dce4ee"/>
+    <text x="520" y="294" font-size="24" font-weight="800" fill="#172033">Omni Model</text>
+    <text x="510" y="326" font-size="14" fill="#5d6876">text + audio + image + video + action</text>
+    <rect x="80" y="150" width="250" height="95" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="112" y="186" font-size="18" font-weight="800" fill="#215fa8">Streaming Interaction</text>
+    <text x="112" y="214" font-size="13" fill="#5d6876">latency, interruption, duplex speech</text>
+    <rect x="80" y="285" width="250" height="95" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="112" y="321" font-size="18" font-weight="800" fill="#21664e">Temporal Alignment</text>
+    <text x="112" y="349" font-size="13" fill="#5d6876">TMRoPE, interleaving, event anchors</text>
+    <rect x="80" y="420" width="250" height="95" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="112" y="456" font-size="18" font-weight="800" fill="#9a332c">Long Video + Audio</text>
+    <text x="112" y="484" font-size="13" fill="#5d6876">sampling, memory, grounding, social cues</text>
+    <rect x="850" y="150" width="250" height="95" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="882" y="186" font-size="18" font-weight="800" fill="#5d4695">Evaluation</text>
+    <text x="882" y="214" font-size="13" fill="#5d6876">OmniBench, MMAU, SocialOmni</text>
+    <rect x="850" y="285" width="250" height="95" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="882" y="321" font-size="18" font-weight="800" fill="#8a5a16">Post-Training</text>
+    <text x="882" y="349" font-size="13" fill="#5d6876">RLHF, GSPO, reward services</text>
+    <rect x="850" y="420" width="250" height="95" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="882" y="456" font-size="18" font-weight="800" fill="#334154">Safety + HCI</text>
+    <text x="882" y="484" font-size="13" fill="#5d6876">voice cloning, privacy, agency, trust</text>
+  </g>
+</svg>
