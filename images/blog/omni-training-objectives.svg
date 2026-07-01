@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 620" role="img" aria-labelledby="title desc">
+  <title id="title">Omni model training objectives</title>
+  <desc id="desc">A map of objectives for omni model training including alignment, next-token prediction, speech generation, temporal grounding, and preference optimization.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbfcff"/>
+      <stop offset="1" stop-color="#f6fbf4"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#1f252d" flood-opacity=".10"/>
+    </filter>
+  </defs>
+  <rect width="1180" height="620" fill="url(#bg)"/>
+  <text x="60" y="62" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#172033">Objective Stack: What Omni Training Optimizes</text>
+  <text x="60" y="96" font-family="Inter, Arial, sans-serif" font-size="16" fill="#5d6876">Omni training mixes several objectives because understanding, speech generation, temporal grounding, and interaction quality are not the same problem.</text>
+  <g filter="url(#shadow)" font-family="Inter, Arial, sans-serif">
+    <rect x="90" y="150" width="300" height="145" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="126" y="194" font-size="21" font-weight="800" fill="#215fa8">Alignment Losses</text>
+    <text x="126" y="226" font-size="14" fill="#5d6876">project visual/audio features into the LLM space</text>
+    <text x="126" y="254" font-size="13" font-weight="800" fill="#455365">captioning · contrastive · adapter pretraining</text>
+    <rect x="440" y="150" width="300" height="145" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="476" y="194" font-size="21" font-weight="800" fill="#21664e">Autoregressive Losses</text>
+    <text x="476" y="226" font-size="14" fill="#5d6876">predict text, semantic tokens, or audio codec tokens</text>
+    <text x="476" y="254" font-size="13" font-weight="800" fill="#455365">NTP · inner monologue · dual-stream speech</text>
+    <rect x="790" y="150" width="300" height="145" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="826" y="194" font-size="21" font-weight="800" fill="#9a332c">Temporal Objectives</text>
+    <text x="826" y="226" font-size="14" fill="#5d6876">align audio, video, text and event boundaries</text>
+    <text x="826" y="254" font-size="13" font-weight="800" fill="#455365">TMRoPE · timestamps · interleaving</text>
+    <rect x="250" y="350" width="300" height="145" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="286" y="394" font-size="21" font-weight="800" fill="#5d4695">Instruction Tuning</text>
+    <text x="286" y="426" font-size="14" fill="#5d6876">make the model follow multimodal user intents</text>
+    <text x="286" y="454" font-size="13" font-weight="800" fill="#455365">SFT · multi-turn · interruption commands</text>
+    <rect x="630" y="350" width="300" height="145" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="666" y="394" font-size="21" font-weight="800" fill="#8a5a16">Preference / RL</text>
+    <text x="666" y="426" font-size="14" fill="#5d6876">optimize helpfulness, safety, timing and style</text>
+    <text x="666" y="454" font-size="13" font-weight="800" fill="#455365">DPO · RLHF · GSPO · reward services</text>
+  </g>
+</svg>

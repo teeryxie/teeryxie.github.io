@@ -261,6 +261,32 @@ a:hover {
   overflow-wrap: anywhere;
 }
 
+.motto-quote {
+  max-width: 820px;
+  margin: 14px 0 18px;
+  border-left: 3px solid var(--blue);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 8px 24px rgba(31, 37, 45, 0.05);
+  padding: 12px 16px;
+}
+
+.motto-quote p {
+  color: #253246;
+  font-size: 17px;
+  font-weight: 720;
+  line-height: 1.6;
+  margin: 0 0 4px;
+}
+
+.motto-quote cite {
+  color: #5d6876;
+  display: block;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+}
+
 .research-brief {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

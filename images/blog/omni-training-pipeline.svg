@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 620" role="img" aria-labelledby="title desc">
+  <title id="title">Omni model training pipeline</title>
+  <desc id="desc">A staged pipeline for training omni models from tokenization and alignment to SFT and RL post-training.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbfcff"/>
+      <stop offset="1" stop-color="#eef6fb"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#1f252d" flood-opacity=".10"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#738aa4"/>
+    </marker>
+  </defs>
+  <rect width="1180" height="620" fill="url(#bg)"/>
+  <text x="60" y="62" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#172033">Training Pipeline for Omni Models</text>
+  <text x="60" y="96" font-family="Inter, Arial, sans-serif" font-size="16" fill="#5d6876">A practical omni model is trained through staged modality alignment, joint instruction tuning, speech generation, and reward-based refinement.</text>
+  <g filter="url(#shadow)" font-family="Inter, Arial, sans-serif">
+    <rect x="62" y="170" width="180" height="230" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="94" y="212" font-size="19" font-weight="800" fill="#172033">1. Encode</text>
+    <text x="94" y="248" font-size="13" fill="#5d6876">visual patches</text>
+    <text x="94" y="276" font-size="13" fill="#5d6876">audio codec tokens</text>
+    <text x="94" y="304" font-size="13" fill="#5d6876">video frames</text>
+    <rect x="282" y="170" width="180" height="230" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="314" y="212" font-size="19" font-weight="800" fill="#172033">2. Align</text>
+    <text x="314" y="248" font-size="13" fill="#5d6876">projectors</text>
+    <text x="314" y="276" font-size="13" fill="#5d6876">adapters</text>
+    <text x="314" y="304" font-size="13" fill="#5d6876">contrastive / LM loss</text>
+    <rect x="502" y="170" width="180" height="230" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="534" y="212" font-size="19" font-weight="800" fill="#172033">3. SFT</text>
+    <text x="534" y="248" font-size="13" fill="#5d6876">instruction data</text>
+    <text x="534" y="276" font-size="13" fill="#5d6876">multi-turn dialogue</text>
+    <text x="534" y="304" font-size="13" fill="#5d6876">speech response</text>
+    <rect x="722" y="170" width="180" height="230" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="754" y="212" font-size="19" font-weight="800" fill="#172033">4. Stream</text>
+    <text x="754" y="248" font-size="13" fill="#5d6876">TMRoPE</text>
+    <text x="754" y="276" font-size="13" fill="#5d6876">interleaving</text>
+    <text x="754" y="304" font-size="13" fill="#5d6876">Thinker-Talker</text>
+    <rect x="942" y="170" width="180" height="230" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="974" y="212" font-size="19" font-weight="800" fill="#172033">5. RL</text>
+    <text x="974" y="248" font-size="13" fill="#5d6876">preference</text>
+    <text x="974" y="276" font-size="13" fill="#5d6876">GSPO / GRPO</text>
+    <text x="974" y="304" font-size="13" fill="#5d6876">safety rewards</text>
+  </g>
+  <path d="M250 286 L274 286" stroke="#738aa4" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M470 286 L494 286" stroke="#738aa4" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M690 286 L714 286" stroke="#738aa4" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M910 286 L934 286" stroke="#738aa4" stroke-width="4" marker-end="url(#arrow)"/>
+</svg>

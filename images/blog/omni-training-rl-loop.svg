@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 620" role="img" aria-labelledby="title desc">
+  <title id="title">Omni model RL post-training loop</title>
+  <desc id="desc">A reinforcement learning loop for omni model post-training with rollout, multimodal rewards, and actor updates.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbfcff"/>
+      <stop offset="1" stop-color="#f8f4ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#1f252d" flood-opacity=".12"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#738aa4"/>
+    </marker>
+  </defs>
+  <rect width="1180" height="620" fill="url(#bg)"/>
+  <text x="60" y="62" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#172033">RL Post-Training Loop for Omni Models</text>
+  <text x="60" y="96" font-family="Inter, Arial, sans-serif" font-size="16" fill="#5d6876">The hard part is not only policy optimization; it is building reward signals over speech, video, timing, social interaction, and safety.</text>
+  <g filter="url(#shadow)" font-family="Inter, Arial, sans-serif">
+    <rect x="80" y="210" width="230" height="170" rx="16" fill="#fff" stroke="#dce4ee"/>
+    <text x="116" y="256" font-size="22" font-weight="800" fill="#172033">Omni Rollout</text>
+    <text x="116" y="290" font-size="14" fill="#5d6876">stream audio, video and text responses</text>
+    <rect x="116" y="320" width="135" height="34" rx="17" fill="#ecf4ff" stroke="#c8d9ee"/>
+    <text x="147" y="342" font-size="13" font-weight="800" fill="#215fa8">vLLM-Omni</text>
+    <rect x="475" y="120" width="250" height="150" rx="16" fill="#fff" stroke="#dce4ee"/>
+    <text x="512" y="166" font-size="22" font-weight="800" fill="#172033">Reward Models</text>
+    <text x="512" y="200" font-size="14" fill="#5d6876">VLM judge, ASR, OCR, social cues</text>
+    <rect x="512" y="226" width="150" height="30" rx="15" fill="#fff1ed" stroke="#f2c7bd"/>
+    <text x="542" y="246" font-size="12" font-weight="800" fill="#9a332c">multi-reward</text>
+    <rect x="475" y="350" width="250" height="150" rx="16" fill="#fff" stroke="#dce4ee"/>
+    <text x="512" y="396" font-size="22" font-weight="800" fill="#172033">Trainer</text>
+    <text x="512" y="430" font-size="14" fill="#5d6876">GSPO, GRPO, DPO, KL control</text>
+    <rect x="512" y="456" width="150" height="30" rx="15" fill="#edf8f2" stroke="#bdddcf"/>
+    <text x="550" y="476" font-size="12" font-weight="800" fill="#21664e">actor update</text>
+    <rect x="870" y="210" width="230" height="170" rx="16" fill="#fff" stroke="#dce4ee"/>
+    <text x="906" y="256" font-size="22" font-weight="800" fill="#172033">Evaluation</text>
+    <text x="906" y="290" font-size="14" fill="#5d6876">latency, grounding, safety, interaction</text>
+    <rect x="906" y="320" width="135" height="34" rx="17" fill="#f4efff" stroke="#d5c9f2"/>
+    <text x="940" y="342" font-size="13" font-weight="800" fill="#5d4695">benchmarks</text>
+  </g>
+  <path d="M318 290 C375 240 412 210 466 196" stroke="#738aa4" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+  <path d="M600 278 L600 342" stroke="#738aa4" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+  <path d="M732 430 C798 398 830 355 862 310" stroke="#738aa4" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+  <path d="M862 290 C770 246 512 260 318 286" stroke="#738aa4" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+</svg>

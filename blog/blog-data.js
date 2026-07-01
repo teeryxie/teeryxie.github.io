@@ -1,5 +1,13 @@
 window.BLOG_POSTS = [
   {
+    slug: "omni-model-training-methods",
+    title: "How to Train Omni Models: Data, Alignment, SFT, and RL",
+    date: "2026-07",
+    category: "Training",
+    status: "Omni Training · RLHF",
+    summary: "A Chinese research note on omni model training, from modality tokenization and alignment to speech generation, temporal grounding, SFT, and RL post-training.",
+  },
+  {
     slug: "omni-model-research-survey",
     title: "From GPT-4o to Omni Models: A Research Roadmap",
     date: "2026-07",
