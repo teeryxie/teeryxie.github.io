@@ -1,5 +1,13 @@
 window.BLOG_POSTS = [
   {
+    slug: "verl-omni-rl-framework",
+    title: "VeRL-Omni: RL Infrastructure for Multimodal Generative Models",
+    date: "2026-07",
+    category: "Framework",
+    status: "verl · vLLM-Omni · RLHF",
+    summary: "A Chinese deep dive into verl-project/verl-omni, rollout systems, async reward, diffusion RL, and omni-model post-training.",
+  },
+  {
     slug: "hybrid-attention-moe",
     title: "Hybrid Attention MoE: Toward Efficient Long-Context Omni Models",
     date: "2026-06",

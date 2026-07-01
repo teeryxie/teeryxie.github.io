@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 620" role="img" aria-labelledby="title desc">
+  <title id="title">VeRL-Omni architecture overview</title>
+  <desc id="desc">A schematic showing rollout, reward loop, trainer and distributed backends in VeRL-Omni.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbfcff"/>
+      <stop offset="1" stop-color="#eef6fb"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a6fb5"/>
+      <stop offset="1" stop-color="#4aa3a2"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#1f252d" flood-opacity=".12"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#738aa4"/>
+    </marker>
+  </defs>
+  <rect width="1180" height="620" fill="url(#bg)"/>
+  <text x="60" y="62" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#172033">VeRL-Omni: Multimodal RL Post-Training Stack</text>
+  <text x="60" y="96" font-family="Inter, Arial, sans-serif" font-size="16" fill="#5d6876">The framework separates generation, reward serving, and actor updates so diffusion and omni models can be optimized end to end.</text>
+  <g filter="url(#shadow)">
+    <rect x="60" y="150" width="230" height="300" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="92" y="190" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="800" fill="#172033">Data + Prompts</text>
+    <rect x="92" y="230" width="150" height="36" rx="18" fill="#edf8f2" stroke="#bdddcf"/>
+    <text x="120" y="253" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#21664e">text prompts</text>
+    <rect x="92" y="286" width="150" height="36" rx="18" fill="#ecf4ff" stroke="#c8d9ee"/>
+    <text x="120" y="309" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#215fa8">images / video</text>
+    <rect x="92" y="342" width="150" height="36" rx="18" fill="#fff1ed" stroke="#f2c7bd"/>
+    <text x="120" y="365" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#9a332c">audio / omni</text>
+  </g>
+  <path d="M300 300 C334 300 350 300 384 300" stroke="#738aa4" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+  <g filter="url(#shadow)">
+    <rect x="390" y="132" width="270" height="336" rx="16" fill="#fff" stroke="#dce4ee"/>
+    <text x="424" y="176" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#172033">Rollout</text>
+    <text x="424" y="204" font-family="Inter, Arial, sans-serif" font-size="14" fill="#5d6876">vLLM-Omni generation backend</text>
+    <rect x="430" y="250" width="190" height="48" rx="10" fill="url(#blue)" opacity=".9"/>
+    <text x="466" y="280" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800" fill="#fff">sample groups</text>
+    <rect x="430" y="324" width="190" height="48" rx="10" fill="#f4efff" stroke="#d5c9f2"/>
+    <text x="466" y="354" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800" fill="#5d4695">log-probs / latents</text>
+  </g>
+  <path d="M670 250 C710 210 750 210 790 250" stroke="#738aa4" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+  <path d="M670 350 C710 390 750 390 790 350" stroke="#738aa4" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+  <g filter="url(#shadow)">
+    <rect x="800" y="132" width="300" height="150" rx="16" fill="#fff" stroke="#dce4ee"/>
+    <text x="834" y="176" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#172033">Reward Loop</text>
+    <text x="834" y="204" font-family="Inter, Arial, sans-serif" font-size="14" fill="#5d6876">VLM judge, OCR, HPSv3, HTTP scorer</text>
+    <rect x="834" y="226" width="220" height="34" rx="17" fill="#fff8ed" stroke="#efcf9c"/>
+    <text x="874" y="248" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#8a5a16">async sample-level scoring</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="800" y="320" width="300" height="150" rx="16" fill="#fff" stroke="#dce4ee"/>
+    <text x="834" y="364" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#172033">Trainer</text>
+    <text x="834" y="392" font-family="Inter, Arial, sans-serif" font-size="14" fill="#5d6876">FSDP2 or VeOmni actor update</text>
+    <rect x="834" y="414" width="220" height="34" rx="17" fill="#ecf4ff" stroke="#c8d9ee"/>
+    <text x="870" y="436" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#215fa8">FlowGRPO / DPO / GSPO</text>
+  </g>
+</svg>

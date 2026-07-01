@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 560" role="img" aria-labelledby="title desc">
+  <title id="title">VeRL-Omni model and algorithm map</title>
+  <desc id="desc">A matrix mapping diffusion, unified multimodal, and omni models to trainers in VeRL-Omni.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbfcff"/>
+      <stop offset="1" stop-color="#f6fbf4"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#1f252d" flood-opacity=".10"/>
+    </filter>
+  </defs>
+  <rect width="1180" height="560" fill="url(#bg)"/>
+  <text x="60" y="60" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#172033">Model Families Covered by VeRL-Omni</text>
+  <text x="60" y="94" font-family="Inter, Arial, sans-serif" font-size="16" fill="#5d6876">The repository organizes RL post-training around model families rather than a single algorithm.</text>
+  <g filter="url(#shadow)">
+    <rect x="70" y="150" width="310" height="300" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="106" y="194" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#172033">Diffusion Generators</text>
+    <text x="106" y="226" font-family="Inter, Arial, sans-serif" font-size="14" fill="#5d6876">image, video, audio generation</text>
+    <rect x="106" y="264" width="210" height="36" rx="18" fill="#ecf4ff" stroke="#c8d9ee"/>
+    <text x="138" y="287" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#215fa8">Qwen-Image / SD3.5</text>
+    <rect x="106" y="318" width="210" height="36" rx="18" fill="#fff1ed" stroke="#f2c7bd"/>
+    <text x="148" y="341" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#9a332c">Wan2.2 / LTX2.3</text>
+    <text x="106" y="402" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="800" fill="#172033">FlowGRPO, Flow-DPPO, DPO, DiffusionNFT</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="435" y="150" width="310" height="300" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="471" y="194" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#172033">Unified Understand + Gen</text>
+    <text x="471" y="226" font-family="Inter, Arial, sans-serif" font-size="14" fill="#5d6876">multimodal models that both parse and generate</text>
+    <rect x="471" y="264" width="210" height="36" rx="18" fill="#edf8f2" stroke="#bdddcf"/>
+    <text x="532" y="287" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#21664e">BAGEL</text>
+    <rect x="471" y="318" width="210" height="36" rx="18" fill="#f4efff" stroke="#d5c9f2"/>
+    <text x="506" y="341" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#5d4695">HunyuanImage-3.0</text>
+    <text x="471" y="402" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="800" fill="#172033">FlowGRPO, MixGRPO, SRPO planned</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="800" y="150" width="310" height="300" rx="14" fill="#fff" stroke="#dce4ee"/>
+    <text x="836" y="194" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#172033">Omni-Modality</text>
+    <text x="836" y="226" font-family="Inter, Arial, sans-serif" font-size="14" fill="#5d6876">text, image, video and audio in one system</text>
+    <rect x="836" y="264" width="220" height="36" rx="18" fill="#f0fbf7" stroke="#bdddcf"/>
+    <text x="884" y="287" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#21664e">Qwen3-Omni Thinker</text>
+    <rect x="836" y="318" width="220" height="36" rx="18" fill="#fff8ed" stroke="#efcf9c"/>
+    <text x="886" y="341" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#8a5a16">GSPO + LoRA</text>
+    <text x="836" y="402" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="800" fill="#172033">30B total, 3B active MoE recipe</text>
+  </g>
+</svg>
