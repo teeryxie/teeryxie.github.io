@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 620" role="img" aria-labelledby="title desc">
+  <title id="title">Qwen3.5-Omni long-context pipeline</title><desc id="desc">Audio compression, timestamps, staged training, and Hybrid MoE support a 256K context.</desc>
+  <rect width="1180" height="620" fill="#f7f8fa"/><g font-family="Arial, sans-serif">
+  <text x="64" y="62" fill="#172033" font-size="30" font-weight="700">256K is a pipeline, not a config flag</text><text x="64" y="96" fill="#667085" font-size="16">Four coordinated choices make long omni inputs trainable and usable</text>
+  <g>
+    <rect x="64" y="162" width="226" height="286" rx="8" fill="#eaf4ff" stroke="#4386c8" stroke-width="2"/>
+    <text x="177" y="210" fill="#174f83" font-size="22" font-weight="700" text-anchor="middle">1 · Compress</text><text x="177" y="250" fill="#315b80" font-size="16" text-anchor="middle">AuT trained on</text><text x="177" y="278" fill="#315b80" font-size="16" text-anchor="middle">40M audio hours</text>
+    <text x="177" y="326" fill="#174f83" font-size="28" font-weight="700" text-anchor="middle">6.25 Hz</text><text x="177" y="358" fill="#315b80" font-size="15" text-anchor="middle">≈ 160 ms / token</text><text x="177" y="410" fill="#5c7188" font-size="14" text-anchor="middle">half Qwen3-Omni's rate</text>
+    <rect x="338" y="162" width="226" height="286" rx="8" fill="#fff7e8" stroke="#e3a03f" stroke-width="2"/>
+    <text x="451" y="210" fill="#7a4810" font-size="22" font-weight="700" text-anchor="middle">2 · Anchor</text><text x="451" y="250" fill="#684f2d" font-size="16" text-anchor="middle">TM-RoPE positions</text><text x="451" y="278" fill="#684f2d" font-size="16" text-anchor="middle">+ explicit timestamps</text>
+    <rect x="382" y="318" width="138" height="40" rx="5" fill="#e3a03f"/><text x="451" y="344" fill="#ffffff" font-size="16" text-anchor="middle">[132.4 sec]</text><text x="451" y="397" fill="#7e6545" font-size="14" text-anchor="middle">readable by the LLM</text>
+    <rect x="612" y="162" width="226" height="286" rx="8" fill="#f3eef9" stroke="#9672b4" stroke-width="2"/>
+    <text x="725" y="210" fill="#654580" font-size="22" font-weight="700" text-anchor="middle">3 · Extend</text><text x="725" y="250" fill="#6f5a80" font-size="16" text-anchor="middle">S1 encoder alignment</text><text x="725" y="280" fill="#6f5a80" font-size="16" text-anchor="middle">S2 4T at 32K</text><text x="725" y="310" fill="#6f5a80" font-size="16" text-anchor="middle">S3 long AV at 256K</text>
+    <path d="M669 350H781" stroke="#9672b4" stroke-width="6"/><circle cx="669" cy="350" r="8" fill="#654580"/><circle cx="725" cy="350" r="8" fill="#654580"/><circle cx="781" cy="350" r="8" fill="#654580"/><text x="725" y="397" fill="#756582" font-size="14" text-anchor="middle">progressive context growth</text>
+    <rect x="886" y="162" width="230" height="286" rx="8" fill="#edf8f2" stroke="#56a37a" stroke-width="2"/>
+    <text x="1001" y="210" fill="#235e43" font-size="22" font-weight="700" text-anchor="middle">4 · Execute</text><text x="1001" y="250" fill="#3f715b" font-size="16" text-anchor="middle">Hybrid Attention</text><text x="1001" y="278" fill="#3f715b" font-size="16" text-anchor="middle">GDN + global layers</text><text x="1001" y="326" fill="#235e43" font-size="18" font-weight="700" text-anchor="middle">Lower KV I/O</text><text x="1001" y="358" fill="#3f715b" font-size="16" text-anchor="middle">MoE sparse capacity</text><text x="1001" y="407" fill="#587363" font-size="14" text-anchor="middle">serving-aware backbone</text>
+  </g>
+  <path d="M290 305H338M564 305H612M838 305H886" stroke="#64748b" stroke-width="3"/>
+  <rect x="64" y="506" width="1052" height="74" rx="8" fill="#172033"/><text x="590" y="536" fill="#ffffff" font-size="18" font-weight="700" text-anchor="middle">Reported input regimes</text><text x="590" y="564" fill="#d8e0ea" font-size="16" text-anchor="middle">262,144 tokens · over 10 hours audio · 400 seconds 720P video at 1 FPS</text>
+  </g></svg>

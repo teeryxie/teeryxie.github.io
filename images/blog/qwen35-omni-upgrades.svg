@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 620" role="img" aria-labelledby="title desc">
+  <title id="title">Qwen3.5-Omni upgrade map</title><desc id="desc">Five changes from Qwen3-Omni to Qwen3.5-Omni.</desc>
+  <rect width="1180" height="620" fill="#f6f8fb"/><g font-family="Arial, sans-serif">
+  <text x="64" y="62" fill="#172033" font-size="30" font-weight="700">Qwen3.5-Omni is a systems upgrade</text>
+  <text x="64" y="96" fill="#667085" font-size="16">Scaling perception, temporal reasoning, speech alignment, and action together</text>
+  <rect x="64" y="150" width="250" height="354" rx="8" fill="#ffffff" stroke="#9aa6b5" stroke-width="2"/>
+  <text x="189" y="202" fill="#27364d" font-size="25" font-weight="700" text-anchor="middle">Qwen3-Omni</text>
+  <text x="189" y="244" fill="#5b6879" font-size="16" text-anchor="middle">MoE Thinker-Talker</text><text x="189" y="276" fill="#5b6879" font-size="16" text-anchor="middle">32K training context</text>
+  <text x="189" y="308" fill="#5b6879" font-size="16" text-anchor="middle">Absolute-ID TMRoPE</text><text x="189" y="340" fill="#5b6879" font-size="16" text-anchor="middle">Dual-track text / speech</text>
+  <text x="189" y="372" fill="#5b6879" font-size="16" text-anchor="middle">12.5 Hz audio tokens</text><text x="189" y="404" fill="#5b6879" font-size="16" text-anchor="middle">Reactive assistant</text>
+  <path d="M314 327H404" stroke="#64748b" stroke-width="4"/><path d="M390 314l18 13-18 13" fill="none" stroke="#64748b" stroke-width="4"/>
+  <rect x="404" y="150" width="712" height="354" rx="8" fill="#edf8f2" stroke="#56a37a" stroke-width="2"/>
+  <text x="760" y="202" fill="#235e43" font-size="25" font-weight="700" text-anchor="middle">Qwen3.5-Omni</text>
+  <g>
+    <rect x="444" y="236" width="200" height="100" rx="7" fill="#ffffff"/><rect x="660" y="236" width="200" height="100" rx="7" fill="#ffffff"/><rect x="876" y="236" width="200" height="100" rx="7" fill="#ffffff"/>
+    <rect x="552" y="356" width="200" height="100" rx="7" fill="#ffffff"/><rect x="768" y="356" width="200" height="100" rx="7" fill="#ffffff"/>
+    <g fill="#235e43" font-size="18" font-weight="700" text-anchor="middle"><text x="544" y="270">Hybrid MoE</text><text x="760" y="270">256K context</text><text x="976" y="270">Timestamps</text><text x="652" y="390">ARIA</text><text x="868" y="390">Omni agent</text></g>
+    <g fill="#587363" font-size="14" text-anchor="middle"><text x="544" y="299">Attention + GDN</text><text x="544" y="320">in Thinker &amp; Talker</text><text x="760" y="299">10h audio · 400s AV</text><text x="760" y="320">4T-token pretraining</text><text x="976" y="299">Readable timecodes</text><text x="976" y="320">for long streams</text><text x="652" y="419">Adaptive text-speech</text><text x="652" y="440">single-stream alignment</text><text x="868" y="419">Search · function call</text><text x="868" y="440">audio-visual coding</text></g>
+  </g>
+  <rect x="64" y="544" width="1052" height="42" rx="8" fill="#172033"/><text x="590" y="571" fill="#ffffff" font-size="16" text-anchor="middle">The shift: from unified multimodal interaction to long-horizon, real-time, tool-using behavior</text>
+  </g></svg>

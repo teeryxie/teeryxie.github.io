@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 620" role="img" aria-labelledby="title desc">
+  <title id="title">Qwen3-Omni non-degradation experiment</title>
+  <desc id="desc">Controlled text-only, vision-only, and omni models are compared with matched scale, data, schedule, and compute.</desc>
+  <rect width="1180" height="620" fill="#f6f8fb"/>
+  <text x="64" y="62" fill="#172033" font-family="Arial, sans-serif" font-size="30" font-weight="700">What “non-degrading” actually tests</text>
+  <text x="64" y="95" fill="#667085" font-family="Arial, sans-serif" font-size="16">A controlled base-model comparison, not a claim that every benchmark improves</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="64" y="144" width="1052" height="84" rx="8" fill="#172033"/>
+    <text x="590" y="177" fill="#ffffff" font-size="18" font-weight="700" text-anchor="middle">Matched controls</text>
+    <text x="590" y="207" fill="#d8e0ea" font-size="16" text-anchor="middle">30B-A3B scale · same text/vision corpora · same schedule · same batch · matched modality epochs and FLOPs</text>
+    <g>
+      <rect x="64" y="274" width="302" height="178" rx="8" fill="#ffffff" stroke="#7597bc" stroke-width="2"/>
+      <text x="215" y="316" fill="#2e567e" font-size="22" font-weight="700" text-anchor="middle">Text-only base</text>
+      <text x="215" y="354" fill="#5b6b7f" font-size="16" text-anchor="middle">MMLU 81.24</text>
+      <text x="215" y="382" fill="#5b6b7f" font-size="16" text-anchor="middle">EvalPlus 69.70</text>
+      <text x="215" y="420" fill="#7d8794" font-size="14" text-anchor="middle">language control</text>
+      <rect x="439" y="274" width="302" height="178" rx="8" fill="#ffffff" stroke="#9b7ebb" stroke-width="2"/>
+      <text x="590" y="316" fill="#62447d" font-size="22" font-weight="700" text-anchor="middle">Vision-only base</text>
+      <text x="590" y="354" fill="#5b6b7f" font-size="16" text-anchor="middle">MMMU-val 57.22</text>
+      <text x="590" y="382" fill="#5b6b7f" font-size="16" text-anchor="middle">MVBench 71.87</text>
+      <text x="590" y="420" fill="#7d8794" font-size="14" text-anchor="middle">vision control</text>
+      <rect x="814" y="274" width="302" height="178" rx="8" fill="#edf8f2" stroke="#56a37a" stroke-width="2"/>
+      <text x="965" y="316" fill="#235e43" font-size="22" font-weight="700" text-anchor="middle">Omni base</text>
+      <text x="965" y="350" fill="#3f715b" font-size="16" text-anchor="middle">MMLU 81.69 · EvalPlus 73.96</text>
+      <text x="965" y="379" fill="#3f715b" font-size="16" text-anchor="middle">MMMU 59.33 · MVBench 69.50</text>
+      <text x="965" y="420" fill="#4b7562" font-size="14" text-anchor="middle">+ audio and audio-visual data</text>
+    </g>
+    <path d="M366 363H439M741 363H814" stroke="#64748b" stroke-width="3" stroke-dasharray="8 7"/>
+    <rect x="64" y="502" width="1052" height="70" rx="8" fill="#fff7e8" stroke="#e3a03f" stroke-width="2"/>
+    <text x="590" y="532" fill="#7a4810" font-size="17" font-weight="700" text-anchor="middle">Supported conclusion</text>
+    <text x="590" y="558" fill="#684f2d" font-size="15" text-anchor="middle">No systematic text/vision collapse in this controlled setting; individual tasks can still rise or fall.</text>
+  </g>
+</svg>

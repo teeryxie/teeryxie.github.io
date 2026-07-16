@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 620" role="img" aria-labelledby="title desc">
+  <title id="title">Qwen3-Omni streaming speech generation</title>
+  <desc id="desc">The Talker predicts a main codec, MTP predicts residual codebooks, and a causal ConvNet renders audio immediately.</desc>
+  <rect width="1180" height="620" fill="#f7f8fa"/>
+  <text x="64" y="64" fill="#172033" font-family="Arial, sans-serif" font-size="30" font-weight="700">One codec frame at a time</text>
+  <text x="64" y="98" fill="#667085" font-family="Arial, sans-serif" font-size="16">Why Qwen3-Omni no longer waits for a diffusion block before playback</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="64" y="166" width="216" height="276" rx="8" fill="#eaf4ff" stroke="#4386c8" stroke-width="2"/>
+    <text x="172" y="218" fill="#174f83" font-size="25" font-weight="700" text-anchor="middle">Talker</text>
+    <text x="172" y="252" fill="#315b80" font-size="16" text-anchor="middle">12.5 Hz generation</text>
+    <text x="172" y="282" fill="#315b80" font-size="16" text-anchor="middle">1 token ≈ 80 ms</text>
+    <line x1="100" y1="316" x2="244" y2="316" stroke="#9dc3e6" stroke-width="2"/>
+    <text x="172" y="354" fill="#315b80" font-size="16" text-anchor="middle">Predicts codebook 0</text>
+    <rect x="112" y="378" width="120" height="32" rx="5" fill="#4386c8"/>
+    <text x="172" y="400" fill="#ffffff" font-size="15" text-anchor="middle">semantic core</text>
+    <path d="M280 304H350" stroke="#64748b" stroke-width="3"/>
+    <rect x="350" y="166" width="238" height="276" rx="8" fill="#fff7e8" stroke="#e3a03f" stroke-width="2"/>
+    <text x="469" y="218" fill="#7a4810" font-size="25" font-weight="700" text-anchor="middle">MTP module</text>
+    <text x="469" y="252" fill="#684f2d" font-size="16" text-anchor="middle">Fixed-step dense model</text>
+    <text x="469" y="282" fill="#684f2d" font-size="16" text-anchor="middle">Residual codebooks</text>
+    <g>
+      <rect x="397" y="322" width="144" height="26" rx="4" fill="#f1b65d"/><rect x="397" y="356" width="144" height="26" rx="4" fill="#eaa849"/>
+      <rect x="397" y="390" width="144" height="26" rx="4" fill="#df9734"/>
+      <text x="469" y="341" fill="#5e390e" font-size="14" text-anchor="middle">acoustic detail 1</text>
+      <text x="469" y="375" fill="#5e390e" font-size="14" text-anchor="middle">acoustic detail 2</text>
+      <text x="469" y="409" fill="#ffffff" font-size="14" text-anchor="middle">timbre · prosody</text>
+    </g>
+    <path d="M588 304H658" stroke="#64748b" stroke-width="3"/>
+    <rect x="658" y="166" width="216" height="276" rx="8" fill="#edf8f2" stroke="#56a37a" stroke-width="2"/>
+    <text x="766" y="218" fill="#235e43" font-size="25" font-weight="700" text-anchor="middle">Code2Wav</text>
+    <text x="766" y="252" fill="#3f715b" font-size="16" text-anchor="middle">Causal ConvNet</text>
+    <text x="766" y="282" fill="#3f715b" font-size="16" text-anchor="middle">Left context only</text>
+    <path d="M706 350c24-64 44 64 68 0s44 64 68 0" fill="none" stroke="#3a9168" stroke-width="5"/>
+    <text x="766" y="402" fill="#235e43" font-size="17" font-weight="700" text-anchor="middle">No future block needed</text>
+    <path d="M874 304H944" stroke="#64748b" stroke-width="3"/>
+    <rect x="944" y="212" width="172" height="184" rx="8" fill="#ffffff" stroke="#b6bdc8" stroke-width="2"/>
+    <text x="1030" y="262" fill="#27364d" font-size="22" font-weight="700" text-anchor="middle">Playback</text>
+    <text x="1030" y="302" fill="#586579" font-size="16" text-anchor="middle">frame 1</text>
+    <text x="1030" y="330" fill="#586579" font-size="16" text-anchor="middle">frame 2</text>
+    <text x="1030" y="358" fill="#586579" font-size="16" text-anchor="middle">frame 3 ...</text>
+    <rect x="64" y="498" width="1052" height="74" rx="8" fill="#172033"/>
+    <text x="590" y="528" fill="#ffffff" font-size="18" font-weight="700" text-anchor="middle">Reported cold-start theoretical first-packet latency</text>
+    <text x="590" y="555" fill="#cfe2f3" font-size="17" text-anchor="middle">Audio input: 234 ms · Video input: 547 ms · deployment-specific, not an end-user guarantee</text>
+  </g>
+</svg>

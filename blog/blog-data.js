@@ -1,5 +1,21 @@
 window.BLOG_POSTS = [
   {
+    slug: "qwen35-omni-paper-reading",
+    title: "Qwen3.5-Omni Paper Reading: Long Context, ARIA, and Native Omni Agents",
+    date: "2026-07",
+    category: "Paper Reading",
+    status: "Qwen3.5-Omni · arXiv 2604.15804",
+    summary: "A close reading of Qwen3.5-Omni, covering Hybrid-Attention MoE, 256K context, timestamp modeling, ARIA speech alignment, post-training, and the limits behind its benchmark claims.",
+  },
+  {
+    slug: "qwen3-omni-paper-reading",
+    title: "Qwen3-Omni Paper Reading: Non-Degrading Multimodality at Real-Time Latency",
+    date: "2026-07",
+    category: "Paper Reading",
+    status: "Qwen3-Omni · arXiv 2509.17765",
+    summary: "A close reading of Qwen3-Omni, from early omni-modal pretraining and AuT to Thinker-Talker MoE, multi-codebook speech generation, GSPO, and non-degradation evidence.",
+  },
+  {
     slug: "omni-model-training-methods",
     title: "How to Train Omni Models: Data, Alignment, SFT, and RL",
     date: "2026-07",
