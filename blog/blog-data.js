@@ -1,5 +1,13 @@
 window.BLOG_POSTS = [
   {
+    slug: "realtime-omni-interaction-models",
+    title: "Real-Time Omni Interaction: From 232 ms Speech to Agentic Multimodal Systems",
+    date: "2026-07",
+    category: "Survey",
+    status: "Realtime Omni · Full Duplex · Agents",
+    summary: "A latency-first survey of real-time speech and audio-visual models, covering GPT-4o, Moshi, Qwen-Omni, duplex systems, serving, benchmarks, and why interactive omni models are fundamentally agents.",
+  },
+  {
     slug: "qwen35-omni-paper-reading",
     title: "Qwen3.5-Omni Paper Reading: Long Context, ARIA, and Native Omni Agents",
     date: "2026-07",
