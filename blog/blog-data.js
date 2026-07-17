@@ -1,5 +1,13 @@
 window.BLOG_POSTS = [
   {
+    slug: "full-duplex-spoken-agents-post-gpt4o",
+    title: "Full-Duplex Spoken Agents After GPT-4o: Timing, State, and Interaction Policy",
+    date: "2026-07",
+    category: "Survey",
+    status: "Full Duplex · Turn-Taking · RL",
+    summary: "A focused post-GPT-4o survey of full-duplex spoken agents: Moshi, SyncLLM, OmniFlatten, SALM-Duplex, benchmarks, stream routing, latent reasoning, RL timing policy, and the data bottleneck.",
+  },
+  {
     slug: "realtime-omni-interaction-models",
     title: "Real-Time Omni Interaction: From 232 ms Speech to Agentic Multimodal Systems",
     date: "2026-07",
