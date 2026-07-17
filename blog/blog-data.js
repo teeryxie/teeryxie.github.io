@@ -1,5 +1,13 @@
 window.BLOG_POSTS = [
   {
+    slug: "realtime-theory-of-mind-human-ai-interaction",
+    title: "Real-Time Theory of Mind for Human-AI Interaction: Models, Benchmarks, and the Agent Gap",
+    date: "2026-07",
+    category: "Survey",
+    status: "Theory of Mind · Interaction · Evaluation",
+    summary: "A detailed survey of theory of mind for real-time human-AI interaction: belief tracking, multimodal social cues, interactive agents, benchmark design, and why static ToM scores do not establish reliable online mental-state modeling.",
+  },
+  {
     slug: "full-duplex-spoken-agents-post-gpt4o",
     title: "Full-Duplex Spoken Agents After GPT-4o: Timing, State, and Interaction Policy",
     date: "2026-07",
