@@ -1,5 +1,13 @@
 window.BLOG_POSTS = [
   {
+    slug: "realtime-human-ai-work-agents",
+    title: "From Real-Time Dialogue to Workforce Agents: AI Interviewers, Service Work, and Replacement Evidence",
+    date: "2026-07",
+    category: "Survey",
+    status: "Human-AI Interaction · AI Interviewer · Work Agents",
+    summary: "A task-level survey of real-time human-AI work agents, covering AI interviewers, information elicitation, customer service, healthcare, workflow benchmarks, labor substitution, and the evidence required before an agent can replace human interaction work.",
+  },
+  {
     slug: "realtime-theory-of-mind-human-ai-interaction",
     title: "Real-Time Theory of Mind for Human-AI Interaction: Models, Benchmarks, and the Agent Gap",
     date: "2026-07",
