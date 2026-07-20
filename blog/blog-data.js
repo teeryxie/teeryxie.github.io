@@ -1,5 +1,13 @@
 window.BLOG_POSTS = [
   {
+    slug: "continuous-time-speech-language-action-policy",
+    title: "Interactive Omni Models as Continuous-Time Agent Policies",
+    date: "2026-07",
+    category: "Research Note",
+    status: "Speech-Language-Action · Streaming Policy · Tool Use",
+    summary: "A research blueprint for training interactive omni models as continuous-time Speech-Language-Action policies, covering asynchronous tools, causal trajectory distillation, latent belief updates, critical-window RL, playback-aware rollback, and safe speculative execution.",
+  },
+  {
     slug: "realtime-human-ai-work-agents",
     title: "From Real-Time Dialogue to Workforce Agents: AI Interviewers, Service Work, and Replacement Evidence",
     date: "2026-07",
