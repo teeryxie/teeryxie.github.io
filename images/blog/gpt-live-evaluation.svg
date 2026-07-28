@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">GPT-Live evaluation matrix</title><desc id="desc">Five layers of evaluation for latency, interaction, content, agent behavior, and safety.</desc>
+  <rect width="1200" height="720" fill="#f7f8fa"/>
+  <text x="70" y="72" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17212b">A benchmark stack for GPT-Live</text>
+  <text x="70" y="108" font-family="Arial, sans-serif" font-size="16" fill="#59636e">Natural voice is an interface property. Reliable live interaction requires independent evidence at every layer.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="70" y="160" width="206" height="420" rx="8" fill="#fff" stroke="#579d92"/>
+    <rect x="70" y="160" width="206" height="62" rx="8" fill="#00796b"/>
+    <text x="94" y="199" font-size="19" font-weight="700" fill="#fff">1 · Timing</text>
+    <text x="94" y="264" font-size="15" fill="#425752">semantic-ready latency</text>
+    <text x="94" y="304" font-size="15" fill="#425752">stop latency</text>
+    <text x="94" y="344" font-size="15" fill="#425752">P50 / P95 / P99</text>
+    <text x="94" y="384" font-size="15" fill="#425752">delegation delay</text>
+
+    <rect x="285" y="160" width="206" height="420" rx="8" fill="#fff" stroke="#6f91b3"/>
+    <rect x="285" y="160" width="206" height="62" rx="8" fill="#416f9f"/>
+    <text x="309" y="199" font-size="19" font-weight="700" fill="#fff">2 · Interaction</text>
+    <text x="309" y="264" font-size="15" fill="#46596d">false interruption</text>
+    <text x="309" y="304" font-size="15" fill="#46596d">missed barge-in</text>
+    <text x="309" y="344" font-size="15" fill="#46596d">backchannel timing</text>
+    <text x="309" y="384" font-size="15" fill="#46596d">speaker retention</text>
+
+    <rect x="500" y="160" width="206" height="420" rx="8" fill="#fff" stroke="#c8a14f"/>
+    <rect x="500" y="160" width="206" height="62" rx="8" fill="#a57b25"/>
+    <text x="524" y="199" font-size="19" font-weight="700" fill="#fff">3 · Content</text>
+    <text x="524" y="264" font-size="15" fill="#675936">answer accuracy</text>
+    <text x="524" y="304" font-size="15" fill="#675936">speech-text gap</text>
+    <text x="524" y="344" font-size="15" fill="#675936">multilingual stability</text>
+    <text x="524" y="384" font-size="15" fill="#675936">long-context drift</text>
+
+    <rect x="715" y="160" width="206" height="420" rx="8" fill="#fff" stroke="#b57a9d"/>
+    <rect x="715" y="160" width="206" height="62" rx="8" fill="#8e4f75"/>
+    <text x="739" y="199" font-size="19" font-weight="700" fill="#fff">4 · Agent</text>
+    <text x="739" y="264" font-size="15" fill="#624858">route precision</text>
+    <text x="739" y="304" font-size="15" fill="#624858">cancel stale work</text>
+    <text x="739" y="344" font-size="15" fill="#624858">belief correction</text>
+    <text x="739" y="384" font-size="15" fill="#624858">result consistency</text>
+
+    <rect x="930" y="160" width="206" height="420" rx="8" fill="#fff" stroke="#dc7c89"/>
+    <rect x="930" y="160" width="206" height="62" rx="8" fill="#c33f52"/>
+    <text x="954" y="199" font-size="19" font-weight="700" fill="#fff">5 · Safety</text>
+    <text x="954" y="264" font-size="15" fill="#6e444b">privacy bystander</text>
+    <text x="954" y="304" font-size="15" fill="#6e444b">emotion calibration</text>
+    <text x="954" y="344" font-size="15" fill="#6e444b">dependency risk</text>
+    <text x="954" y="384" font-size="15" fill="#6e444b">human escalation</text>
+  </g>
+  <rect x="70" y="610" width="1066" height="62" rx="8" fill="#202b34"/>
+  <text x="98" y="649" font-family="Arial, sans-serif" font-size="18" fill="#fff">Report model tier, client build, voice, language, device, network, date, and repeated trials.</text>
+</svg>

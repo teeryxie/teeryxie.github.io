@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Eight filtering gates for data flywheels</title>
+  <desc id="desc">Candidates pass through schema, deterministic verification, consistency, quality, deduplication, contamination, coverage, and policy gates.</desc>
+  <defs><marker id="ar" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3 0 6Z" fill="#65717b"/></marker></defs>
+  <rect width="1200" height="760" fill="#f7f8fa"/>
+  <text x="70" y="67" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17212b">Eight evidence gates, not one opaque quality score</text>
+  <text x="70" y="103" font-family="Arial, sans-serif" font-size="16" fill="#5e6871">Each operator emits structured evidence and a reason code; hard eligibility is separated from ranking and quota selection.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="70" y="160" width="230" height="105" rx="8" fill="#fff" stroke="#667f96"/>
+    <text x="94" y="199" font-size="18" font-weight="700" fill="#344f67">1 · Schema</text>
+    <text x="94" y="232" font-size="14" fill="#596c7c">parse · fields · length</text>
+    <rect x="340" y="160" width="230" height="105" rx="8" fill="#fff" stroke="#2d8f82"/>
+    <text x="364" y="199" font-size="18" font-weight="700" fill="#00695c">2 · Verify</text>
+    <text x="364" y="232" font-size="14" fill="#4f6864">symbolic · tests · SQL</text>
+    <rect x="610" y="160" width="230" height="105" rx="8" fill="#fff" stroke="#8a79a2"/>
+    <text x="634" y="199" font-size="18" font-weight="700" fill="#604d78">3 · Consistency</text>
+    <text x="634" y="232" font-size="14" fill="#675d70">problem · trace · answer</text>
+    <rect x="880" y="160" width="230" height="105" rx="8" fill="#fff" stroke="#d0a043"/>
+    <text x="904" y="199" font-size="18" font-weight="700" fill="#7c5a17">4 · Quality</text>
+    <text x="904" y="232" font-size="14" fill="#6e6044">rubric · judge ensemble</text>
+
+    <rect x="70" y="360" width="230" height="105" rx="8" fill="#fff" stroke="#668f79"/>
+    <text x="94" y="399" font-size="18" font-weight="700" fill="#3c6a50">5 · Deduplicate</text>
+    <text x="94" y="432" font-size="14" fill="#536b5b">hash · MinHash · embedding</text>
+    <rect x="340" y="360" width="230" height="105" rx="8" fill="#fff" stroke="#d1495b" stroke-width="2"/>
+    <text x="364" y="399" font-size="18" font-weight="700" fill="#aa2c40">6 · Decontaminate</text>
+    <text x="364" y="432" font-size="14" fill="#704850">protected benchmark index</text>
+    <rect x="610" y="360" width="230" height="105" rx="8" fill="#fff" stroke="#488aa6"/>
+    <text x="634" y="399" font-size="18" font-weight="700" fill="#2f6178">7 · Balance</text>
+    <text x="634" y="432" font-size="14" fill="#536a75">difficulty · coverage · diversity</text>
+    <rect x="880" y="360" width="230" height="105" rx="8" fill="#fff" stroke="#a05a66"/>
+    <text x="904" y="399" font-size="18" font-weight="700" fill="#793945">8 · Policy</text>
+    <text x="904" y="432" font-size="14" fill="#71565a">PII · license · safety</text>
+  </g>
+  <g fill="none" stroke="#65717b" stroke-width="3" marker-end="url(#ar)">
+    <path d="M300 212H328"/><path d="M570 212H598"/><path d="M840 212H868"/>
+    <path d="M995 265C995 315 185 315 185 348"/>
+    <path d="M300 412H328"/><path d="M570 412H598"/><path d="M840 412H868"/>
+  </g>
+  <rect x="70" y="535" width="500" height="125" rx="8" fill="#202b34"/>
+  <text x="100" y="577" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#fff">Hard eligibility</text>
+  <text x="100" y="613" font-family="Arial, sans-serif" font-size="15" fill="#d6dde1">schema ∧ correctness ∧ contamination ∧ policy</text>
+  <text x="100" y="641" font-family="Arial, sans-serif" font-size="14" fill="#adb8bf">Failure at a hard gate cannot be offset by a high judge score.</text>
+  <rect x="610" y="535" width="500" height="125" rx="8" fill="#fff" stroke="#4d6572" stroke-width="2"/>
+  <text x="640" y="577" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#2f4754">Multi-objective selection</text>
+  <text x="640" y="613" font-family="Arial, sans-serif" font-size="15" fill="#52636c">learning value + coverage + diversity − redundancy − cost</text>
+  <text x="640" y="641" font-family="Arial, sans-serif" font-size="14" fill="#78858c">Rank only eligible samples, then enforce skill × difficulty quotas.</text>
+  <text x="70" y="713" font-family="Arial, sans-serif" font-size="14" fill="#717b83">Every accepted and rejected sample retains evidence, reason codes, pipeline version, and provenance.</text>
+</svg>

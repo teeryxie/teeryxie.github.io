@@ -19,6 +19,7 @@ function renderMarkdown(markdown) {
   const html = [];
   let paragraph = [];
   let list = [];
+  let listType = "ul";
   let code = [];
   let inCode = false;
 
@@ -31,7 +32,7 @@ function renderMarkdown(markdown) {
 
   function flushList() {
     if (list.length) {
-      html.push(`<ul>${list.map((item) => `<li>${renderInline(item)}</li>`).join("")}</ul>`);
+      html.push(`<${listType}>${list.map((item) => `<li>${renderInline(item)}</li>`).join("")}</${listType}>`);
       list = [];
     }
   }
@@ -43,7 +44,26 @@ function renderMarkdown(markdown) {
     }
   }
 
-  for (const rawLine of lines) {
+  function tableCells(value) {
+    return value.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((cell) => cell.trim());
+  }
+
+  function renderTable(startIndex) {
+    const headers = tableCells(lines[startIndex]);
+    const rows = [];
+    let index = startIndex + 2;
+    while (index < lines.length && /^\s*\|.*\|\s*$/.test(lines[index])) {
+      rows.push(tableCells(lines[index]));
+      index += 1;
+    }
+    const head = headers.map((cell) => `<th>${renderInline(cell)}</th>`).join("");
+    const body = rows.map((row) => `<tr>${headers.map((_, cellIndex) => `<td>${renderInline(row[cellIndex] || "")}</td>`).join("")}</tr>`).join("");
+    html.push(`<div class="markdown-table-wrap"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`);
+    return index - 1;
+  }
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const rawLine = lines[index];
     const line = rawLine.trimEnd();
 
     if (line.startsWith("```")) {
@@ -89,10 +109,37 @@ function renderMarkdown(markdown) {
       continue;
     }
 
+    const nextLine = lines[index + 1] || "";
+    if (/^\s*\|.*\|\s*$/.test(line) && /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(nextLine)) {
+      flushParagraph();
+      flushList();
+      index = renderTable(index);
+      continue;
+    }
+
+    const quote = /^>\s?(.+)$/.exec(line);
+    if (quote) {
+      flushParagraph();
+      flushList();
+      html.push(`<blockquote>${renderInline(quote[1])}</blockquote>`);
+      continue;
+    }
+
     const bullet = /^[-*]\s+(.+)$/.exec(line);
     if (bullet) {
       flushParagraph();
+      if (list.length && listType !== "ul") flushList();
+      listType = "ul";
       list.push(bullet[1]);
+      continue;
+    }
+
+    const ordered = /^\d+\.\s+(.+)$/.exec(line);
+    if (ordered) {
+      flushParagraph();
+      if (list.length && listType !== "ol") flushList();
+      listType = "ol";
+      list.push(ordered[1]);
       continue;
     }
 

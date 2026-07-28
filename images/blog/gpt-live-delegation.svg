@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">GPT-Live delegated reasoning</title><desc id="desc">Fast live conversation path and slower GPT-5.5 reasoning path with control risks.</desc>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#64717c"/></marker></defs>
+  <rect width="1200" height="650" fill="#f7f8fa"/>
+  <text x="70" y="72" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17212b">Delegated reasoning: fast interaction, slower cognition</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="70" y="165" width="240" height="320" rx="8" fill="#fff" stroke="#aeb7bf"/>
+    <text x="100" y="208" font-size="21" font-weight="700" fill="#2c3944">User stream</text>
+    <text x="100" y="259" font-size="16" fill="#58636d">speech continues</text>
+    <text x="100" y="296" font-size="16" fill="#58636d">correction arrives</text>
+    <text x="100" y="333" font-size="16" fill="#58636d">topic may change</text>
+    <text x="100" y="370" font-size="16" fill="#58636d">user may interrupt</text>
+
+    <rect x="430" y="125" width="310" height="180" rx="8" fill="#fff" stroke="#52a89c" stroke-width="2"/>
+    <text x="462" y="170" font-size="21" font-weight="700" fill="#00695c">GPT-Live fast path</text>
+    <text x="462" y="212" font-size="16" fill="#46605c">listen · acknowledge · short answer</text>
+    <text x="462" y="250" font-size="16" fill="#46605c">estimate complexity and urgency</text>
+    <text x="462" y="280" font-size="14" fill="#75827e">low latency, limited deep reasoning</text>
+
+    <rect x="430" y="390" width="310" height="150" rx="8" fill="#fff" stroke="#d6a33d" stroke-width="2"/>
+    <text x="462" y="435" font-size="21" font-weight="700" fill="#805d16">GPT-5.5 background</text>
+    <text x="462" y="477" font-size="16" fill="#665535">deeper reasoning and synthesis</text>
+    <text x="462" y="512" font-size="14" fill="#87795e">higher quality, longer completion time</text>
+
+    <rect x="860" y="165" width="270" height="320" rx="8" fill="#fff" stroke="#d1495b" stroke-width="2"/>
+    <text x="892" y="208" font-size="21" font-weight="700" fill="#ad2d40">Merge policy</text>
+    <text x="892" y="258" font-size="16" fill="#68454b">Is the result still relevant?</text>
+    <text x="892" y="300" font-size="16" fill="#68454b">Did the user revise intent?</text>
+    <text x="892" y="342" font-size="16" fill="#68454b">Does it conflict with speech?</text>
+    <text x="892" y="384" font-size="16" fill="#68454b">Speak, summarize, or cancel?</text>
+    <rect x="892" y="422" width="205" height="38" rx="5" fill="#fff1f3"/>
+    <text x="913" y="447" font-size="15" fill="#8c2a39">result ≠ automatic reply</text>
+  </g>
+  <g fill="none" stroke="#64717c" stroke-width="3" marker-end="url(#a)">
+    <path d="M310 270 H420"/>
+    <path d="M740 215 H850"/>
+    <path d="M585 305 V380"/>
+    <path d="M740 465 H850"/>
+    <path d="M860 385 C780 595 365 600 267 495"/>
+  </g>
+  <text x="70" y="605" font-family="Arial, sans-serif" font-size="15" fill="#6f7982">Research challenge: optimize accuracy, responsiveness, compute cost, cancellation, and conversational continuity together.</text>
+</svg>

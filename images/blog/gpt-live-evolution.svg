@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">Evolution from turn-based voice to GPT-Live</title>
+  <desc id="desc">A timeline comparing cascaded voice, GPT-4o Advanced Voice, and GPT-Live-1.</desc>
+  <rect width="1200" height="620" fill="#f7f8fa"/>
+  <text x="70" y="76" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17212b">From voice turns to a live interaction policy</text>
+  <text x="70" y="112" font-family="Arial, sans-serif" font-size="17" fill="#59636e">The decisive change is not only latency; listening, speaking, and reasoning can proceed on different paths.</text>
+  <line x1="125" y1="205" x2="1075" y2="205" stroke="#c4cad1" stroke-width="5"/>
+  <circle cx="200" cy="205" r="17" fill="#637381"/>
+  <circle cx="600" cy="205" r="17" fill="#00796b"/>
+  <circle cx="1000" cy="205" r="21" fill="#d1495b"/>
+  <g font-family="Arial, sans-serif">
+    <text x="130" y="164" font-size="18" font-weight="700" fill="#42505c">Cascaded voice</text>
+    <text x="523" y="164" font-size="18" font-weight="700" fill="#00695c">GPT-4o voice</text>
+    <text x="925" y="158" font-size="20" font-weight="700" fill="#b82f43">GPT-Live-1</text>
+    <text x="924" y="184" font-size="14" fill="#7d3944">July 8, 2026</text>
+  </g>
+  <g font-family="Arial, sans-serif">
+    <rect x="70" y="255" width="290" height="260" rx="8" fill="#ffffff" stroke="#c8cdd3"/>
+    <text x="95" y="296" font-size="19" font-weight="700" fill="#24313c">Serial barriers</text>
+    <text x="95" y="337" font-size="16" fill="#58636d">Wait for end of speech</text>
+    <text x="95" y="375" font-size="16" fill="#58636d">ASR final → LLM → TTS</text>
+    <text x="95" y="413" font-size="16" fill="#58636d">Mechanical interruption</text>
+    <text x="95" y="451" font-size="16" fill="#58636d">Turn-level state</text>
+    <rect x="95" y="477" width="190" height="6" fill="#89939c"/>
+
+    <rect x="455" y="255" width="290" height="260" rx="8" fill="#ffffff" stroke="#7db8b1"/>
+    <text x="480" y="296" font-size="19" font-weight="700" fill="#00695c">Native audio</text>
+    <text x="480" y="337" font-size="16" fill="#465e5a">Fast speech-to-speech</text>
+    <text x="480" y="375" font-size="16" fill="#465e5a">Rich prosody and emotion</text>
+    <text x="480" y="413" font-size="16" fill="#465e5a">Low response latency</text>
+    <text x="480" y="451" font-size="16" fill="#465e5a">Improved barge-in</text>
+    <rect x="480" y="477" width="225" height="6" fill="#00897b"/>
+
+    <rect x="840" y="245" width="290" height="280" rx="8" fill="#fff" stroke="#e18a96" stroke-width="2"/>
+    <text x="865" y="288" font-size="19" font-weight="700" fill="#a8273a">Continuous interaction</text>
+    <text x="865" y="329" font-size="16" fill="#68454b">Listen while speaking</text>
+    <text x="865" y="367" font-size="16" fill="#68454b">Backchannel and addressee</text>
+    <text x="865" y="405" font-size="16" fill="#68454b">Background speech handling</text>
+    <text x="865" y="443" font-size="16" fill="#68454b">Delegate to GPT-5.5</text>
+    <text x="865" y="481" font-size="16" fill="#68454b">Live policy, modular reasoning</text>
+    <rect x="865" y="501" width="240" height="7" fill="#d1495b"/>
+  </g>
+  <text x="70" y="580" font-family="Arial, sans-serif" font-size="14" fill="#7a838b">Public product evolution; internal GPT-Live network architecture has not been disclosed.</text>
+</svg>

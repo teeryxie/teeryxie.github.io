@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">GPT-Live continuous interaction loop</title>
+  <desc id="desc">Functional abstraction of streaming perception, policy state, speech output, and delegated reasoning.</desc>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#64717c"/></marker></defs>
+  <rect width="1200" height="700" fill="#f7f8fa"/>
+  <text x="70" y="72" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17212b">GPT-Live as a continuous interaction policy</text>
+  <text x="70" y="108" font-family="Arial, sans-serif" font-size="16" fill="#59636e">Functional abstraction based on disclosed behavior, not a reconstruction of the private model architecture.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="70" y="190" width="220" height="260" rx="8" fill="#fff" stroke="#aeb7bf"/>
+    <text x="95" y="230" font-size="20" font-weight="700" fill="#283640">Streaming evidence</text>
+    <text x="95" y="278" font-size="16" fill="#53606a">Target speaker audio</text>
+    <text x="95" y="316" font-size="16" fill="#53606a">Background voices</text>
+    <text x="95" y="354" font-size="16" fill="#53606a">Pauses and fillers</text>
+    <text x="95" y="392" font-size="16" fill="#53606a">Conversation history</text>
+
+    <rect x="390" y="160" width="410" height="330" rx="8" fill="#fff" stroke="#d1495b" stroke-width="2"/>
+    <text x="425" y="208" font-size="22" font-weight="700" fill="#ad2d40">Live policy state</text>
+    <rect x="425" y="242" width="150" height="56" rx="6" fill="#f3f5f6"/>
+    <text x="447" y="276" font-size="16" fill="#33414c">Who is speaking?</text>
+    <rect x="605" y="242" width="160" height="56" rx="6" fill="#f3f5f6"/>
+    <text x="625" y="276" font-size="16" fill="#33414c">Is the turn done?</text>
+    <rect x="425" y="325" width="150" height="56" rx="6" fill="#f3f5f6"/>
+    <text x="446" y="359" font-size="16" fill="#33414c">Wait or respond?</text>
+    <rect x="605" y="325" width="160" height="56" rx="6" fill="#f3f5f6"/>
+    <text x="629" y="359" font-size="16" fill="#33414c">Direct or delegate?</text>
+    <rect x="425" y="408" width="340" height="48" rx="6" fill="#fff1f3"/>
+    <text x="457" y="438" font-size="16" fill="#8c2a39">Update belief, timing, routing, and control</text>
+
+    <rect x="900" y="165" width="230" height="135" rx="8" fill="#fff" stroke="#52a89c"/>
+    <text x="930" y="208" font-size="19" font-weight="700" fill="#00695c">Fast speech path</text>
+    <text x="930" y="244" font-size="16" fill="#46605c">silence · mhmm · answer</text>
+    <text x="930" y="274" font-size="16" fill="#46605c">yield · stop · repair</text>
+
+    <rect x="900" y="370" width="230" height="135" rx="8" fill="#fff" stroke="#d6a33d"/>
+    <text x="930" y="413" font-size="19" font-weight="700" fill="#805d16">Reasoning path</text>
+    <text x="930" y="449" font-size="16" fill="#665535">delegate to GPT-5.5</text>
+    <text x="930" y="479" font-size="16" fill="#665535">return result as event</text>
+  </g>
+  <g fill="none" stroke="#64717c" stroke-width="3" marker-end="url(#arrow)">
+    <path d="M290 320 H380"/>
+    <path d="M800 255 H890"/>
+    <path d="M800 420 H890"/>
+    <path d="M1015 300 V355"/>
+    <path d="M900 460 C820 590 500 585 435 500"/>
+    <path d="M900 220 C825 115 540 105 472 150"/>
+  </g>
+  <rect x="70" y="570" width="1060" height="70" rx="8" fill="#202b34"/>
+  <text x="98" y="613" font-family="Arial, sans-serif" font-size="18" fill="#fff">Observable behavior = perception + timing + belief update + routing + speech control, not speech generation alone.</text>
+</svg>

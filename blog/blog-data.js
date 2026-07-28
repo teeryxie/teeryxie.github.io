@@ -1,5 +1,21 @@
 window.BLOG_POSTS = [
   {
+    slug: "dataflow-harness-benchmark-data-flywheel",
+    title: "DataFlow-Harness: Editable Pipelines for Data Flywheels",
+    date: "2026-07",
+    category: "Research Note",
+    status: "DataFlow-Harness · Data Flywheel · Benchmark Contract",
+    summary: "A critical reading of DataFlow-Harness and a practical design for benchmark-grounded data flywheels, covering editable DAGs, typed mutations, multi-gate filtering, decontamination, difficulty and diversity control, shadow training, promotion gates, provenance, and rollback.",
+  },
+  {
+    slug: "gpt-live-openai-realtime",
+    title: "GPT-Live-1: Full-Duplex Voice and Delegated Reasoning",
+    date: "2026-07",
+    category: "Survey",
+    status: "GPT-Live-1 · Full Duplex · Delegation",
+    summary: "A comprehensive study of OpenAI's newly released GPT-Live-1: full-duplex interaction, listener feedback, delegated GPT-5.5 reasoning, rollout and product boundaries, early user evidence, evaluation requirements, safety risks, and its implications for agentic omni models.",
+  },
+  {
     slug: "continuous-time-speech-language-action-policy",
     title: "Interactive Omni Models as Continuous-Time Agent Policies",
     date: "2026-07",
