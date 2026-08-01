@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Omni memory lifecycle</title>
+  <desc id="desc">The lifecycle from observation and binding through writing, retrieval, reconciliation, commitment, consolidation, and forgetting.</desc>
+  <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3 0 6Z" fill="#66737e"/></marker></defs>
+  <rect width="1200" height="760" fill="#f7f8fa"/>
+  <text x="66" y="67" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17212b">Memory is a lifecycle, not a write API</text>
+  <text x="66" y="103" font-family="Arial, sans-serif" font-size="16" fill="#5e6871">Every transition can reject, revise, downgrade, or revoke state before it affects an action.</text>
+  <g font-family="Arial, sans-serif">
+    <g fill="#fff" stroke-width="2">
+      <rect x="68" y="165" width="220" height="108" rx="8" stroke="#6c8baa"/><rect x="355" y="165" width="220" height="108" rx="8" stroke="#2d8f82"/><rect x="642" y="165" width="220" height="108" rx="8" stroke="#d0a043"/><rect x="929" y="165" width="220" height="108" rx="8" stroke="#9d79aa"/>
+      <rect x="68" y="389" width="220" height="108" rx="8" stroke="#d1495b"/><rect x="355" y="389" width="220" height="108" rx="8" stroke="#9d79aa"/><rect x="642" y="389" width="220" height="108" rx="8" stroke="#2d8f82"/><rect x="929" y="389" width="220" height="108" rx="8" stroke="#6c8baa"/>
+    </g>
+    <g font-size="20" font-weight="700">
+      <text x="96" y="209" fill="#365d84">1 · Observe</text><text x="383" y="209" fill="#00695c">2 · Bind</text><text x="670" y="209" fill="#7c5a17">3 · Write gate</text><text x="957" y="209" fill="#6f487d">4 · Retrieve</text>
+      <text x="96" y="433" fill="#aa2c40">8 · Forget</text><text x="383" y="433" fill="#6f487d">7 · Consolidate</text><text x="670" y="433" fill="#00695c">6 · Commit / revoke</text><text x="957" y="433" fill="#365d84">5 · Reconcile</text>
+    </g>
+    <g font-size="14" fill="#56636d">
+      <text x="96" y="242">audio · video · tool event</text><text x="383" y="242">entity · speaker · time</text><text x="670" y="242">value · privacy · duplicate</text><text x="957" y="242">action-conditioned evidence</text>
+      <text x="96" y="466">delete · archive · retain audit</text><text x="383" y="466">fact · artifact · skill</text><text x="670" y="466">transaction + dependencies</text><text x="957" y="466">conflict · freshness · scope</text>
+    </g>
+    <g fill="none" stroke="#66737e" stroke-width="3" marker-end="url(#arr)">
+      <path d="M288 219H343"/><path d="M575 219H630"/><path d="M862 219H917"/><path d="M1039 273V377"/><path d="M929 443H874"/><path d="M642 443H587"/><path d="M355 443H300"/><path d="M178 389V285"/>
+    </g>
+    <rect x="68" y="562" width="1081" height="132" rx="8" fill="#202b34"/>
+    <text x="100" y="607" font-size="21" font-weight="700" fill="#fff">Invariant checks at every transition</text>
+    <text x="100" y="644" font-size="15" fill="#cbd3d9">No low-confidence observation becomes a confirmed fact · no revoked state authorizes an action</text>
+    <text x="100" y="674" font-size="15" fill="#cbd3d9">No generated-but-unplayed speech enters common ground · no deletion silently leaves active copies</text>
+  </g>
+</svg>

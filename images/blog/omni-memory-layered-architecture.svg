@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+  <title id="title">Layered omni memory architecture</title>
+  <desc id="desc">A layered state architecture connecting sensory buffers, working state, long-lived memory, artifacts, skills, and policy controls.</desc>
+  <rect width="1200" height="780" fill="#f7f8fa"/>
+  <text x="66" y="67" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17212b">Layered state for an omni agent</text>
+  <text x="66" y="103" font-family="Arial, sans-serif" font-size="16" fill="#5e6871">Layers describe semantics and lifecycle. They do not require eight separate databases.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="66" y="145" width="1068" height="82" rx="8" fill="#365d84"/>
+    <text x="96" y="180" font-size="21" font-weight="700" fill="#fff">Sensory buffer · milliseconds to seconds</text><text x="96" y="207" font-size="14" fill="#dce9f5">audio chunks · video frames · pointer · playback position · recent UI events</text>
+    <rect x="66" y="245" width="1068" height="90" rx="8" fill="#00695c"/>
+    <text x="96" y="282" font-size="21" font-weight="700" fill="#fff">Working and task state · seconds to hours</text><text x="96" y="311" font-size="14" fill="#d9f0ec">intent hypotheses · slots · tool state · plan · pending confirmation · common ground</text>
+    <rect x="66" y="353" width="516" height="108" rx="8" fill="#fff" stroke="#6c8baa" stroke-width="2"/>
+    <text x="96" y="392" font-size="20" font-weight="700" fill="#365d84">Episodic event log</text><text x="96" y="423" font-size="14" fill="#566776">who observed, said, generated, played,</text><text x="96" y="446" font-size="14" fill="#566776">called, changed, confirmed, or revoked</text>
+    <rect x="618" y="353" width="516" height="108" rx="8" fill="#fff" stroke="#d0a043" stroke-width="2"/>
+    <text x="648" y="392" font-size="20" font-weight="700" fill="#7c5a17">Semantic and entity memory</text><text x="648" y="423" font-size="14" fill="#665735">people · organizations · devices · stable facts</text><text x="648" y="446" font-size="14" fill="#665735">temporal relations · exceptions · confidence</text>
+    <rect x="66" y="479" width="516" height="108" rx="8" fill="#fff" stroke="#9d79aa" stroke-width="2"/>
+    <text x="96" y="518" font-size="20" font-weight="700" fill="#6f487d">Artifact and project memory</text><text x="96" y="549" font-size="14" fill="#66546d">files · versions · regions · derived-from</text><text x="96" y="572" font-size="14" fill="#66546d">tool parameters · feedback · rejected variants</text>
+    <rect x="618" y="479" width="516" height="108" rx="8" fill="#fff" stroke="#d1495b" stroke-width="2"/>
+    <text x="648" y="518" font-size="20" font-weight="700" fill="#aa2c40">Procedural and skill memory</text><text x="648" y="549" font-size="14" fill="#704850">verified workflows · preconditions · tests</text><text x="648" y="572" font-size="14" fill="#704850">failure modes · versions · invalidation rules</text>
+    <rect x="66" y="605" width="1068" height="96" rx="8" fill="#202b34"/>
+    <text x="96" y="644" font-size="21" font-weight="700" fill="#fff">Cross-cutting policy and privacy ledger</text>
+    <text x="96" y="674" font-size="14" fill="#cbd3d9">authorization · visibility · retention · consent · audit · deletion propagation · schema version</text>
+    <rect x="66" y="720" width="1068" height="36" rx="5" fill="#eef1f3"/>
+    <text x="96" y="744" font-size="14" fill="#44525d">Shared identifiers and event time connect layers; type boundaries prevent an observation from impersonating a commitment.</text>
+  </g>
+</svg>

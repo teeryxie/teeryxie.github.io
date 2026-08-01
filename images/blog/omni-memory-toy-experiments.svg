@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
+  <title id="title">Toy experiments for omni memory</title>
+  <desc id="desc">Six controlled toy experiments isolating state variables in real-world agent tasks.</desc>
+  <rect width="1200" height="820" fill="#f7f8fa"/>
+  <text x="66" y="67" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17212b">Six falsifiable toy experiments</text>
+  <text x="66" y="103" font-family="Arial, sans-serif" font-size="16" fill="#5e6871">Hold the backbone and environment constant. Change one memory variable and measure action consequences.</text>
+  <g font-family="Arial, sans-serif">
+    <g fill="#fff" stroke-width="2">
+      <rect x="66" y="145" width="332" height="166" rx="8" stroke="#d1495b"/><rect x="434" y="145" width="332" height="166" rx="8" stroke="#6c8baa"/><rect x="802" y="145" width="332" height="166" rx="8" stroke="#9d79aa"/>
+      <rect x="66" y="337" width="332" height="166" rx="8" stroke="#d0a043"/><rect x="434" y="337" width="332" height="166" rx="8" stroke="#2d8f82"/><rect x="802" y="337" width="332" height="166" rx="8" stroke="#475b68"/>
+    </g>
+    <g font-size="19" font-weight="700">
+      <text x="94" y="184" fill="#aa2c40">A · Mid-utterance revision</text><text x="462" y="184" fill="#365d84">B · “Send this to them”</text><text x="830" y="184" fill="#6f487d">C · Cross-version edit</text>
+      <text x="94" y="376" fill="#7c5a17">D · Group vs individual</text><text x="462" y="376" fill="#00695c">E · Visual false memory</text><text x="830" y="376" fill="#2c3f4b">F · Reusable procedure</text>
+    </g>
+    <g font-size="14" fill="#56636d">
+      <text x="94" y="220">Isolate: supersession + tool state</text><text x="94" y="248">Metric: unsafe commit + rollback</text><text x="94" y="276">Counterfactual: played vs generated</text>
+      <text x="462" y="220">Isolate: entity + temporal binding</text><text x="462" y="248">Metric: wrong recipient / artifact</text><text x="462" y="276">Counterfactual: pointer timestamp</text>
+      <text x="830" y="220">Isolate: artifact version graph</text><text x="830" y="248">Metric: exact restoration</text><text x="830" y="276">Counterfactual: region dependency</text>
+      <text x="94" y="412">Isolate: subject + exception</text><text x="94" y="440">Metric: attribution + leakage</text><text x="94" y="468">Counterfactual: group membership</text>
+      <text x="462" y="412">Isolate: provenance + confidence</text><text x="462" y="440">Metric: false profile write</text><text x="462" y="468">Counterfactual: owner confirmation</text>
+      <text x="830" y="412">Isolate: verified skill memory</text><text x="830" y="440">Metric: calls + repeated errors</text><text x="830" y="468">Counterfactual: changed precondition</text>
+    </g>
+    <rect x="66" y="547" width="1068" height="205" rx="8" fill="#202b34"/>
+    <text x="98" y="589" font-size="21" font-weight="700" fill="#fff">Shared experimental contract</text>
+    <g font-size="15" fill="#cbd3d9">
+      <text x="98" y="628">1 · Same model, prompt budget, tools, decoding parameters, seeds, and deterministic environment</text>
+      <text x="98" y="660">2 · Pre-register the root-cause hypothesis, primary metric, falsification threshold, and allowed clarification cost</text>
+      <text x="98" y="692">3 · Intervene on state status, validity, playback, authorization, or relation; verify predictable action changes</text>
+      <text x="98" y="724">4 · Report decision regret, unsafe actions, stale-state use, repair effort, latency, and privacy violations</text>
+    </g>
+    <rect x="66" y="772" width="1068" height="28" rx="5" fill="#eef1f3"/>
+    <text x="98" y="792" font-size="13" fill="#44525d">If the controlled state change does not change the failure, revise the root-cause hypothesis before scaling data.</text>
+  </g>
+</svg>

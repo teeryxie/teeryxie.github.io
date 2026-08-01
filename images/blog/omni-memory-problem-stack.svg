@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">From conversation history to action state</title>
+  <desc id="desc">A layered comparison showing why context and retrieval are insufficient for agents that act.</desc>
+  <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3 0 6Z" fill="#66737e"/></marker></defs>
+  <rect width="1200" height="720" fill="#f7f8fa"/>
+  <text x="66" y="67" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17212b">Memory is not more history</text>
+  <text x="66" y="103" font-family="Arial, sans-serif" font-size="16" fill="#5e6871">Visibility helps answer questions. State contracts are required when an agent changes the world.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="66" y="150" width="305" height="116" rx="8" fill="#fff" stroke="#6c8baa"/>
+    <text x="94" y="191" font-size="21" font-weight="700" fill="#365d84">1 · Context window</text>
+    <text x="94" y="225" font-size="15" fill="#566776">What tokens are visible now?</text>
+    <rect x="447" y="150" width="305" height="116" rx="8" fill="#fff" stroke="#2d8f82"/>
+    <text x="475" y="191" font-size="21" font-weight="700" fill="#00695c">2 · Retrieval memory</text>
+    <text x="475" y="225" font-size="15" fill="#506964">What past item seems relevant?</text>
+    <rect x="828" y="150" width="305" height="116" rx="8" fill="#fff" stroke="#d0a043"/>
+    <text x="856" y="191" font-size="21" font-weight="700" fill="#7c5a17">3 · Conversation history</text>
+    <text x="856" y="225" font-size="15" fill="#6b5d3b">What was said or summarized?</text>
+    <path d="M371 208H435M752 208H816" fill="none" stroke="#66737e" stroke-width="3" marker-end="url(#arr)"/>
+    <rect x="66" y="326" width="1067" height="262" rx="8" fill="#202b34"/>
+    <text x="102" y="373" font-size="24" font-weight="700" fill="#fff">4 · Action state contract</text>
+    <text x="102" y="406" font-size="15" fill="#cbd3d9">What is true now, why is it trusted, who authorized it, and which action depends on it?</text>
+    <g font-size="16" font-weight="700">
+      <rect x="102" y="447" width="174" height="62" rx="6" fill="#365d84"/><text x="129" y="485" fill="#fff">Provenance</text>
+      <rect x="294" y="447" width="174" height="62" rx="6" fill="#00695c"/><text x="329" y="485" fill="#fff">Validity</text>
+      <rect x="486" y="447" width="174" height="62" rx="6" fill="#8c6830"/><text x="511" y="485" fill="#fff">Authorization</text>
+      <rect x="678" y="447" width="174" height="62" rx="6" fill="#7a4b86"/><text x="707" y="485" fill="#fff">Dependency</text>
+      <rect x="870" y="447" width="220" height="62" rx="6" fill="#aa2c40"/><text x="902" y="485" fill="#fff">Rollback + replay</text>
+    </g>
+    <text x="102" y="553" font-size="15" fill="#cbd3d9">Generated ≠ played · observed ≠ confirmed · retrieved ≠ valid · planned ≠ committed</text>
+    <rect x="66" y="623" width="1067" height="48" rx="6" fill="#eef1f3"/>
+    <text x="96" y="653" font-size="16" fill="#44525d">Goal: minimize future decision regret, unsafe actions, stale state, latency, privacy exposure, and maintenance cost.</text>
+  </g>
+</svg>

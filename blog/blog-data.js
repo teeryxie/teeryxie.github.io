@@ -1,5 +1,13 @@
 window.BLOG_POSTS = [
   {
+    slug: "omni-model-memory-for-real-world-agents",
+    title: "Omni Model Memory: Designing State for Agents That Actually Do Things",
+    date: "2026-07",
+    category: "Research Note",
+    status: "Omni Memory · Product State · Toy Experiments",
+    summary: "A first-principles study of memory for interactive omni agents, starting from product failures and isolating supersession, common ground, entity binding, artifact versions, multimodal provenance, authorization, rollback, and procedural reuse through falsifiable toy experiments.",
+  },
+  {
     slug: "dataflow-harness-benchmark-data-flywheel",
     title: "DataFlow-Harness: Editable Pipelines for Data Flywheels",
     date: "2026-07",

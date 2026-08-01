@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">From toy experiments to a product memory surface</title>
+  <desc id="desc">A scale-up path and user-facing memory inspector with source, status, scope, and revoke controls.</desc>
+  <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3 0 6Z" fill="#66737e"/></marker></defs>
+  <rect width="1200" height="800" fill="#f7f8fa"/>
+  <text x="66" y="67" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17212b">Scale evidence and expose control</text>
+  <text x="66" y="103" font-family="Arial, sans-serif" font-size="16" fill="#5e6871">A memory system is not product-ready until users can inspect, correct, scope, and revoke it.</text>
+  <g font-family="Arial, sans-serif">
+    <g fill="#fff" stroke="#6c8baa">
+      <rect x="66" y="148" width="180" height="88" rx="8"/><rect x="285" y="148" width="180" height="88" rx="8"/><rect x="504" y="148" width="180" height="88" rx="8"/><rect x="723" y="148" width="180" height="88" rx="8"/><rect x="942" y="148" width="192" height="88" rx="8"/>
+    </g>
+    <g font-size="16" font-weight="700" fill="#365d84">
+      <text x="90" y="183">Causal toy</text><text x="309" y="183">Composed stress</text><text x="528" y="183">Long-horizon sim</text><text x="747" y="183">Shadow traffic</text><text x="966" y="183">Reversible action</text>
+    </g>
+    <g font-size="13" fill="#566776">
+      <text x="90" y="210">isolate one variable</text><text x="309" y="210">combine two failures</text><text x="528" y="210">delay · conflict · devices</text><text x="747" y="210">plan, do not execute</text><text x="966" y="210">draft · search · prepare</text>
+    </g>
+    <g fill="none" stroke="#66737e" stroke-width="3" marker-end="url(#arr)"><path d="M246 192H273"/><path d="M465 192H492"/><path d="M684 192H711"/><path d="M903 192H930"/></g>
+    <rect x="66" y="292" width="1068" height="432" rx="8" fill="#fff" stroke="#cbd2d8"/>
+    <rect x="66" y="292" width="1068" height="62" rx="8" fill="#202b34"/>
+    <text x="94" y="331" font-size="21" font-weight="700" fill="#fff">Memory Inspector · visible to the user and debuggable by the operator</text>
+    <g font-size="14">
+      <text x="94" y="391" font-weight="700" fill="#4d5a64">ITEM</text><text x="414" y="391" font-weight="700" fill="#4d5a64">SOURCE</text><text x="608" y="391" font-weight="700" fill="#4d5a64">STATUS</text><text x="760" y="391" font-weight="700" fill="#4d5a64">SCOPE</text><text x="960" y="391" font-weight="700" fill="#4d5a64">CONTROL</text>
+      <line x1="94" y1="408" x2="1105" y2="408" stroke="#d7dde2"/>
+      <text x="94" y="445" fill="#243746">Preferred city: Xiamen</text><text x="414" y="445" fill="#56636d">user confirmed · Jul 12</text><text x="608" y="445" fill="#00695c">confirmed</text><text x="760" y="445" fill="#56636d">personal · all devices</text><rect x="960" y="421" width="128" height="34" rx="5" fill="#eef1f3"/><text x="989" y="443" fill="#365d84">Edit / revoke</text>
+      <line x1="94" y1="474" x2="1105" y2="474" stroke="#e3e7ea"/>
+      <text x="94" y="511" fill="#243746">May own a cat</text><text x="414" y="511" fill="#56636d">photo inference · Jul 28</text><text x="608" y="511" fill="#8c6830">tentative</text><text x="760" y="511" fill="#56636d">this session only</text><rect x="960" y="487" width="128" height="34" rx="5" fill="#f9ecee"/><text x="986" y="509" fill="#aa2c40">Why / forget</text>
+      <line x1="94" y1="540" x2="1105" y2="540" stroke="#e3e7ea"/>
+      <text x="94" y="577" fill="#243746">Cancel order #391</text><text x="414" y="577" fill="#56636d">speech · superseded</text><text x="608" y="577" fill="#aa2c40">revoked</text><text x="760" y="577" fill="#56636d">task audit only</text><rect x="960" y="553" width="128" height="34" rx="5" fill="#eef1f3"/><text x="987" y="575" fill="#365d84">View replay</text>
+      <line x1="94" y1="606" x2="1105" y2="606" stroke="#e3e7ea"/>
+      <text x="94" y="643" fill="#243746">Poster version 5</text><text x="414" y="643" fill="#56636d">artifact graph · project</text><text x="608" y="643" fill="#365d84">active</text><text x="760" y="643" fill="#56636d">project collaborators</text><rect x="960" y="619" width="128" height="34" rx="5" fill="#eef1f3"/><text x="986" y="641" fill="#365d84">Versions</text>
+    </g>
+    <rect x="94" y="675" width="1011" height="28" rx="5" fill="#eef1f3"/>
+    <text x="114" y="695" font-size="13" fill="#44525d">Deletion status: local cache cleared · cloud event store cleared · car device pending sync · audit tombstone retained</text>
+    <rect x="66" y="746" width="1068" height="36" rx="5" fill="#202b34"/>
+    <text x="94" y="770" font-size="14" fill="#fff">Product metric: time and effort required to discover, understand, correct, revoke, and verify a memory error.</text>
+  </g>
+</svg>
