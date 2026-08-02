@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+  <title id="title">Full-duplex user experience priority stack</title>
+  <desc id="desc">A product priority stack from robust listening through repair and task continuity to expressive persona.</desc>
+  <rect width="1200" height="780" fill="#f7f8fa"/>
+  <text x="66" y="67" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17212b">Build interaction quality from the bottom up</text>
+  <text x="66" y="103" font-family="Arial, sans-serif" font-size="16" fill="#5e6871">Expressiveness cannot compensate for incorrect listening, broken repair, or lost task state.</text>
+  <g font-family="Arial, sans-serif">
+    <polygon points="480,150 720,150 774,232 426,232" fill="#7a4b86"/>
+    <text x="523" y="190" font-size="20" font-weight="700" fill="#fff">Expressive persona</text><text x="526" y="216" font-size="13" fill="#eee4f1">voice · emotion · face · style</text>
+    <polygon points="426,248 774,248 830,334 370,334" fill="#8c6830"/>
+    <text x="498" y="289" font-size="20" font-weight="700" fill="#fff">Controllable policy</text><text x="476" y="317" font-size="13" fill="#f4ead5">role · initiative · interruption · silence</text>
+    <polygon points="370,350 830,350 888,440 312,440" fill="#365d84"/>
+    <text x="490" y="393" font-size="20" font-weight="700" fill="#fff">Task continuity</text><text x="451" y="421" font-size="13" fill="#dce9f5">tools · memory · artifact · async results</text>
+    <polygon points="312,456 888,456 948,550 252,550" fill="#00695c"/>
+    <text x="501" y="500" font-size="20" font-weight="700" fill="#fff">Repairability</text><text x="419" y="528" font-size="13" fill="#d9f0ec">clarify · revise · cancel · rollback · resume</text>
+    <polygon points="252,566 948,566 1014,668 186,668" fill="#202b34"/>
+    <text x="463" y="613" font-size="22" font-weight="700" fill="#fff">Interaction precision</text><text x="363" y="645" font-size="14" fill="#cbd3d9">AEC · speaker · addressee · endpoint · interruption belief</text>
+    <rect x="186" y="700" width="828" height="40" rx="5" fill="#eef1f3"/>
+    <text x="236" y="726" font-size="15" fill="#44525d">Priority rule: correctness and recoverability before anthropomorphism.</text>
+  </g>
+</svg>

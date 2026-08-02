@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
+  <title id="title">Full-duplex user experience evaluation stack</title>
+  <desc id="desc">Six evaluation layers from perception and interaction control to shared state, tasks, user behavior, and safety.</desc>
+  <rect width="1200" height="820" fill="#f7f8fa"/>
+  <text x="66" y="67" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17212b">Evaluate the interaction, not only the response</text>
+  <text x="66" y="103" font-family="Arial, sans-serif" font-size="16" fill="#5e6871">A model can stop quickly and still fail the user by misreading intent, losing task state, or increasing repair effort.</text>
+  <g font-family="Arial, sans-serif">
+    <g fill="#fff" stroke-width="2">
+      <rect x="66" y="150" width="332" height="150" rx="8" stroke="#6c8baa"/><rect x="434" y="150" width="332" height="150" rx="8" stroke="#2d8f82"/><rect x="802" y="150" width="332" height="150" rx="8" stroke="#d0a043"/>
+      <rect x="66" y="326" width="332" height="150" rx="8" stroke="#9d79aa"/><rect x="434" y="326" width="332" height="150" rx="8" stroke="#d1495b"/><rect x="802" y="326" width="332" height="150" rx="8" stroke="#475b68"/>
+    </g>
+    <g font-size="20" font-weight="700">
+      <text x="94" y="191" fill="#365d84">1 · Perception</text><text x="462" y="191" fill="#00695c">2 · Interaction control</text><text x="830" y="191" fill="#7c5a17">3 · Shared state</text>
+      <text x="94" y="367" fill="#6f487d">4 · Content and task</text><text x="462" y="367" fill="#aa2c40">5 · User behavior</text><text x="830" y="367" fill="#2c3f4b">6 · Safety boundary</text>
+    </g>
+    <g font-size="14" fill="#56636d">
+      <text x="94" y="226">speaker · addressee · event</text><text x="94" y="252">emotion · gaze · referent</text><text x="94" y="278">noise and echo robustness</text>
+      <text x="462" y="226">wait · start · hold · yield</text><text x="462" y="252">backchannel · interrupt · resume</text><text x="462" y="278">conditional precision + latency</text>
+      <text x="830" y="226">common ground · playback</text><text x="830" y="252">revision · authority · validity</text><text x="830" y="278">cross-modal consistency</text>
+      <text x="94" y="402">answer · tool · task success</text><text x="94" y="428">stale result · cancellation</text><text x="94" y="454">long-session continuity</text>
+      <text x="462" y="402">repetition · repair effort</text><text x="462" y="428">adaptation · abandonment</text><text x="462" y="454">control · calibrated trust</text>
+      <text x="830" y="402">emergency · privacy · consent</text><text x="830" y="428">irreversible action confirmation</text><text x="830" y="454">critical failure tail risk</text>
+    </g>
+    <rect x="66" y="528" width="1068" height="218" rx="8" fill="#202b34"/>
+    <text x="98" y="572" font-size="22" font-weight="700" fill="#fff">Latency must be conditioned on event semantics</text>
+    <g font-size="15" fill="#cbd3d9">
+      <text x="98" y="612">True interruption → low stop latency · Backchannel → continue speaking · Third-party speech → ignore</text>
+      <text x="98" y="644">Completed intent → low turn-start latency · Incomplete intent → tolerate silence · Correction → low recovery latency</text>
+      <text x="98" y="676">Reversible search → early action · Irreversible commit → explicit confirmation · Stale async result → cancel or revalidate</text>
+      <text x="98" y="708">Report P50 / P95 / P99 and failure slices; do not collapse opposite behaviors into one average.</text>
+    </g>
+    <rect x="66" y="770" width="1068" height="30" rx="5" fill="#eef1f3"/>
+    <text x="98" y="791" font-size="13" fill="#44525d">Primary product metric: successful joint work with low coordination, repair, waiting, cognitive, and safety cost.</text>
+  </g>
+</svg>

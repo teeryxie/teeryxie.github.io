@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+  <title id="title">Full-duplex omni research roadmap</title>
+  <desc id="desc">A staged research roadmap from robust listening and repair to task agents, controllable dynamics, multimodal common ground, and longitudinal UX.</desc>
+  <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3 0 6Z" fill="#66737e"/></marker></defs>
+  <rect width="1200" height="780" fill="#f7f8fa"/>
+  <text x="66" y="67" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17212b">Research roadmap: from listening to long-term collaboration</text>
+  <text x="66" y="103" font-family="Arial, sans-serif" font-size="16" fill="#5e6871">Each stage should pass controlled toy experiments before adding data, scale, or anthropomorphic behavior.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="66" y="154" width="322" height="142" rx="8" fill="#fff" stroke="#6c8baa" stroke-width="2"/>
+    <text x="94" y="196" font-size="20" font-weight="700" fill="#365d84">P0 · Listen correctly</text><text x="94" y="230" font-size="14" fill="#566776">echo · noise · speaker · addressee</text><text x="94" y="257" font-size="14" fill="#566776">semantic endpoint · uncertainty</text>
+    <rect x="439" y="154" width="322" height="142" rx="8" fill="#fff" stroke="#2d8f82" stroke-width="2"/>
+    <text x="467" y="196" font-size="20" font-weight="700" fill="#00695c">P1 · Repair first</text><text x="467" y="230" font-size="14" fill="#566776">abort · revise · rollback · resume</text><text x="467" y="257" font-size="14" fill="#566776">minimize user repair effort</text>
+    <rect x="812" y="154" width="322" height="142" rx="8" fill="#fff" stroke="#d0a043" stroke-width="2"/>
+    <text x="840" y="196" font-size="20" font-weight="700" fill="#7c5a17">P2 · Maintain the task</text><text x="840" y="230" font-size="14" fill="#665735">tools · memory · artifacts · authority</text><text x="840" y="257" font-size="14" fill="#665735">async execution + stale-result checks</text>
+    <rect x="66" y="366" width="322" height="142" rx="8" fill="#fff" stroke="#9d79aa" stroke-width="2"/>
+    <text x="94" y="408" font-size="20" font-weight="700" fill="#6f487d">P3 · Control dynamics</text><text x="94" y="442" font-size="14" fill="#66546d">role · initiative · silence tolerance</text><text x="94" y="469" font-size="14" fill="#66546d">instruction adherence + user settings</text>
+    <rect x="439" y="366" width="322" height="142" rx="8" fill="#fff" stroke="#d1495b" stroke-width="2"/>
+    <text x="467" y="408" font-size="20" font-weight="700" fill="#aa2c40">P4 · Share attention</text><text x="467" y="442" font-size="14" fill="#704850">gaze · gesture · screen · face</text><text x="467" y="469" font-size="14" fill="#704850">reference binding + joint attention</text>
+    <rect x="812" y="366" width="322" height="142" rx="8" fill="#fff" stroke="#475b68" stroke-width="2"/>
+    <text x="840" y="408" font-size="20" font-weight="700" fill="#2c3f4b">P5 · Study longitudinal UX</text><text x="840" y="442" font-size="14" fill="#56636d">adaptation · trust · privacy · drift</text><text x="840" y="469" font-size="14" fill="#56636d">days and weeks, not ten-second clips</text>
+    <g fill="none" stroke="#66737e" stroke-width="3" marker-end="url(#arr)"><path d="M388 225H427"/><path d="M761 225H800"/><path d="M973 296V340H227V354"/><path d="M388 437H427"/><path d="M761 437H800"/></g>
+    <rect x="66" y="574" width="1068" height="128" rx="8" fill="#202b34"/>
+    <text x="98" y="616" font-size="21" font-weight="700" fill="#fff">Gate before scaling</text>
+    <text x="98" y="653" font-size="15" fill="#cbd3d9">Fixed backbone · deterministic scenario · one isolated variable · counterfactual intervention · falsification threshold</text>
+    <text x="98" y="681" font-size="15" fill="#cbd3d9">Scale only after the proposed state or policy change causally reduces the targeted user-experience failure.</text>
+    <rect x="66" y="729" width="1068" height="32" rx="5" fill="#eef1f3"/>
+    <text x="98" y="751" font-size="14" fill="#44525d">North star: the user can speak naturally, correct cheaply, complete tasks, and remain in control.</text>
+  </g>
+</svg>

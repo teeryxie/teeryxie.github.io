@@ -1,5 +1,13 @@
 window.BLOG_POSTS = [
   {
+    slug: "full-duplex-omni-core-user-experience",
+    title: "Full-Duplex Omni Models: Joint Action, Repair, and User Experience",
+    date: "2026-08",
+    category: "Research Note",
+    status: "Full Duplex · Joint Action · Interaction UX",
+    summary: "A first-principles investigation of what full-duplex omni models should optimize beyond simultaneous listening and speaking: interaction precision, repair cost, task continuity, controllable turn policy, multimodal common ground, perceived latency, and long-term user control.",
+  },
+  {
     slug: "omni-model-memory-for-real-world-agents",
     title: "Omni Model Memory: Designing State for Agents That Actually Do Things",
     date: "2026-07",

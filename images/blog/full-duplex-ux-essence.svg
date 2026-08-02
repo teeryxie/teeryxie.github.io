@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">The essence of full-duplex omni interaction</title>
+  <desc id="desc">A progression from simultaneous streams to shared state, interaction policy, task action, and repair.</desc>
+  <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3 0 6Z" fill="#66737e"/></marker></defs>
+  <rect width="1200" height="720" fill="#f7f8fa"/>
+  <text x="66" y="67" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17212b">Full duplex is not two active audio streams</text>
+  <text x="66" y="103" font-family="Arial, sans-serif" font-size="16" fill="#5e6871">The product value appears only when continuous perception changes coordination, action, and recovery.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="66" y="160" width="240" height="132" rx="8" fill="#fff" stroke="#6c8baa" stroke-width="2"/>
+    <text x="94" y="201" font-size="20" font-weight="700" fill="#365d84">Infrastructure</text><text x="94" y="236" font-size="15" fill="#566776">listen while speaking</text><text x="94" y="264" font-size="15" fill="#566776">stream while listening</text>
+    <rect x="338" y="160" width="240" height="132" rx="8" fill="#fff" stroke="#2d8f82" stroke-width="2"/>
+    <text x="366" y="201" font-size="20" font-weight="700" fill="#00695c">Shared belief</text><text x="366" y="236" font-size="15" fill="#566776">who · intent · referent</text><text x="366" y="264" font-size="15" fill="#566776">common ground · uncertainty</text>
+    <rect x="610" y="160" width="240" height="132" rx="8" fill="#fff" stroke="#d0a043" stroke-width="2"/>
+    <text x="638" y="201" font-size="20" font-weight="700" fill="#7c5a17">Joint policy</text><text x="638" y="236" font-size="15" fill="#665735">wait · backchannel · yield</text><text x="638" y="264" font-size="15" fill="#665735">speak · clarify · interrupt</text>
+    <rect x="882" y="160" width="252" height="132" rx="8" fill="#fff" stroke="#9d79aa" stroke-width="2"/>
+    <text x="910" y="201" font-size="20" font-weight="700" fill="#6f487d">Task continuity</text><text x="910" y="236" font-size="15" fill="#66546d">tools · memory · artifacts</text><text x="910" y="264" font-size="15" fill="#66546d">cancel · revise · resume</text>
+    <g fill="none" stroke="#66737e" stroke-width="3" marker-end="url(#arr)"><path d="M306 226H326"/><path d="M578 226H598"/><path d="M850 226H870"/></g>
+    <rect x="66" y="352" width="1068" height="220" rx="8" fill="#202b34"/>
+    <text x="100" y="398" font-size="24" font-weight="700" fill="#fff">Continuous joint action</text>
+    <text x="100" y="435" font-size="16" fill="#cbd3d9">User and agent continuously negotiate attention, conversational floor, meaning, goals, and consequences.</text>
+    <g font-size="16" font-weight="700">
+      <rect x="100" y="476" width="178" height="58" rx="6" fill="#365d84"/><text x="132" y="512" fill="#fff">Listen correctly</text>
+      <rect x="296" y="476" width="178" height="58" rx="6" fill="#00695c"/><text x="333" y="512" fill="#fff">Coordinate</text>
+      <rect x="492" y="476" width="178" height="58" rx="6" fill="#8c6830"/><text x="539" y="512" fill="#fff">Act safely</text>
+      <rect x="688" y="476" width="178" height="58" rx="6" fill="#7a4b86"/><text x="731" y="512" fill="#fff">Repair fast</text>
+      <rect x="884" y="476" width="216" height="58" rx="6" fill="#aa2c40"/><text x="923" y="512" fill="#fff">Preserve control</text>
+    </g>
+    <rect x="66" y="616" width="1068" height="52" rx="6" fill="#eef1f3"/>
+    <text x="96" y="648" font-size="16" fill="#44525d">User experience = successful joint work − waiting − coordination − repair − risk − cognitive load</text>
+  </g>
+</svg>

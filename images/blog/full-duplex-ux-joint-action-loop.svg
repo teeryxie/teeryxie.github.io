@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Continuous joint action loop</title>
+  <desc id="desc">The loop of sensing, belief updating, coordination, action, and repair around shared state.</desc>
+  <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3 0 6Z" fill="#66737e"/></marker></defs>
+  <rect width="1200" height="760" fill="#f7f8fa"/>
+  <text x="66" y="67" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17212b">Sense → Believe → Coordinate → Act → Repair</text>
+  <text x="66" y="103" font-family="Arial, sans-serif" font-size="16" fill="#5e6871">All five processes run continuously; a new user signal can revise any downstream decision.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="440" y="275" width="320" height="170" rx="8" fill="#202b34"/>
+    <text x="483" y="324" font-size="23" font-weight="700" fill="#fff">Shared interaction state</text>
+    <text x="483" y="361" font-size="15" fill="#cbd3d9">speaker · addressee · intent</text><text x="483" y="389" font-size="15" fill="#cbd3d9">floor · referent · task · authority</text><text x="483" y="417" font-size="15" fill="#cbd3d9">playback · tool · uncertainty</text>
+    <g fill="#fff" stroke-width="2">
+      <rect x="76" y="158" width="232" height="116" rx="8" stroke="#6c8baa"/><rect x="484" y="125" width="232" height="116" rx="8" stroke="#2d8f82"/><rect x="892" y="158" width="232" height="116" rx="8" stroke="#d0a043"/>
+      <rect x="760" y="505" width="232" height="116" rx="8" stroke="#9d79aa"/><rect x="208" y="505" width="232" height="116" rx="8" stroke="#d1495b"/>
+    </g>
+    <g font-size="21" font-weight="700">
+      <text x="106" y="201" fill="#365d84">1 · Sense</text><text x="514" y="168" fill="#00695c">2 · Believe</text><text x="922" y="201" fill="#7c5a17">3 · Coordinate</text><text x="790" y="548" fill="#6f487d">4 · Act</text><text x="238" y="548" fill="#aa2c40">5 · Repair</text>
+    </g>
+    <g font-size="14" fill="#56636d">
+      <text x="106" y="235">audio · video · screen · events</text><text x="514" y="202">hypotheses · confidence · update</text><text x="922" y="235">wait · hold · yield · backchannel</text><text x="790" y="582">speech · tool · memory · artifact</text><text x="238" y="582">abort · revise · rollback · resume</text>
+    </g>
+    <g fill="none" stroke="#66737e" stroke-width="3" marker-end="url(#arr)">
+      <path d="M308 198C370 156 424 145 472 160"/><path d="M716 160C786 145 840 157 880 198"/><path d="M1008 274C1024 374 978 455 914 493"/><path d="M760 566C650 651 534 651 440 566"/><path d="M270 505C176 437 155 354 186 286"/>
+    </g>
+    <rect x="76" y="670" width="1048" height="42" rx="5" fill="#eef1f3"/>
+    <text x="106" y="697" font-size="15" fill="#44525d">Design invariant: every interruption updates shared state before it changes speech, tools, memory, or artifacts.</text>
+  </g>
+</svg>
