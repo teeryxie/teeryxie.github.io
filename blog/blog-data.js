@@ -1,5 +1,13 @@
 window.BLOG_POSTS = [
   {
+    slug: "site-specific-vision-ai-overfitting-business",
+    title: "When Overfitting Becomes a Business Model: Site-Specific Vision AI",
+    date: "2026-08",
+    category: "Research Note",
+    status: "Vertical AI · Edge Vision · Micro-Model Factory",
+    summary: "A business and systems analysis of why fixed-camera, single-site vision becomes dramatically easier, how AI agents can automate per-site data and deployment work, and what product architecture, unit economics, drift control, privacy boundaries, and pilot metrics are required to turn specialization into a scalable business.",
+  },
+  {
     slug: "full-duplex-omni-theory-of-mind-trajectories",
     title: "Theory of Mind for Full-Duplex Omni Models: From Meeting Labels to Mental State Trajectories",
     date: "2026-08",
