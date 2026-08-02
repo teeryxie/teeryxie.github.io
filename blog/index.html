@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +10,7 @@
   <script src="/blog/blog-data.js" defer></script>
   <script src="/blog/markdown.js" defer></script>
 </head>
-<body>
+<body class="blog-index">
   <header class="masthead">
     <nav class="nav" aria-label="Primary navigation">
       <a class="brand" href="/">Tianyu Xie <small>谢天宇</small></a>
@@ -23,203 +23,44 @@
     </nav>
   </header>
 
-  <main class="shell">
-    <aside class="sidebar">
-      <section class="profile-card">
+  <main class="shell blog-shell">
+    <aside class="sidebar blog-author-rail">
+      <section class="profile-card blog-author">
         <img class="avatar" src="/images/profile.png" alt="Tianyu Xie profile photo">
-        <h2 class="name">Blog</h2>
-        <p class="bio">Short research updates, paper introductions, and daily writing rendered from Markdown.</p>
-        <div class="profile-focus">
-          <div class="focus-label">Format</div>
-          <div class="focus-tags"><span>Markdown</span><span>One-row index</span><span>Paper intros</span></div>
+        <div class="blog-author-copy">
+          <h2 class="name">Tianyu Xie <span lang="zh-CN">/ 谢天宇</span></h2>
+          <p class="bio">Research notes, paper readings, surveys, and project logs.</p>
         </div>
       </section>
     </aside>
 
     <article class="content">
       <h1 class="page-title">Blog</h1>
-      <p class="lead">A compact index of paper introductions, project logs, and research writing. Use the category filters to scan by topic.</p>
+      <p class="lead">Research notes, paper readings, surveys, publications, and project logs.</p>
+      <form class="blog-search" role="search" data-blog-search>
+        <label for="blog-search-input">搜索文章</label>
+        <span class="blog-search-icon" aria-hidden="true"></span>
+        <input id="blog-search-input" type="search" name="q" autocomplete="off" placeholder="搜索标题、摘要或标签">
+        <button class="blog-search-clear" type="button" data-search-clear aria-label="清空搜索" title="清空搜索" hidden>×</button>
+      </form>
       <div class="blog-filter" data-blog-filter aria-label="Blog category filters">
-        <button class="active" type="button" data-category="all">All</button>
-        <button type="button" data-category="Paper Reading">Paper Readings</button>
-        <button type="button" data-category="Training">Training</button>
-        <button type="button" data-category="Survey">Surveys</button>
-        <button type="button" data-category="Framework">Frameworks</button>
-        <button type="button" data-category="Research Note">Research Notes</button>
-        <button type="button" data-category="Paper">Papers</button>
-        <button type="button" data-category="Benchmark">Benchmarks</button>
-        <button type="button" data-category="Paper Intro">Paper Intros</button>
-        <button type="button" data-category="Log">Logs</button>
+        <button class="active" type="button" data-section="all" aria-pressed="true">All <span>24</span></button>
+        <button type="button" data-section="Research Notes" aria-pressed="false">Research Notes <span>9</span></button>
+        <button type="button" data-section="Surveys" aria-pressed="false">Surveys <span>6</span></button>
+        <button type="button" data-section="Paper Readings" aria-pressed="false">Paper Readings <span>4</span></button>
+        <button type="button" data-section="Publications" aria-pressed="false">Publications <span>4</span></button>
+        <button type="button" data-section="Logs" aria-pressed="false">Logs <span>1</span></button>
       </div>
-      <div class="blog-list" data-blog-list>
-        <a class="blog-row" href="/blog/site-specific-vision-ai-overfitting-business/" data-category="Research Note">
-          <span class="blog-row-main">
-            <strong>When Overfitting Becomes a Business Model: Site-Specific Vision AI</strong>
-            <span>A business and systems analysis of why fixed-camera, single-site vision becomes dramatically easier, how AI agents can automate per-site data and deployment work, and what product architecture, unit economics, drift control, privacy boundaries, and pilot metrics are required to turn specialization into a scalable business.</span>
-          </span>
-          <span class="blog-row-meta"><span>Research Note</span><span>Vertical AI · Edge Vision · Micro-Model Factory</span><time>2026-08</time></span>
-        </a>
-        <a class="blog-row" href="/blog/full-duplex-omni-theory-of-mind-trajectories/" data-category="Paper Reading">
-          <span class="blog-row-main">
-            <strong>Theory of Mind for Full-Duplex Omni Models: From Meeting Labels to Mental State Trajectories</strong>
-            <span>A joint reading of MeetingToM and Mental World Modeling, tracing how subject, dyadic, and group-level ToM labels are annotated, how process gold represents target observations and successor states, and how both can inform uncertainty-aware online mental-belief trajectories for full-duplex omni agents.</span>
-          </span>
-          <span class="blog-row-meta"><span>Paper Reading</span><span>MeetingToM · Mental World Modeling · ToM Trajectories</span><time>2026-08</time></span>
-        </a>
-        <a class="blog-row" href="/blog/full-duplex-omni-core-user-experience/" data-category="Research Note">
-          <span class="blog-row-main">
-            <strong>Full-Duplex Omni Models: Joint Action, Repair, and User Experience</strong>
-            <span>A first-principles investigation of what full-duplex omni models should optimize beyond simultaneous listening and speaking: interaction precision, repair cost, task continuity, controllable turn policy, multimodal common ground, perceived latency, and long-term user control.</span>
-          </span>
-          <span class="blog-row-meta"><span>Research Note</span><span>Full Duplex · Joint Action · Interaction UX</span><time>2026-08</time></span>
-        </a>
-        <a class="blog-row" href="/blog/omni-model-memory-for-real-world-agents/" data-category="Research Note">
-          <span class="blog-row-main">
-            <strong>Omni Model Memory: Designing State for Agents That Actually Do Things</strong>
-            <span>A first-principles study of memory for interactive omni agents, starting from product failures and isolating supersession, common ground, entity binding, artifact versions, multimodal provenance, authorization, rollback, and procedural reuse through falsifiable toy experiments.</span>
-          </span>
-          <span class="blog-row-meta"><span>Research Note</span><span>Omni Memory · Product State · Toy Experiments</span><time>2026-07</time></span>
-        </a>
-        <a class="blog-row" href="/blog/dataflow-harness-benchmark-data-flywheel/" data-category="Research Note">
-          <span class="blog-row-main">
-            <strong>DataFlow-Harness: Editable Pipelines for Data Flywheels</strong>
-            <span>A critical reading of DataFlow-Harness and a practical design for benchmark-grounded data flywheels, covering editable DAGs, typed mutations, multi-gate filtering, decontamination, difficulty and diversity control, shadow training, promotion gates, provenance, and rollback.</span>
-          </span>
-          <span class="blog-row-meta"><span>Research Note</span><span>DataFlow-Harness · Data Flywheel · Benchmark Contract</span><time>2026-07</time></span>
-        </a>
-        <a class="blog-row" href="/blog/gpt-live-openai-realtime/" data-category="Survey">
-          <span class="blog-row-main">
-            <strong>GPT-Live-1: Full-Duplex Voice and Delegated Reasoning</strong>
-            <span>A comprehensive study of OpenAI's newly released GPT-Live-1: full-duplex interaction, listener feedback, delegated GPT-5.5 reasoning, rollout and product boundaries, early user evidence, evaluation requirements, safety risks, and its implications for agentic omni models.</span>
-          </span>
-          <span class="blog-row-meta"><span>Survey</span><span>GPT-Live-1 · Full Duplex · Delegation</span><time>2026-07</time></span>
-        </a>
-        <a class="blog-row" href="/blog/continuous-time-speech-language-action-policy/" data-category="Research Note">
-          <span class="blog-row-main">
-            <strong>Interactive Omni Models as Continuous-Time Agent Policies</strong>
-            <span>A research blueprint for training interactive omni models as continuous-time Speech-Language-Action policies, covering asynchronous tools, causal trajectory distillation, latent belief updates, critical-window RL, playback-aware rollback, and safe speculative execution.</span>
-          </span>
-          <span class="blog-row-meta"><span>Research Note</span><span>Speech-Language-Action · Streaming Policy · Tool Use</span><time>2026-07</time></span>
-        </a>
-        <a class="blog-row" href="/blog/realtime-human-ai-work-agents/" data-category="Survey">
-          <span class="blog-row-main">
-            <strong>From Real-Time Dialogue to Workforce Agents: AI Interviewers, Service Work, and Replacement Evidence</strong>
-            <span>A task-level survey of real-time human-AI work agents, covering AI interviewers, information elicitation, customer service, healthcare, workflow benchmarks, labor substitution, and the evidence required before an agent can replace human interaction work.</span>
-          </span>
-          <span class="blog-row-meta"><span>Survey</span><span>Human-AI Interaction · AI Interviewer · Work Agents</span><time>2026-07</time></span>
-        </a>
-        <a class="blog-row" href="/blog/realtime-theory-of-mind-human-ai-interaction/" data-category="Survey">
-          <span class="blog-row-main">
-            <strong>Real-Time Theory of Mind for Human-AI Interaction: Models, Benchmarks, and the Agent Gap</strong>
-            <span>A detailed survey of theory of mind for real-time human-AI interaction: belief tracking, multimodal social cues, interactive agents, benchmark design, and why static ToM scores do not establish reliable online mental-state modeling.</span>
-          </span>
-          <span class="blog-row-meta"><span>Survey</span><span>Theory of Mind · Interaction · Evaluation</span><time>2026-07</time></span>
-        </a>
-        <a class="blog-row" href="/blog/full-duplex-spoken-agents-post-gpt4o/" data-category="Survey">
-          <span class="blog-row-main">
-            <strong>Full-Duplex Spoken Agents After GPT-4o: Timing, State, and Interaction Policy</strong>
-            <span>A focused post-GPT-4o survey of full-duplex spoken agents: Moshi, SyncLLM, OmniFlatten, SALM-Duplex, benchmarks, stream routing, latent reasoning, RL timing policy, and the data bottleneck.</span>
-          </span>
-          <span class="blog-row-meta"><span>Survey</span><span>Full Duplex · Turn-Taking · RL</span><time>2026-07</time></span>
-        </a>
-        <a class="blog-row" href="/blog/realtime-omni-interaction-models/" data-category="Survey">
-          <span class="blog-row-main">
-            <strong>Real-Time Omni Interaction: From 232 ms Speech to Agentic Multimodal Systems</strong>
-            <span>A latency-first survey of real-time speech and audio-visual models, covering GPT-4o, Moshi, Qwen-Omni, duplex systems, serving, benchmarks, and why interactive omni models are fundamentally agents.</span>
-          </span>
-          <span class="blog-row-meta"><span>Survey</span><span>Realtime Omni · Full Duplex · Agents</span><time>2026-07</time></span>
-        </a>
-        <a class="blog-row" href="/blog/qwen35-omni-paper-reading/" data-category="Paper Reading">
-          <span class="blog-row-main">
-            <strong>Qwen3.5-Omni Paper Reading: Long Context, ARIA, and Native Omni Agents</strong>
-            <span>A close reading of Qwen3.5-Omni, covering Hybrid-Attention MoE, 256K context, timestamp modeling, ARIA speech alignment, post-training, and the limits behind its benchmark claims.</span>
-          </span>
-          <span class="blog-row-meta"><span>Paper Reading</span><span>Qwen3.5-Omni · arXiv 2604.15804</span><time>2026-07</time></span>
-        </a>
-        <a class="blog-row" href="/blog/qwen3-omni-paper-reading/" data-category="Paper Reading">
-          <span class="blog-row-main">
-            <strong>Qwen3-Omni Paper Reading: Non-Degrading Multimodality at Real-Time Latency</strong>
-            <span>A close reading of Qwen3-Omni, from early omni-modal pretraining and AuT to Thinker-Talker MoE, multi-codebook speech generation, GSPO, and non-degradation evidence.</span>
-          </span>
-          <span class="blog-row-meta"><span>Paper Reading</span><span>Qwen3-Omni · arXiv 2509.17765</span><time>2026-07</time></span>
-        </a>
-        <a class="blog-row" href="/blog/omni-model-training-methods/" data-category="Training">
-          <span class="blog-row-main">
-            <strong>How to Train Omni Models: Data, Alignment, SFT, and RL</strong>
-            <span>A Chinese research note on omni model training, from modality tokenization and alignment to speech generation, temporal grounding, SFT, and RL post-training.</span>
-          </span>
-          <span class="blog-row-meta"><span>Training</span><span>Omni Training · RLHF</span><time>2026-07</time></span>
-        </a>
-        <a class="blog-row" href="/blog/omni-model-research-survey/" data-category="Survey">
-          <span class="blog-row-main">
-            <strong>From GPT-4o to Omni Models: A Research Roadmap</strong>
-            <span>A Chinese survey of omni models from GPT-4o to open-source systems, covering timeline, architecture shifts, benchmarks, papers, and future directions.</span>
-          </span>
-          <span class="blog-row-meta"><span>Survey</span><span>Omni Models · GPT-4o</span><time>2026-07</time></span>
-        </a>
-        <a class="blog-row" href="/blog/verl-omni-rl-framework/" data-category="Framework">
-          <span class="blog-row-main">
-            <strong>VeRL-Omni: RL Infrastructure for Multimodal Generative Models</strong>
-            <span>A Chinese deep dive into verl-project/verl-omni, rollout systems, async reward, diffusion RL, and omni-model post-training.</span>
-          </span>
-          <span class="blog-row-meta"><span>Framework</span><span>verl · vLLM-Omni · RLHF</span><time>2026-07</time></span>
-        </a>
-        <a class="blog-row" href="/blog/hybrid-attention-moe/" data-category="Research Note">
-          <span class="blog-row-main">
-            <strong>Hybrid Attention MoE: Toward Efficient Long-Context Omni Models</strong>
-            <span>A Chinese research note on hybrid attention, sparse experts, and why omni models need both global reasoning and efficient sequence modeling.</span>
-          </span>
-          <span class="blog-row-meta"><span>Research Note</span><span>Hybrid Attention · MoE</span><time>2026-06</time></span>
-        </a>
-        <a class="blog-row" href="/blog/tmrope-qwen25-omni/" data-category="Research Note">
-          <span class="blog-row-main">
-            <strong>TMRoPE in Qwen2.5-Omni: Time-Aligned Position Encoding for Omni Models</strong>
-            <span>A Chinese deep-dive into TMRoPE, time-aligned multimodal position encoding, and what it means for omni-modal systems.</span>
-          </span>
-          <span class="blog-row-meta"><span>Research Note</span><span>Qwen2.5-Omni</span><time>2026-06</time></span>
-        </a>
-        <a class="blog-row" href="/blog/training-free-orchestration/" data-category="Paper">
-          <span class="blog-row-main">
-            <strong>Training-Free Multimodal LLM Orchestration</strong>
-            <span>A modular route to interactive omni-modal assistants without expensive end-to-end retraining.</span>
-          </span>
-          <span class="blog-row-meta"><span>Paper</span><span>ICML-26 · First Author</span><time>2026</time></span>
-        </a>
-        <a class="blog-row" href="/blog/socialomni/" data-category="Benchmark">
-          <span class="blog-row-main">
-            <strong>SocialOmni: Audio-Visual Social Interactivity for Omni Models</strong>
-            <span>A benchmark for evaluating whether omni models understand social interaction from synchronized audio and video.</span>
-          </span>
-          <span class="blog-row-meta"><span>Benchmark</span><span>arXiv · First Author</span><time>2026</time></span>
-        </a>
-        <a class="blog-row" href="/blog/wfs-sb/" data-category="Paper">
-          <span class="blog-row-main">
-            <strong>WFS-SB: Semantic-Boundary Frame Selection for Long Video</strong>
-            <span>Wavelet-based semantic boundary detection for selecting compact, informative frames in long-video understanding.</span>
-          </span>
-          <span class="blog-row-meta"><span>Paper</span><span>CVPR-26 · CCF-A</span><time>2026</time></span>
-        </a>
-        <a class="blog-row" href="/blog/a2rbench/" data-category="Benchmark">
-          <span class="blog-row-main">
-            <strong>A2RBench: Formally Verifiable Abstract Reasoning Benchmarks</strong>
-            <span>An automatic paradigm for generating abstract reasoning tasks with formal verification and scalable answer checking.</span>
-          </span>
-          <span class="blog-row-meta"><span>Benchmark</span><span>ICML-26</span><time>2026</time></span>
-        </a>
-        <a class="blog-row" href="/blog/fold/" data-category="Paper Intro">
-          <span class="blog-row-main">
-            <strong>FOLD: Fast Correct Speculative Decoding</strong>
-            <span>Online learning and adaptive drafting for faster LLM decoding with an explicit correctness guarantee.</span>
-          </span>
-          <span class="blog-row-meta"><span>Paper Intro</span><span>ICLR-26 withdrawn submission</span><time>2026</time></span>
-        </a>
-        <a class="blog-row" href="/blog/homepage/" data-category="Log">
-          <span class="blog-row-main">
-            <strong>Building a Research Homepage That Does Not Feel Like a Template</strong>
-            <span>A short log on turning papers, projects, CV materials, and blog entries into a compact academic homepage.</span>
-          </span>
-          <span class="blog-row-meta"><span>Log</span><span>Website</span><time>2026-06</time></span>
-        </a>
+      <div class="blog-results-bar">
+        <p data-blog-result-count aria-live="polite">24 篇文章</p>
+        <button type="button" data-blog-reset hidden>重置筛选</button>
+      </div>
+      <div class="blog-list" data-blog-list aria-busy="true">
+      </div>
+      <div class="blog-empty" data-blog-empty hidden>
+        <strong>没有找到匹配的文章</strong>
+        <p>可以尝试更短的关键词，或重置当前筛选。</p>
+        <button type="button" data-blog-reset>清除全部条件</button>
       </div>
     </article>
   </main>
