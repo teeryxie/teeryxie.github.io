@@ -1,5 +1,13 @@
 window.BLOG_POSTS = [
   {
+    slug: "full-duplex-omni-theory-of-mind-trajectories",
+    title: "Theory of Mind for Full-Duplex Omni Models: From Meeting Labels to Mental State Trajectories",
+    date: "2026-08",
+    category: "Paper Reading",
+    status: "MeetingToM · Mental World Modeling · ToM Trajectories",
+    summary: "A joint reading of MeetingToM and Mental World Modeling, tracing how subject, dyadic, and group-level ToM labels are annotated, how process gold represents target observations and successor states, and how both can inform uncertainty-aware online mental-belief trajectories for full-duplex omni agents.",
+  },
+  {
     slug: "full-duplex-omni-core-user-experience",
     title: "Full-Duplex Omni Models: Joint Action, Repair, and User Experience",
     date: "2026-08",
