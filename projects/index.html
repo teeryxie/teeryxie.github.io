@@ -6,6 +6,7 @@
   <title>Projects | Tianyu Xie</title>
   <link rel="icon" href="/images/profile.png">
   <link rel="stylesheet" href="/site.css">
+  <script src="/site-ui.js" defer></script>
 </head>
 <body class="projects-page">
   <header class="masthead">
@@ -22,32 +23,59 @@
   <main class="shell projects-shell">
     <article class="content">
       <h1 class="page-title">Projects</h1>
-      <p class="lead">Project cards linking papers, code, datasets, and research notes.</p>
-      <div class="project-grid">
-        <section class="project">
-          <h3><a href="https://github.com/MAC-AutoML/Trainingfree-LLM-Orchestration">★ Training-Free LLM Orchestration</a></h3>
-          <p>Interactive omni-modal assistants built by composing off-the-shelf modality experts with LLM routing and memory.</p>
-          <div class="actions"><a class="action" href="https://openreview.net/forum?id=V2fTGbSD7Q">OpenReview</a><a class="action" href="https://github.com/MAC-AutoML/Trainingfree-LLM-Orchestration">Code</a></div>
-          <div class="tag-row"><span class="tag">ICML 2026</span><span class="tag">Multimodal</span><span class="tag">Orchestration</span></div>
-        </section>
-        <section class="project">
-          <h3><a href="https://github.com/MAC-AutoML/SocialOmni">◆ SocialOmni</a></h3>
-          <p>Benchmarking audio-visual social interactivity for omni models.</p>
-          <div class="actions"><a class="action" href="https://arxiv.org/abs/2603.16859">arXiv</a><a class="action" href="https://github.com/MAC-AutoML/SocialOmni">Code</a><a class="action" href="https://huggingface.co/datasets/alexisty/SocialOmni">Dataset</a></div>
-          <div class="tag-row"><span class="tag">Benchmark</span><span class="tag">Omni-modal</span><span class="tag">Dataset</span></div>
-        </section>
-        <section class="project">
-          <h3><a href="https://arxiv.org/abs/2603.00983">▣ Long-video Frame Selection</a></h3>
-          <p>Event-anchored and wavelet-based frame selection for efficient long-video understanding.</p>
-          <div class="actions"><a class="action" href="https://openreview.net/forum?id=gC8Q8kM8kV">OpenReview</a><a class="action" href="https://arxiv.org/abs/2603.00983">EFS</a><a class="action" href="https://arxiv.org/abs/2603.00512">WFS-SB</a></div>
-          <div class="tag-row"><span class="tag">Long Video</span><span class="tag">LVLM</span><span class="tag">Frame Selection</span></div>
-        </section>
-        <section class="project">
-          <h3><a href="https://openreview.net/forum?id=QNEsvRqub6">⚡ FOLD</a></h3>
-          <p>Correctness-preserving speculative decoding for large language models through online learning and drafting.</p>
-          <div class="actions"><a class="action" href="https://openreview.net/forum?id=QNEsvRqub6">OpenReview</a></div>
-          <div class="tag-row"><span class="tag">Speculative Decoding</span><span class="tag">LLM</span><span class="tag">Efficient Inference</span></div>
-        </section>
+      <p class="lead">Research systems, benchmarks, and efficient inference methods with their public artifacts.</p>
+      <div class="project-showcase">
+        <article class="project-entry">
+          <a class="project-media" href="/images/projects/training-free-orchestration.jpg" data-lightbox data-caption="Training-Free Multimodal LLM Orchestration · paper first page"><img loading="lazy" decoding="async" src="/images/projects/training-free-orchestration.jpg" alt="Training-Free Multimodal LLM Orchestration paper first page"></a>
+          <div class="project-copy">
+            <div class="project-kicker">Multimodal Systems · ICML 2026</div>
+            <h2>Training-Free Multimodal LLM Orchestration</h2>
+            <p class="project-problem"><strong>Problem.</strong> How can an interactive omni-modal assistant coordinate heterogeneous expert models without retraining a monolithic model?</p>
+            <p><strong>Method.</strong> LLM-based routing composes off-the-shelf modality experts with persistent cross-modal memory and interruption-aware streaming interaction.</p>
+            <dl class="project-facts"><div><dt>Role</dt><dd>First author</dd></div><div><dt>Status</dt><dd>Paper, code, and research note available</dd></div></dl>
+            <div class="actions"><a class="action" href="https://openreview.net/forum?id=V2fTGbSD7Q">OpenReview</a><a class="action" href="https://github.com/MAC-AutoML/Trainingfree-LLM-Orchestration">Code</a><a class="action" href="/blog/training-free-orchestration/">Blog</a></div>
+            <div class="tag-row"><span class="tag">Orchestration</span><span class="tag">Omni-modal</span><span class="tag">Streaming</span></div>
+          </div>
+        </article>
+
+        <article class="project-entry">
+          <a class="project-media" href="/images/projects/socialomni.jpg" data-lightbox data-caption="SocialOmni · paper first page"><img loading="lazy" decoding="async" src="/images/projects/socialomni.jpg" alt="SocialOmni paper first page"></a>
+          <div class="project-copy">
+            <div class="project-kicker">Benchmark · arXiv</div>
+            <h2>SocialOmni</h2>
+            <p class="project-problem"><strong>Problem.</strong> Existing omni-model benchmarks underrepresent time-sensitive audio-visual social interaction.</p>
+            <p><strong>Method.</strong> A standardized benchmark and dataset evaluate social perception, temporal grounding, and interactive response behavior across audio and video.</p>
+            <dl class="project-facts"><div><dt>Role</dt><dd>First author</dd></div><div><dt>Status</dt><dd>Paper, code, and dataset available</dd></div></dl>
+            <div class="actions"><a class="action" href="https://arxiv.org/abs/2603.16859">arXiv</a><a class="action" href="https://github.com/MAC-AutoML/SocialOmni">Code</a><a class="action" href="https://huggingface.co/datasets/alexisty/SocialOmni">Dataset</a><a class="action" href="/blog/socialomni/">Blog</a></div>
+            <div class="tag-row"><span class="tag">Social Interaction</span><span class="tag">Audio-Visual</span><span class="tag">Evaluation</span></div>
+          </div>
+        </article>
+
+        <article class="project-entry">
+          <a class="project-media" href="/images/projects/long-video-frame-selection.jpg" data-lightbox data-caption="WFS-SB · paper first page"><img loading="lazy" decoding="async" src="/images/projects/long-video-frame-selection.jpg" alt="WFS-SB paper first page"></a>
+          <div class="project-copy">
+            <div class="project-kicker">Long Video · CVPR 2026</div>
+            <h2>Long-video Frame Selection</h2>
+            <p class="project-problem"><strong>Problem.</strong> Long-video models spend substantial computation on redundant frames while missing sparse semantic events.</p>
+            <p><strong>Method.</strong> Event anchors and wavelet-detected semantic boundaries guide adaptive frame allocation without training an additional selector.</p>
+            <dl class="project-facts"><div><dt>Role</dt><dd>Fourth author on WFS-SB</dd></div><div><dt>Status</dt><dd>WFS-SB accepted; EFS preprint available</dd></div></dl>
+            <div class="actions"><a class="action" href="https://arxiv.org/abs/2603.00512">WFS-SB</a><a class="action" href="https://github.com/MAC-AutoML/WFS-SB">Code</a><a class="action" href="https://arxiv.org/abs/2603.00983">EFS</a><a class="action" href="/blog/wfs-sb/">Blog</a></div>
+            <div class="tag-row"><span class="tag">Long Video</span><span class="tag">Frame Selection</span><span class="tag">Training-Free</span></div>
+          </div>
+        </article>
+
+        <article class="project-entry">
+          <a class="project-media" href="/images/projects/fold.jpg" data-lightbox data-caption="FOLD · paper first page"><img loading="lazy" decoding="async" src="/images/projects/fold.jpg" alt="FOLD paper first page"></a>
+          <div class="project-copy">
+            <div class="project-kicker">Efficient Inference · OpenReview</div>
+            <h2>FOLD</h2>
+            <p class="project-problem"><strong>Problem.</strong> Static draft models limit speculative decoding speed when the target model or input distribution changes.</p>
+            <p><strong>Method.</strong> Online learning and adaptive drafting preserve target-model correctness while improving draft acceptance during inference.</p>
+            <dl class="project-facts"><div><dt>Role</dt><dd>First author</dd></div><div><dt>Status</dt><dd>Withdrawn ICLR 2026 submission; project note available</dd></div></dl>
+            <div class="actions"><a class="action" href="https://openreview.net/forum?id=QNEsvRqub6">OpenReview</a><a class="action" href="/blog/fold/">Blog</a></div>
+            <div class="tag-row"><span class="tag">Speculative Decoding</span><span class="tag">Online Learning</span><span class="tag">LLM Inference</span></div>
+          </div>
+        </article>
       </div>
     </article>
   </main>

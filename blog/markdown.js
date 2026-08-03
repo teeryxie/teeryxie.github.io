@@ -482,43 +482,6 @@ function buildReadingControls(article) {
   update();
 }
 
-function buildImageLightbox(article) {
-  const dialog = document.createElement("dialog");
-  dialog.className = "image-lightbox";
-  dialog.innerHTML = `
-    <div class="lightbox-toolbar"><span data-lightbox-caption></span><button type="button" data-lightbox-close aria-label="关闭图片" title="关闭图片">×</button></div>
-    <div class="lightbox-stage"><img alt=""></div>
-  `;
-  document.body.appendChild(dialog);
-  const image = dialog.querySelector("img");
-  const caption = dialog.querySelector("[data-lightbox-caption]");
-  let trigger = null;
-
-  const close = () => dialog.close();
-  dialog.querySelector("[data-lightbox-close]").addEventListener("click", close);
-  dialog.addEventListener("click", (event) => {
-    if (event.target === dialog) close();
-  });
-  dialog.addEventListener("close", () => {
-    document.body.classList.remove("dialog-open");
-    trigger?.focus();
-  });
-
-  article.querySelectorAll(".figure-zoom").forEach((button) => {
-    button.addEventListener("click", () => {
-      trigger = button;
-      const sourceImage = button.querySelector("img");
-      image.src = sourceImage.currentSrc || sourceImage.src;
-      image.alt = sourceImage.alt;
-      image.classList.toggle("complex-svg", /\.svg(?:$|[?#])/i.test(image.src));
-      caption.textContent = button.closest("figure")?.querySelector("figcaption")?.textContent || sourceImage.alt;
-      document.body.classList.add("dialog-open");
-      dialog.showModal();
-      dialog.querySelector("[data-lightbox-close]").focus();
-    });
-  });
-}
-
 function bindCodeCopy(article) {
   const liveRegion = document.createElement("span");
   liveRegion.className = "sr-only";
@@ -638,7 +601,7 @@ async function renderBlogArticle() {
       article.innerHTML = rendered.html;
       buildArticleToc(rendered.headings);
       buildReadingControls(article);
-      buildImageLightbox(article);
+      window.SiteUI?.bindLightboxes(article);
       bindCodeCopy(article);
       buildArticleFooter(post);
     } catch (_error) {
