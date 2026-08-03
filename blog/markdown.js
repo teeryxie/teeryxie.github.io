@@ -369,11 +369,21 @@ function tocLinks(headings) {
   `).join("");
 }
 
-function scrollToHeading(id) {
+function settleLayoutBefore(target) {
+  if (!target) return Promise.resolve([]);
+  const precedingImages = [...document.querySelectorAll(".markdown-body img")].filter((image) => (
+    image.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING
+  ));
+  return Promise.allSettled(precedingImages.map((image) => image.decode()));
+}
+
+async function scrollToHeading(id) {
   const target = document.getElementById(id);
   if (!target) return;
   history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${encodeURIComponent(id)}`);
   target.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  await settleLayoutBefore(target);
+  requestAnimationFrame(() => target.scrollIntoView({ behavior: "auto", block: "start" }));
 }
 
 function buildArticleToc(headings) {
@@ -427,10 +437,7 @@ function buildArticleToc(headings) {
     const restoreHashPosition = () => target?.scrollIntoView({ behavior: "auto", block: "start" });
     requestAnimationFrame(restoreHashPosition);
     window.setTimeout(restoreHashPosition, 120);
-    const precedingImages = [...document.querySelectorAll(".markdown-body img")].filter((image) => (
-      target && (image.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING)
-    ));
-    Promise.allSettled(precedingImages.map((image) => image.decode())).then(() => {
+    settleLayoutBefore(target).then(() => {
       requestAnimationFrame(restoreHashPosition);
     });
   }
