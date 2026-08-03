@@ -1,5 +1,14 @@
 window.BLOG_POSTS = [
   {
+    slug: "silent-thought-flair-latent-reasoning",
+    title: "The Silent Thought: Latent Reasoning While Listening in Full-Duplex Speech Models",
+    date: "2026-08",
+    category: "Paper Reading",
+    section: "Paper Readings",
+    status: "FLAIR · ICML 2026 · Latent Reasoning",
+    summary: "A critical reading of FLAIR: how a causal full-duplex speech model replaces listening-phase silence tokens with recurrent latent embeddings, how a non-causal Global-aware Expert supplies posterior targets through an ELBO-style objective, what its 620K-hour pipeline and benchmark results actually establish, and where agentic state modeling remains unresolved.",
+  },
+  {
     slug: "site-specific-vision-ai-overfitting-business",
     title: "When Overfitting Becomes a Business Model: Site-Specific Vision AI",
     date: "2026-08",
