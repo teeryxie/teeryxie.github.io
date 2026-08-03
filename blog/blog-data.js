@@ -1,5 +1,14 @@
 window.BLOG_POSTS = [
   {
+    slug: "learning-when-to-think-while-listening",
+    title: "Learning When to Think While Listening: Wait-Think-Answer Control for Audio-Language Models",
+    date: "2026-08",
+    category: "Paper Reading",
+    section: "Paper Readings",
+    status: "Wait-Think-Answer · DAPO · Streaming Audio",
+    summary: "A critical reading of wait-think-answer control for Qwen2.5-Omni: how aligned spoken traces and six trajectory rewards teach a model when to emit compact reasoning updates, what the 8,959-item synthetic SRQA and 186-recording Real Audio Bench results establish, and why final-think tokens, full-prefix replay, fixed endpoints, and anchor-derived timing labels limit the latency claim.",
+  },
+  {
     slug: "silent-thought-flair-latent-reasoning",
     title: "The Silent Thought: Latent Reasoning While Listening in Full-Duplex Speech Models",
     date: "2026-08",
