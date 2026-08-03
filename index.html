@@ -8,10 +8,10 @@
   <link rel="icon" href="/images/profile.png">
   <link rel="stylesheet" href="/site.css">
 </head>
-<body>
+<body class="home-page">
   <header class="masthead">
     <nav class="nav" aria-label="Primary navigation">
-      <a class="brand" href="/">Tianyu Xie <small>谢天宇</small></a>
+      <a class="brand" aria-current="page" href="/">Tianyu Xie <small>谢天宇</small></a>
       <div class="links">
         <a href="/publications/">Publications</a>
         <a href="/projects/">Projects</a>
@@ -40,10 +40,10 @@
             </div>
           </div>
           <ul class="profile-links">
-            <li><span class="icon">✉</span><a href="mailto:teery@stu.xmu.edu.cn">teery@stu.xmu.edu.cn</a></li>
-            <li><span class="icon">⌂</span><a href="https://scholar.google.com/citations?hl=zh-CN&amp;user=_vZWAnkAAAAJ">Google Scholar</a></li>
-            <li><span class="icon">◇</span><a href="https://openreview.net/profile?id=~Tianyu_Xie2">OpenReview</a></li>
-            <li><span class="icon">◈</span><a href="https://github.com/teeryxie">GitHub: teeryxie</a></li>
+            <li class="profile-email"><a href="mailto:teery@stu.xmu.edu.cn"><svg class="ui-icon" aria-hidden="true"><use href="/images/icons.svg#mail"></use></svg><span>teery@stu.xmu.edu.cn</span></a></li>
+            <li><a href="https://scholar.google.com/citations?hl=zh-CN&amp;user=_vZWAnkAAAAJ"><svg class="ui-icon" aria-hidden="true"><use href="/images/icons.svg#scholar"></use></svg><span>Google Scholar</span></a></li>
+            <li><a href="https://openreview.net/profile?id=~Tianyu_Xie2"><svg class="ui-icon" aria-hidden="true"><use href="/images/icons.svg#review"></use></svg><span>OpenReview</span></a></li>
+            <li><a href="https://github.com/teeryxie"><svg class="ui-icon" aria-hidden="true"><use href="/images/icons.svg#github"></use></svg><span>GitHub</span></a></li>
           </ul>
         </div>
       </section>
@@ -51,6 +51,7 @@
 
     <article class="content">
       <section class="hero">
+        <h1 class="home-title">Tianyu Xie <span lang="zh-CN">/ 谢天宇</span></h1>
         <p class="hero-intro">I am an M.S. student admitted in Fall 2025 at the MAC Lab, Xiamen University, advised by <a href="https://sites.google.com/view/zhengxiawu">Prof. Xiawu Zheng</a>. Before that, I received my B.S. in Data Science and Big Data Technology from Sichuan Agricultural University.</p>
         <blockquote class="motto-quote">
           <p>我们需要为自己设定的任务，不是拥有安全感，而是能够接受不安全感。</p>
@@ -67,31 +68,39 @@
           </div>
         </div>
         <div class="cta-row">
-          <a class="button primary" href="/publications/">✦ Publications</a>
-          <a class="button" href="/projects/">▣ Projects</a>
-          <a class="button" href="/blog/">✎ Blog</a>
-          <a class="button" href="/cv/">⌁ CV</a>
+          <a class="button primary" href="/publications/"><svg class="ui-icon" aria-hidden="true"><use href="/images/icons.svg#paper"></use></svg>Publications</a>
+          <a class="button" href="/projects/"><svg class="ui-icon" aria-hidden="true"><use href="/images/icons.svg#project"></use></svg>Projects</a>
+          <a class="button" href="/blog/"><svg class="ui-icon" aria-hidden="true"><use href="/images/icons.svg#blog"></use></svg>Blog</a>
+          <a class="button" href="/cv/"><svg class="ui-icon" aria-hidden="true"><use href="/images/icons.svg#cv"></use></svg>CV</a>
         </div>
       </section>
 
       <section class="section">
         <div class="section-head"><h2>Research Interests</h2></div>
-        <div class="project-grid">
-          <div class="project">
-            <h3>★ Omni-modal orchestration</h3>
+        <div class="interest-list">
+          <div class="interest-row">
+            <svg class="interest-icon" aria-hidden="true"><use href="/images/icons.svg#orchestration"></use></svg>
+            <div><h3>Omni-modal orchestration</h3>
             <p>Training-free coordination of modality experts through LLM routing, persistent memory, and full-duplex interaction.</p>
+            </div>
           </div>
-          <div class="project">
-            <h3>▣ Long-video reasoning</h3>
+          <div class="interest-row">
+            <svg class="interest-icon" aria-hidden="true"><use href="/images/icons.svg#video"></use></svg>
+            <div><h3>Long-video reasoning</h3>
             <p>Event-aware and semantic-boundary-aware frame selection for efficient long-video understanding.</p>
+            </div>
           </div>
-          <div class="project">
-            <h3>⚡ Efficient and adaptive inference</h3>
+          <div class="interest-row">
+            <svg class="interest-icon" aria-hidden="true"><use href="/images/icons.svg#speed"></use></svg>
+            <div><h3>Efficient and adaptive inference</h3>
             <p>Speculative decoding, online drafting, and lightweight adaptation for faster foundation-model deployment.</p>
+            </div>
           </div>
-          <div class="project">
-            <h3>🧩 Agentic systems and world models</h3>
+          <div class="interest-row">
+            <svg class="interest-icon" aria-hidden="true"><use href="/images/icons.svg#agent"></use></svg>
+            <div><h3>Agentic systems and world models</h3>
             <p>Agentic RL, world-model-style reasoning, and HCI-oriented evaluation for interactive AI systems.</p>
+            </div>
           </div>
         </div>
       </section>
