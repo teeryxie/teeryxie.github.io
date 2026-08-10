@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">Proactive future condition trigger loop</title>
+  <desc id="desc">A persistent user goal is matched against a stream of visual evidence while balancing alert utility and interruption cost.</desc>
+  <rect width="1200" height="660" fill="#f7f9fc"/>
+  <text x="64" y="64" fill="#172033" font-family="Arial, sans-serif" font-size="28" font-weight="700">Proactivity is a persistent goal plus a calibrated trigger</text>
+  <text x="64" y="96" fill="#667085" font-family="Arial, sans-serif" font-size="16">“Tell me when you see the target” remains active while the camera and conversation continue.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="70" y="176" width="238" height="104" rx="8" fill="#f3efff" stroke="#8062c7" stroke-width="2"/>
+    <text x="98" y="211" fill="#6647ae" font-size="18" font-weight="700">Persistent user goal</text>
+    <text x="98" y="242" fill="#344054" font-size="15">target · expiry · notify once</text>
+    <text x="98" y="264" fill="#667085" font-size="14">state: active</text>
+    <rect x="382" y="176" width="238" height="104" rx="8" fill="#eaf2ff" stroke="#4c7ee8" stroke-width="2"/>
+    <text x="410" y="211" fill="#2457b8" font-size="18" font-weight="700">Continuous evidence</text>
+    <text x="410" y="242" fill="#344054" font-size="15">video stream · audio context</text>
+    <text x="410" y="264" fill="#667085" font-size="14">similar objects may distract</text>
+    <rect x="694" y="176" width="238" height="104" rx="8" fill="#eef8f2" stroke="#46a477" stroke-width="2"/>
+    <text x="722" y="211" fill="#24734d" font-size="18" font-weight="700">Belief update</text>
+    <text x="722" y="242" fill="#344054" font-size="15">P(target present | history)</text>
+    <text x="722" y="264" fill="#667085" font-size="14">uncertainty remains explicit</text>
+    <path d="M308 228H366M620 228H678M932 228H990" stroke="#98a2b3" stroke-width="2" marker-end="url(#arrow)"/>
+    <polygon points="1066,166 1152,228 1066,290 980,228" fill="#fff" stroke="#46a477" stroke-width="2"/>
+    <text x="1066" y="220" text-anchor="middle" fill="#24734d" font-size="15" font-weight="700">benefit &gt;</text>
+    <text x="1066" y="242" text-anchor="middle" fill="#24734d" font-size="15" font-weight="700">cost?</text>
+    <path d="M1066 290V376H796" stroke="#46a477" stroke-width="2" fill="none" marker-end="url(#arrowGreen)"/>
+    <text x="1080" y="334" fill="#24734d" font-size="14">yes</text>
+    <rect x="570" y="344" width="226" height="92" rx="8" fill="#eef8f2" stroke="#46a477" stroke-width="2"/>
+    <text x="600" y="381" fill="#24734d" font-size="18" font-weight="700">ALERT at right time</text>
+    <text x="600" y="410" fill="#344054" font-size="15">then mark goal completed</text>
+    <path d="M980 228C886 228 980 502 812 502H372C248 502 226 410 226 296" fill="none" stroke="#b54708" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#arrowOrange)"/>
+    <text x="828" y="488" fill="#b54708" font-size="14">no: keep observing</text>
+    <rect x="70" y="516" width="1062" height="68" rx="8" fill="#fff1f0" stroke="#e05d5d" stroke-width="2"/>
+    <text x="100" y="546" fill="#b42318" font-size="16" font-weight="700">Optimize the whole cost curve</text>
+    <text x="350" y="546" fill="#344054" font-size="15">helpful alerts</text><text x="514" y="546" fill="#b42318" font-size="15">− unnecessary interruptions</text><text x="760" y="546" fill="#b42318" font-size="15">− missed or late alerts</text>
+    <text x="100" y="570" fill="#667085" font-size="14">Higher visual recall alone does not create a better interaction experience.</text>
+  </g>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#98a2b3"/></marker><marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#46a477"/></marker><marker id="arrowOrange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#b54708"/></marker></defs>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">SeedRealtime evidence map</title>
+  <desc id="desc">Public evidence is separated into disclosed facts, official claims, demos, research inferences and missing reproducibility evidence.</desc>
+  <rect width="1200" height="660" fill="#f7f9fc"/>
+  <text x="64" y="64" fill="#172033" font-family="Arial, sans-serif" font-size="28" font-weight="700">Evidence map: what is known, claimed, inferred and missing</text>
+  <text x="64" y="96" fill="#667085" font-family="Arial, sans-serif" font-size="16">A product launch can motivate research hypotheses without becoming an independent benchmark.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="64" y="146" width="252" height="368" rx="8" fill="#eaf2ff" stroke="#4c7ee8" stroke-width="2"/>
+    <text x="92" y="184" fill="#2457b8" font-size="19" font-weight="700">Officially disclosed</text>
+    <text x="92" y="225" fill="#344054" font-size="15">• unified audio-video-text</text><text x="92" y="257" fill="#344054" font-size="15">• native full duplex</text><text x="92" y="289" fill="#344054" font-size="15">• chunked input</text><text x="92" y="321" fill="#344054" font-size="15">• streaming generation</text><text x="92" y="353" fill="#344054" font-size="15">• quantization</text><text x="92" y="385" fill="#344054" font-size="15">• inference optimization</text>
+    <rect x="344" y="146" width="252" height="368" rx="8" fill="#eef8f2" stroke="#46a477" stroke-width="2"/>
+    <text x="372" y="184" fill="#24734d" font-size="19" font-weight="700">Official demos / claims</text>
+    <text x="372" y="225" fill="#344054" font-size="15">• multi-person binding</text><text x="372" y="257" fill="#344054" font-size="15">• proactive visual alert</text><text x="372" y="289" fill="#344054" font-size="15">• background suppression</text><text x="372" y="321" fill="#344054" font-size="15">• pacing issues halved</text><text x="372" y="353" fill="#344054" font-size="15">• large-scale deployment</text><text x="372" y="403" fill="#667085" font-size="13">Useful evidence, but not an</text><text x="372" y="424" fill="#667085" font-size="13">independent evaluation.</text>
+    <rect x="624" y="146" width="252" height="368" rx="8" fill="#f3efff" stroke="#8062c7" stroke-width="2"/>
+    <text x="652" y="184" fill="#6647ae" font-size="19" font-weight="700">Research inference</text>
+    <text x="652" y="225" fill="#344054" font-size="15">• persistent world state</text><text x="652" y="257" fill="#344054" font-size="15">• entity belief graph</text><text x="652" y="289" fill="#344054" font-size="15">• future-condition trigger</text><text x="652" y="321" fill="#344054" font-size="15">• interaction policy</text><text x="652" y="353" fill="#344054" font-size="15">• agentic trajectory</text><text x="652" y="403" fill="#667085" font-size="13">Plausible abstraction, not a</text><text x="652" y="424" fill="#667085" font-size="13">claim about implementation.</text>
+    <rect x="904" y="146" width="232" height="368" rx="8" fill="#fff1f0" stroke="#e05d5d" stroke-width="2"/>
+    <text x="932" y="184" fill="#b42318" font-size="19" font-weight="700">Still missing</text>
+    <text x="932" y="225" fill="#344054" font-size="15">• model architecture</text><text x="932" y="257" fill="#344054" font-size="15">• parameter / data scale</text><text x="932" y="289" fill="#344054" font-size="15">• absolute latency</text><text x="932" y="321" fill="#344054" font-size="15">• evaluation protocol</text><text x="932" y="353" fill="#344054" font-size="15">• weights and code</text><text x="932" y="385" fill="#344054" font-size="15">• reproducible benchmark</text>
+    <path d="M64 560H1136" stroke="#d0d5dd" stroke-width="2"/>
+    <circle cx="82" cy="590" r="7" fill="#46a477"/><text x="100" y="596" fill="#344054" font-size="15">Strongest writing discipline: label every sentence by evidence level.</text>
+  </g>
+</svg>

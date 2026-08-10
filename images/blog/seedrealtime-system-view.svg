@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">SeedRealtime continuous audio-visual interaction system</title>
+  <desc id="desc">Audio, video and playback events update a unified state that controls listening, speaking, alerts and tools.</desc>
+  <rect width="1200" height="660" fill="#f7f9fc"/>
+  <text x="64" y="64" fill="#172033" font-family="Arial, sans-serif" font-size="28" font-weight="700">From turn-based chat to continuous audio-visual policy</text>
+  <text x="64" y="96" fill="#667085" font-family="Arial, sans-serif" font-size="16">The model must update world state while perception, speech and environmental events continue.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="64" y="156" width="222" height="92" rx="8" fill="#eaf2ff" stroke="#4c7ee8" stroke-width="2"/>
+    <text x="88" y="190" fill="#2457b8" font-size="17" font-weight="700">Continuous observations</text>
+    <text x="88" y="220" fill="#344054" font-size="15">audio · video · playback</text>
+    <rect x="64" y="280" width="222" height="92" rx="8" fill="#f3efff" stroke="#8062c7" stroke-width="2"/>
+    <text x="88" y="314" fill="#6647ae" font-size="17" font-weight="700">Asynchronous events</text>
+    <text x="88" y="344" fill="#344054" font-size="15">tool results · memory</text>
+    <path d="M302 202H404M302 326H404" stroke="#98a2b3" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="418" y="142" width="364" height="258" rx="8" fill="#fff" stroke="#46a477" stroke-width="3" stroke-dasharray="8 6"/>
+    <text x="451" y="180" fill="#24734d" font-size="20" font-weight="700">Unified streaming state h(t)</text>
+    <line x1="451" y1="196" x2="749" y2="196" stroke="#d0d5dd"/>
+    <text x="451" y="232" fill="#344054" font-size="16">Perception</text><text x="590" y="232" fill="#667085" font-size="15">what is visible and audible</text>
+    <text x="451" y="270" fill="#344054" font-size="16">Reference</text><text x="590" y="270" fill="#667085" font-size="15">who, which object, where</text>
+    <text x="451" y="308" fill="#344054" font-size="16">Task</text><text x="590" y="308" fill="#667085" font-size="15">persistent goals and completion</text>
+    <text x="451" y="346" fill="#344054" font-size="16">Interaction</text><text x="590" y="346" fill="#667085" font-size="15">listen, wait, speak, alert</text>
+    <text x="451" y="382" fill="#344054" font-size="13">Internal implementation is not yet publicly specified.</text>
+    <path d="M798 270H892" stroke="#98a2b3" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="906" y="142" width="230" height="258" rx="8" fill="#eef8f2" stroke="#46a477" stroke-width="2"/>
+    <text x="934" y="180" fill="#24734d" font-size="20" font-weight="700">Policy outputs</text>
+    <text x="934" y="222" fill="#344054" font-size="16">LISTEN / HOLD</text>
+    <text x="934" y="258" fill="#344054" font-size="16">SPEAK / YIELD</text>
+    <text x="934" y="294" fill="#344054" font-size="16">ALERT / CORRECT</text>
+    <text x="934" y="330" fill="#344054" font-size="16">QUERY / ACT</text>
+    <text x="934" y="370" fill="#667085" font-size="14">Visible behavior, not the</text>
+    <text x="934" y="390" fill="#667085" font-size="14">whole internal capability.</text>
+    <path d="M1022 416C1022 520 744 546 600 476C456 406 175 432 175 388" fill="none" stroke="#4c7ee8" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#arrowBlue)"/>
+    <text x="430" y="538" fill="#2457b8" font-size="17" font-weight="700">Every action changes the next observation</text>
+    <text x="430" y="568" fill="#667085" font-size="15">The assistant must keep listening while speaking and revise state when new evidence arrives.</text>
+  </g>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#98a2b3"/></marker>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#4c7ee8"/></marker>
+  </defs>
+</svg>

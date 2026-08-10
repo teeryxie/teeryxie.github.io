@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">Gap from real-time interaction to continuous-time agent policy</title>
+  <desc id="desc">SeedRealtime demonstrates continuous perception and proactive speech, while reliable tools, memory rollback and safe execution remain future requirements.</desc>
+  <rect width="1200" height="660" fill="#f7f9fc"/>
+  <text x="64" y="64" fill="#172033" font-family="Arial, sans-serif" font-size="28" font-weight="700">From real-time conversation to a continuous-time agent</text>
+  <text x="64" y="96" fill="#667085" font-family="Arial, sans-serif" font-size="16">Natural speech is the visible surface; state, action and repair determine whether the system is useful.</text>
+  <g font-family="Arial, sans-serif">
+    <text x="78" y="151" fill="#2457b8" font-size="18" font-weight="700">Capabilities demonstrated in product examples</text>
+    <rect x="70" y="178" width="235" height="100" rx="8" fill="#eaf2ff" stroke="#4c7ee8" stroke-width="2"/><text x="98" y="216" fill="#2457b8" font-size="17" font-weight="700">Continuous perception</text><text x="98" y="246" fill="#344054" font-size="14">watch · listen · update</text>
+    <rect x="332" y="178" width="235" height="100" rx="8" fill="#eaf2ff" stroke="#4c7ee8" stroke-width="2"/><text x="360" y="216" fill="#2457b8" font-size="17" font-weight="700">Grounded state</text><text x="360" y="246" fill="#344054" font-size="14">people · objects · history</text>
+    <rect x="594" y="178" width="235" height="100" rx="8" fill="#eef8f2" stroke="#46a477" stroke-width="2"/><text x="622" y="216" fill="#24734d" font-size="17" font-weight="700">Timing policy</text><text x="622" y="246" fill="#344054" font-size="14">hold · answer · ignore</text>
+    <rect x="856" y="178" width="274" height="100" rx="8" fill="#eef8f2" stroke="#46a477" stroke-width="2"/><text x="884" y="216" fill="#24734d" font-size="17" font-weight="700">Proactive intervention</text><text x="884" y="246" fill="#344054" font-size="14">alert · correct · query</text>
+    <path d="M305 228H316M567 228H578M829 228H840" stroke="#98a2b3" stroke-width="2"/>
+    <path d="M600 306V360" stroke="#98a2b3" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="78" y="406" fill="#b42318" font-size="18" font-weight="700">Requirements not yet established by public evidence</text>
+    <rect x="70" y="432" width="235" height="112" rx="8" fill="#fff" stroke="#8062c7" stroke-width="2"/><text x="98" y="470" fill="#6647ae" font-size="17" font-weight="700">Tool lifecycle</text><text x="98" y="500" fill="#344054" font-size="14">prepare · cancel · retry</text><text x="98" y="523" fill="#344054" font-size="14">commit · reconcile</text>
+    <rect x="332" y="432" width="235" height="112" rx="8" fill="#fff" stroke="#8062c7" stroke-width="2"/><text x="360" y="470" fill="#6647ae" font-size="17" font-weight="700">Memory control</text><text x="360" y="500" fill="#344054" font-size="14">provenance · supersession</text><text x="360" y="523" fill="#344054" font-size="14">expiry · user deletion</text>
+    <rect x="594" y="432" width="235" height="112" rx="8" fill="#fff1f0" stroke="#e05d5d" stroke-width="2"/><text x="622" y="470" fill="#b42318" font-size="17" font-weight="700">Safe action</text><text x="622" y="500" fill="#344054" font-size="14">permission · confirmation</text><text x="622" y="523" fill="#344054" font-size="14">rollback · audit</text>
+    <rect x="856" y="432" width="274" height="112" rx="8" fill="#fff1f0" stroke="#e05d5d" stroke-width="2"/><text x="884" y="470" fill="#b42318" font-size="17" font-weight="700">Reproducible evaluation</text><text x="884" y="500" fill="#344054" font-size="14">P50/P95/P99 latency</text><text x="884" y="523" fill="#344054" font-size="14">false trigger · task success</text>
+    <rect x="70" y="580" width="1060" height="44" rx="8" fill="#172033"/>
+    <text x="600" y="608" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">Agent quality = correct action × correct timing × low-cost repair × user control</text>
+  </g>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#98a2b3"/></marker></defs>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">Speaker face object binding state</title>
+  <desc id="desc">A dynamic entity graph binds names, faces, voices, utterances and preferences while preserving uncertainty.</desc>
+  <rect width="1200" height="660" fill="#f7f9fc"/>
+  <text x="64" y="64" fill="#172033" font-family="Arial, sans-serif" font-size="28" font-weight="700">The binding problem: recognition is not enough</text>
+  <text x="64" y="96" fill="#667085" font-family="Arial, sans-serif" font-size="16">A useful model must maintain and revise cross-modal identity links over time.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="74" y="166" width="206" height="72" rx="8" fill="#eaf2ff" stroke="#4c7ee8" stroke-width="2"/><text x="100" y="209" fill="#2457b8" font-size="18" font-weight="700">Name: Qiqi</text>
+    <rect x="74" y="286" width="206" height="72" rx="8" fill="#eaf2ff" stroke="#4c7ee8" stroke-width="2"/><text x="100" y="329" fill="#2457b8" font-size="18" font-weight="700">Face track #2</text>
+    <rect x="74" y="406" width="206" height="72" rx="8" fill="#eaf2ff" stroke="#4c7ee8" stroke-width="2"/><text x="100" y="449" fill="#2457b8" font-size="18" font-weight="700">Voice cluster B</text>
+    <rect x="436" y="226" width="328" height="190" rx="8" fill="#fff" stroke="#46a477" stroke-width="3"/>
+    <text x="476" y="269" fill="#24734d" font-size="21" font-weight="700">Entity belief: person #2</text>
+    <text x="476" y="307" fill="#344054" font-size="16">identity confidence</text><text x="704" y="307" text-anchor="end" fill="#24734d" font-size="16">0.86</text>
+    <text x="476" y="341" fill="#344054" font-size="16">current addressee</text><text x="704" y="341" text-anchor="end" fill="#24734d" font-size="16">yes</text>
+    <text x="476" y="375" fill="#344054" font-size="16">binding status</text><text x="704" y="375" text-anchor="end" fill="#b54708" font-size="16">revisable</text>
+    <rect x="922" y="166" width="210" height="72" rx="8" fill="#f3efff" stroke="#8062c7" stroke-width="2"/><text x="948" y="209" fill="#6647ae" font-size="17" font-weight="700">Utterance history</text>
+    <rect x="922" y="286" width="210" height="72" rx="8" fill="#f3efff" stroke="#8062c7" stroke-width="2"/><text x="948" y="329" fill="#6647ae" font-size="17" font-weight="700">Gaze / gesture</text>
+    <rect x="922" y="406" width="210" height="72" rx="8" fill="#f3efff" stroke="#8062c7" stroke-width="2"/><text x="948" y="449" fill="#6647ae" font-size="17" font-weight="700">Needs / preference</text>
+    <g stroke="#98a2b3" stroke-width="2" fill="none"><path d="M280 202L436 274"/><path d="M280 322L436 322"/><path d="M280 442L436 370"/><path d="M764 274L922 202"/><path d="M764 322L922 322"/><path d="M764 370L922 442"/></g>
+    <rect x="358" y="522" width="484" height="70" rx="8" fill="#fff1f0" stroke="#e05d5d" stroke-width="2"/>
+    <text x="388" y="551" fill="#b42318" font-size="16" font-weight="700">Conflict event: people swap seats or voices overlap</text>
+    <text x="388" y="576" fill="#667085" font-size="14">Update probabilities; do not silently hard-bind the wrong identity.</text>
+  </g>
+</svg>

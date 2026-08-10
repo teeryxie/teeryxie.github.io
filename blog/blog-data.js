@@ -1,5 +1,14 @@
 window.BLOG_POSTS = [
   {
+    slug: "seedrealtime-audio-visual-full-duplex",
+    title: "SeedRealtime: Audio-Visual Full-Duplex Interaction Beyond Turn-Based Chat",
+    date: "2026-08",
+    category: "Research Note",
+    section: "Research Notes",
+    status: "SeedRealtime · Audio-Visual Full Duplex · Proactive Interaction",
+    summary: "A critical study of ByteDance SeedRealtime: what native audio-visual full duplex means, how continuous perception, speaker-face-object binding, proactive visual triggers, timing control, and persistent task state move omni interaction beyond turn-based chat, and which latency, evaluation, privacy, and reproducibility questions remain open.",
+  },
+  {
     slug: "learning-when-to-think-while-listening",
     title: "Learning When to Think While Listening: Wait-Think-Answer Control for Audio-Language Models",
     date: "2026-08",
