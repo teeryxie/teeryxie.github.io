@@ -1,5 +1,14 @@
 window.BLOG_POSTS = [
   {
+    slug: "natural-interaction-omni-duplex-agentic-architecture",
+    title: "What Does Natural Human-AI Interaction Actually Require?",
+    date: "2026-08",
+    category: "Survey",
+    section: "Surveys",
+    status: "Natural Interaction · Full Duplex · Agentic Architecture",
+    summary: "A task-grounded framework for deciding when natural human-AI interaction requires multimodal perception, system-level duplex, semantic duplex, agentic tools, memory, and transaction governance, with concrete architectures for tutoring, phone sales, banking service, and meeting assistants.",
+  },
+  {
     slug: "seedrealtime-audio-visual-full-duplex",
     title: "SeedRealtime: Audio-Visual Full-Duplex Interaction Beyond Turn-Based Chat",
     date: "2026-08",
