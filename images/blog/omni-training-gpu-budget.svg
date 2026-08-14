@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">GPU budget ladder for Omni model training</title>
+  <desc id="desc">Four compute tiers from one GPU LoRA experiments to cluster-scale full-parameter training and real-time reinforcement learning.</desc>
+  <rect width="1200" height="660" fill="#f8fafc"/>
+  <text x="64" y="66" fill="#172033" font-family="Arial, sans-serif" font-size="30" font-weight="700">COMPUTE FOLLOWS THE TRAINING OBJECTIVE</text>
+  <text x="64" y="98" fill="#526075" font-family="Arial, sans-serif" font-size="17">Memory fit is only the first gate. Throughput, rollout, evaluation, and storage define the real budget.</text>
+  <g font-family="Arial, sans-serif">
+    <g transform="translate(64 154)">
+      <rect width="244" height="384" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+      <rect width="244" height="62" rx="8" fill="#dbeafe"/>
+      <text x="22" y="30" fill="#1d4ed8" font-size="13" font-weight="700">TIER 1</text>
+      <text x="22" y="52" fill="#172033" font-size="21" font-weight="700">1 x 80GB</text>
+      <text x="22" y="102" fill="#172033" font-size="17" font-weight="700">Learn the loop</text>
+      <text x="22" y="138" fill="#526075" font-size="14">Codec and cache</text>
+      <text x="22" y="166" fill="#526075" font-size="14">7B LoRA</text>
+      <text x="22" y="194" fill="#526075" font-size="14">10-100 h smoke test</text>
+      <text x="22" y="222" fill="#526075" font-size="14">Control-token SFT</text>
+      <line x1="22" y1="254" x2="222" y2="254" stroke="#dbe3ee"/>
+      <text x="22" y="286" fill="#9a3412" font-size="13" font-weight="700">NOT FOR</text>
+      <text x="22" y="312" fill="#526075" font-size="13">full foundation pretrain</text>
+      <text x="22" y="336" fill="#526075" font-size="13">end-to-end audio RL</text>
+    </g>
+    <g transform="translate(330 154)">
+      <rect width="244" height="384" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+      <rect width="244" height="62" rx="8" fill="#ede9fe"/>
+      <text x="22" y="30" fill="#6d28d9" font-size="13" font-weight="700">TIER 2</text>
+      <text x="22" y="52" fill="#172033" font-size="21" font-weight="700">4-8 x 80/141GB</text>
+      <text x="22" y="102" fill="#172033" font-size="17" font-weight="700">Research scale</text>
+      <text x="22" y="138" fill="#526075" font-size="14">Partial Thinker tuning</text>
+      <text x="22" y="166" fill="#526075" font-size="14">Alternating Talker</text>
+      <text x="22" y="194" fill="#526075" font-size="14">100s-1000s hours</text>
+      <text x="22" y="222" fill="#526075" font-size="14">Control policy RL</text>
+      <line x1="22" y1="254" x2="222" y2="254" stroke="#dbe3ee"/>
+      <text x="22" y="286" fill="#6d28d9" font-size="13" font-weight="700">BEST VALUE</text>
+      <text x="22" y="312" fill="#526075" font-size="13">baseline + ablations</text>
+      <text x="22" y="336" fill="#526075" font-size="13">independent evaluation</text>
+    </g>
+    <g transform="translate(596 154)">
+      <rect width="244" height="384" rx="8" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
+      <rect width="244" height="62" rx="8" fill="#dcfce7"/>
+      <text x="22" y="30" fill="#166534" font-size="13" font-weight="700">TIER 3</text>
+      <text x="22" y="52" fill="#172033" font-size="21" font-weight="700">16-32 x 80/141GB</text>
+      <text x="22" y="102" fill="#172033" font-size="17" font-weight="700">Full mid-training</text>
+      <text x="22" y="138" fill="#526075" font-size="14">7B-9B full params</text>
+      <text x="22" y="166" fill="#526075" font-size="14">Longer streams</text>
+      <text x="22" y="194" fill="#526075" font-size="14">Larger global batch</text>
+      <text x="22" y="222" fill="#526075" font-size="14">Multi-node profile</text>
+      <line x1="22" y1="254" x2="222" y2="254" stroke="#dbe3ee"/>
+      <text x="22" y="286" fill="#166534" font-size="13" font-weight="700">REQUIRES</text>
+      <text x="22" y="312" fill="#526075" font-size="13">fast interconnect</text>
+      <text x="22" y="336" fill="#526075" font-size="13">sharded checkpoints</text>
+    </g>
+    <g transform="translate(862 154)">
+      <rect width="274" height="384" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+      <rect width="274" height="62" rx="8" fill="#fee2e2"/>
+      <text x="22" y="30" fill="#b91c1c" font-size="13" font-weight="700">TIER 4</text>
+      <text x="22" y="52" fill="#172033" font-size="21" font-weight="700">32-64+ GPUs</text>
+      <text x="22" y="102" fill="#172033" font-size="17" font-weight="700">Omni + agentic RL</text>
+      <text x="22" y="138" fill="#526075" font-size="14">Training pool</text>
+      <text x="22" y="166" fill="#526075" font-size="14">Rollout pool</text>
+      <text x="22" y="194" fill="#526075" font-size="14">Reward / verifier pool</text>
+      <text x="22" y="222" fill="#526075" font-size="14">Audio-video environments</text>
+      <line x1="22" y1="254" x2="252" y2="254" stroke="#dbe3ee"/>
+      <text x="22" y="286" fill="#b91c1c" font-size="13" font-weight="700">PUBLIC ANCHOR</text>
+      <text x="22" y="312" fill="#526075" font-size="13">DuplexOmni:</text>
+      <text x="22" y="336" fill="#172033" font-size="16" font-weight="700">128 x NVIDIA H20</text>
+    </g>
+  </g>
+  <rect x="64" y="570" width="1072" height="48" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="600" y="600" text-anchor="middle" fill="#172033" font-family="Arial, sans-serif" font-size="16" font-weight="700">PROFILE 1-2 GPUs FIRST: memory, audio-seconds/s, communication, dataloader, checkpoint, evaluation</text>
+</svg>

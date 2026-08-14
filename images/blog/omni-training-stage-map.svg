@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">Omni model stage-wise training map</title>
+  <desc id="desc">Eight training stages from data contract and codec validation to agentic reinforcement learning, with promotion gates between stages.</desc>
+  <rect width="1200" height="660" fill="#f8fafc"/>
+  <text x="64" y="66" fill="#172033" font-family="Arial, sans-serif" font-size="30" font-weight="700">OMNI TRAINING IS A CAPABILITY LADDER</text>
+  <text x="64" y="98" fill="#526075" font-family="Arial, sans-serif" font-size="17">Add one degree of freedom at a time. Promote only after regression gates pass.</text>
+  <line x1="85" y1="340" x2="1115" y2="340" stroke="#cbd5e1" stroke-width="6" stroke-linecap="round"/>
+  <g font-family="Arial, sans-serif">
+    <g transform="translate(55 155)">
+      <rect width="126" height="150" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+      <rect width="126" height="10" rx="5" fill="#2563eb"/>
+      <text x="16" y="44" fill="#2563eb" font-size="14" font-weight="700">STAGE 0</text>
+      <text x="16" y="74" fill="#172033" font-size="18" font-weight="700">Contract</text>
+      <text x="16" y="98" fill="#172033" font-size="18" font-weight="700">+ Codec</text>
+      <text x="16" y="126" fill="#526075" font-size="13">causal / RTF</text>
+    </g>
+    <g transform="translate(194 375)">
+      <rect width="126" height="150" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+      <rect width="126" height="10" rx="5" fill="#2563eb"/>
+      <text x="16" y="44" fill="#2563eb" font-size="14" font-weight="700">STAGE 1</text>
+      <text x="16" y="74" fill="#172033" font-size="18" font-weight="700">Alignment</text>
+      <text x="16" y="101" fill="#526075" font-size="13">projectors</text>
+      <text x="16" y="123" fill="#526075" font-size="13">text replay</text>
+    </g>
+    <g transform="translate(333 155)">
+      <rect width="126" height="150" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+      <rect width="126" height="10" rx="5" fill="#7c3aed"/>
+      <text x="16" y="44" fill="#7c3aed" font-size="14" font-weight="700">STAGE 2</text>
+      <text x="16" y="74" fill="#172033" font-size="18" font-weight="700">Single</text>
+      <text x="16" y="98" fill="#172033" font-size="18" font-weight="700">Stream</text>
+      <text x="16" y="126" fill="#526075" font-size="13">audio / video</text>
+    </g>
+    <g transform="translate(472 375)">
+      <rect width="126" height="150" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+      <rect width="126" height="10" rx="5" fill="#7c3aed"/>
+      <text x="16" y="44" fill="#7c3aed" font-size="14" font-weight="700">STAGE 3</text>
+      <text x="16" y="74" fill="#172033" font-size="18" font-weight="700">Duplex</text>
+      <text x="16" y="101" fill="#526075" font-size="13">overlap / wait</text>
+      <text x="16" y="123" fill="#526075" font-size="13">real timelines</text>
+    </g>
+    <g transform="translate(611 155)">
+      <rect width="126" height="150" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+      <rect width="126" height="10" rx="5" fill="#7c3aed"/>
+      <text x="16" y="44" fill="#7c3aed" font-size="14" font-weight="700">STAGE 4</text>
+      <text x="16" y="74" fill="#172033" font-size="18" font-weight="700">Interaction</text>
+      <text x="16" y="98" fill="#172033" font-size="18" font-weight="700">SFT</text>
+      <text x="16" y="126" fill="#526075" font-size="13">control actions</text>
+    </g>
+    <g transform="translate(750 375)">
+      <rect width="126" height="150" rx="8" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
+      <rect width="126" height="10" rx="5" fill="#15803d"/>
+      <text x="16" y="44" fill="#15803d" font-size="14" font-weight="700">STAGE 5</text>
+      <text x="16" y="74" fill="#172033" font-size="18" font-weight="700">Talker</text>
+      <text x="16" y="98" fill="#172033" font-size="18" font-weight="700">+ DPO</text>
+      <text x="16" y="126" fill="#526075" font-size="13">WER / pause</text>
+    </g>
+    <g transform="translate(889 155)">
+      <rect width="126" height="150" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+      <rect width="126" height="10" rx="5" fill="#dc2626"/>
+      <text x="16" y="44" fill="#dc2626" font-size="14" font-weight="700">STAGE 6</text>
+      <text x="16" y="74" fill="#172033" font-size="18" font-weight="700">Control</text>
+      <text x="16" y="98" fill="#172033" font-size="18" font-weight="700">Policy RL</text>
+      <text x="16" y="126" fill="#526075" font-size="13">timing / repair</text>
+    </g>
+    <g transform="translate(1028 375)">
+      <rect width="126" height="150" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+      <rect width="126" height="10" rx="5" fill="#dc2626"/>
+      <text x="16" y="44" fill="#dc2626" font-size="14" font-weight="700">STAGE 7</text>
+      <text x="16" y="74" fill="#172033" font-size="18" font-weight="700">Agentic</text>
+      <text x="16" y="98" fill="#172033" font-size="18" font-weight="700">RL</text>
+      <text x="16" y="126" fill="#526075" font-size="13">tools / commit</text>
+    </g>
+  </g>
+  <g fill="#ffffff" stroke="#94a3b8" stroke-width="2">
+    <circle cx="187" cy="340" r="15"/><circle cx="326" cy="340" r="15"/><circle cx="465" cy="340" r="15"/>
+    <circle cx="604" cy="340" r="15"/><circle cx="743" cy="340" r="15"/><circle cx="882" cy="340" r="15"/>
+    <circle cx="1021" cy="340" r="15"/>
+  </g>
+  <g fill="#526075" font-family="Arial, sans-serif" font-size="11" text-anchor="middle">
+    <text x="187" y="344">GATE</text><text x="326" y="344">GATE</text><text x="465" y="344">GATE</text>
+    <text x="604" y="344">GATE</text><text x="743" y="344">GATE</text><text x="882" y="344">GATE</text>
+    <text x="1021" y="344">GATE</text>
+  </g>
+  <rect x="64" y="578" width="1072" height="46" rx="8" fill="#fff7ed" stroke="#fdba74"/>
+  <text x="600" y="607" text-anchor="middle" fill="#9a3412" font-family="Arial, sans-serif" font-size="16" font-weight="700">NO PROMOTION WITHOUT HOLDOUT, STREAMING REGRESSION, LATENCY BUDGET, AND FAILURE REVIEW</text>
+</svg>

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">Agentic reinforcement learning loop for streaming Omni models</title>
+  <desc id="desc">A loop connects a streaming policy, audio-video tool environment, structured trajectory store, multi-part rewards, policy update, and regression promotion gate.</desc>
+  <rect width="1200" height="660" fill="#f8fafc"/>
+  <text x="64" y="66" fill="#172033" font-family="Arial, sans-serif" font-size="30" font-weight="700">STREAMING OMNI RL NEEDS A REPLAYABLE ENVIRONMENT</text>
+  <text x="64" y="98" fill="#526075" font-family="Arial, sans-serif" font-size="17">Optimize timing and long-horizon actions without letting noisy rewards rewrite the speech stack.</text>
+  <g font-family="Arial, sans-serif">
+    <g transform="translate(64 174)">
+      <rect width="220" height="154" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+      <text x="22" y="36" fill="#7c3aed" font-size="13" font-weight="700">STREAMING POLICY</text>
+      <text x="22" y="72" fill="#172033" font-size="15">listen / speak / yield</text>
+      <text x="22" y="100" fill="#172033" font-size="15">revise / call / cancel</text>
+      <text x="22" y="128" fill="#526075" font-size="13">Talker + codec frozen first</text>
+    </g>
+    <g transform="translate(366 142)">
+      <rect width="260" height="218" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+      <text x="22" y="36" fill="#2563eb" font-size="13" font-weight="700">EVENT ENVIRONMENT</text>
+      <text x="22" y="74" fill="#172033" font-size="15">audio / video chunks</text>
+      <text x="22" y="104" fill="#172033" font-size="15">user corrections</text>
+      <text x="22" y="134" fill="#172033" font-size="15">tool delay / failure</text>
+      <text x="22" y="164" fill="#172033" font-size="15">playback and memory</text>
+      <text x="22" y="194" fill="#526075" font-size="13">deterministic toy before live traffic</text>
+    </g>
+    <g transform="translate(708 174)">
+      <rect width="220" height="154" rx="8" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
+      <text x="22" y="36" fill="#15803d" font-size="13" font-weight="700">TRAJECTORY STORE</text>
+      <text x="22" y="72" fill="#172033" font-size="15">timestamps + token IDs</text>
+      <text x="22" y="100" fill="#172033" font-size="15">loss masks + versions</text>
+      <text x="22" y="128" fill="#526075" font-size="13">replayable and auditable</text>
+    </g>
+    <g transform="translate(952 174)">
+      <rect width="184" height="154" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+      <text x="18" y="36" fill="#dc2626" font-size="13" font-weight="700">REWARD VECTOR</text>
+      <text x="18" y="68" fill="#172033" font-size="14">task + content</text>
+      <text x="18" y="94" fill="#172033" font-size="14">timing + repair</text>
+      <text x="18" y="120" fill="#172033" font-size="14">safety - cost</text>
+    </g>
+    <g transform="translate(708 430)">
+      <rect width="220" height="130" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+      <text x="22" y="36" fill="#dc2626" font-size="13" font-weight="700">POLICY UPDATE</text>
+      <text x="22" y="70" fill="#172033" font-size="15">advantage + KL</text>
+      <text x="22" y="98" fill="#526075" font-size="13">clip and staleness checks</text>
+    </g>
+    <g transform="translate(366 430)">
+      <rect width="260" height="130" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+      <text x="22" y="36" fill="#b45309" font-size="13" font-weight="700">REGRESSION GATE</text>
+      <text x="22" y="70" fill="#172033" font-size="15">content / voice / latency</text>
+      <text x="22" y="98" fill="#526075" font-size="13">promote, rollback, or rebalance</text>
+    </g>
+    <g transform="translate(64 430)">
+      <rect width="220" height="130" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <text x="22" y="36" fill="#475569" font-size="13" font-weight="700">SFT REPLAY</text>
+      <text x="22" y="70" fill="#172033" font-size="15">stable actions</text>
+      <text x="22" y="98" fill="#526075" font-size="13">limits policy drift</text>
+    </g>
+  </g>
+  <g fill="none" stroke="#94a3b8" stroke-width="3">
+    <path d="M284 250H352"/><path d="M343 243l12 7-12 7"/>
+    <path d="M626 250H694"/><path d="M685 243l12 7-12 7"/>
+    <path d="M928 250H938"/><path d="M929 243l12 7-12 7"/>
+    <path d="M1044 328V388H818V416"/><path d="M811 407l7 12 7-12"/>
+    <path d="M708 495H640"/><path d="M649 488l-12 7 12 7"/>
+    <path d="M366 495H298"/><path d="M307 488l-12 7 12 7"/>
+    <path d="M174 430V364H174V342"/><path d="M167 351l7-12 7 12"/>
+  </g>
+  <path d="M284 495H352" fill="none" stroke="#7c3aed" stroke-width="3" stroke-dasharray="7 7"/>
+  <text x="318" y="484" text-anchor="middle" fill="#7c3aed" font-family="Arial, sans-serif" font-size="11" font-weight="700">MIX</text>
+  <rect x="64" y="596" width="1072" height="36" rx="8" fill="#fff7ed" stroke="#fdba74"/>
+  <text x="600" y="620" text-anchor="middle" fill="#9a3412" font-family="Arial, sans-serif" font-size="14" font-weight="700">START WITH CRITICAL WINDOWS AND CANCELLABLE TOOLS, NOT TEN-MINUTE END-TO-END AUDIO RL</text>
+</svg>

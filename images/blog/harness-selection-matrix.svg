@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">Agent harness project selection matrix</title>
+  <desc id="desc">A decision matrix recommending Aider, mini-SWE-agent, OpenHands, or Goose based on the primary need.</desc>
+  <rect width="1200" height="660" fill="#f8fafc"/>
+  <text x="60" y="66" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">Choose by the bottleneck you actually have</text>
+  <text x="60" y="98" fill="#64748b" font-family="Inter, Arial, sans-serif" font-size="16">Start from task shape, risk, and operating model. Add infrastructure only when measured constraints demand it.</text>
+  <g font-family="Inter, Arial, sans-serif">
+    <rect x="60" y="144" width="520" height="184" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="86" y="180" fill="#1d4ed8" font-size="14" font-weight="700">LOCAL PAIR PROGRAMMING</text>
+    <text x="86" y="219" fill="#0f172a" font-size="25" font-weight="700">Choose Aider</text>
+    <text x="86" y="251" fill="#475569" font-size="15">You want visible diffs, Git history, fast undo,</text>
+    <text x="86" y="275" fill="#475569" font-size="15">repository context, and human review after each step.</text>
+    <rect x="86" y="294" width="238" height="22" rx="4" fill="#dbeafe"/>
+    <text x="98" y="310" fill="#1e40af" font-size="12">Lowest platform overhead</text>
+
+    <rect x="620" y="144" width="520" height="184" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="646" y="180" fill="#6d28d9" font-size="14" font-weight="700">HARNESS RESEARCH / BENCHMARK</text>
+    <text x="646" y="219" fill="#0f172a" font-size="25" font-weight="700">Choose mini-SWE-agent</text>
+    <text x="646" y="251" fill="#475569" font-size="15">You need a readable loop, explicit limits, saved</text>
+    <text x="646" y="275" fill="#475569" font-size="15">trajectories, and controlled ablations.</text>
+    <rect x="646" y="294" width="238" height="22" rx="4" fill="#ede9fe"/>
+    <text x="658" y="310" fill="#5b21b6" font-size="12">Highest mechanism visibility</text>
+
+    <rect x="60" y="364" width="520" height="184" rx="8" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+    <text x="86" y="400" fill="#c2410c" font-size="14" font-weight="700">TEAM / ASYNC AUTOMATION</text>
+    <text x="86" y="439" fill="#0f172a" font-size="25" font-weight="700">Choose OpenHands</text>
+    <text x="86" y="471" fill="#475569" font-size="15">You need persistent agents, remote backends, event</text>
+    <text x="86" y="495" fill="#475569" font-size="15">triggers, and a self-hosted team control plane.</text>
+    <rect x="86" y="514" width="260" height="22" rx="4" fill="#ffedd5"/>
+    <text x="98" y="530" fill="#9a3412" font-size="12">Highest operations requirement</text>
+
+    <rect x="620" y="364" width="520" height="184" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="646" y="400" fill="#047857" font-size="14" font-weight="700">MULTI-TOOL / MCP WORKFLOWS</text>
+    <text x="646" y="439" fill="#0f172a" font-size="25" font-weight="700">Choose Goose</text>
+    <text x="646" y="471" fill="#475569" font-size="15">You need model choice, MCP extensions, reusable</text>
+    <text x="646" y="495" fill="#475569" font-size="15">recipes, sessions, and configurable permissions.</text>
+    <rect x="646" y="514" width="270" height="22" rx="4" fill="#d1fae5"/>
+    <text x="658" y="530" fill="#065f46" font-size="12">Largest extension trust surface</text>
+
+    <rect x="172" y="580" width="856" height="42" rx="8" fill="#0f172a"/>
+    <text x="205" y="607" fill="#f8fafc" font-size="15" font-weight="600">Before choosing any project: write the task contract, risk boundary, and required completion evidence.</text>
+  </g>
+</svg>

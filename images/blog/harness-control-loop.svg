@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">Agent Harness control loop</title>
+  <desc id="desc">A closed loop from task contract through context, model decision, policy, execution, evidence, verification, recovery, and learning.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#64748b"/></marker>
+  </defs>
+  <rect width="1200" height="660" fill="#f8fafc"/>
+  <text x="60" y="66" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">Harness turns capability into a controlled feedback loop</text>
+  <text x="60" y="98" fill="#64748b" font-family="Inter, Arial, sans-serif" font-size="16">The model proposes; the runtime constrains, observes, verifies, and recovers.</text>
+
+  <g font-family="Inter, Arial, sans-serif">
+    <rect x="60" y="156" width="220" height="118" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="82" y="190" fill="#1d4ed8" font-size="14" font-weight="700">01  TASK CONTRACT</text>
+    <text x="82" y="220" fill="#0f172a" font-size="15" font-weight="700">What counts as done?</text>
+    <text x="82" y="245" fill="#475569" font-size="12">Scope / acceptance</text>
+    <text x="82" y="262" fill="#475569" font-size="12">stop condition</text>
+
+    <rect x="342" y="156" width="220" height="118" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="364" y="190" fill="#6d28d9" font-size="14" font-weight="700">02  CONTEXT + STATE</text>
+    <text x="364" y="220" fill="#0f172a" font-size="15" font-weight="700">What is true now?</text>
+    <text x="364" y="245" fill="#475569" font-size="12">Files / decisions</text>
+    <text x="364" y="262" fill="#475569" font-size="12">progress / budget</text>
+
+    <rect x="624" y="156" width="220" height="118" rx="8" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+    <text x="646" y="190" fill="#334155" font-size="14" font-weight="700">03  MODEL POLICY</text>
+    <text x="646" y="220" fill="#0f172a" font-size="15" font-weight="700">What should happen next?</text>
+    <text x="646" y="245" fill="#475569" font-size="12">Reason / plan</text>
+    <text x="646" y="262" fill="#475569" font-size="12">select one action</text>
+
+    <rect x="906" y="156" width="234" height="118" rx="8" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+    <text x="928" y="190" fill="#c2410c" font-size="14" font-weight="700">04  GOVERNOR</text>
+    <text x="928" y="220" fill="#0f172a" font-size="15" font-weight="700">May it happen?</text>
+    <text x="928" y="245" fill="#475569" font-size="12">Permission / sandbox</text>
+    <text x="928" y="262" fill="#475569" font-size="12">approval</text>
+
+    <path d="M280 215 H334" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M562 215 H616" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M844 215 H898" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="906" y="346" width="234" height="118" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="928" y="380" fill="#047857" font-size="14" font-weight="700">05  TOOL RUNTIME</text>
+    <text x="928" y="410" fill="#0f172a" font-size="15" font-weight="700">Execute in reality</text>
+    <text x="928" y="435" fill="#475569" font-size="12">Shell / browser</text>
+    <text x="928" y="452" fill="#475569" font-size="12">API / Git</text>
+    <path d="M1023 274 V338" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="624" y="346" width="220" height="118" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="646" y="380" fill="#047857" font-size="14" font-weight="700">06  EVIDENCE</text>
+    <text x="646" y="410" fill="#0f172a" font-size="15" font-weight="700">What actually happened?</text>
+    <text x="646" y="435" fill="#475569" font-size="12">Exit code / DOM / diff</text>
+    <text x="646" y="452" fill="#475569" font-size="12">remote state</text>
+    <path d="M906 405 H852" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="342" y="346" width="220" height="118" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="364" y="380" fill="#1d4ed8" font-size="14" font-weight="700">07  VERIFICATION</text>
+    <text x="364" y="410" fill="#0f172a" font-size="15" font-weight="700">Does evidence satisfy?</text>
+    <text x="364" y="435" fill="#475569" font-size="12">Oracle / E2E</text>
+    <text x="364" y="452" fill="#475569" font-size="12">invariant / review</text>
+    <path d="M624 405 H570" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="60" y="346" width="220" height="118" rx="8" fill="#fff1f2" stroke="#e11d48" stroke-width="2"/>
+    <text x="82" y="380" fill="#be123c" font-size="14" font-weight="700">08  RECOVERY</text>
+    <text x="82" y="410" fill="#0f172a" font-size="15" font-weight="700">Repair, revert, or ask</text>
+    <text x="82" y="435" fill="#475569" font-size="12">Retry / rollback</text>
+    <text x="82" y="452" fill="#475569" font-size="12">checkpoint / human</text>
+    <path d="M342 405 H288" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <path d="M170 346 V310 C170 298 182 296 194 296 H734 C746 296 734 286 734 282" fill="none" stroke="#e11d48" stroke-width="2" stroke-dasharray="6 6" marker-end="url(#arrow)"/>
+    <text x="312" y="320" fill="#be123c" font-size="13" font-weight="600">failed evidence returns to the next decision</text>
+
+    <rect x="180" y="530" width="840" height="72" rx="8" fill="#0f172a"/>
+    <text x="210" y="560" fill="#93c5fd" font-size="13" font-weight="700">LEARNING LOOP</text>
+    <text x="210" y="585" fill="#f8fafc" font-size="18">Real failure -&gt; root cause -&gt; enforceable mechanism -&gt; regression test -&gt; remove when obsolete</text>
+  </g>
+</svg>

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">Six layers of an agent harness</title>
+  <desc id="desc">A layered architecture from task contract and context through model loop, tool runtime, state, verification, and cross-cutting governance.</desc>
+  <rect width="1200" height="660" fill="#f8fafc"/>
+  <text x="60" y="66" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">A bounded architecture for Agent Harness</text>
+  <text x="60" y="98" fill="#64748b" font-family="Inter, Arial, sans-serif" font-size="16">Six responsibilities are easier to test than "everything outside the model."</text>
+  <g font-family="Inter, Arial, sans-serif">
+    <rect x="64" y="142" width="872" height="72" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="88" y="172" fill="#1d4ed8" font-size="14" font-weight="700">L1  CONTRACT + CONTEXT</text>
+    <text x="88" y="197" fill="#0f172a" font-size="17">Goal / scope / acceptance tests / relevant files / examples / current world state</text>
+
+    <rect x="64" y="226" width="872" height="72" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="88" y="256" fill="#334155" font-size="14" font-weight="700">L2  MODEL DECISION LOOP</text>
+    <text x="88" y="281" fill="#0f172a" font-size="17">Observe -&gt; reason -&gt; choose action -&gt; feedback -&gt; stop, continue, or ask</text>
+
+    <rect x="64" y="310" width="424" height="92" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="88" y="340" fill="#047857" font-size="14" font-weight="700">L3  TOOL RUNTIME</text>
+    <text x="88" y="368" fill="#0f172a" font-size="17">Shell / editor / browser / MCP / API</text>
+    <text x="88" y="389" fill="#64748b" font-size="13">Structured inputs, outputs, errors, timeouts</text>
+
+    <rect x="512" y="310" width="424" height="92" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="536" y="340" fill="#6d28d9" font-size="14" font-weight="700">L4  STATE + MEMORY</text>
+    <text x="536" y="368" fill="#0f172a" font-size="17">Progress / Git / checkpoints / task IDs</text>
+    <text x="536" y="389" fill="#64748b" font-size="13">Durable truth across steps and sessions</text>
+
+    <rect x="64" y="414" width="424" height="92" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="88" y="444" fill="#1d4ed8" font-size="14" font-weight="700">L5  VERIFICATION</text>
+    <text x="88" y="472" fill="#0f172a" font-size="17">Schema / test / browser / remote state</text>
+    <text x="88" y="493" fill="#64748b" font-size="13">Bind completion claims to evidence</text>
+
+    <rect x="512" y="414" width="424" height="92" rx="8" fill="#fff1f2" stroke="#e11d48" stroke-width="2"/>
+    <text x="536" y="444" fill="#be123c" font-size="14" font-weight="700">L6  RECOVERY</text>
+    <text x="536" y="472" fill="#0f172a" font-size="17">Retry / undo / revert / resume / escalate</text>
+    <text x="536" y="493" fill="#64748b" font-size="13">Return to a known-good state</text>
+
+    <rect x="970" y="142" width="166" height="364" rx="8" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+    <text x="991" y="176" fill="#c2410c" font-size="14" font-weight="700">CROSS-CUTTING</text>
+    <text x="991" y="207" fill="#0f172a" font-size="19" font-weight="700">Governance</text>
+    <line x1="991" y1="226" x2="1115" y2="226" stroke="#fdba74"/>
+    <text x="991" y="259" fill="#475569" font-size="14">Permissions</text>
+    <text x="991" y="289" fill="#475569" font-size="14">Sandbox</text>
+    <text x="991" y="319" fill="#475569" font-size="14">Approvals</text>
+    <text x="991" y="349" fill="#475569" font-size="14">Budgets</text>
+    <text x="991" y="379" fill="#475569" font-size="14">Secrets</text>
+    <text x="991" y="409" fill="#475569" font-size="14">Audit trail</text>
+    <text x="991" y="439" fill="#475569" font-size="14">Metrics</text>
+    <text x="991" y="469" fill="#475569" font-size="14">Stop policy</text>
+
+    <rect x="64" y="548" width="1072" height="58" rx="8" fill="#e2e8f0"/>
+    <text x="90" y="583" fill="#334155" font-size="16" font-weight="600">Design rule: every layer needs an owner, an observable failure, and a testable interface.</text>
+  </g>
+</svg>

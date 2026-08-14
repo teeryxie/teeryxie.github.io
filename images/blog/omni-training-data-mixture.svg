@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">Closed-loop data mixture controller</title>
+  <desc id="desc">A data mixture starts with explicit sampling probabilities, is measured by effective contribution, evaluated in failure buckets, and then adjusted within bounded ranges.</desc>
+  <rect width="1200" height="660" fill="#f8fafc"/>
+  <text x="64" y="66" fill="#172033" font-family="Arial, sans-serif" font-size="30" font-weight="700">DATA MIXTURE IS A CONTROL LOOP</text>
+  <text x="64" y="98" fill="#526075" font-family="Arial, sans-serif" font-size="17">Start with a recipe. Measure effective contribution. Reweight the failures, not the file count.</text>
+  <g font-family="Arial, sans-serif">
+    <g transform="translate(64 150)">
+      <rect width="262" height="352" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+      <text x="24" y="42" fill="#2563eb" font-size="14" font-weight="700">STARTING SAMPLER</text>
+      <text x="24" y="82" fill="#172033" font-size="15">30% real duplex</text>
+      <rect x="24" y="94" width="196" height="12" rx="6" fill="#dbeafe"/><rect x="24" y="94" width="59" height="12" rx="6" fill="#2563eb"/>
+      <text x="24" y="138" fill="#172033" font-size="15">25% synthetic timeline</text>
+      <rect x="24" y="150" width="196" height="12" rx="6" fill="#ede9fe"/><rect x="24" y="150" width="49" height="12" rx="6" fill="#7c3aed"/>
+      <text x="24" y="194" fill="#172033" font-size="15">15% single-stream</text>
+      <rect x="24" y="206" width="196" height="12" rx="6" fill="#dcfce7"/><rect x="24" y="206" width="29" height="12" rx="6" fill="#15803d"/>
+      <text x="24" y="250" fill="#172033" font-size="15">10% audio-video</text>
+      <text x="24" y="278" fill="#172033" font-size="15">10% text replay</text>
+      <text x="24" y="306" fill="#172033" font-size="15">10% hard cases</text>
+    </g>
+    <g transform="translate(391 150)">
+      <rect width="354" height="352" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+      <text x="24" y="42" fill="#7c3aed" font-size="14" font-weight="700">EFFECTIVE CONTRIBUTION</text>
+      <rect x="24" y="72" width="306" height="66" rx="8" fill="#f5f3ff" stroke="#ddd6fe"/>
+      <text x="177" y="100" text-anchor="middle" fill="#172033" font-size="18" font-weight="700">p x tokens x loss weight</text>
+      <text x="177" y="124" text-anchor="middle" fill="#526075" font-size="14">x gradient magnitude</text>
+      <text x="24" y="178" fill="#172033" font-size="15" font-weight="700">Report by bucket</text>
+      <text x="24" y="208" fill="#526075" font-size="14">effective seconds / tokens</text>
+      <text x="24" y="236" fill="#526075" font-size="14">loss and gradient norm</text>
+      <text x="24" y="264" fill="#526075" font-size="14">wall-clock and padding</text>
+      <text x="24" y="292" fill="#526075" font-size="14">clean vs noisy regression</text>
+      <text x="24" y="320" fill="#526075" font-size="14">speaker and source leakage</text>
+    </g>
+    <g transform="translate(810 150)">
+      <rect width="326" height="352" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+      <text x="24" y="42" fill="#dc2626" font-size="14" font-weight="700">FAILURE BUCKETS</text>
+      <g fill="#fff7ed" stroke="#fdba74">
+        <rect x="24" y="70" width="130" height="46" rx="8"/><rect x="172" y="70" width="130" height="46" rx="8"/>
+        <rect x="24" y="132" width="130" height="46" rx="8"/><rect x="172" y="132" width="130" height="46" rx="8"/>
+        <rect x="24" y="194" width="130" height="46" rx="8"/><rect x="172" y="194" width="130" height="46" rx="8"/>
+      </g>
+      <g fill="#9a3412" font-size="13" font-weight="700" text-anchor="middle">
+        <text x="89" y="98">FALSE START</text><text x="237" y="98">MISSED STOP</text>
+        <text x="89" y="160">TEXT FORGET</text><text x="237" y="160">VOICE DRIFT</text>
+        <text x="89" y="222">BAD TOOL</text><text x="237" y="222">HIGH P95</text>
+      </g>
+      <text x="24" y="276" fill="#172033" font-size="15" font-weight="700">Bounded update</text>
+      <text x="24" y="304" fill="#526075" font-size="14">raise failed buckets</text>
+      <text x="24" y="328" fill="#526075" font-size="14">preserve lower / upper limits</text>
+    </g>
+  </g>
+  <path d="M326 326H380" fill="none" stroke="#94a3b8" stroke-width="3"/><path d="M371 319l12 7-12 7" fill="none" stroke="#94a3b8" stroke-width="3"/>
+  <path d="M745 326H799" fill="none" stroke="#94a3b8" stroke-width="3"/><path d="M790 319l12 7-12 7" fill="none" stroke="#94a3b8" stroke-width="3"/>
+  <path d="M973 518C973 594 206 594 206 518" fill="none" stroke="#dc2626" stroke-width="3" stroke-dasharray="8 8"/>
+  <path d="M198 527l8-12 8 12" fill="none" stroke="#dc2626" stroke-width="3"/>
+  <text x="590" y="590" text-anchor="middle" fill="#b91c1c" font-family="Arial, sans-serif" font-size="14" font-weight="700">REWEIGHT, RETRAIN, RE-EVALUATE</text>
+</svg>

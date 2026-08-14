@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">Failure to mechanism map</title>
+  <desc id="desc">Four common agent failures mapped to root causes, enforceable mechanisms, and evidence.</desc>
+  <rect width="1200" height="660" fill="#f8fafc"/>
+  <text x="60" y="66" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">Do not fix every failure with another sentence</text>
+  <text x="60" y="98" fill="#64748b" font-family="Inter, Arial, sans-serif" font-size="16">Move from symptom to root cause, then choose the smallest enforceable mechanism.</text>
+  <g font-family="Inter, Arial, sans-serif">
+    <text x="72" y="142" fill="#64748b" font-size="13" font-weight="700">SYMPTOM</text>
+    <text x="330" y="142" fill="#64748b" font-size="13" font-weight="700">ROOT CAUSE</text>
+    <text x="620" y="142" fill="#64748b" font-size="13" font-weight="700">HARNESS MECHANISM</text>
+    <text x="942" y="142" fill="#64748b" font-size="13" font-weight="700">COMPLETION EVIDENCE</text>
+
+    <rect x="60" y="160" width="1080" height="92" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+    <rect x="60" y="160" width="10" height="92" rx="5" fill="#e11d48"/>
+    <text x="88" y="195" fill="#be123c" font-size="18" font-weight="700">Premature finish</text>
+    <text x="88" y="222" fill="#475569" font-size="14">Stops after partial work</text>
+    <text x="330" y="195" fill="#0f172a" font-size="16" font-weight="700">No external done contract</text>
+    <text x="330" y="222" fill="#475569" font-size="14">Completion is a feeling</text>
+    <text x="620" y="195" fill="#1d4ed8" font-size="16" font-weight="700">Manifest + stop gate</text>
+    <text x="620" y="222" fill="#475569" font-size="14">N targets, M verified</text>
+    <text x="942" y="195" fill="#047857" font-size="16" font-weight="700">M = N</text>
+    <text x="942" y="222" fill="#475569" font-size="14">All acceptance checks pass</text>
+
+    <rect x="60" y="268" width="1080" height="92" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+    <rect x="60" y="268" width="10" height="92" rx="5" fill="#ea580c"/>
+    <text x="88" y="303" fill="#c2410c" font-size="18" font-weight="700">Environment blindness</text>
+    <text x="88" y="330" fill="#475569" font-size="14">Looks right, does not run</text>
+    <text x="330" y="303" fill="#0f172a" font-size="16" font-weight="700">No real execution feedback</text>
+    <text x="330" y="330" fill="#475569" font-size="14">Reasoning substitutes reality</text>
+    <text x="620" y="303" fill="#1d4ed8" font-size="16" font-weight="700">Sandbox + real runtime</text>
+    <text x="620" y="330" fill="#475569" font-size="14">Browser, device, API, deploy</text>
+    <text x="942" y="303" fill="#047857" font-size="16" font-weight="700">Observed output</text>
+    <text x="942" y="330" fill="#475569" font-size="14">DOM / screenshot / response</text>
+
+    <rect x="60" y="376" width="1080" height="92" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+    <rect x="60" y="376" width="10" height="92" rx="5" fill="#7c3aed"/>
+    <text x="88" y="411" fill="#6d28d9" font-size="18" font-weight="700">False verification</text>
+    <text x="88" y="438" fill="#475569" font-size="14">Easy tests, confident claim</text>
+    <text x="330" y="411" fill="#0f172a" font-size="16" font-weight="700">Actor selects its own proof</text>
+    <text x="330" y="438" fill="#475569" font-size="14">Correlated blind spots</text>
+    <text x="620" y="411" fill="#1d4ed8" font-size="16" font-weight="700">External oracle + E2E</text>
+    <text x="620" y="438" fill="#475569" font-size="14">Fixed tests and user journey</text>
+    <text x="942" y="411" fill="#047857" font-size="16" font-weight="700">Independent signal</text>
+    <text x="942" y="438" fill="#475569" font-size="14">Invariant / remote state</text>
+
+    <rect x="60" y="484" width="1080" height="92" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+    <rect x="60" y="484" width="10" height="92" rx="5" fill="#2563eb"/>
+    <text x="88" y="519" fill="#1d4ed8" font-size="18" font-weight="700">Session amnesia</text>
+    <text x="88" y="546" fill="#475569" font-size="14">Guesses what happened before</text>
+    <text x="330" y="519" fill="#0f172a" font-size="16" font-weight="700">State lives in chat only</text>
+    <text x="330" y="546" fill="#475569" font-size="14">Compaction loses rationale</text>
+    <text x="620" y="519" fill="#1d4ed8" font-size="16" font-weight="700">Git + progress + IDs</text>
+    <text x="620" y="546" fill="#475569" font-size="14">Durable structured state</text>
+    <text x="942" y="519" fill="#047857" font-size="16" font-weight="700">Reconstructed truth</text>
+    <text x="942" y="546" fill="#475569" font-size="14">HEAD / diff / task status</text>
+
+    <text x="60" y="621" fill="#334155" font-size="15" font-weight="600">A prompt can suggest behavior. A contract, runtime, oracle, or checkpoint can enforce and prove it.</text>
+  </g>
+</svg>

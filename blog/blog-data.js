@@ -1,5 +1,23 @@
 window.BLOG_POSTS = [
   {
+    slug: "omni-model-training-full-pipeline",
+    title: "Training Omni Models End to End: Compute, Data Mixtures, and Stage-Wise Recipes",
+    date: "2026-08",
+    category: "Training",
+    section: "Research Notes",
+    status: "Omni Training · Compute Planning · Data Mixture",
+    summary: "A stage-wise engineering guide to training interactive omni models: GPU and storage planning, data contracts and starting mixtures, modality alignment, duplex mid-training, Thinker-Talker optimization, preference tuning, control-policy RL, agentic rollouts, failure diagnostics, and promotion gates for one-GPU, eight-GPU, and cluster-scale research.",
+  },
+  {
+    slug: "agent-harness-engineering-four-projects",
+    title: "Agent Harness Engineering: From Model Capability to Reliable Execution",
+    date: "2026-08",
+    category: "Survey",
+    section: "Surveys",
+    status: "Agent Harness · Verification · Open Source",
+    summary: "A first-principles guide to agent harness engineering: why prompts, skills, and MCP are only inputs to a larger reliability loop, how context, runtime, policy, verification, recovery, and observability fit together, and how OpenHands, mini-SWE-agent, Aider, and Goose represent four distinct open-source design routes.",
+  },
+  {
     slug: "natural-interaction-omni-duplex-agentic-architecture",
     title: "What Does Natural Human-AI Interaction Actually Require?",
     date: "2026-08",
