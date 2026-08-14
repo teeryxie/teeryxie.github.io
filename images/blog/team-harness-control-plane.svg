@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">Team harness control plane architecture</title>
+  <desc id="desc">Feishu acts as the human control surface. A team control service manages task state, context, policy, credentials, adapters, execution agents, Git, continuous integration, and evidence.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker>
+  </defs>
+  <rect width="1200" height="660" fill="#f8fafc"/>
+  <text x="60" y="58" fill="#172033" font-family="Arial, sans-serif" font-size="30" font-weight="700">POLICY MONOLITHIC, EXECUTION DISTRIBUTED</text>
+  <text x="60" y="90" fill="#526075" font-family="Arial, sans-serif" font-size="17">One canonical task and policy state coordinates many scoped people, agents, workspaces, and tools.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="60" y="126" width="1080" height="82" rx="8" fill="#eef6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="88" y="161" fill="#2563eb" font-size="15" font-weight="700">FEISHU CONTROL SURFACE</text>
+    <text x="88" y="188" fill="#172033" font-size="18" font-weight="700">Chat · meetings · documents · task cards · approvals · mobile handoff</text>
+    <g stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"><path d="M600 209 V246"/><path d="M400 246 V209"/></g>
+    <rect x="195" y="247" width="810" height="178" rx="8" fill="#ffffff" stroke="#0f766e" stroke-width="3"/>
+    <text x="225" y="283" fill="#0f766e" font-size="15" font-weight="700">TEAM CONTROL SERVICE · CANONICAL STATE</text>
+    <g fill="#ecfdf5" stroke="#5eead4">
+      <rect x="225" y="306" width="165" height="82" rx="6"/><rect x="420" y="306" width="165" height="82" rx="6"/>
+      <rect x="615" y="306" width="165" height="82" rx="6"/><rect x="810" y="306" width="165" height="82" rx="6"/>
+    </g>
+    <g text-anchor="middle">
+      <text x="307" y="338" fill="#115e59" font-size="16" font-weight="700">TASK GRAPH</text><text x="307" y="363" fill="#526075" font-size="13">state · owner · deps</text>
+      <text x="502" y="338" fill="#115e59" font-size="16" font-weight="700">CONTEXT</text><text x="502" y="363" fill="#526075" font-size="13">source · version · scope</text>
+      <text x="697" y="338" fill="#115e59" font-size="16" font-weight="700">POLICY</text><text x="697" y="363" fill="#526075" font-size="13">roles · approvals · audit</text>
+      <text x="892" y="338" fill="#115e59" font-size="16" font-weight="700">EVIDENCE</text><text x="892" y="363" fill="#526075" font-size="13">claims · runs · artifacts</text>
+    </g>
+    <text x="600" y="408" fill="#526075" font-size="13" text-anchor="middle">Durable events · idempotent handlers · explicit intervention protocol</text>
+    <g stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"><path d="M395 426 V472"/><path d="M600 426 V472"/><path d="M805 426 V472"/></g>
+    <g>
+      <rect x="60" y="473" width="310" height="116" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+      <text x="82" y="508" fill="#7c3aed" font-size="15" font-weight="700">AGENT ADAPTERS</text>
+      <text x="82" y="539" fill="#172033" font-size="17" font-weight="700">Codex · Claude Code · others</text>
+      <text x="82" y="566" fill="#526075" font-size="14">normalize events · enforce local policy</text>
+      <rect x="445" y="473" width="310" height="116" rx="8" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+      <text x="467" y="508" fill="#b45309" font-size="15" font-weight="700">GATEWAY + CREDENTIAL BROKER</text>
+      <text x="467" y="539" fill="#172033" font-size="17" font-weight="700">routing · quota · session affinity</text>
+      <text x="467" y="566" fill="#526075" font-size="14">short-lived scoped credentials</text>
+      <rect x="830" y="473" width="310" height="116" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+      <text x="852" y="508" fill="#2563eb" font-size="15" font-weight="700">ARTIFACT + EVIDENCE PLANE</text>
+      <text x="852" y="539" fill="#172033" font-size="17" font-weight="700">Git · CI · devices · benchmarks</text>
+      <text x="852" y="566" fill="#526075" font-size="14">independent proof and provenance</text>
+    </g>
+    <g fill="#64748b" font-size="13" text-anchor="middle">
+      <text x="215" y="624">scoped execution sessions</text><text x="600" y="624">model and tool data plane</text><text x="985" y="624">verifiable outcomes</text>
+    </g>
+  </g>
+</svg>

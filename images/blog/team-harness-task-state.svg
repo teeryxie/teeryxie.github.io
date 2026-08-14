@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">Team harness task state machine</title>
+  <desc id="desc">A task moves from draft to assigned, active, verifying, and done, with explicit branches for blocked, diverged, waiting decision, handoff, paused, and cancelled states.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker>
+  </defs>
+  <rect width="1200" height="660" fill="#f8fafc"/>
+  <text x="64" y="62" fill="#172033" font-family="Arial, sans-serif" font-size="30" font-weight="700">PROGRESS IS A VERIFIED STATE TRANSITION, NOT TOKEN ACTIVITY</text>
+  <text x="64" y="94" fill="#526075" font-family="Arial, sans-serif" font-size="17">Every exception has an explicit recovery path and every transition emits an auditable event.</text>
+  <g font-family="Arial, sans-serif">
+    <g stroke="#64748b" stroke-width="3" fill="none" marker-end="url(#arrow)">
+      <path d="M192 207 H275"/><path d="M425 207 H508"/><path d="M692 207 H775"/><path d="M925 207 H1008"/>
+      <path d="M600 258 V328"/><path d="M600 424 V478"/>
+      <path d="M557 251 C520 291 445 308 383 334"/><path d="M643 251 C680 291 755 308 817 334"/>
+      <path d="M360 426 C382 488 430 514 500 523"/><path d="M840 426 C818 488 770 514 700 523"/>
+      <path d="M315 382 H225"/><path d="M885 382 H975"/>
+    </g>
+    <g text-anchor="middle">
+      <rect x="64" y="162" width="128" height="90" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+      <text x="128" y="213" fill="#172033" font-size="17" font-weight="700">DRAFT</text>
+      <rect x="275" y="162" width="150" height="90" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+      <text x="350" y="213" fill="#1e40af" font-size="17" font-weight="700">ASSIGNED</text>
+      <rect x="508" y="152" width="184" height="110" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
+      <text x="600" y="199" fill="#1e40af" font-size="20" font-weight="700">ACTIVE</text>
+      <text x="600" y="227" fill="#526075" font-size="13">evidence is growing</text>
+      <rect x="775" y="162" width="150" height="90" rx="8" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+      <text x="850" y="213" fill="#0f766e" font-size="17" font-weight="700">VERIFYING</text>
+      <rect x="1008" y="162" width="128" height="90" rx="8" fill="#ecfdf5" stroke="#15803d" stroke-width="2"/>
+      <text x="1072" y="213" fill="#166534" font-size="17" font-weight="700">DONE</text>
+      <rect x="315" y="334" width="150" height="92" rx="8" fill="#fff7ed" stroke="#d97706" stroke-width="2"/>
+      <text x="390" y="375" fill="#9a3412" font-size="17" font-weight="700">BLOCKED</text><text x="390" y="400" fill="#526075" font-size="13">dependency or access</text>
+      <rect x="525" y="328" width="150" height="96" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+      <text x="600" y="369" fill="#b91c1c" font-size="17" font-weight="700">DIVERGED</text><text x="600" y="395" fill="#526075" font-size="13">scope or plan drift</text>
+      <rect x="735" y="334" width="150" height="92" rx="8" fill="#fff7ed" stroke="#d97706" stroke-width="2"/>
+      <text x="810" y="369" fill="#9a3412" font-size="15" font-weight="700">WAITING</text><text x="810" y="392" fill="#9a3412" font-size="15" font-weight="700">DECISION</text>
+      <rect x="74" y="342" width="150" height="80" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+      <text x="149" y="389" fill="#526075" font-size="16" font-weight="700">PAUSED</text>
+      <rect x="976" y="342" width="160" height="80" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+      <text x="1056" y="389" fill="#526075" font-size="16" font-weight="700">CANCELLED</text>
+      <rect x="500" y="478" width="200" height="94" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+      <text x="600" y="517" fill="#6d28d9" font-size="17" font-weight="700">REPLAN / HANDOFF</text>
+      <text x="600" y="544" fill="#526075" font-size="13">validate state, then resume</text>
+    </g>
+    <rect x="125" y="602" width="950" height="38" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+    <text x="600" y="626" fill="#526075" font-size="14" text-anchor="middle">Interventions are versioned events: REQUEST EVIDENCE · CLARIFY SCOPE · PAUSE · REPLAN · REASSIGN · TAKEOVER</text>
+  </g>
+</svg>

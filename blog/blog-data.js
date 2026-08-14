@@ -1,5 +1,14 @@
 window.BLOG_POSTS = [
   {
+    slug: "team-harness-human-agent-collaboration",
+    title: "Human + Harness = Group: A Control Plane for Team Vibe Coding",
+    date: "2026-08",
+    category: "Research Note",
+    section: "Research Notes",
+    status: "Team Harness · Vibe Coding · Human-Agent Collaboration",
+    summary: "A first-principles architecture for team-scale agentic software development: binding people, coding-agent sessions, task contracts, shared context, structured traces, evidence, intervention, handoffs, model gateways, and organizational governance through a Feishu-centered control plane.",
+  },
+  {
     slug: "omni-model-training-full-pipeline",
     title: "Training Omni Models End to End: Compute, Data Mixtures, and Stage-Wise Recipes",
     date: "2026-08",

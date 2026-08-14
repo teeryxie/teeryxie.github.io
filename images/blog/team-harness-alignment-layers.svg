@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc">
+  <title id="title">The missing coordination layer in team agent work</title>
+  <desc id="desc">Git, chat, agent traces, and continuous integration each preserve different evidence. A team harness binds them to one task contract and shared control state.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker>
+  </defs>
+  <rect width="1200" height="660" fill="#f8fafc"/>
+  <text x="64" y="62" fill="#172033" font-family="Arial, sans-serif" font-size="30" font-weight="700">TEAM WORK HAS FOUR PLANES, BUT NO SHARED CONTROL STATE</text>
+  <text x="64" y="94" fill="#526075" font-family="Arial, sans-serif" font-size="17">Each system sees a fragment. The harness binds intent, execution, evidence, and intervention.</text>
+  <g font-family="Arial, sans-serif">
+    <g transform="translate(64 140)">
+      <rect width="230" height="150" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+      <rect width="230" height="10" rx="5" fill="#64748b"/>
+      <text x="22" y="48" fill="#172033" font-size="20" font-weight="700">Git / Pull Requests</text>
+      <text x="22" y="80" fill="#526075" font-size="15">Artifacts and diffs</text>
+      <text x="22" y="105" fill="#526075" font-size="15">Review and merge</text>
+      <text x="22" y="130" fill="#9a3412" font-size="14" font-weight="700">Not current intent</text>
+    </g>
+    <g transform="translate(345 140)">
+      <rect width="230" height="150" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+      <rect width="230" height="10" rx="5" fill="#64748b"/>
+      <text x="22" y="48" fill="#172033" font-size="20" font-weight="700">Team Chat</text>
+      <text x="22" y="80" fill="#526075" font-size="15">Discussion and decisions</text>
+      <text x="22" y="105" fill="#526075" font-size="15">Meeting context</text>
+      <text x="22" y="130" fill="#9a3412" font-size="14" font-weight="700">Not verified progress</text>
+    </g>
+    <g transform="translate(626 140)">
+      <rect width="230" height="150" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+      <rect width="230" height="10" rx="5" fill="#64748b"/>
+      <text x="22" y="48" fill="#172033" font-size="20" font-weight="700">Agent Traces</text>
+      <text x="22" y="80" fill="#526075" font-size="15">Plans and tool events</text>
+      <text x="22" y="105" fill="#526075" font-size="15">Failures and revisions</text>
+      <text x="22" y="130" fill="#9a3412" font-size="14" font-weight="700">Not proof by itself</text>
+    </g>
+    <g transform="translate(907 140)">
+      <rect width="230" height="150" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
+      <rect width="230" height="10" rx="5" fill="#64748b"/>
+      <text x="22" y="48" fill="#172033" font-size="20" font-weight="700">CI / Benchmarks</text>
+      <text x="22" y="80" fill="#526075" font-size="15">Independent checks</text>
+      <text x="22" y="105" fill="#526075" font-size="15">Logs and metrics</text>
+      <text x="22" y="130" fill="#9a3412" font-size="14" font-weight="700">Not team alignment</text>
+    </g>
+    <g stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrow)">
+      <path d="M179 291 V358"/><path d="M460 291 V358"/><path d="M741 291 V358"/><path d="M1022 291 V358"/>
+    </g>
+    <rect x="134" y="360" width="932" height="190" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="3"/>
+    <rect x="134" y="360" width="18" height="190" rx="8" fill="#2563eb"/>
+    <text x="184" y="407" fill="#2563eb" font-size="16" font-weight="700">TEAM HARNESS: COORDINATION + CONTROL PLANE</text>
+    <text x="184" y="449" fill="#172033" font-size="24" font-weight="700">One task contract binds every fragment to the same objective.</text>
+    <g fill="#eff6ff" stroke="#93c5fd">
+      <rect x="184" y="479" width="148" height="42" rx="6"/><rect x="349" y="479" width="148" height="42" rx="6"/>
+      <rect x="514" y="479" width="148" height="42" rx="6"/><rect x="679" y="479" width="148" height="42" rx="6"/>
+      <rect x="844" y="479" width="166" height="42" rx="6"/>
+    </g>
+    <g fill="#1e3a8a" font-size="14" font-weight="700" text-anchor="middle">
+      <text x="258" y="505">SHARED CONTEXT</text><text x="423" y="505">TASK STATE</text>
+      <text x="588" y="505">EVIDENCE</text><text x="753" y="505">INTERVENTION</text><text x="927" y="505">HANDOFF + POLICY</text>
+    </g>
+    <text x="600" y="601" fill="#526075" font-size="16" text-anchor="middle">The goal is not total surveillance. It is earlier drift detection, cheaper recovery, and verifiable delivery.</text>
+  </g>
+</svg>
