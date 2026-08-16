@@ -262,12 +262,12 @@ window.BLOG_POSTS = [
   },
   {
     slug: "fold",
-    title: "FOLD: Fast Correct Speculative Decoding",
-    date: "2026",
+    title: "Correct While Verifying: Intermediate Target Predictions for Speculative Draft Correction",
+    date: "2026-07",
     category: "Paper Intro",
     section: "Paper Readings",
-    status: "ICLR-26 withdrawn submission",
-    summary: "Online learning and adaptive drafting for faster LLM decoding with an explicit correctness guarantee.",
+    status: "AAAI-27 · Submitted · Fifth Author",
+    summary: "Intermediate target-model predictions proactively correct speculative drafts during verification, reaching up to 4.53x speedup over autoregressive decoding.",
   },
   {
     slug: "homepage",

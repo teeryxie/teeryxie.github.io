@@ -68,15 +68,15 @@
         </article>
 
         <article class="project-entry">
-          <a class="project-media" href="/images/projects/fold.jpg" data-lightbox data-caption="FOLD · paper first page"><img loading="lazy" decoding="async" src="/images/projects/fold.jpg" alt="FOLD paper first page"></a>
+          <a class="project-media" href="/images/papers/default-paper.jpg" data-lightbox data-caption="Correct While Verifying · paper preview"><img loading="lazy" decoding="async" src="/images/papers/default-paper.jpg" alt="Correct While Verifying paper preview"></a>
           <div class="project-copy">
-            <div class="project-kicker">Efficient Inference · OpenReview</div>
-            <h2>FOLD</h2>
-            <p class="project-problem"><strong>Problem.</strong> Static draft models limit speculative decoding speed when the target model or input distribution changes.</p>
-            <p><strong>Method.</strong> Online learning and adaptive drafting preserve target-model correctness while improving draft acceptance during inference.</p>
-            <dl class="project-facts"><div><dt>Role</dt><dd>First author</dd></div><div><dt>Status</dt><dd>Withdrawn ICLR 2026 submission; project note available</dd></div></dl>
-            <div class="actions"><a class="action" href="https://openreview.net/forum?id=QNEsvRqub6">OpenReview</a><a class="action" href="/blog/fold/">Blog</a></div>
-            <div class="tag-row"><span class="tag">Speculative Decoding</span><span class="tag">Online Learning</span><span class="tag">LLM Inference</span></div>
+            <div class="project-kicker">Efficient Inference · AAAI 2027</div>
+            <h2>Correct While Verifying</h2>
+            <p class="project-problem"><strong>Problem.</strong> Speculative decoding discovers incorrect draft tokens only after final verification, then discards the entire suffix following the first rejection.</p>
+            <p><strong>Method.</strong> Intermediate target-model states predict correct continuations early, seed correction branches, and verify original and corrected drafts in parallel.</p>
+            <dl class="project-facts"><div><dt>Role</dt><dd>Fifth author</dd></div><div><dt>Status</dt><dd>AAAI 2027 submission; project note available</dd></div></dl>
+            <div class="actions"><a class="action" href="/blog/fold/">Blog</a></div>
+            <div class="tag-row"><span class="tag">Speculative Decoding</span><span class="tag">Draft Correction</span><span class="tag">Efficient Inference</span></div>
           </div>
         </article>
       </div>
