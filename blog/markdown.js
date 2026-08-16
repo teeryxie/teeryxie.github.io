@@ -559,6 +559,31 @@ function renderArticleError(article, retry) {
   article.querySelector("[data-article-retry]").addEventListener("click", retry);
 }
 
+function ensureArticleHero() {
+  const content = document.querySelector(".blog-post .content");
+  if (!content || content.querySelector(":scope > .inner-hero")) return;
+
+  const breadcrumb = content.querySelector(":scope > .blog-breadcrumb");
+  const title = content.querySelector(":scope > [data-post-title]");
+  const meta = content.querySelector(":scope > [data-post-meta]");
+  if (!breadcrumb || !title || !meta) return;
+
+  const hero = document.createElement("header");
+  hero.className = "inner-hero article-hero";
+  const kicker = document.createElement("p");
+  kicker.className = "inner-kicker";
+  kicker.textContent = "Research note";
+  hero.append(kicker, breadcrumb, title, meta);
+  content.prepend(hero);
+
+  const shell = content.closest(".blog-shell");
+  if (shell) {
+    const syncHeight = () => shell.style.setProperty("--article-hero-height", `${hero.offsetHeight}px`);
+    new ResizeObserver(syncHeight).observe(hero);
+    syncHeight();
+  }
+}
+
 async function renderBlogArticle() {
   const article = document.querySelector("[data-markdown-article]");
   if (!article || !window.BLOG_POSTS) return;
@@ -613,6 +638,7 @@ async function renderBlogArticle() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  ensureArticleHero();
   renderBlogIndex();
   renderBlogArticle();
 });
