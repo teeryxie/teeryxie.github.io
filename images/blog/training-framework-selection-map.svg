@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 720" role="img" aria-labelledby="title desc">
+  <title id="title">Distributed training framework selection map</title>
+  <desc id="desc">A decision map connects primary project constraints with Megatron Core, DeepSpeed, or Colossal-AI as a starting point.</desc>
+  <defs>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="9" stdDeviation="9" flood-color="#182333" flood-opacity=".1"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7b8ea1"/></marker>
+  </defs>
+  <rect width="1180" height="720" fill="#f8fafc"/>
+  <text x="60" y="62" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="800" fill="#172033">Pick the First-Class Path, Not the Longest Feature List</text>
+  <text x="60" y="96" font-family="Inter,Arial,sans-serif" font-size="16" fill="#5d6876">Start from the dominant constraint, then verify the exact model, topology, and checkpoint contract.</text>
+  <g filter="url(#shadow)" font-family="Inter,Arial,sans-serif">
+    <rect x="390" y="138" width="400" height="82" rx="8" fill="#172033"/>
+    <text x="590" y="171" text-anchor="middle" font-size="19" font-weight="800" fill="#fff">What is the dominant constraint?</text><text x="590" y="198" text-anchor="middle" font-size="14" fill="#ccd5df">Choose one primary control plane</text>
+
+    <rect x="60" y="292" width="310" height="108" rx="8" fill="#eaf3fa" stroke="#b9d4e7"/>
+    <text x="215" y="329" text-anchor="middle" font-size="18" font-weight="800" fill="#235f89">Scale + Transformer MFU</text><text x="215" y="357" text-anchor="middle" font-size="14" fill="#526d80">NVIDIA · TP/PP/CP/EP · MoE</text><text x="215" y="381" text-anchor="middle" font-size="14" fill="#526d80">team owns parallel model code</text>
+
+    <rect x="435" y="292" width="310" height="108" rx="8" fill="#fff3e8" stroke="#ebc79f"/>
+    <text x="590" y="329" text-anchor="middle" font-size="18" font-weight="800" fill="#985518">Memory + Existing Model</text><text x="590" y="357" text-anchor="middle" font-size="14" fill="#775a3e">HF/PyTorch · ZeRO · offload</text><text x="590" y="381" text-anchor="middle" font-size="14" fill="#775a3e">minimal graph rewrite</text>
+
+    <rect x="810" y="292" width="310" height="108" rx="8" fill="#edf8f2" stroke="#bdddcf"/>
+    <text x="965" y="329" text-anchor="middle" font-size="18" font-weight="800" fill="#21664e">Research + Composability</text><text x="965" y="357" text-anchor="middle" font-size="14" fill="#476b5c">plugins · policies · transformations</text><text x="965" y="381" text-anchor="middle" font-size="14" fill="#476b5c">switch strategies under one API</text>
+
+    <rect x="85" y="500" width="260" height="108" rx="8" fill="#286fa3"/><text x="215" y="541" text-anchor="middle" font-size="23" font-weight="800" fill="#fff">Megatron Core</text><text x="215" y="572" text-anchor="middle" font-size="14" fill="#e6f1f8">performance-first starting point</text>
+    <rect x="460" y="500" width="260" height="108" rx="8" fill="#c57a27"/><text x="590" y="541" text-anchor="middle" font-size="23" font-weight="800" fill="#fff">DeepSpeed</text><text x="590" y="572" text-anchor="middle" font-size="14" fill="#fff3e8">runtime-first starting point</text>
+    <rect x="835" y="500" width="260" height="108" rx="8" fill="#258267"/><text x="965" y="541" text-anchor="middle" font-size="23" font-weight="800" fill="#fff">Colossal-AI</text><text x="965" y="572" text-anchor="middle" font-size="14" fill="#edf8f2">plugin-first starting point</text>
+  </g>
+  <path d="M508 222C410 248 314 258 215 280" stroke="#7b8ea1" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+  <path d="M590 222V280" stroke="#7b8ea1" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M672 222C770 248 866 258 965 280" stroke="#7b8ea1" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+  <path d="M215 402V488" stroke="#286fa3" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M590 402V488" stroke="#c57a27" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M965 402V488" stroke="#258267" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="590" y="670" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="16" fill="#607083">Then prove correctness, save/load, topology changes, and end-to-end throughput on your own workload.</text>
+</svg>

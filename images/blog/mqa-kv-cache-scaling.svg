@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 650" role="img" aria-labelledby="title desc">
+  <title id="title">KV Cache scaling with key-value head count</title>
+  <desc id="desc">Illustrative KV cache sizes for multi-head, grouped-query, and multi-query attention.</desc>
+  <rect width="1180" height="650" fill="#f8fafc"/>
+  <text x="60" y="62" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="800" fill="#172033">KV Cache Scales Linearly with H_kv</text>
+  <text x="60" y="96" font-family="Inter,Arial,sans-serif" font-size="16" fill="#5d6876">Illustrative 32-layer model, 32K context, head dim 128, batch 1, BF16/FP16 cache.</text>
+  <g font-family="Inter,Arial,sans-serif">
+    <text x="60" y="174" font-size="17" font-weight="800" fill="#172033">MHA · 32 KV heads</text>
+    <rect x="60" y="194" width="1020" height="64" rx="6" fill="#b84545"/><text x="1050" y="235" text-anchor="end" font-size="22" font-weight="800" fill="#fff">16 GiB</text>
+    <text x="60" y="306" font-size="17" font-weight="800" fill="#172033">GQA · 8 KV heads</text>
+    <rect x="60" y="326" width="255" height="64" rx="6" fill="#c88632"/><text x="292" y="367" text-anchor="end" font-size="22" font-weight="800" fill="#fff">4 GiB</text>
+    <text x="60" y="438" font-size="17" font-weight="800" fill="#172033">GQA · 4 KV heads</text>
+    <rect x="60" y="458" width="128" height="64" rx="6" fill="#39769d"/><text x="206" y="499" font-size="22" font-weight="800" fill="#172033">2 GiB</text>
+    <text x="60" y="570" font-size="17" font-weight="800" fill="#172033">MQA · 1 KV head</text>
+    <rect x="60" y="590" width="32" height="24" rx="4" fill="#258267"/><text x="108" y="609" font-size="18" font-weight="800" fill="#172033">0.5 GiB</text>
+  </g>
+  <line x1="60" y1="122" x2="1080" y2="122" stroke="#d9e1e8"/>
+  <text x="1080" y="632" text-anchor="end" font-family="Inter,Arial,sans-serif" font-size="13" fill="#607083">Cache body only; serving overhead and partitioning are excluded.</text>
+</svg>

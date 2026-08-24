@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 680" role="img" aria-labelledby="title desc">
+  <title id="title">MHA, GQA, and MQA head sharing</title>
+  <desc id="desc">Comparison of eight query heads connected to eight, two, or one key-value heads.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8fbff"/><stop offset="1" stop-color="#f0f7f3"/></linearGradient>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#182333" flood-opacity=".1"/></filter>
+  </defs>
+  <rect width="1180" height="680" fill="url(#bg)"/>
+  <text x="60" y="62" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="800" fill="#172033">One Attention Family, Three KV Topologies</text>
+  <text x="60" y="96" font-family="Inter,Arial,sans-serif" font-size="16" fill="#5d6876">Query heads stay independent. The number of key-value heads determines how aggressively they share cached state.</text>
+  <g filter="url(#shadow)">
+    <rect x="55" y="138" width="340" height="482" rx="8" fill="#fff" stroke="#d8e2ec"/>
+    <rect x="420" y="138" width="340" height="482" rx="8" fill="#fff" stroke="#d8e2ec"/>
+    <rect x="785" y="138" width="340" height="482" rx="8" fill="#fff" stroke="#d8e2ec"/>
+  </g>
+  <g font-family="Inter,Arial,sans-serif">
+    <text x="83" y="182" font-size="23" font-weight="800" fill="#172033">MHA</text><text x="83" y="208" font-size="14" fill="#607083">8 Q heads / 8 KV heads</text>
+    <text x="448" y="182" font-size="23" font-weight="800" fill="#172033">GQA</text><text x="448" y="208" font-size="14" fill="#607083">8 Q heads / 2 KV heads</text>
+    <text x="813" y="182" font-size="23" font-weight="800" fill="#172033">MQA</text><text x="813" y="208" font-size="14" fill="#607083">8 Q heads / 1 KV head</text>
+  </g>
+  <g stroke="#91a5b9" stroke-width="2" opacity=".8">
+    <path d="M112 288L112 410M148 288L148 410M184 288L184 410M220 288L220 410M256 288L256 410M292 288L292 410M328 288L328 410M364 288L364 410"/>
+    <path d="M477 288L520 410M513 288L520 410M549 288L520 410M585 288L520 410M621 288L686 410M657 288L686 410M693 288L686 410M729 288L686 410"/>
+    <path d="M842 288L955 410M878 288L955 410M914 288L955 410M950 288L955 410M986 288L955 410M1022 288L955 410M1058 288L955 410M1094 288L955 410"/>
+  </g>
+  <g fill="#286fa3">
+    <circle cx="112" cy="270" r="14"/><circle cx="148" cy="270" r="14"/><circle cx="184" cy="270" r="14"/><circle cx="220" cy="270" r="14"/><circle cx="256" cy="270" r="14"/><circle cx="292" cy="270" r="14"/><circle cx="328" cy="270" r="14"/><circle cx="364" cy="270" r="14"/>
+    <circle cx="477" cy="270" r="14"/><circle cx="513" cy="270" r="14"/><circle cx="549" cy="270" r="14"/><circle cx="585" cy="270" r="14"/><circle cx="621" cy="270" r="14"/><circle cx="657" cy="270" r="14"/><circle cx="693" cy="270" r="14"/><circle cx="729" cy="270" r="14"/>
+    <circle cx="842" cy="270" r="14"/><circle cx="878" cy="270" r="14"/><circle cx="914" cy="270" r="14"/><circle cx="950" cy="270" r="14"/><circle cx="986" cy="270" r="14"/><circle cx="1022" cy="270" r="14"/><circle cx="1058" cy="270" r="14"/><circle cx="1094" cy="270" r="14"/>
+  </g>
+  <g fill="#258267">
+    <circle cx="112" cy="428" r="14"/><circle cx="148" cy="428" r="14"/><circle cx="184" cy="428" r="14"/><circle cx="220" cy="428" r="14"/><circle cx="256" cy="428" r="14"/><circle cx="292" cy="428" r="14"/><circle cx="328" cy="428" r="14"/><circle cx="364" cy="428" r="14"/>
+    <circle cx="520" cy="428" r="18"/><circle cx="686" cy="428" r="18"/>
+    <circle cx="955" cy="428" r="21"/>
+  </g>
+  <g font-family="Inter,Arial,sans-serif" text-anchor="middle">
+    <text x="224" y="244" font-size="13" font-weight="700" fill="#286fa3">QUERY HEADS</text><text x="590" y="244" font-size="13" font-weight="700" fill="#286fa3">QUERY HEADS</text><text x="955" y="244" font-size="13" font-weight="700" fill="#286fa3">QUERY HEADS</text>
+    <text x="224" y="472" font-size="13" font-weight="700" fill="#258267">INDEPENDENT KV</text><text x="603" y="472" font-size="13" font-weight="700" fill="#258267">GROUPED KV</text><text x="955" y="472" font-size="13" font-weight="700" fill="#258267">SHARED KV</text>
+    <text x="224" y="530" font-size="16" font-weight="800" fill="#172033">maximum KV diversity</text><text x="590" y="530" font-size="16" font-weight="800" fill="#172033">quality / bandwidth balance</text><text x="955" y="530" font-size="16" font-weight="800" fill="#172033">minimum KV cache</text>
+    <text x="224" y="560" font-size="14" fill="#607083">H_kv = H_q</text><text x="590" y="560" font-size="14" fill="#607083">1 &lt; H_kv &lt; H_q</text><text x="955" y="560" font-size="14" fill="#607083">H_kv = 1</text>
+  </g>
+</svg>

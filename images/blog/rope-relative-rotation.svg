@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 680" role="img" aria-labelledby="title desc">
+  <title id="title">RoPE rotation and relative position</title>
+  <desc id="desc">Query and key vectors rotate by their absolute positions while their dot product depends on the relative angle.</desc>
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#286fa3"/></marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#258267"/></marker>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#182333" flood-opacity=".1"/></filter>
+  </defs>
+  <rect width="1180" height="680" fill="#f8fafc"/>
+  <text x="60" y="62" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="800" fill="#172033">RoPE: Absolute Rotations, Relative Attention</text>
+  <text x="60" y="96" font-family="Inter,Arial,sans-serif" font-size="16" fill="#5d6876">Q and K rotate at multiple frequencies; their dot product retains the angle difference n - m.</text>
+  <g filter="url(#shadow)"><rect x="60" y="136" width="500" height="446" rx="8" fill="#fff" stroke="#d8e2ec"/><rect x="590" y="136" width="530" height="446" rx="8" fill="#fff" stroke="#d8e2ec"/></g>
+  <g transform="translate(310 365)">
+    <circle r="155" fill="#f7fafc" stroke="#dce5ed" stroke-width="2"/><line x1="-180" y1="0" x2="180" y2="0" stroke="#a9b8c6"/><line x1="0" y1="180" x2="0" y2="-180" stroke="#a9b8c6"/>
+    <path d="M0 0L-58 -126" stroke="#286fa3" stroke-width="7" marker-end="url(#arrow-blue)"/><path d="M0 0L94 -89" stroke="#258267" stroke-width="7" marker-end="url(#arrow-green)"/>
+    <path d="M-42 -91A100 100 0 0 1 72 -68" fill="none" stroke="#c88632" stroke-width="4" stroke-dasharray="7 6"/>
+    <text x="-99" y="-139" font-family="Inter,Arial,sans-serif" font-size="17" font-weight="800" fill="#286fa3">q at m</text><text x="100" y="-92" font-family="Inter,Arial,sans-serif" font-size="17" font-weight="800" fill="#258267">k at n</text>
+    <text x="4" y="-112" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="800" fill="#9a6422">(n-m)θ</text>
+  </g>
+  <g font-family="Inter,Arial,sans-serif">
+    <text x="626" y="184" font-size="21" font-weight="800" fill="#172033">The algebra behind the picture</text>
+    <rect x="626" y="218" width="458" height="74" rx="6" fill="#edf4fa"/><text x="654" y="250" font-size="18" font-weight="700" fill="#286fa3">q′_m = R_m q</text><text x="654" y="276" font-size="18" font-weight="700" fill="#258267">k′_n = R_n k</text>
+    <text x="626" y="346" font-size="18" fill="#334154">(q′_m)ᵀ k′_n</text><text x="626" y="388" font-size="18" fill="#334154">= qᵀ R_mᵀ R_n k</text>
+    <rect x="626" y="420" width="458" height="76" rx="6" fill="#edf8f2" stroke="#bdddcf"/><text x="654" y="466" font-size="23" font-weight="800" fill="#21664e">= qᵀ R_(n-m) k</text>
+    <text x="626" y="536" font-size="15" fill="#607083">The operation uses absolute position IDs.</text><text x="626" y="560" font-size="15" fill="#607083">The attention interaction depends on relative distance.</text>
+  </g>
+</svg>

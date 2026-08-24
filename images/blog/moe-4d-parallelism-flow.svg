@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 720" role="img" aria-labelledby="title desc">
+  <title id="title">MoE four-dimensional parallelism flow</title>
+  <desc id="desc">Data, pipeline, tensor, and expert parallelism mapped to their respective training operations and communication.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#f1f5f8"/></linearGradient>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="9" stdDeviation="9" flood-color="#182333" flood-opacity=".1"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#73889d"/></marker>
+  </defs>
+  <rect width="1180" height="720" fill="url(#bg)"/>
+  <text x="60" y="62" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="800" fill="#172033">MoE 4D Parallelism: Four Cuts, Four Communication Patterns</text>
+  <text x="60" y="96" font-family="Inter,Arial,sans-serif" font-size="16" fill="#5d6876">The same rank participates in overlapping process groups for batch, depth, layer tensors, and routed experts.</text>
+  <g filter="url(#shadow)">
+    <rect x="60" y="140" width="250" height="480" rx="8" fill="#fff" stroke="#d8e2ec"/>
+    <rect x="350" y="140" width="480" height="480" rx="8" fill="#fff" stroke="#d8e2ec"/>
+    <rect x="870" y="140" width="250" height="480" rx="8" fill="#fff" stroke="#d8e2ec"/>
+  </g>
+  <g font-family="Inter,Arial,sans-serif">
+    <text x="88" y="184" font-size="22" font-weight="800" fill="#172033">DP · batch</text>
+    <text x="88" y="212" font-size="14" fill="#607083">different samples per replica</text>
+    <rect x="90" y="254" width="82" height="66" rx="6" fill="#eaf3fa" stroke="#c7dbe9"/><text x="131" y="293" text-anchor="middle" font-size="16" font-weight="800" fill="#286fa3">batch A</text>
+    <rect x="198" y="254" width="82" height="66" rx="6" fill="#edf8f2" stroke="#bdddcf"/><text x="239" y="293" text-anchor="middle" font-size="16" font-weight="800" fill="#258267">batch B</text>
+    <text x="88" y="380" font-size="16" font-weight="800" fill="#172033">Backward boundary</text><text x="88" y="410" font-size="14" fill="#607083">gradient All-Reduce</text><text x="88" y="436" font-size="14" fill="#607083">or Reduce-Scatter</text>
+    <rect x="88" y="500" width="194" height="72" rx="6" fill="#f5f7f9" stroke="#d8e2ec"/><text x="185" y="530" text-anchor="middle" font-size="14" font-weight="700" fill="#334154">shared-param DP</text><text x="185" y="554" text-anchor="middle" font-size="14" font-weight="700" fill="#334154">expert-param DP</text>
+
+    <text x="378" y="184" font-size="22" font-weight="800" fill="#172033">PP · model depth</text><text x="378" y="212" font-size="14" fill="#607083">micro-batches flow across pipeline stages</text>
+    <rect x="382" y="246" width="190" height="306" rx="6" fill="#f8fafc" stroke="#d8e2ec"/>
+    <rect x="608" y="246" width="190" height="306" rx="6" fill="#f8fafc" stroke="#d8e2ec"/>
+    <text x="477" y="278" text-anchor="middle" font-size="16" font-weight="800" fill="#172033">Stage p</text><text x="703" y="278" text-anchor="middle" font-size="16" font-weight="800" fill="#172033">Stage p+1</text>
+    <rect x="405" y="306" width="144" height="54" rx="6" fill="#eaf3fa" stroke="#c7dbe9"/><text x="477" y="339" text-anchor="middle" font-size="15" font-weight="800" fill="#286fa3">TP attention</text>
+    <rect x="405" y="386" width="144" height="102" rx="6" fill="#fff3e8" stroke="#ebc79f"/><text x="477" y="420" text-anchor="middle" font-size="15" font-weight="800" fill="#a85d20">EP dispatch</text><text x="477" y="446" text-anchor="middle" font-size="13" fill="#7b572e">expert GEMM</text><text x="477" y="470" text-anchor="middle" font-size="13" fill="#7b572e">EP combine</text>
+    <rect x="631" y="306" width="144" height="54" rx="6" fill="#eaf3fa" stroke="#c7dbe9"/><text x="703" y="339" text-anchor="middle" font-size="15" font-weight="800" fill="#286fa3">TP attention</text>
+    <rect x="631" y="386" width="144" height="102" rx="6" fill="#fff3e8" stroke="#ebc79f"/><text x="703" y="420" text-anchor="middle" font-size="15" font-weight="800" fill="#a85d20">EP dispatch</text><text x="703" y="446" text-anchor="middle" font-size="13" fill="#7b572e">expert GEMM</text><text x="703" y="470" text-anchor="middle" font-size="13" fill="#7b572e">EP combine</text>
+
+    <text x="898" y="184" font-size="22" font-weight="800" fill="#172033">EP · experts</text><text x="898" y="212" font-size="14" fill="#607083">router moves tokens to owners</text>
+    <circle cx="934" cy="300" r="30" fill="#286fa3"/><circle cx="1054" cy="300" r="30" fill="#258267"/><circle cx="934" cy="430" r="30" fill="#c88632"/><circle cx="1054" cy="430" r="30" fill="#b84545"/>
+    <text x="934" y="307" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">E0</text><text x="1054" y="307" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">E1</text><text x="934" y="437" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">E2</text><text x="1054" y="437" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">E3</text>
+    <text x="995" y="528" text-anchor="middle" font-size="16" font-weight="800" fill="#172033">All-to-All twice</text><text x="995" y="554" text-anchor="middle" font-size="14" fill="#607083">tokens out · outputs back</text>
+  </g>
+  <path d="M312 380H338" stroke="#73889d" stroke-width="4" marker-end="url(#arrow)"/><path d="M574 365H596" stroke="#73889d" stroke-width="4" marker-end="url(#arrow)"/><path d="M832 380H858" stroke="#73889d" stroke-width="4" marker-end="url(#arrow)"/>
+  <rect x="220" y="654" width="740" height="42" rx="6" fill="#172033"/><text x="590" y="681" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="800" fill="#fff">Topology rule of thumb: keep TP × EP inside the fastest fabric when feasible</text>
+</svg>

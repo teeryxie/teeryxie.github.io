@@ -1,5 +1,32 @@
 window.BLOG_POSTS = [
   {
+    slug: "megatron-deepspeed-colossalai-distributed-training",
+    title: "Megatron-LM vs DeepSpeed vs Colossal-AI: Choosing a Distributed Training Stack",
+    date: "2026-08",
+    category: "Survey",
+    section: "Surveys",
+    status: "Megatron-LM · DeepSpeed · Colossal-AI · Distributed Training",
+    summary: "A control-plane-first comparison of Megatron Core, DeepSpeed, and Colossal-AI across model parallelism, ZeRO and offload, Booster and ShardFormer, checkpoint portability, Hugging Face integration, debugging, and framework selection.",
+  },
+  {
+    slug: "mfu-moe-4d-5d-parallelism",
+    title: "MFU and MoE 4D/5D Hybrid Parallelism: DP, TP, PP, EP, and CP",
+    date: "2026-08",
+    category: "Training",
+    section: "Research Notes",
+    status: "MFU · MoE · 4D/5D Parallelism · Distributed Training",
+    summary: "A systems-level guide to model FLOPs utilization, MoE active-parameter accounting, DP/TP/PP/EP/CP process groups, topology-aware 4D and 5D parallel mappings, and performance diagnosis.",
+  },
+  {
+    slug: "multi-query-attention-rope-kv-cache",
+    title: "Multi-Query Attention and RoPE: From KV Cache Bandwidth to Rotary Position Encoding",
+    date: "2026-08",
+    category: "Research Note",
+    section: "Research Notes",
+    status: "MQA · GQA · RoPE · KV Cache",
+    summary: "A from-first-principles explanation of MHA, MQA, and GQA head sharing, KV Cache memory bandwidth during autoregressive decoding, RoPE's relative-position geometry, implementation boundaries, and common misconceptions.",
+  },
+  {
     slug: "team-harness-human-agent-collaboration",
     title: "Human + Harness = Group: A Control Plane for Team Vibe Coding",
     date: "2026-08",

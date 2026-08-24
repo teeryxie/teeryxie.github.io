@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 720" role="img" aria-labelledby="title desc">
+  <title id="title">Distributed training framework control surfaces</title>
+  <desc id="desc">Megatron emphasizes transformer parallel kernels, DeepSpeed emphasizes runtime and memory, and Colossal-AI emphasizes plugin-driven model transformation.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#eef6f2"/></linearGradient>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#182333" flood-opacity=".1"/></filter>
+  </defs>
+  <rect width="1180" height="720" fill="url(#bg)"/>
+  <text x="60" y="62" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="800" fill="#172033">Three Frameworks, Three Default Control Surfaces</text>
+  <text x="60" y="96" font-family="Inter,Arial,sans-serif" font-size="16" fill="#5d6876">All three overlap, but each project begins from a different ownership boundary.</text>
+  <g filter="url(#shadow)">
+    <rect x="60" y="138" width="330" height="500" rx="8" fill="#fff" stroke="#d8e2ec"/>
+    <rect x="425" y="138" width="330" height="500" rx="8" fill="#fff" stroke="#d8e2ec"/>
+    <rect x="790" y="138" width="330" height="500" rx="8" fill="#fff" stroke="#d8e2ec"/>
+  </g>
+  <g font-family="Inter,Arial,sans-serif">
+    <text x="88" y="184" font-size="24" font-weight="800" fill="#286fa3">Megatron Core</text><text x="88" y="212" font-size="14" font-weight="700" fill="#607083">PERFORMANCE-FIRST</text>
+    <rect x="88" y="246" width="274" height="82" rx="6" fill="#eaf3fa" stroke="#b9d4e7"/><text x="110" y="278" font-size="16" font-weight="800" fill="#235f89">Transformer graph</text><text x="110" y="304" font-size="14" fill="#45677f">parallel layers · model specs</text>
+    <rect x="88" y="344" width="274" height="82" rx="6" fill="#eaf3fa" stroke="#b9d4e7"/><text x="110" y="376" font-size="16" font-weight="800" fill="#235f89">Parallel execution</text><text x="110" y="402" font-size="14" fill="#45677f">TP · PP · CP · EP · schedules</text>
+    <rect x="88" y="442" width="274" height="68" rx="6" fill="#f5f7f9" stroke="#d8e2ec"/><text x="110" y="472" font-size="15" font-weight="800" fill="#334154">Optimizer and checkpoint</text><text x="110" y="494" font-size="13" fill="#607083">distributed state · resharding</text>
+    <text x="88" y="562" font-size="15" font-weight="800" fill="#172033">Best default question</text><text x="88" y="590" font-size="14" fill="#607083">How do we maximize Transformer</text><text x="88" y="614" font-size="14" fill="#607083">training efficiency at scale?</text>
+
+    <text x="453" y="184" font-size="24" font-weight="800" fill="#a85d20">DeepSpeed</text><text x="453" y="212" font-size="14" font-weight="700" fill="#607083">RUNTIME / MEMORY-FIRST</text>
+    <rect x="453" y="246" width="274" height="68" rx="6" fill="#f5f7f9" stroke="#d8e2ec"/><text x="475" y="276" font-size="15" font-weight="800" fill="#334154">Existing PyTorch model</text><text x="475" y="298" font-size="13" fill="#607083">wrapped by an engine</text>
+    <rect x="453" y="330" width="274" height="96" rx="6" fill="#fff3e8" stroke="#ebc79f"/><text x="475" y="364" font-size="16" font-weight="800" fill="#985518">Training runtime</text><text x="475" y="390" font-size="14" fill="#775a3e">backward · step · accumulation</text><text x="475" y="412" font-size="14" fill="#775a3e">pipeline · communication</text>
+    <rect x="453" y="442" width="274" height="82" rx="6" fill="#fff3e8" stroke="#ebc79f"/><text x="475" y="474" font-size="16" font-weight="800" fill="#985518">State memory</text><text x="475" y="500" font-size="14" fill="#775a3e">ZeRO · CPU/NVMe offload</text>
+    <text x="453" y="562" font-size="15" font-weight="800" fill="#172033">Best default question</text><text x="453" y="590" font-size="14" fill="#607083">How do we fit and scale this</text><text x="453" y="614" font-size="14" fill="#607083">existing model with less memory?</text>
+
+    <text x="818" y="184" font-size="24" font-weight="800" fill="#258267">Colossal-AI</text><text x="818" y="212" font-size="14" font-weight="700" fill="#607083">PLUGIN / TRANSFORM-FIRST</text>
+    <rect x="818" y="246" width="274" height="82" rx="6" fill="#edf8f2" stroke="#bdddcf"/><text x="840" y="278" font-size="16" font-weight="800" fill="#21664e">Booster facade</text><text x="840" y="304" font-size="14" fill="#476b5c">model · optimizer · dataloader</text>
+    <rect x="818" y="344" width="274" height="82" rx="6" fill="#edf8f2" stroke="#bdddcf"/><text x="840" y="376" font-size="16" font-weight="800" fill="#21664e">Plugin strategy</text><text x="840" y="402" font-size="14" fill="#476b5c">DDP · ZeRO · Gemini · hybrid</text>
+    <rect x="818" y="442" width="274" height="82" rx="6" fill="#edf8f2" stroke="#bdddcf"/><text x="840" y="474" font-size="16" font-weight="800" fill="#21664e">ShardFormer policy</text><text x="840" y="500" font-size="14" fill="#476b5c">module replacement · TP · PP</text>
+    <text x="818" y="562" font-size="15" font-weight="800" fill="#172033">Best default question</text><text x="818" y="590" font-size="14" fill="#607083">How do we inject and switch</text><text x="818" y="614" font-size="14" fill="#607083">parallel strategies cleanly?</text>
+  </g>
+  <text x="590" y="686" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="15" fill="#607083">Choose one control plane first; combine systems only when ownership boundaries are explicit.</text>
+</svg>

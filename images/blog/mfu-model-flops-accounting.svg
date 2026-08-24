@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 680" role="img" aria-labelledby="title desc">
+  <title id="title">Model FLOPs utilization accounting</title>
+  <desc id="desc">MFU compares useful model FLOPs implied by token throughput with total accelerator peak FLOPs.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#eef6f2"/></linearGradient>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#182333" flood-opacity=".1"/></filter>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="10" refY="5.5" orient="auto"><path d="M0 0L11 5.5L0 11Z" fill="#7c8fa2"/></marker>
+  </defs>
+  <rect width="1180" height="680" fill="url(#bg)"/>
+  <text x="60" y="62" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="800" fill="#172033">MFU Turns a Training Step into One Comparable Ratio</text>
+  <text x="60" y="96" font-family="Inter,Arial,sans-serif" font-size="16" fill="#5d6876">Useful model FLOPs come from valid-token throughput; every exposed system cost lengthens the observed step.</text>
+  <g filter="url(#shadow)">
+    <rect x="60" y="144" width="310" height="390" rx="8" fill="#fff" stroke="#d8e2ec"/>
+    <rect x="435" y="144" width="310" height="390" rx="8" fill="#fff" stroke="#d8e2ec"/>
+    <rect x="810" y="144" width="310" height="390" rx="8" fill="#fff" stroke="#d8e2ec"/>
+  </g>
+  <g font-family="Inter,Arial,sans-serif">
+    <text x="88" y="188" font-size="21" font-weight="800" fill="#172033">Observed throughput</text>
+    <text x="88" y="216" font-size="14" fill="#607083">global valid tokens / second</text>
+    <rect x="88" y="254" width="254" height="68" rx="6" fill="#eaf3fa" stroke="#c7dbe9"/><text x="215" y="296" text-anchor="middle" font-size="24" font-weight="800" fill="#286fa3">tokens / s</text>
+    <text x="88" y="374" font-size="15" fill="#334154">Measured after warmup</text><text x="88" y="402" font-size="15" fill="#334154">Exclude checkpoint steps</text><text x="88" y="430" font-size="15" fill="#334154">State padding / drop policy</text>
+    <text x="463" y="188" font-size="21" font-weight="800" fill="#172033">Model FLOPs / token</text>
+    <text x="463" y="216" font-size="14" fill="#607083">required forward + backward only</text>
+    <rect x="463" y="254" width="254" height="68" rx="6" fill="#edf8f2" stroke="#bdddcf"/><text x="590" y="296" text-anchor="middle" font-size="24" font-weight="800" fill="#258267">F_model</text>
+    <text x="463" y="374" font-size="15" fill="#334154">Dense: about 6N + attention</text><text x="463" y="402" font-size="15" fill="#334154">MoE: active experts only</text><text x="463" y="430" font-size="15" fill="#334154">Do not reward recompute</text>
+    <text x="838" y="188" font-size="21" font-weight="800" fill="#172033">System peak</text>
+    <text x="838" y="216" font-size="14" fill="#607083">matching hardware and precision</text>
+    <rect x="838" y="254" width="254" height="68" rx="6" fill="#fff3e8" stroke="#ebc79f"/><text x="965" y="296" text-anchor="middle" font-size="24" font-weight="800" fill="#a85d20">GPUs × peak</text>
+    <text x="838" y="374" font-size="15" fill="#334154">Use the exact accelerator SKU</text><text x="838" y="402" font-size="15" fill="#334154">Match BF16 / FP8 mode</text><text x="838" y="430" font-size="15" fill="#334154">Do not mix sparse peak</text>
+  </g>
+  <path d="M372 338H423" stroke="#7c8fa2" stroke-width="4" marker-end="url(#arrow)"/><text x="397" y="326" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="800" fill="#7c8fa2">×</text>
+  <path d="M747 338H798" stroke="#7c8fa2" stroke-width="4" marker-end="url(#arrow)"/><text x="772" y="326" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="800" fill="#7c8fa2">÷</text>
+  <rect x="260" y="568" width="660" height="64" rx="6" fill="#172033"/>
+  <text x="590" y="607" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="23" font-weight="800" fill="#fff">MFU = tokens/s × F_model/token ÷ total peak FLOPs/s</text>
+</svg>
