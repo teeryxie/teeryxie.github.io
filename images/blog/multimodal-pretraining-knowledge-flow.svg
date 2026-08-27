@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 720" role="img" aria-labelledby="title desc">
+  <title id="title">Asymmetric knowledge flow in multimodal pretraining</title>
+  <desc id="desc">Language directly improves visual understanding and generation. Visual understanding directly improves generation. Generation provides latent priors for low-level understanding but little direct zero-shot transfer.</desc>
+  <defs>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#172033" flood-opacity=".1"/></filter>
+    <marker id="blueArrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#286fa3"/></marker>
+    <marker id="greenArrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#258267"/></marker>
+    <marker id="grayArrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7b8a98"/></marker>
+  </defs>
+  <rect width="1180" height="720" fill="#f8fafc"/>
+  <text x="60" y="64" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="800" fill="#172033">Knowledge Flows in Directions, Not in a Circle</text>
+  <text x="60" y="98" font-family="Inter,Arial,sans-serif" font-size="16" fill="#5d6876">Direct transfer and latent priors are different outcomes and must be measured separately.</text>
+
+  <g filter="url(#shadow)" font-family="Inter,Arial,sans-serif">
+    <rect x="70" y="278" width="280" height="154" rx="8" fill="#eaf3fa" stroke="#b9d4e7"/>
+    <text x="210" y="325" text-anchor="middle" font-size="24" font-weight="800" fill="#235f89">Language</text>
+    <text x="210" y="359" text-anchor="middle" font-size="15" fill="#526d80">world structure + reasoning</text>
+    <text x="210" y="386" text-anchor="middle" font-size="15" fill="#526d80">text distribution</text>
+
+    <rect x="450" y="160" width="280" height="154" rx="8" fill="#edf8f2" stroke="#bdddcf"/>
+    <text x="590" y="207" text-anchor="middle" font-size="24" font-weight="800" fill="#21664e">Visual Understanding</text>
+    <text x="590" y="241" text-anchor="middle" font-size="15" fill="#476b5c">discriminative concepts</text>
+    <text x="590" y="268" text-anchor="middle" font-size="15" fill="#476b5c">relations + composition</text>
+
+    <rect x="830" y="278" width="280" height="154" rx="8" fill="#fff3e8" stroke="#ebc79f"/>
+    <text x="970" y="325" text-anchor="middle" font-size="24" font-weight="800" fill="#985518">Visual Generation</text>
+    <text x="970" y="359" text-anchor="middle" font-size="15" fill="#775a3e">dense appearance</text>
+    <text x="970" y="386" text-anchor="middle" font-size="15" fill="#775a3e">pixels + geometry</text>
+  </g>
+
+  <path d="M350 305C392 270 414 250 438 243" stroke="#286fa3" stroke-width="5" fill="none" marker-end="url(#blueArrow)"/>
+  <text x="350" y="240" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700" fill="#286fa3">direct boost</text>
+
+  <path d="M350 388C540 520 720 520 818 390" stroke="#286fa3" stroke-width="5" fill="none" marker-end="url(#blueArrow)"/>
+  <text x="590" y="522" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700" fill="#286fa3">direct boost, including unconditional generation</text>
+
+  <path d="M730 245C774 256 797 274 819 302" stroke="#258267" stroke-width="5" fill="none" marker-end="url(#greenArrow)"/>
+  <text x="826" y="237" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700" fill="#258267">strong prior</text>
+
+  <path d="M830 356C775 339 761 322 741 292" stroke="#7b8a98" stroke-width="4" stroke-dasharray="10 9" fill="none" marker-end="url(#grayArrow)"/>
+  <text x="858" y="458" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700" fill="#687785">little direct transfer</text>
+  <text x="858" y="481" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="14" fill="#687785">latent low-level prior appears after fine-tuning</text>
+
+  <rect x="70" y="585" width="1040" height="76" rx="8" fill="#172033"/>
+  <text x="590" y="615" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="800" fill="#ffffff">Design implication</text>
+  <text x="590" y="641" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="15" fill="#dce5ee">Spend more budget on sources that transfer outward; test zero-shot ability and fine-tuning speed separately.</text>
+</svg>

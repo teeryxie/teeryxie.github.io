@@ -1,5 +1,14 @@
 window.BLOG_POSTS = [
   {
+    slug: "physics-of-multimodal-pretraining",
+    title: "Towards Physics of Multimodal Pretraining: Knowledge Flow, Synergy, Early Unification, and Recipes",
+    date: "2026-08",
+    category: "Paper Reading",
+    section: "Paper Readings",
+    status: "Knowledge Flow · Modality Synergy · Early Unification · Data Recipes",
+    summary: "A critical reading of asymmetric knowledge transfer among language, visual understanding, and visual generation; when shared parameters create synergy or competition; why late visual alignment induces vision laziness; and how these findings lead to a 70% language, 25% understanding, and 5% generation recipe.",
+  },
+  {
     slug: "megatron-deepspeed-colossalai-distributed-training",
     title: "Megatron-LM vs DeepSpeed vs Colossal-AI: Choosing a Distributed Training Stack",
     date: "2026-08",

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 720" role="img" aria-labelledby="title desc">
+  <title id="title">Architectural boundary between modality synergy and competition</title>
+  <desc id="desc">A fully shared transformer competes for capacity, a fully isolated design loses transfer, while shared attention and normalization with modality-specific feed-forward networks balances exchange and capacity.</desc>
+  <defs>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#172033" flood-opacity=".1"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#718292"/></marker>
+  </defs>
+  <rect width="1180" height="720" fill="#f8fafc"/>
+  <text x="60" y="62" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="800" fill="#172033">Share the Bridge, Split the Capacity</text>
+  <text x="60" y="96" font-family="Inter,Arial,sans-serif" font-size="16" fill="#5d6876">The experiment localizes synergy in information exchange and competition in per-token transformation capacity.</text>
+
+  <g font-family="Inter,Arial,sans-serif" filter="url(#shadow)">
+    <rect x="50" y="160" width="300" height="410" rx="8" fill="#fff0ee" stroke="#e4b9b2"/>
+    <text x="200" y="202" text-anchor="middle" font-size="22" font-weight="800" fill="#9a4035">Fully Shared</text>
+    <text x="200" y="228" text-anchor="middle" font-size="14" fill="#7b5954">one parameter path for both modalities</text>
+    <rect x="90" y="270" width="220" height="60" rx="6" fill="#c86556"/>
+    <text x="200" y="307" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">Shared Attention</text>
+    <rect x="90" y="350" width="220" height="60" rx="6" fill="#c86556"/>
+    <text x="200" y="387" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">Shared FFN</text>
+    <rect x="90" y="430" width="220" height="60" rx="6" fill="#c86556"/>
+    <text x="200" y="467" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">Shared Norm</text>
+    <text x="200" y="526" text-anchor="middle" font-size="15" font-weight="800" fill="#9a4035">capacity competition</text>
+
+    <rect x="440" y="130" width="300" height="470" rx="8" fill="#edf8f2" stroke="#9dceb8"/>
+    <text x="590" y="174" text-anchor="middle" font-size="22" font-weight="800" fill="#21664e">Balanced Boundary</text>
+    <text x="590" y="200" text-anchor="middle" font-size="14" fill="#476b5c">exchange is shared, capacity is specialized</text>
+    <rect x="480" y="242" width="220" height="60" rx="6" fill="#258267"/>
+    <text x="590" y="279" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">Shared Attention</text>
+    <rect x="480" y="322" width="102" height="72" rx="6" fill="#286fa3"/>
+    <text x="531" y="351" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Text</text>
+    <text x="531" y="374" text-anchor="middle" font-size="14" fill="#fff">FFN</text>
+    <rect x="598" y="322" width="102" height="72" rx="6" fill="#c57a27"/>
+    <text x="649" y="351" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Image</text>
+    <text x="649" y="374" text-anchor="middle" font-size="14" fill="#fff">FFN</text>
+    <rect x="480" y="414" width="220" height="60" rx="6" fill="#258267"/>
+    <text x="590" y="451" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">Shared Norm</text>
+    <text x="590" y="515" text-anchor="middle" font-size="15" font-weight="800" fill="#21664e">best measured synergy</text>
+    <text x="590" y="541" text-anchor="middle" font-size="14" fill="#476b5c">language PPL -0.211</text>
+    <text x="590" y="564" text-anchor="middle" font-size="14" fill="#476b5c">vision loss -0.0168</text>
+
+    <rect x="830" y="160" width="300" height="410" rx="8" fill="#eef1f4" stroke="#c8d0d7"/>
+    <text x="980" y="202" text-anchor="middle" font-size="22" font-weight="800" fill="#526171">Fully Isolated</text>
+    <text x="980" y="228" text-anchor="middle" font-size="14" fill="#687785">independent paths inside one shell</text>
+    <rect x="870" y="270" width="98" height="60" rx="6" fill="#7b8a98"/>
+    <text x="919" y="307" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Text path</text>
+    <rect x="992" y="270" width="98" height="60" rx="6" fill="#7b8a98"/>
+    <text x="1041" y="307" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Image path</text>
+    <rect x="870" y="350" width="98" height="60" rx="6" fill="#7b8a98"/>
+    <text x="919" y="387" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Text FFN</text>
+    <rect x="992" y="350" width="98" height="60" rx="6" fill="#7b8a98"/>
+    <text x="1041" y="387" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">Image FFN</text>
+    <rect x="870" y="430" width="98" height="60" rx="6" fill="#7b8a98"/>
+    <text x="919" y="467" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Text norm</text>
+    <rect x="992" y="430" width="98" height="60" rx="6" fill="#7b8a98"/>
+    <text x="1041" y="467" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Image norm</text>
+    <text x="980" y="526" text-anchor="middle" font-size="15" font-weight="800" fill="#526171">no competition, no synergy</text>
+  </g>
+
+  <path d="M356 365H426" stroke="#718292" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M746 365H816" stroke="#718292" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="590" y="661" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="16" fill="#607083">The result is an empirical design rule, not proof that every modality pair needs the same split.</text>
+</svg>
