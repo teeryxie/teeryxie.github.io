@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">GPT-6 Astra 架构主张的证据阶梯</title>
+  <desc id="desc">从官方公开事实到基于证据的机制解释，再到没有证实的具体架构猜测，可信度逐层降低。</desc>
+  <rect width="1200" height="720" fill="#f7f8fa"/>
+  <text x="70" y="70" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="700" fill="#17232f">What can we actually claim about Astra?</text>
+  <text x="70" y="106" font-family="Inter,Arial,sans-serif" font-size="16" fill="#586674">Move upward only when the public evidence supports the next claim.</text>
+  <g font-family="Inter,Arial,sans-serif">
+    <rect x="90" y="506" width="1020" height="135" rx="8" fill="#e4f0eb" stroke="#28745d" stroke-width="3"/>
+    <text x="125" y="548" font-size="18" font-weight="700" fill="#145440">OFFICIALLY VERIFIED</text>
+    <text x="125" y="584" font-size="18" fill="#17232f">No-CoT capability rose sharply; displayed CoT is shorter and more controllable.</text>
+    <text x="125" y="614" font-size="15" fill="#496359">OpenAI says the controllability change is not differentially due to architecture.</text>
+
+    <rect x="220" y="316" width="890" height="145" rx="8" fill="#f7ecd8" stroke="#b87918" stroke-width="3"/>
+    <text x="255" y="358" font-size="18" font-weight="700" fill="#7a4b06">EVIDENCE-BASED INTERPRETATION</text>
+    <text x="255" y="394" font-size="18" fill="#17232f">Training compiled more useful reasoning into fixed-depth hidden-state updates.</text>
+    <text x="255" y="424" font-size="15" fill="#755a30">Compatible with the results, but not an OpenAI architecture disclosure.</text>
+
+    <rect x="390" y="145" width="720" height="125" rx="8" fill="#f0e8e8" stroke="#9b5555" stroke-width="3"/>
+    <text x="425" y="187" font-size="18" font-weight="700" fill="#743737">UNVERIFIED SPECULATION</text>
+    <text x="425" y="223" font-size="18" fill="#17232f">Astra repeats a shared Transformer core or uses a Coconut-style latent loop.</text>
+    <text x="425" y="251" font-size="15" fill="#725555">No public architecture, code, recurrence ablation, or loop control is available.</text>
+    <path d="M166 486 V470 H1040 V486" fill="none" stroke="#28745d" stroke-width="3"/>
+    <path d="M296 296 V280 H1040 V296" fill="none" stroke="#b87918" stroke-width="3"/>
+    <path d="M1040 486 V475 M1040 296 V280" stroke="#53616d" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="1125" y="396" transform="rotate(-90 1125 396)" text-anchor="middle" font-size="15" fill="#687785">more evidence required</text>
+  </g>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#53616d"/></marker></defs>
+</svg>

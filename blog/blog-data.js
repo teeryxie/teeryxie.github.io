@@ -1,5 +1,14 @@
 window.BLOG_POSTS = [
   {
+    slug: "gpt6-astra-latent-reasoning-transformer-blocks",
+    title: "GPT-6 Astra's Silent Reasoning: Transformer Blocks, No-CoT, and Latent Loops",
+    date: "2026-09",
+    category: "Research Note",
+    section: "Research Notes",
+    status: "GPT-6 Astra · Latent Reasoning · Transformer · No-CoT",
+    summary: "A source-grounded explanation of what GPT-6 Astra's no-CoT results and controllable reasoning traces establish, how Transformer blocks already perform hidden sequential computation, why reinforcement learning can compile reasoning into fixed depth, and why no public evidence yet establishes a recurrent latent-loop architecture.",
+  },
+  {
     slug: "transformers-as-computers-looped-latent-reasoning",
     title: "Transformers as Computers: Branches, Loops, and Latent Reasoning",
     date: "2026-09",

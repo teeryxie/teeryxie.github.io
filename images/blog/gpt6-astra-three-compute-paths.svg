@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">三种推理计算路径</title>
+  <desc id="desc">对比固定深度直接回答、通过多个文字 token 展开的思维链，以及共享核心在隐藏空间中的递归。</desc>
+  <rect width="1200" height="760" fill="#f7f8fa"/>
+  <text x="70" y="66" font-family="Inter,Arial,sans-serif" font-size="30" font-weight="700" fill="#17232f">Three ways to spend reasoning compute</text>
+  <text x="70" y="102" font-family="Inter,Arial,sans-serif" font-size="16" fill="#586674">All three compute; only the third explicitly reuses one core before emitting a token.</text>
+  <g font-family="Inter,Arial,sans-serif">
+    <rect x="70" y="145" width="1060" height="160" rx="8" fill="#ffffff" stroke="#c7cfd6" stroke-width="2"/>
+    <rect x="70" y="145" width="220" height="160" rx="8" fill="#e6f1ed"/>
+    <text x="100" y="192" font-size="21" font-weight="700" fill="#145440">Fixed depth</text>
+    <text x="100" y="222" font-size="15" fill="#4c625b">one full forward pass</text>
+    <text x="100" y="256" font-size="14" fill="#687785">L distinct blocks</text>
+    <rect x="350" y="196" width="110" height="58" rx="5" fill="#eef2f4" stroke="#7b8792"/>
+    <rect x="500" y="196" width="110" height="58" rx="5" fill="#eef2f4" stroke="#7b8792"/>
+    <rect x="650" y="196" width="110" height="58" rx="5" fill="#eef2f4" stroke="#7b8792"/>
+    <text x="405" y="232" text-anchor="middle" font-size="16" fill="#17232f">Block 1</text><text x="555" y="232" text-anchor="middle" font-size="16" fill="#17232f">Block 2</text><text x="705" y="232" text-anchor="middle" font-size="16" fill="#17232f">Block L</text>
+    <path d="M320 225 H350 M460 225 H500 M610 225 H650 M760 225 H880" stroke="#53616d" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="930" y="231" font-size="17" font-weight="700" fill="#17232f">answer</text>
+
+    <rect x="70" y="330" width="1060" height="190" rx="8" fill="#ffffff" stroke="#c7cfd6" stroke-width="2"/>
+    <rect x="70" y="330" width="220" height="190" rx="8" fill="#f9ead1"/>
+    <text x="100" y="377" font-size="21" font-weight="700" fill="#7a4b06">Tokenized CoT</text>
+    <text x="100" y="407" font-size="15" fill="#755a30">network repeats per token</text>
+    <text x="100" y="441" font-size="14" fill="#687785">readable, serial, cached</text>
+    <rect x="350" y="371" width="160" height="58" rx="5" fill="#fdf5e7" stroke="#b87918"/>
+    <rect x="555" y="371" width="160" height="58" rx="5" fill="#fdf5e7" stroke="#b87918"/>
+    <rect x="760" y="371" width="160" height="58" rx="5" fill="#fdf5e7" stroke="#b87918"/>
+    <text x="430" y="407" text-anchor="middle" font-size="16" fill="#17232f">thought token 1</text><text x="635" y="407" text-anchor="middle" font-size="16" fill="#17232f">thought token 2</text><text x="840" y="407" text-anchor="middle" font-size="16" fill="#17232f">answer token</text>
+    <path d="M320 400 H350 M510 400 H555 M715 400 H760 M920 400 H1010" stroke="#53616d" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="350" y="469" font-size="14" fill="#687785">Each box runs all L blocks and appends to the KV cache.</text>
+
+    <rect x="70" y="545" width="1060" height="170" rx="8" fill="#ffffff" stroke="#c7cfd6" stroke-width="2"/>
+    <rect x="70" y="545" width="220" height="170" rx="8" fill="#e8edf7"/>
+    <text x="100" y="592" font-size="21" font-weight="700" fill="#264f85">Latent loop</text>
+    <text x="100" y="622" font-size="15" fill="#465f80">shared core repeats</text>
+    <text x="100" y="656" font-size="14" fill="#687785">continuous hidden state</text>
+    <rect x="350" y="597" width="125" height="58" rx="5" fill="#f1f4f9" stroke="#567fb0"/>
+    <rect x="555" y="585" width="210" height="82" rx="6" fill="#dce8f6" stroke="#356a9f" stroke-width="3"/>
+    <rect x="850" y="597" width="125" height="58" rx="5" fill="#f1f4f9" stroke="#567fb0"/>
+    <text x="412" y="633" text-anchor="middle" font-size="16" fill="#17232f">Prelude</text><text x="660" y="620" text-anchor="middle" font-size="18" font-weight="700" fill="#264f85">Shared core</text><text x="660" y="645" text-anchor="middle" font-size="14" fill="#465f80">state update × r</text><text x="912" y="633" text-anchor="middle" font-size="16" fill="#17232f">Coda</text>
+    <path d="M320 626 H350 M475 626 H555 M765 626 H850 M975 626 H1050" stroke="#53616d" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M745 585 C790 530 535 520 575 584" fill="none" stroke="#356a9f" stroke-width="3" marker-end="url(#blueArrow)"/>
+  </g>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#53616d"/></marker>
+    <marker id="blueArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#356a9f"/></marker>
+  </defs>
+</svg>
