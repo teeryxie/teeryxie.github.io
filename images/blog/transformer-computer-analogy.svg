@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Transformer 与计算机组件的类比边界</title>
+  <desc id="desc">注意力、前馈网络、残差流和键值缓存分别对应数据路由、参数化长期记忆、工作状态和动态历史，同时标出循环控制和可写内存的缺口。</desc>
+  <rect width="1200" height="720" fill="#f7f8f5"/>
+  <text x="70" y="72" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#17211f">Transformer as a computer: useful analogy, explicit limits</text>
+  <text x="70" y="108" font-family="Arial, sans-serif" font-size="18" fill="#52605c">The mapping explains roles. It does not claim architectural equivalence.</text>
+  <rect x="70" y="150" width="660" height="490" rx="8" fill="#ffffff" stroke="#cbd3cf" stroke-width="2"/>
+  <text x="102" y="195" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#17211f">CURRENT TRANSFORMER PATH</text>
+  <rect x="110" y="235" width="250" height="120" rx="8" fill="#dfeeed" stroke="#26766f" stroke-width="2"/>
+  <text x="135" y="275" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#174f4a">Attention</text>
+  <text x="135" y="307" font-family="Arial, sans-serif" font-size="17" fill="#29443f">content-addressed read</text>
+  <text x="135" y="333" font-family="Arial, sans-serif" font-size="17" fill="#29443f">and data routing</text>
+  <rect x="440" y="235" width="250" height="120" rx="8" fill="#fde8df" stroke="#c65b37" stroke-width="2"/>
+  <text x="465" y="275" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#8d321c">FFN</text>
+  <text x="465" y="307" font-family="Arial, sans-serif" font-size="17" fill="#583c32">parametric memory</text>
+  <text x="465" y="333" font-family="Arial, sans-serif" font-size="17" fill="#583c32">mostly read-only at inference</text>
+  <path d="M360 295 H430" stroke="#263b55" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M565 355 V405 H235 V365" fill="none" stroke="#263b55" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="320" y="397" font-family="Arial, sans-serif" font-size="16" fill="#52605c">residual stream = changing working state</text>
+  <rect x="110" y="455" width="580" height="125" rx="8" fill="#edf1f7" stroke="#50698a" stroke-width="2"/>
+  <text x="138" y="495" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#263b55">Context + KV Cache</text>
+  <text x="138" y="527" font-family="Arial, sans-serif" font-size="17" fill="#40516a">append-oriented history, retrieved through attention</text>
+  <text x="138" y="553" font-family="Arial, sans-serif" font-size="17" fill="#40516a">not general random-access writable memory</text>
+  <rect x="790" y="150" width="340" height="490" rx="8" fill="#fffdf7" stroke="#d8b956" stroke-width="2" stroke-dasharray="9 7"/>
+  <text x="822" y="195" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#664d08">MISSING AS DEFAULT PRIMITIVES</text>
+  <rect x="830" y="240" width="260" height="105" rx="8" fill="#fff2bd" stroke="#c59c20" stroke-width="2"/>
+  <text x="857" y="281" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#664d08">Loop + halt</text>
+  <text x="857" y="313" font-family="Arial, sans-serif" font-size="17" fill="#664d08">reuse compute until done</text>
+  <rect x="830" y="385" width="260" height="105" rx="8" fill="#e7e3f2" stroke="#68558f" stroke-width="2"/>
+  <text x="857" y="426" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#49386b">Writable memory</text>
+  <text x="857" y="458" font-family="Arial, sans-serif" font-size="17" fill="#49386b">address, update, retrieve</text>
+  <rect x="830" y="530" width="260" height="70" rx="8" fill="#ececec" stroke="#6d7471" stroke-width="2"/>
+  <text x="857" y="573" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#3d4542">verify + recover</text>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#263b55"/></marker></defs>
+</svg>

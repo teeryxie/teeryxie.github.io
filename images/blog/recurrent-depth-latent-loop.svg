@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">深度递归与隐空间推理路径</title>
+  <desc id="desc">输入经过前奏层进入共享递归核心，隐藏状态多轮回流，由固定深度、路由或自适应停止策略决定何时进入输出层。</desc>
+  <rect width="1200" height="720" fill="#f7f8f5"/>
+  <text x="70" y="72" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#17211f">Recurrent depth: spend compute before emitting a token</text>
+  <text x="70" y="108" font-family="Arial, sans-serif" font-size="18" fill="#52605c">The hidden state loops; the model does not need to verbalize every intermediate step.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="70" y="270" width="150" height="110" rx="8" fill="#edf1f7" stroke="#50698a" stroke-width="2"/>
+    <text x="105" y="316" font-size="22" font-weight="700" fill="#263b55">Input</text>
+    <text x="99" y="348" font-size="16" fill="#40516a">token states</text>
+    <rect x="280" y="270" width="170" height="110" rx="8" fill="#dfeeed" stroke="#26766f" stroke-width="2"/>
+    <text x="320" y="316" font-size="22" font-weight="700" fill="#174f4a">Prelude</text>
+    <text x="310" y="348" font-size="16" fill="#29443f">runs once</text>
+    <rect x="525" y="225" width="250" height="200" rx="8" fill="#e7e3f2" stroke="#68558f" stroke-width="3"/>
+    <text x="567" y="280" font-size="23" font-weight="700" fill="#49386b">Shared recurrent core</text>
+    <text x="590" y="320" font-size="18" fill="#55486f">same parameters</text>
+    <text x="586" y="352" font-size="18" fill="#55486f">new hidden state</text>
+    <text x="612" y="392" font-size="20" font-weight="700" fill="#49386b">× r</text>
+    <rect x="850" y="270" width="150" height="110" rx="8" fill="#fde8df" stroke="#c65b37" stroke-width="2"/>
+    <text x="894" y="316" font-size="22" font-weight="700" fill="#8d321c">Coda</text>
+    <text x="882" y="348" font-size="16" fill="#583c32">runs once</text>
+    <rect x="1060" y="270" width="90" height="110" rx="8" fill="#fff2bd" stroke="#c59c20" stroke-width="2"/>
+    <text x="1080" y="316" font-size="20" font-weight="700" fill="#664d08">Next</text>
+    <text x="1077" y="345" font-size="20" font-weight="700" fill="#664d08">token</text>
+    <path d="M220 325 H270 M450 325 H515 M775 325 H840 M1000 325 H1050" stroke="#263b55" stroke-width="4" marker-end="url(#arrow)"/>
+    <path d="M720 425 C720 520 575 520 575 435" fill="none" stroke="#68558f" stroke-width="5" marker-end="url(#arrowPurple)"/>
+    <rect x="340" y="520" width="620" height="110" rx="8" fill="#ffffff" stroke="#cbd3cf" stroke-width="2"/>
+    <text x="375" y="560" font-size="19" font-weight="700" fill="#17211f">Exit policy</text>
+    <text x="375" y="592" font-size="17" fill="#52605c">fixed r · token-level depth routing · adaptive convergence test</text>
+    <path d="M650 520 V455" stroke="#c59c20" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#arrowGold)"/>
+    <text x="525" y="175" font-size="17" fill="#52605c">latent trajectory: s₀ → s₁ → s₂ → … → sᵣ</text>
+  </g>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#263b55"/></marker>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#68558f"/></marker>
+    <marker id="arrowGold" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#c59c20"/></marker>
+  </defs>
+</svg>

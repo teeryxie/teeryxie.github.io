@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">条件路由、循环与可写状态</title>
+  <desc id="desc">三列对比混合专家选择计算参数、稀疏注意力选择读取连接，以及循环与可写状态所需的状态回流和停止判断。</desc>
+  <rect width="1200" height="720" fill="#f7f8f5"/>
+  <text x="70" y="72" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#17211f">Branch is not loop; loop is not memory</text>
+  <text x="70" y="108" font-family="Arial, sans-serif" font-size="18" fill="#52605c">Each mechanism makes a different decision.</text>
+  <g font-family="Arial, sans-serif">
+    <rect x="70" y="155" width="320" height="490" rx="8" fill="#ffffff" stroke="#c65b37" stroke-width="2"/>
+    <text x="102" y="202" font-size="23" font-weight="700" fill="#8d321c">MoE routing</text>
+    <text x="102" y="232" font-size="17" fill="#583c32">Decision: who computes?</text>
+    <circle cx="150" cy="310" r="34" fill="#fde8df" stroke="#c65b37" stroke-width="2"/>
+    <text x="132" y="318" font-size="19" font-weight="700" fill="#8d321c">x</text>
+    <path d="M184 310 H230 M230 310 L274 250 M230 310 L274 310 M230 310 L274 370" fill="none" stroke="#c65b37" stroke-width="3"/>
+    <rect x="275" y="222" width="76" height="54" rx="6" fill="#fde8df"/><rect x="275" y="283" width="76" height="54" rx="6" fill="#f5f5f2"/><rect x="275" y="344" width="76" height="54" rx="6" fill="#fde8df"/>
+    <text x="289" y="256" font-size="16" fill="#8d321c">E1</text><text x="289" y="317" font-size="16" fill="#777">E2</text><text x="289" y="378" font-size="16" fill="#8d321c">E3</text>
+    <text x="102" y="463" font-size="17" fill="#52605c">Selects a parameter path.</text>
+    <text x="102" y="493" font-size="17" fill="#52605c">Does not choose iteration count.</text>
+    <rect x="440" y="155" width="320" height="490" rx="8" fill="#ffffff" stroke="#26766f" stroke-width="2"/>
+    <text x="472" y="202" font-size="23" font-weight="700" fill="#174f4a">Sparse attention</text>
+    <text x="472" y="232" font-size="17" fill="#29443f">Decision: where to read?</text>
+    <circle cx="505" cy="305" r="20" fill="#dfeeed"/><circle cx="590" cy="260" r="20" fill="#dfeeed"/><circle cx="680" cy="305" r="20" fill="#dfeeed"/><circle cx="590" cy="370" r="20" fill="#dfeeed"/>
+    <path d="M525 300 L570 268 M610 268 L660 300 M525 313 L570 360" stroke="#26766f" stroke-width="4" fill="none"/>
+    <path d="M610 360 L660 313 M610 260 L575 350" stroke="#bfc9c5" stroke-width="2" stroke-dasharray="6 6" fill="none"/>
+    <text x="472" y="463" font-size="17" fill="#52605c">Fixed patterns are wiring.</text>
+    <text x="472" y="493" font-size="17" fill="#52605c">Content routing is conditional.</text>
+    <rect x="810" y="155" width="320" height="490" rx="8" fill="#ffffff" stroke="#68558f" stroke-width="2"/>
+    <text x="842" y="202" font-size="23" font-weight="700" fill="#49386b">Loop + memory</text>
+    <text x="842" y="232" font-size="17" fill="#55486f">Decision: continue or halt?</text>
+    <rect x="868" y="280" width="205" height="82" rx="8" fill="#e7e3f2" stroke="#68558f" stroke-width="2"/>
+    <text x="901" y="315" font-size="18" font-weight="700" fill="#49386b">shared block</text>
+    <text x="901" y="341" font-size="16" fill="#55486f">state → state'</text>
+    <path d="M1074 321 C1120 321 1120 410 970 410 C835 410 840 350 860 330" fill="none" stroke="#68558f" stroke-width="4" marker-end="url(#arrowPurple)"/>
+    <rect x="870" y="460" width="200" height="70" rx="8" fill="#fff2bd" stroke="#c59c20" stroke-width="2"/>
+    <text x="902" y="503" font-size="17" font-weight="700" fill="#664d08">read / write state</text>
+    <text x="842" y="580" font-size="17" fill="#52605c">Needs state feedback and a halt rule.</text>
+  </g>
+  <defs><marker id="arrowPurple" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#68558f"/></marker></defs>
+</svg>

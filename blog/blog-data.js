@@ -1,5 +1,14 @@
 window.BLOG_POSTS = [
   {
+    slug: "transformers-as-computers-looped-latent-reasoning",
+    title: "Transformers as Computers: Branches, Loops, and Latent Reasoning",
+    date: "2026-09",
+    category: "Research Note",
+    section: "Research Notes",
+    status: "Looped Transformer · Recurrent Depth · Latent Reasoning · MoE",
+    summary: "A computer-architecture view of Transformers: attention as data routing, feed-forward layers as learned read-only memory, MoE and sparse attention as conditional dispatch, why practical models still lack reusable loops and mutable state, and what recurrent-depth and latent-reasoning research actually establishes. It also separates verified GPT-6 Astra facts from unsupported architecture claims.",
+  },
+  {
     slug: "physics-of-multimodal-pretraining",
     title: "Towards Physics of Multimodal Pretraining: Knowledge Flow, Synergy, Early Unification, and Recipes",
     date: "2026-08",
