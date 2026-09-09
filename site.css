@@ -965,6 +965,11 @@ summary:focus-visible,
   height: auto;
 }
 
+/* 官网白色标识适配浅色服务卡片，保留原始图片。 */
+.service-logo img.service-logo-monochrome {
+  filter: brightness(0);
+}
+
 .service-body h3 {
   margin: 0 0 4px;
   font-size: 21px;
