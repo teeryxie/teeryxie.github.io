@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SocialOmni benchmark results: who is speaking, when to respond, and how well to respond in social interaction. Bilingual leaderboard with traceable evaluation sources.">
+  <title>SocialOmni · Leaderboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="leaderboard.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#results" data-i18n="skip">Skip to results</a>
+  <header class="masthead shell">
+    <a class="home" href="/">Tianyu Xie <span lang="zh-CN">谢天宇</span></a>
+    <div class="languages" role="group" aria-label="Language / 语言">
+      <button type="button" data-lang="en" aria-pressed="true">English</button>
+      <button type="button" data-lang="zh" aria-pressed="false" lang="zh-CN">中文</button>
+    </div>
+  </header>
+  <main class="shell">
+    <section class="intro" aria-labelledby="title">
+      <p class="eyebrow" data-i18n="eyebrow">A benchmark for social interaction</p>
+      <h1 id="title">SocialOmni <span data-i18n="title">Leaderboard</span></h1>
+      <p class="lede" data-i18n="intro">Who is speaking. When to respond. What to say. Compare how omni models navigate social interaction through audio and video.</p>
+      <nav class="resource-links" aria-label="Resources" data-i18n-aria="resources">
+        <a id="paper-link" href="https://github.com/MAC-AutoML/SocialOmni" data-i18n="paper">Paper</a>
+        <a id="code-link" href="https://github.com/MAC-AutoML/SocialOmni" data-i18n="code">Code</a>
+        <a id="dataset-link" href="https://huggingface.co/datasets/alexisty/SocialOmni" data-i18n="dataset">Dataset</a>
+        <a href="data.json" download data-i18n="download">Download results ↓</a>
+      </nav>
+    </section>
+    <section id="results" aria-labelledby="results-title">
+      <div class="section-heading"><h2 id="results-title" data-i18n="results">Results</h2><p id="updated"></p></div>
+      <p class="comparison-note" data-i18n="comparison">Results are grouped by evaluation protocol and source. Select one group at a time; scores from different groups are not a shared ranking.</p>
+      <div class="controls">
+        <label><span data-i18n="group">Evaluation group</span><select id="cohort" disabled></select></label>
+        <label><span data-i18n="search">Find a model</span><input id="search" type="search" placeholder="Model name" data-i18n-placeholder="placeholder" disabled></label>
+      </div>
+      <div id="cohort-detail" class="cohort-detail"></div>
+      <p id="load-status" class="status" role="status" aria-live="polite" data-i18n="loading">Loading results…</p>
+      <noscript><p>Enable JavaScript to sort and filter results. / 请启用 JavaScript 查看及筛选结果。 <a href="data.json">Download JSON / 下载数据</a></p></noscript>
+      <div id="table-wrap" class="table-wrap" role="region" aria-label="Model results, scroll horizontally for all metrics" data-i18n-aria="tableRegion" tabindex="0" hidden>
+        <table>
+          <caption class="sr-only" data-i18n="caption">Model scores on a 0–100 scale. Higher is better. Select a column heading to sort.</caption>
+          <thead><tr>
+            <th scope="col" data-key="model" aria-sort="ascending"><button type="button" data-sort="model"><span data-i18n="model">Model</span><span class="sort-indicator" aria-hidden="true"> ↑</span></button></th>
+            <th scope="col" data-key="who"><button type="button" data-sort="who">Who<span class="sort-indicator" aria-hidden="true"> ↕</span></button></th>
+            <th scope="col" data-key="when"><button type="button" data-sort="when">When<span class="sort-indicator" aria-hidden="true"> ↕</span></button></th>
+            <th scope="col" data-key="qgold"><button type="button" data-sort="qgold">QGold<span class="sort-indicator" aria-hidden="true"> ↕</span></button></th>
+            <th scope="col" data-key="qens"><button type="button" data-sort="qens">QEns<span class="sort-indicator" aria-hidden="true"> ↕</span></button></th>
+            <th scope="col" data-key="cov_plus"><button type="button" data-sort="cov_plus">Cov+<span class="sort-indicator" aria-hidden="true"> ↕</span></button></th>
+            <th scope="col" data-key="qens_joint"><button type="button" data-sort="qens_joint">QEns_joint<span class="sort-indicator" aria-hidden="true"> ↕</span></button></th>
+          </tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <p class="table-help" data-i18n="tableHelp">Click a metric to sort. All scores use a 0–100 scale; higher is better. — means unavailable and is placed last in either sort direction.</p>
+      <div id="result-notes" class="result-notes"></div>
+    </section>
+    <section class="methods" aria-labelledby="metrics-title">
+      <h2 id="metrics-title" data-i18n="metricsTitle">Reading the metrics</h2>
+      <dl id="metric-definitions"></dl>
+      <p class="method-note" data-i18n="jointNote">QEns_joint = QEns × Cov+ / 100. A high response-quality score alone does not imply reliable decisions about when to speak.</p>
+    </section>
+    <section class="provenance" aria-labelledby="sources-title">
+      <h2 id="sources-title" data-i18n="sourcesTitle">Sources & comparability</h2>
+      <p data-i18n="sourcesText">Paper-reported values are transcribed from the cited paper, not rerun here. New evaluations belong to separate groups unless their model settings, prompts, data and judges are confirmed to match. Each group records its source and sample counts.</p>
+      <p data-i18n="missingText">Missing or unfinished evaluations are not assigned a score. This page does not combine the six metrics into an overall score.</p>
+    </section>
+  </main>
+  <footer class="shell"><span>SocialOmni</span><a href="https://github.com/MAC-AutoML/SocialOmni/issues" data-i18n="correction">Report a correction ↗</a></footer>
+</body>
+</html>
