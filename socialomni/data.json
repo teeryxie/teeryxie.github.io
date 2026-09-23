@@ -39,6 +39,33 @@
         "pages": 23,
         "extraction": "Table 2 p6, Table 3 p7, Tables S1 p17 and S2/S3 p18 visually verified"
       }
+    },
+    {
+      "id": "hosted-v3-20260923",
+      "label": {
+        "en": "Supplemental evaluation · September 2026",
+        "zh": "补充评测 · 2026 年 9 月"
+      },
+      "description": {
+        "en": "Hosted Qwen3.8-Omni-Flash, non-thinking mode, evaluated on the v3 item lists. This run is separate from the paper results because identical primary preprocessing and API prompts have not been established.",
+        "zh": "使用 v3 样本列表补测托管版 Qwen3.8-Omni-Flash，关闭思考模式。尚未确认原始预处理和接口提示词完全一致，因此与论文结果分组展示。"
+      },
+      "source": {
+        "label": {
+          "en": "Per-item results and evaluation settings",
+          "zh": "逐样本结果与评测设置"
+        },
+        "url": "https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/qwen38-omni-flash-20260923"
+      },
+      "samples": {
+        "who": 2000,
+        "when": 200,
+        "gold_positive": 128
+      },
+      "notes": {
+        "en": "Temperature 0.3, top-p 1, output limit 8,192 tokens. Audio and video end at the query boundary. Quality requires GPT-4o, Gemini 2.5 Pro and original Qwen3-Omni; unfinished quality scores are withheld. Cov+ is computed from decisions and non-empty responses, without judge scores.",
+        "zh": "温度 0.3、top-p 1、输出上限 8,192 token。音视频均在查询边界截断。回答质量要求 GPT-4o、Gemini 2.5 Pro 和原版 Qwen3-Omni 完整评分；未完成时留空。Cov+ 根据回应决策和非空回答计算，不依赖评委评分。"
+      }
     }
   ],
   "records": [
@@ -247,7 +274,7 @@
       },
       "visibility": {
         "visible": 49.39,
-        "mismatch": 40.0,
+        "mismatch": 40,
         "gap": 9.39
       },
       "classification": {
@@ -257,7 +284,7 @@
       "intervals_95": {
         "q_ens": [
           10.98,
-          25.0
+          25
         ],
         "cov_positive": [
           26.71,
@@ -302,9 +329,9 @@
       "status": "published",
       "metrics": {
         "who": 45.4,
-        "when": 52.0,
+        "when": 52,
         "qgold": 21.55,
-        "qens": 25.0,
+        "qens": 25,
         "cov_plus": 32.03,
         "qens_joint": 8.01
       },
@@ -365,7 +392,7 @@
       "status": "published",
       "metrics": {
         "who": 74.65,
-        "when": 58.0,
+        "when": 58,
         "qgold": 44.47,
         "qens": 42.59,
         "cov_plus": 63.28,
@@ -424,7 +451,7 @@
       "status": "published",
       "metrics": {
         "who": 67.65,
-        "when": 56.0,
+        "when": 56,
         "qgold": 67.77,
         "qens": 64.86,
         "cov_plus": 46.88,
@@ -484,7 +511,7 @@
       "metrics": {
         "who": 40.95,
         "when": 60.5,
-        "qgold": 36.0,
+        "qgold": 36,
         "qens": 33.14,
         "cov_plus": 67.97,
         "qens_joint": 22.53
@@ -609,7 +636,7 @@
       },
       "visibility": {
         "visible": 31.42,
-        "mismatch": 36.0,
+        "mismatch": 36,
         "gap": -4.58
       },
       "classification": {
@@ -709,6 +736,36 @@
         "classification_page": 17,
         "interval_table": "S2/S3",
         "interval_page": 18
+      }
+    },
+    {
+      "id": "qwen38-omni-flash-nonthinking",
+      "cohort": "hosted-v3-20260923",
+      "model": "Qwen3.8-Omni-Flash",
+      "variant": "Native AV · Non-thinking",
+      "status": "partial",
+      "metrics": {
+        "who": 89.45,
+        "when": 44,
+        "qgold": null,
+        "qens": null,
+        "cov_plus": 17.96875,
+        "qens_joint": null
+      },
+      "classification": {
+        "who_macro_f1": 89.43111188946638,
+        "when_macro_f1": 41.41646615754786
+      },
+      "source": {
+        "label": {
+          "en": "Run artifacts",
+          "zh": "评测记录"
+        },
+        "url": "https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/qwen38-omni-flash-20260923"
+      },
+      "notes": {
+        "en": "Who: 1,789/2,000; one platform video rejection and one noncompliant answer both count as incorrect. When: 88/200. All 128 forced responses are non-empty; 23 also have a YES decision. GPT-4o scoring is blocked by unavailable credentials/credits; the quality panel is incomplete.",
+        "zh": "Who：1,789/2,000；一条视频被平台拒绝，一条回答格式不合规，均计错。When：88/200。128 条强制回答均非空，其中 23 条同时预测 YES。GPT-4o 因凭据或额度不可用尚未评分，质量评委组未齐。"
       }
     }
   ]

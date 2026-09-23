@@ -12,7 +12,7 @@ const messages = {
     metricsTitle: "Reading the metrics", jointNote: "QEns_joint = QEns × Cov+ / 100. A high response-quality score alone does not imply reliable decisions about when to speak.",
     sourcesTitle: "Sources & comparability", sourcesText: "Paper-reported values are transcribed from the cited paper, not rerun here. New evaluations belong to separate groups unless their model settings, prompts, data and judges are confirmed to match. Each group records its source and sample counts.",
     missingText: "Missing or unfinished evaluations are not assigned a score. This page does not combine the six metrics into an overall score.",
-    correction: "Report a correction ↗", updated: "Updated", source: "Source", samples: "Samples", positive: "gold-positive", pending: "Evaluation pending",
+    correction: "Report a correction ↗", updated: "Updated", source: "Source", samples: "Samples", positive: "gold-positive", pending: "Evaluation pending", partial: "Quality scoring pending",
     empty: "No published results in this group yet.", noMatch: "No models match your search.", noData: "Results are being prepared. No scores have been published here yet.",
     loadError: "Results could not be loaded. Please reload the page, or use the Download results link.", count: "models shown",
     metrics: [
@@ -35,7 +35,7 @@ const messages = {
     metricsTitle: "指标说明", jointNote: "QEns_joint = QEns × Cov+ / 100。回答质量高，不一定意味着模型能可靠判断何时应该开口。",
     sourcesTitle: "来源与可比性", sourcesText: "论文结果转录自所引用的论文，不代表本站重新运行的结果。新增评测单独分组，除非已确认模型设置、提示词、数据和评委一致。每组均注明来源和样本数。",
     missingText: "缺失或尚未完成的评测不赋予分数。本站不把六项指标合成为一个总分。",
-    correction: "反馈勘误 ↗", updated: "更新日期", source: "来源", samples: "样本", positive: "应回应样本", pending: "评测待完成",
+    correction: "反馈勘误 ↗", updated: "更新日期", source: "来源", samples: "样本", positive: "应回应样本", pending: "评测待完成", partial: "回答质量待评分",
     empty: "此组暂未发布评测结果。", noMatch: "没有匹配的模型。", noData: "结果整理中，本站暂未发布分数。",
     loadError: "无法加载结果。请刷新页面，或使用“下载结果”链接。", count: "个模型",
     metrics: [
@@ -138,6 +138,7 @@ function renderRows() {
     const name = element("td", record.model);
     if (record.variant) name.append(element("span", record.variant, "model-meta"));
     if (record.status === "pending") name.append(element("span", t.pending, "model-meta"));
+    if (record.status === "partial") name.append(element("span", t.partial, "model-meta"));
     row.append(name);
     metricKeys.forEach((key) => row.append(element("td", validScore(score(record, key)) ? score(record, key).toFixed(2) : "—")));
     if (record.notes || record.source) {
@@ -149,7 +150,7 @@ function renderRows() {
     return row;
   }));
   document.getElementById("table-wrap").hidden = !records.length;
-  status.textContent = records.length ? `${records.length} ${t.count}` : !cohort ? t.noData : query ? t.noMatch : t.empty;
+  status.textContent = records.length ? `${records.length} ${language === "en" && records.length === 1 ? "model shown" : t.count}` : !cohort ? t.noData : query ? t.noMatch : t.empty;
   document.querySelectorAll("th[data-key]").forEach((header) => {
     const selected = header.dataset.key === sortKey;
     if (selected) header.setAttribute("aria-sort", descending ? "descending" : "ascending");
