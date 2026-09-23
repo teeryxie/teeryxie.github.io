@@ -41,21 +41,21 @@
       }
     },
     {
-      "id": "hosted-v3-20260923",
+      "id": "hosted-v3-sol-20260923",
       "label": {
-        "en": "Supplemental evaluation · September 2026",
-        "zh": "补充评测 · 2026 年 9 月"
+        "en": "Supplemental · GPT-5.6-Sol judge panel",
+        "zh": "补充评测 · GPT-5.6-Sol 评委组"
       },
       "description": {
-        "en": "Hosted Qwen3.8-Omni-Flash, non-thinking mode, evaluated on the v3 item lists. This run is separate from the paper results because identical primary preprocessing and API prompts have not been established.",
-        "zh": "使用 v3 样本列表补测托管版 Qwen3.8-Omni-Flash，关闭思考模式。尚未确认原始预处理和接口提示词完全一致，因此与论文结果分组展示。"
+        "en": "Qwen3.8-Omni-Flash in non-thinking mode on the v3 item lists. GPT-5.6-Sol replaces GPT-4o as a judge; the other judges are Gemini 2.5 Pro and original Qwen3-Omni. This is a separate evaluation group, not the paper’s original judge panel.",
+        "zh": "使用 v3 样本列表补测 Qwen3.8-Omni-Flash，关闭思考模式。评委 GPT-4o 替换为 GPT-5.6-Sol，另外两位为 Gemini 2.5 Pro 和原版 Qwen3-Omni。本组独立展示，不属于论文原始评委组结果。"
       },
       "source": {
         "label": {
           "en": "Per-item results and evaluation settings",
           "zh": "逐样本结果与评测设置"
         },
-        "url": "https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/qwen38-omni-flash-20260923"
+        "url": "https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/qwen38-omni-flash-20260923/gpt56-sol"
       },
       "samples": {
         "who": 2000,
@@ -63,8 +63,8 @@
         "gold_positive": 128
       },
       "notes": {
-        "en": "Temperature 0.3, top-p 1, output limit 8,192 tokens. Audio and video end at the query boundary. Quality requires GPT-4o, Gemini 2.5 Pro and original Qwen3-Omni; unfinished quality scores are withheld. Cov+ is computed from decisions and non-empty responses, without judge scores.",
-        "zh": "温度 0.3、top-p 1、输出上限 8,192 token。音视频均在查询边界截断。回答质量要求 GPT-4o、Gemini 2.5 Pro 和原版 Qwen3-Omni 完整评分；未完成时留空。Cov+ 根据回应决策和非空回答计算，不依赖评委评分。"
+        "en": "Candidate settings: temperature 0.3, top-p 1, output limit 8,192 tokens. Audio and video end at the query boundary. All three judges score each of the 128 non-empty responses; no partial-panel average is used. The primary paper’s exact preprocessing and API envelopes have not been established for this run.",
+        "zh": "候选模型设置：温度 0.3、top-p 1、输出上限 8,192 token，音视频均在查询边界截断。128 条非空回答均由三位评委评分，不使用缺少评委的平均分。本次运行尚未确认与论文原始预处理及接口请求完全一致。"
       }
     }
   ],
@@ -740,17 +740,17 @@
     },
     {
       "id": "qwen38-omni-flash-nonthinking",
-      "cohort": "hosted-v3-20260923",
+      "cohort": "hosted-v3-sol-20260923",
       "model": "Qwen3.8-Omni-Flash",
       "variant": "Native AV · Non-thinking",
-      "status": "partial",
+      "status": "published",
       "metrics": {
         "who": 89.45,
         "when": 44,
-        "qgold": null,
-        "qens": null,
+        "qgold": 73.95833333333337,
+        "qens": 68.11594202898553,
         "cov_plus": 17.96875,
-        "qens_joint": null
+        "qens_joint": 12.239583333333337
       },
       "classification": {
         "who_macro_f1": 89.43111188946638,
@@ -761,12 +761,23 @@
           "en": "Run artifacts",
           "zh": "评测记录"
         },
-        "url": "https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/qwen38-omni-flash-20260923"
+        "url": "https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/qwen38-omni-flash-20260923/gpt56-sol"
       },
       "notes": {
-        "en": "Who: 1,789/2,000; one platform video rejection and one noncompliant answer both count as incorrect. When: 88/200. All 128 forced responses are non-empty; 23 also have a YES decision. GPT-4o scoring is blocked by unavailable credentials/credits; the quality panel is incomplete.",
-        "zh": "Who：1,789/2,000；一条视频被平台拒绝，一条回答格式不合规，均计错。When：88/200。128 条强制回答均非空，其中 23 条同时预测 YES。GPT-4o 因凭据或额度不可用尚未评分，质量评委组未齐。"
-      }
+        "en": "GPT-4o → GPT-5.6-Sol for judging only. Candidate outputs are unchanged. Who: 1,789/2,000; one provider video rejection and one noncompliant answer count as incorrect. When: 88/200; 23 of 128 gold-positive items have a YES decision and a non-empty response. Gemini and Qwen scores are reused from identical requests.",
+        "zh": "仅将评委 GPT-4o 替换为 GPT-5.6-Sol，候选回答未改动。Who：1,789/2,000；一条视频被平台拒绝、一条回答格式不合规，均计错。When：88/200；128 条应回应样本中，23 条预测 YES 且生成非空回答。Gemini 和 Qwen 评分复用完全相同请求的缓存。"
+      },
+      "judges": [
+        "gemini-2.5-pro",
+        "gpt-5.6-sol",
+        "qwen3-omni"
+      ],
+      "judge_panel": "gpt56-sol",
+      "judge_substitution": {
+        "replaced": "gpt-4o",
+        "replacement": "gpt-5.6-sol"
+      },
+      "judge_score_count": 384
     }
   ]
 }
