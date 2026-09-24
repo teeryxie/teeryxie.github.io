@@ -7,34 +7,40 @@
   },
   "records": [
     {
-      "id": "modern-gpt4o",
+      "id": "paper-gpt4o",
       "model": "GPT-4o",
       "variant": "Cascade",
       "status": "published",
       "metrics": {
         "who": 35.05,
         "when": 50.5,
-        "qgold": null,
-        "qens": 77.56410256410257,
+        "qgold": 77.1484375,
+        "qens": 76.4957264957265,
         "cov_plus": 30.46875,
-        "qens_joint": 23.632812500000004
+        "qens_joint": 23.307291666666668
       },
       "classification": {
         "who_macro_f1": 31.184205577225555,
         "when_macro_f1": 49.83658888804439
       },
-      "judge_panel": "modern-20260924",
+      "judge_panel": "paper-v3",
       "judges": [
-        "gemini-3.8-flash",
-        "qwen3.8-omni",
-        "gpt-5.6-sol"
+        "gpt-4o",
+        "gemini-2.5-pro",
+        "qwen3-omni"
       ],
       "source": {
         "label": {
-          "en": "Answers and scores",
-          "zh": "回答与评分"
+          "en": "Paper · Table 2",
+          "zh": "论文 · 表 2"
         },
-        "url": "https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/modern-panel-20260924/paper"
+        "url": "https://arxiv.org/abs/2603.16859v3"
+      },
+      "evaluation": {
+        "paper": "https://arxiv.org/abs/2603.16859v3",
+        "table": "2",
+        "source_csv": "https://github.com/MAC-AutoML/SocialOmni/blob/main/reproducibility/arxiv-v3/results/extension/main_extension_summary.csv",
+        "quality_scores": "Original paper three-judge panel"
       }
     },
     {
