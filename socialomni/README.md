@@ -1,6 +1,8 @@
 # SocialOmni leaderboard
 
-Static English / Chinese leaderboard for GitHub Pages. Serve this directory over HTTP; the page loads `data.json` without a build step or third-party JavaScript dependencies.
+Static English / Chinese project page for GitHub Pages. The published HTML includes the leaderboard, video examples and metric definitions. JavaScript adds sorting, search and language switching; it is not required to read the results. No third-party JavaScript dependencies.
+
+After editing data, examples, translations or styles, run `node socialomni/build.mjs` from the repository root and commit the generated HTML and stylesheet. The build embeds the JSON and updates content-based asset versions to prevent stale scripts and styles after deployment.
 
 All models appear in one table, initially sorted by QEns_joint. Response quality uses Gemini 3.8 Flash, Qwen3.8-Omni-Flash and GPT-5.6-Sol, including rescoring of earlier models' existing responses. Original outputs, evaluation settings, diagnostics and historical panels remain in the source repository. Model names link to their supporting results.
 

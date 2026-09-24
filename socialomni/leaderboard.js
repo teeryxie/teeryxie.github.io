@@ -3,7 +3,7 @@
 const messages = {
   en: {
     skip: "Skip to results", eyebrow: "A benchmark for social interaction", title: "Leaderboard",
-    intro: "Who is speaking. When to respond. What to say. Compare how omni models navigate social interaction through audio and video.",
+    intro: "Evaluating multimodal models in social interaction through audio and video.",
     resources: "Resources", paper: "Paper", code: "Code", dataset: "Dataset", download: "Download results ↓",
     results: "Results", comparison: "",
     search: "Find a model", placeholder: "Model name", loading: "Loading results…",
@@ -27,7 +27,7 @@ const messages = {
   },
   zh: {
     skip: "跳转到结果", eyebrow: "面向社会交互的多模态评测", title: "排行榜",
-    intro: "谁在说话、何时回应、说什么。比较全模态模型如何利用音频与视频理解社会交互，并作出回应。",
+    intro: "通过音频与视频，评测全模态模型在社会交互中的理解与回应能力。",
     resources: "研究资源", paper: "论文", code: "代码", dataset: "数据集", download: "下载结果 ↓",
     results: "评测结果", comparison: "",
     search: "查找模型", placeholder: "输入模型名称", loading: "正在加载结果…",
@@ -53,7 +53,7 @@ const messages = {
 
 Object.assign(messages.en, {"navIntro":"Introduction","navResults":"Leaderboard","navExamples":"Dataset examples","subtitle":"Who speaks. When to respond. What to say.","overview":"Social interaction requires more than understanding a video. SocialOmni evaluates whether a model can identify speakers, recognize when it should respond, and generate an appropriate reply from audio and visual context.","level1Title":"Who is speaking?","level1Text":"Connect voices to people using audio and visual cues.","level2Title":"When and how to respond?","level2Text":"Decide whether to speak at a given moment, then produce a context-appropriate response.","filmCaption":"SocialOmni · Project introduction","examplesIntro":"Explore the tasks through selected videos and their reference annotations.","question":"Question","reference":"Reference answer","showAnswer":"Show reference answer","caseSource":"Source annotation ↗"});
 Object.assign(messages.zh, {"navIntro":"项目介绍","navResults":"排行榜","navExamples":"视频案例","subtitle":"谁在说话，何时回应，如何回应。","overview":"社会交互不止于理解视频。SocialOmni 评测模型能否结合音视频线索识别说话者、判断何时应当开口，并生成符合语境的回应。","level1Title":"谁在说话？","level1Text":"结合声音与视觉线索，将说话内容与人物对应。","level2Title":"何时回应，如何回应？","level2Text":"在指定时刻判断是否应该开口，并生成符合当前语境的回答。","filmCaption":"SocialOmni · 项目介绍视频","examplesIntro":"通过精选视频和原始参考标注，了解两个层级的评测任务。","question":"题目","reference":"参考答案","showAnswer":"查看参考答案","caseSource":"查看原始标注 ↗"});
-let examples = [];
+let examples;
 
 const metricKeys = ["who", "when", "qgold", "qens", "cov_plus", "qens_joint"];
 let language = "en";
@@ -98,7 +98,7 @@ function render() {
   document.getElementById("metric-definitions").replaceChildren(...t.metrics.flatMap(([name, definition]) => [element("dt", name), element("dd", definition)]));
   renderCases();
   if (!dataset) {
-    status.textContent = failed ? t.loadError : t.loading;
+    if (!document.getElementById("rows").children.length) status.textContent = failed ? t.loadError : t.loading;
     return;
   }
   document.getElementById("updated").textContent = dataset.updated_at ? `${t.updated} ${dataset.updated_at}` : "";
@@ -106,6 +106,7 @@ function render() {
 }
 
 function renderRows() {
+  if (!dataset) return;
   const t = messages[language];
   const query = search.value.trim().toLocaleLowerCase();
   const records = dataset.records.filter((item) => `${item.model} ${item.variant || ""}`.toLocaleLowerCase().includes(query));
@@ -150,11 +151,7 @@ document.querySelectorAll("[data-sort]").forEach((button) => button.addEventList
   renderRows();
 }));
 search.addEventListener("input", renderRows);
-render();
-fetch("data.json").then((response) => {
-  if (!response.ok) throw new Error("Data unavailable");
-  return response.json();
-}).then((data) => {
+function useDataset(data) {
   if (!Array.isArray(data.records)) throw new Error("Invalid data format");
   dataset = data;
   Object.entries(data.links || {}).forEach(([key, value]) => {
@@ -162,17 +159,38 @@ fetch("data.json").then((response) => {
     if (link) link.href = safeUrl(value);
   });
   search.disabled = !data.records.length;
-  render();
-}).catch(() => {
-  dataset = undefined;
-  failed = true;
-  search.disabled = true;
-  status.classList.add("error");
-  document.getElementById("table-wrap").hidden = true;
-  render();
-});
+}
+
+const bootstrap = document.getElementById("socialomni-data");
+if (bootstrap) {
+  try {
+    const data = JSON.parse(bootstrap.textContent);
+    useDataset(data.results);
+    if (Array.isArray(data.examples.cases)) examples = data.examples.cases;
+  } catch {
+    // Keep the generated HTML visible if embedded data cannot be read.
+  }
+}
+render();
+if (!dataset) {
+  fetch("data.json").then((response) => {
+    if (!response.ok) throw new Error("Data unavailable");
+    return response.json();
+  }).then((data) => {
+    useDataset(data);
+    render();
+  }).catch(() => {
+    failed = true;
+    search.disabled = true;
+    if (!document.getElementById("rows").children.length) {
+      status.classList.add("error");
+      render();
+    }
+  });
+}
 
 function renderCases() {
+  if (!examples) return;
   const list = document.getElementById("case-list");
   const t = messages[language];
   list.replaceChildren(...examples.map((item) => {
@@ -195,6 +213,13 @@ function renderCases() {
     article.append(media, content); return article;
   }));
 }
-fetch("cases.json").then(response => { if (!response.ok) throw new Error("Examples unavailable"); return response.json(); })
-  .then(data => { examples = data.cases; renderCases(); })
-  .catch(() => { document.getElementById("examples").hidden = true; });
+if (!examples) {
+  fetch("cases.json").then(response => {
+    if (!response.ok) throw new Error("Examples unavailable");
+    return response.json();
+  }).then(data => {
+    if (!Array.isArray(data.cases)) throw new Error("Invalid examples format");
+    examples = data.cases;
+    renderCases();
+  }).catch(() => {});
+}
