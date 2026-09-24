@@ -1,0 +1,12 @@
+:root {
+  --color-bg: #f5f7fb;
+  --color-paper: #ffffff;
+  --color-ink: #1f252d;
+  --color-muted: #536170;
+  --color-line: #dce4ee;
+  --color-accent: #215fa8;
+  --color-soft: #edf2f8;
+  --color-error: #a53d48;
+  --font-body: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: Inter, ui-sans-serif, system-ui, "Noto Sans SC", sans-serif;
+}

@@ -1,22 +1,26 @@
 # SocialOmni leaderboard
 
-Static English / Chinese results page for GitHub Pages. No build step or third-party JavaScript dependencies. Serve this directory over HTTP for local preview; the page loads `data.json` with `fetch`.
+Static English / Chinese leaderboard for GitHub Pages. Serve this directory over HTTP; the page loads `data.json` without a build step or third-party JavaScript dependencies.
 
-Only the `modern-20260924` judge panel is displayed. The paper-answer and hosted-run groups share that panel but retain separate rankings. Previous panels and the original source materials remain in the [repository archive](https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/archive).
+All models appear in one table, initially sorted by QEns_joint. Response quality uses Gemini 3.8 Flash, Qwen3.8-Omni-Flash and GPT-5.6-Sol, including rescoring of earlier models' existing responses. Original outputs, evaluation settings, diagnostics and historical panels remain in the source repository. Model names link to their supporting results.
 
 ## Results data
 
-`data.json` contains:
+- `updated_at`: publication date.
+- `links`: public paper, code and dataset URLs.
+- `judges`: exact model identifiers for the current scoring panel.
+- `records`: model identity, source, metrics and evaluation metadata.
 
-- `updated_at`: ISO calendar date, or `null` before publication.
-- `links`: public `paper`, `code` and `dataset` URLs.
-- `cohorts`: independent evaluation groups. Each has `id`, bilingual `label` and `description`, `source: {label, url}`, `samples: {who, when, gold_positive}`, and optional bilingual `notes`.
-- `records`: each has `id`, `cohort`, `model`, optional `variant`, and `metrics: {who, when, qgold, qens, cov_plus, qens_joint}`. Optional `notes` and `source` identify row-specific qualifications. `status: "pending"` suppresses all scores. `status: "partial"` labels incomplete quality scoring; completed classification metrics may be shown, with missing quality values kept null.
+Metrics are `who`, `when`, `qgold`, `qens`, `cov_plus` and `qens_joint`, on a 0–100 scale. Missing values are `null`, displayed as — and sorted last in either direction. Do not fill missing values with historical judge scores. No composite score is calculated beyond the defined QEns_joint metric.
 
-Bilingual fields use `{"en": "English text", "zh": "中文文本"}`. Source labels may also be plain strings. Scores are numbers on a 0–100 scale. Use `null` for missing or disputed values; never use zero as a placeholder. Unknown sample counts are `null`. Records are displayed only inside their stated group; no overall score or cross-group ranking is calculated. Sorting always places missing values last.
-
-Before publishing a result, verify its source, model identity, prompt and judge configuration, dataset version and sample selection. Separate paper transcriptions from independently run evaluations unless protocol equivalence has been established. Keep private manuscripts, credentials and internal service addresses out of this directory.
+Before publishing, verify model identities, complete judge scores, source responses and evaluation settings. Keep credentials and private endpoints out of public files. Preserve historical results in the repository archive when changing the scoring panel.
 
 ## Checks
 
-Verify English and Chinese, metric sorting in both directions, search with no matches, an empty group, a failed data request, keyboard navigation, and horizontal table scrolling. Check at 320, 375, 414, 768 and desktop widths. The page should have no horizontal overflow outside the table region.
+Verify both languages, all-model display, metric sorting in both directions, missing values, search and no matches, source links, keyboard navigation and mobile table scrolling.
+
+## Media and examples
+
+`cases.json` preserves the selected dataset annotations, public source identifiers and video hashes. Chinese translations are separate `_zh` fields; original annotations are unchanged. The two Level 2 clips end at the annotated decision time. Reference answers are initially collapsed.
+
+`media/socialomni-introduction.mp4` is the author-provided project video, remuxed for progressive playback without re-encoding. Videos load only on interaction. Case clips use H.264 video and AAC audio.

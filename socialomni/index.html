@@ -14,7 +14,8 @@
 <body>
   <a class="skip-link" href="#results" data-i18n="skip">Skip to results</a>
   <header class="masthead shell">
-    <a class="home" href="/">Tianyu Xie <span lang="zh-CN">谢天宇</span></a>
+    <a class="home" href="#title">SocialOmni</a>
+    <nav class="site-nav" aria-label="Sections"><a href="#introduction" data-i18n="navIntro">Introduction</a><a href="#results" data-i18n="navResults">Leaderboard</a><a href="#examples" data-i18n="navExamples">Examples</a></nav>
     <div class="languages" role="group" aria-label="Language / 语言">
       <button type="button" data-lang="en" aria-pressed="true">English</button>
       <button type="button" data-lang="zh" aria-pressed="false" lang="zh-CN">中文</button>
@@ -23,7 +24,8 @@
   <main class="shell">
     <section class="intro" aria-labelledby="title">
       <p class="eyebrow" data-i18n="eyebrow">A benchmark for social interaction</p>
-      <h1 id="title">SocialOmni <span data-i18n="title">Leaderboard</span></h1>
+      <h1 id="title">SocialOmni</h1>
+      <p class="project-subtitle" data-i18n="subtitle">Who speaks. When to respond. What to say.</p>
       <p class="lede" data-i18n="intro">Who is speaking. When to respond. What to say. Compare how omni models navigate social interaction through audio and video.</p>
       <nav class="resource-links" aria-label="Resources" data-i18n-aria="resources">
         <a id="paper-link" href="https://arxiv.org/abs/2603.16859v3" data-i18n="paper">Paper</a>
@@ -32,14 +34,20 @@
         <a href="data.json" download data-i18n="download">Download results ↓</a>
       </nav>
     </section>
+    <section id="introduction" class="project-section" aria-labelledby="introduction-title">
+      <div class="section-heading"><h2 id="introduction-title" data-i18n="navIntro">Introduction</h2><span class="section-index">01</span></div>
+      <p class="section-lede" data-i18n="overview">Social interaction requires more than understanding a video. SocialOmni evaluates whether a model can identify speakers, recognize when it should respond, and generate an appropriate reply from audio and visual context.</p>
+      <div class="level-overview">
+        <article><span class="level-label">LEVEL 1</span><h3 data-i18n="level1Title">Who is speaking?</h3><p data-i18n="level1Text">Connect voices to people using audio and visual cues.</p></article>
+        <article><span class="level-label">LEVEL 2</span><h3 data-i18n="level2Title">When and how to respond?</h3><p data-i18n="level2Text">Decide whether to speak at a given moment, then produce a context-appropriate response.</p></article>
+      </div>
+      <figure class="intro-film"><video controls playsinline preload="none" poster="media/introduction-poster.jpg" aria-label="SocialOmni introduction"><source src="media/socialomni-introduction.mp4" type="video/mp4"></video><figcaption data-i18n="filmCaption">SocialOmni · Project introduction</figcaption></figure>
+    </section>
     <section id="results" aria-labelledby="results-title">
       <div class="section-heading"><h2 id="results-title" data-i18n="results">Results</h2><p id="updated"></p></div>
-      <p class="comparison-note" data-i18n="comparison">Results are grouped by evaluation protocol and source. Select one group at a time; scores from different groups are not a shared ranking.</p>
       <div class="controls">
-        <label><span data-i18n="group">Evaluation group</span><select id="cohort" disabled></select></label>
         <label><span data-i18n="search">Find a model</span><input id="search" type="search" placeholder="Model name" data-i18n-placeholder="placeholder" disabled></label>
       </div>
-      <div id="cohort-detail" class="cohort-detail"></div>
       <p id="load-status" class="status" role="status" aria-live="polite" data-i18n="loading">Loading results…</p>
       <noscript><p>Enable JavaScript to sort and filter results. / 请启用 JavaScript 查看及筛选结果。 <a href="data.json">Download JSON / 下载数据</a></p></noscript>
       <div id="table-wrap" class="table-wrap" role="region" aria-label="Model results, scroll horizontally for all metrics" data-i18n-aria="tableRegion" tabindex="0" hidden>
@@ -58,7 +66,11 @@
         </table>
       </div>
       <p class="table-help" data-i18n="tableHelp">Click a metric to sort. All scores use a 0–100 scale; higher is better. — means unavailable and is placed last in either sort direction.</p>
-      <div id="result-notes" class="result-notes"></div>
+    </section>
+    <section id="examples" class="project-section" aria-labelledby="examples-title">
+      <div class="section-heading"><h2 id="examples-title" data-i18n="navExamples">Dataset examples</h2><span class="section-index">03</span></div>
+      <p class="section-lede" data-i18n="examplesIntro">Explore the tasks through selected videos and their reference annotations.</p>
+      <div id="case-list" class="case-list"></div>
     </section>
     <section class="methods" aria-labelledby="metrics-title">
       <h2 id="metrics-title" data-i18n="metricsTitle">Reading the metrics</h2>
@@ -66,8 +78,8 @@
       <p class="method-note" data-i18n="jointNote">QEns_joint = QEns × Cov+ / 100. A high response-quality score alone does not imply reliable decisions about when to speak.</p>
     </section>
     <section class="provenance" aria-labelledby="sources-title">
-      <h2 id="sources-title" data-i18n="sourcesTitle">Sources & comparability</h2>
-      <p data-i18n="sourcesText">All displayed response-quality scores use Gemini 3.8 Flash, Qwen3.8-Omni-Flash and GPT-5.6-Sol. Archived paper answers and hosted runs retain separate evaluation groups.</p>
+      <h2 id="sources-title" data-i18n="sourcesTitle">Evaluation</h2>
+      <p data-i18n="sourcesText">Response quality is scored by Gemini 3.8 Flash, Qwen3.8-Omni-Flash and GPT-5.6-Sol. Earlier models’ existing responses have been rescored by the same judges.</p>
       <p data-i18n="missingText">Missing or unfinished evaluations are not assigned a score. This page does not combine the six metrics into an overall score.</p>
       <p><a href="https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/archive" data-i18n="archive">Historical results and original materials ↗</a></p>
     </section>

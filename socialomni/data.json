@@ -5,66 +5,9 @@
     "code": "https://github.com/MAC-AutoML/SocialOmni",
     "dataset": "https://huggingface.co/datasets/alexisty/SocialOmni"
   },
-  "cohorts": [
-    {
-      "id": "hosted-modern-20260924",
-      "label": {
-        "en": "Hosted runs · September 24 judges",
-        "zh": "托管模型实测 · 9 月 24 日评委组"
-      },
-      "description": {
-        "en": "New audio-video evaluations and the existing Qwen3.8 run, using Gemini 3.8 Flash, Qwen3.8-Omni-Flash and GPT-5.6-Sol as judges. Candidate interfaces differ from the paper runs, so this cohort remains separate.",
-        "zh": "新增音视频实测及此前的 Qwen3.8 运行，统一使用 Gemini 3.8 Flash、Qwen3.8-Omni-Flash 和 GPT-5.6-Sol 评分。候选模型输入接口与论文运行存在差异，故单独列组。"
-      },
-      "notes": {
-        "en": "All 128 gold-positive responses are generated even when the model predicts NO. Temperature 0.3, top-p 1, output limit 8,192 tokens. Both media tracks end at the query boundary. Every non-empty response has three judge scores; no same-family exclusion is applied. Classification uses exact label parsing: extra explanation counts as invalid.",
-        "zh": "全部 128 条应回应样本均强制生成回答，包括模型预测 NO 的情况。温度 0.3、top-p 1、输出上限 8,192 token，音视频均在查询边界截断。每条非空回答有三份评分，不剔除同家族评委。分类题严格解析标签，附加解释文字计为格式无效。"
-      },
-      "samples": {
-        "who": 2000,
-        "when": 200,
-        "gold_positive": 128
-      },
-      "source": {
-        "label": {
-          "en": "Per-item results and settings",
-          "zh": "逐样本结果与设置"
-        },
-        "url": "https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/modern-panel-20260924"
-      }
-    },
-    {
-      "id": "paper-modern-20260924",
-      "label": {
-        "en": "Paper answers · September 24 judges",
-        "zh": "论文原回答 · 9 月 24 日评委组"
-      },
-      "description": {
-        "en": "The 688 archived answers from 11 paper configurations, rescored without regenerating responses. Judges: Gemini 3.8 Flash, Qwen3.8-Omni-Flash and GPT-5.6-Sol.",
-        "zh": "对论文 11 组配置已归档的 688 条回答重新评分，不重新生成回答。评委为 Gemini 3.8 Flash、Qwen3.8-Omni-Flash 和 GPT-5.6-Sol。"
-      },
-      "notes": {
-        "en": "QGold is unavailable: the archived primary answers do not include all 128 forced responses per model. Who, When and coverage retain the original outputs. Quality requires all three judges; no same-family exclusion is applied.",
-        "zh": "QGold 留空：原始回答归档未包含每个模型全部 128 条强制回答。Who、When 和覆盖率保留原结果。质量分要求三位评委全部完成，不剔除同家族评委。"
-      },
-      "samples": {
-        "who": 2000,
-        "when": 200,
-        "gold_positive": 128
-      },
-      "source": {
-        "label": {
-          "en": "Archived answers and new scores",
-          "zh": "原回答与新评分"
-        },
-        "url": "https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/modern-panel-20260924/paper"
-      }
-    }
-  ],
   "records": [
     {
       "id": "modern-gpt4o",
-      "cohort": "paper-modern-20260924",
       "model": "GPT-4o",
       "variant": "Cascade",
       "status": "published",
@@ -86,10 +29,6 @@
         "qwen3.8-omni",
         "gpt-5.6-sol"
       ],
-      "notes": {
-        "en": "39 archived responses rescored. QGold cannot be recovered from this response subset. Audio is transcribed with gpt-4o-transcribe, then supplied as text with sampled video frames.",
-        "zh": "重新评分 39 条归档回答。无法用该回答子集恢复 QGold。 截断音频经 gpt-4o-transcribe 转写，与采样视频帧一同输入。"
-      },
       "source": {
         "label": {
           "en": "Answers and scores",
@@ -100,7 +39,6 @@
     },
     {
       "id": "modern-gemini_2_5_pro",
-      "cohort": "paper-modern-20260924",
       "model": "Gemini 2.5 Pro",
       "variant": "Visual-only",
       "status": "published",
@@ -122,10 +60,6 @@
         "qwen3.8-omni",
         "gpt-5.6-sol"
       ],
-      "notes": {
-        "en": "62 archived responses rescored. QGold cannot be recovered from this response subset. Historical When request failure retained: video_0069. Frames-only relay; raw audio was not available to this evaluated configuration.",
-        "zh": "重新评分 62 条归档回答。无法用该回答子集恢复 QGold。 保留历史 When 请求失败：video_0069。 该评测中使用仅接收视频帧的转接接口，不包含原始音频。"
-      },
       "source": {
         "label": {
           "en": "Answers and scores",
@@ -136,7 +70,6 @@
     },
     {
       "id": "modern-gemini_2_5_flash",
-      "cohort": "paper-modern-20260924",
       "model": "Gemini 2.5 Flash",
       "variant": "Visual-only",
       "status": "published",
@@ -158,10 +91,6 @@
         "qwen3.8-omni",
         "gpt-5.6-sol"
       ],
-      "notes": {
-        "en": "55 archived responses rescored. QGold cannot be recovered from this response subset. Frames-only relay; raw audio was not available to this evaluated configuration.",
-        "zh": "重新评分 55 条归档回答。无法用该回答子集恢复 QGold。 该评测中使用仅接收视频帧的转接接口，不包含原始音频。"
-      },
       "source": {
         "label": {
           "en": "Answers and scores",
@@ -172,7 +101,6 @@
     },
     {
       "id": "modern-gemini_3_flash_preview",
-      "cohort": "paper-modern-20260924",
       "model": "Gemini 3 Flash",
       "variant": "Visual-only",
       "status": "published",
@@ -194,10 +122,6 @@
         "qwen3.8-omni",
         "gpt-5.6-sol"
       ],
-      "notes": {
-        "en": "44 archived responses rescored. QGold cannot be recovered from this response subset. Historical When request failure retained: video_0069. Frames-only relay; raw audio was not available to this evaluated configuration.",
-        "zh": "重新评分 44 条归档回答。无法用该回答子集恢复 QGold。 保留历史 When 请求失败：video_0069。 该评测中使用仅接收视频帧的转接接口，不包含原始音频。"
-      },
       "source": {
         "label": {
           "en": "Answers and scores",
@@ -208,13 +132,12 @@
     },
     {
       "id": "modern-gemini_3_pro_preview",
-      "cohort": "paper-modern-20260924",
       "model": "Gemini 3 Pro",
       "variant": "Visual-only",
       "status": "published",
       "metrics": {
         "who": 45.4,
-        "when": 52.0,
+        "when": 52,
         "qgold": null,
         "qens": 32.11382113821138,
         "cov_plus": 32.03125,
@@ -230,10 +153,6 @@
         "qwen3.8-omni",
         "gpt-5.6-sol"
       ],
-      "notes": {
-        "en": "41 archived responses rescored. QGold cannot be recovered from this response subset. Frames-only relay; raw audio was not available to this evaluated configuration.",
-        "zh": "重新评分 41 条归档回答。无法用该回答子集恢复 QGold。 该评测中使用仅接收视频帧的转接接口，不包含原始音频。"
-      },
       "source": {
         "label": {
           "en": "Answers and scores",
@@ -244,13 +163,12 @@
     },
     {
       "id": "modern-qwen3_omni",
-      "cohort": "paper-modern-20260924",
       "model": "Qwen3-Omni",
       "variant": "Native AV",
       "status": "published",
       "metrics": {
         "who": 74.65,
-        "when": 58.0,
+        "when": 58,
         "qgold": null,
         "qens": 44.95884773662551,
         "cov_plus": 63.28125,
@@ -266,10 +184,6 @@
         "qwen3.8-omni",
         "gpt-5.6-sol"
       ],
-      "notes": {
-        "en": "81 archived responses rescored. QGold cannot be recovered from this response subset.",
-        "zh": "重新评分 81 条归档回答。无法用该回答子集恢复 QGold。"
-      },
       "source": {
         "label": {
           "en": "Answers and scores",
@@ -280,13 +194,12 @@
     },
     {
       "id": "modern-qwen3_omni_thinking",
-      "cohort": "paper-modern-20260924",
       "model": "Qwen3-Omni-Thinking",
       "variant": "Native AV",
       "status": "published",
       "metrics": {
         "who": 67.65,
-        "when": 56.0,
+        "when": 56,
         "qgold": null,
         "qens": 61.52777777777778,
         "cov_plus": 46.875,
@@ -302,10 +215,6 @@
         "qwen3.8-omni",
         "gpt-5.6-sol"
       ],
-      "notes": {
-        "en": "60 archived responses rescored. QGold cannot be recovered from this response subset.",
-        "zh": "重新评分 60 条归档回答。无法用该回答子集恢复 QGold。"
-      },
       "source": {
         "label": {
           "en": "Answers and scores",
@@ -316,7 +225,6 @@
     },
     {
       "id": "modern-qwen2_5_omni",
-      "cohort": "paper-modern-20260924",
       "model": "Qwen2.5-Omni",
       "variant": "Native AV",
       "status": "published",
@@ -338,10 +246,6 @@
         "qwen3.8-omni",
         "gpt-5.6-sol"
       ],
-      "notes": {
-        "en": "87 archived responses rescored. QGold cannot be recovered from this response subset.",
-        "zh": "重新评分 87 条归档回答。无法用该回答子集恢复 QGold。"
-      },
       "source": {
         "label": {
           "en": "Answers and scores",
@@ -352,7 +256,6 @@
     },
     {
       "id": "modern-omnivinci",
-      "cohort": "paper-modern-20260924",
       "model": "OmniVinci",
       "variant": "Native AV",
       "status": "published",
@@ -374,10 +277,6 @@
         "qwen3.8-omni",
         "gpt-5.6-sol"
       ],
-      "notes": {
-        "en": "90 archived responses rescored. QGold cannot be recovered from this response subset.",
-        "zh": "重新评分 90 条归档回答。无法用该回答子集恢复 QGold。"
-      },
       "source": {
         "label": {
           "en": "Answers and scores",
@@ -388,7 +287,6 @@
     },
     {
       "id": "modern-vita_1_5",
-      "cohort": "paper-modern-20260924",
       "model": "VITA-1.5",
       "variant": "Native AV",
       "status": "published",
@@ -410,10 +308,6 @@
         "qwen3.8-omni",
         "gpt-5.6-sol"
       ],
-      "notes": {
-        "en": "113 archived responses rescored. QGold cannot be recovered from this response subset.",
-        "zh": "重新评分 113 条归档回答。无法用该回答子集恢复 QGold。"
-      },
       "source": {
         "label": {
           "en": "Answers and scores",
@@ -424,7 +318,6 @@
     },
     {
       "id": "modern-baichuan_omni_1_5",
-      "cohort": "paper-modern-20260924",
       "model": "Baichuan-Omni-1.5",
       "variant": "Native AV",
       "status": "published",
@@ -446,10 +339,6 @@
         "qwen3.8-omni",
         "gpt-5.6-sol"
       ],
-      "notes": {
-        "en": "16 archived responses rescored. QGold cannot be recovered from this response subset.",
-        "zh": "重新评分 16 条归档回答。无法用该回答子集恢复 QGold。"
-      },
       "source": {
         "label": {
           "en": "Answers and scores",
@@ -460,13 +349,12 @@
     },
     {
       "id": "modern-qwen38-omni-flash-nonthinking",
-      "cohort": "hosted-modern-20260924",
       "model": "Qwen3.8-Omni-Flash",
       "variant": "Native AV · Non-thinking",
       "status": "published",
       "metrics": {
         "who": 89.45,
-        "when": 44.0,
+        "when": 44,
         "qgold": 77.01822916666666,
         "qens": 69.92753623188408,
         "cov_plus": 17.96875,
@@ -482,10 +370,6 @@
         "qwen3.8-omni",
         "gpt-5.6-sol"
       ],
-      "notes": {
-        "en": "All 128 forced responses scored by the new panel. Video input includes its audio track. Who strict parsing failures: 1; When strict parsing failures: 0. Classification uses fixed denominators. Auxiliary repository-parser accuracy: Who 89.50, When 44.00. These diagnostic values do not replace the strict scores or recompute quality and coverage.",
-        "zh": "全部 128 条强制回答由新评委组评分。视频输入包含原音轨。 Who 严格解析无效 1 条；When 严格解析无效 0 条。分类使用固定分母。 仓库答案提取器辅助准确率：Who 89.50、When 44.00。仅作格式诊断，不替换严格主分，也不重算质量和覆盖率。"
-      },
       "source": {
         "label": {
           "en": "Answers and scores",
@@ -496,7 +380,6 @@
     },
     {
       "id": "modern-gemini38-flash",
-      "cohort": "hosted-modern-20260924",
       "model": "Gemini 3.8 Flash",
       "variant": "Native AV · Default thinking",
       "status": "published",
@@ -518,10 +401,6 @@
         "qwen3.8-omni",
         "gpt-5.6-sol"
       ],
-      "notes": {
-        "en": "All 128 forced responses scored by the new panel. MP4 file input with audio. Who strict parsing failures: 1472; When strict parsing failures: 8. Classification uses fixed denominators. Auxiliary repository-parser accuracy: Who 94.50, When 86.00. These diagnostic values do not replace the strict scores or recompute quality and coverage.",
-        "zh": "全部 128 条强制回答由新评委组评分。使用含音轨的 MP4 文件输入。 Who 严格解析无效 1472 条；When 严格解析无效 8 条。分类使用固定分母。 仓库答案提取器辅助准确率：Who 94.50、When 86.00。仅作格式诊断，不替换严格主分，也不重算质量和覆盖率。"
-      },
       "source": {
         "label": {
           "en": "Answers and scores",
@@ -532,7 +411,6 @@
     },
     {
       "id": "modern-qwen35-omni-plus",
-      "cohort": "hosted-modern-20260924",
       "model": "Qwen3.5-Omni-Plus",
       "variant": "Native AV · Non-thinking",
       "status": "published",
@@ -554,10 +432,6 @@
         "qwen3.8-omni",
         "gpt-5.6-sol"
       ],
-      "notes": {
-        "en": "All 128 forced responses scored by the new panel. Video input includes its audio track. Who strict parsing failures: 0; When strict parsing failures: 0. Classification uses fixed denominators. Auxiliary repository-parser accuracy: Who 91.05, When 58.50. These diagnostic values do not replace the strict scores or recompute quality and coverage.",
-        "zh": "全部 128 条强制回答由新评委组评分。视频输入包含原音轨。 Who 严格解析无效 0 条；When 严格解析无效 0 条。分类使用固定分母。 仓库答案提取器辅助准确率：Who 91.05、When 58.50。仅作格式诊断，不替换严格主分，也不重算质量和覆盖率。"
-      },
       "source": {
         "label": {
           "en": "Answers and scores",
@@ -568,13 +442,12 @@
     },
     {
       "id": "modern-qwen35-omni-flash-20260315",
-      "cohort": "hosted-modern-20260924",
       "model": "Qwen3.5-Omni-Flash (2026-03-15)",
       "variant": "Native AV · Non-thinking",
       "status": "published",
       "metrics": {
         "who": 86.55,
-        "when": 71.0,
+        "when": 71,
         "qgold": 33.138020833333336,
         "qens": 34.722222222222236,
         "cov_plus": 70.3125,
@@ -590,10 +463,6 @@
         "qwen3.8-omni",
         "gpt-5.6-sol"
       ],
-      "notes": {
-        "en": "All 128 forced responses scored by the new panel. Video input includes its audio track. Who strict parsing failures: 4; When strict parsing failures: 0. Classification uses fixed denominators. Auxiliary repository-parser accuracy: Who 86.70, When 71.00. These diagnostic values do not replace the strict scores or recompute quality and coverage.",
-        "zh": "全部 128 条强制回答由新评委组评分。视频输入包含原音轨。 Who 严格解析无效 4 条；When 严格解析无效 0 条。分类使用固定分母。 仓库答案提取器辅助准确率：Who 86.70、When 71.00。仅作格式诊断，不替换严格主分，也不重算质量和覆盖率。"
-      },
       "source": {
         "label": {
           "en": "Answers and scores",
@@ -602,5 +471,10 @@
         "url": "https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/modern-panel-20260924/qwen35flash"
       }
     }
+  ],
+  "judges": [
+    "gemini-3.8-flash",
+    "dashscope/qwen3.8-omni-flash",
+    "gpt-5.6-sol"
   ]
 }

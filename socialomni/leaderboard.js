@@ -5,16 +5,16 @@ const messages = {
     skip: "Skip to results", eyebrow: "A benchmark for social interaction", title: "Leaderboard",
     intro: "Who is speaking. When to respond. What to say. Compare how omni models navigate social interaction through audio and video.",
     resources: "Resources", paper: "Paper", code: "Code", dataset: "Dataset", download: "Download results ↓",
-    results: "Results", comparison: "Results are grouped by evaluation protocol and source. Select one group at a time; scores from different groups are not a shared ranking.",
-    group: "Evaluation group", search: "Find a model", placeholder: "Model name", loading: "Loading results…",
+    results: "Results", comparison: "",
+    search: "Find a model", placeholder: "Model name", loading: "Loading results…",
     tableRegion: "Model results, scroll horizontally for all metrics", caption: "Model scores on a 0–100 scale. Higher is better. Select a column heading to sort.",
     model: "Model", tableHelp: "Click a metric to sort. All scores use a 0–100 scale; higher is better. — means unavailable and is placed last in either sort direction.",
     metricsTitle: "Reading the metrics", jointNote: "QEns_joint = QEns × Cov+ / 100. A high response-quality score alone does not imply reliable decisions about when to speak.",
-    sourcesTitle: "Sources & comparability", sourcesText: "All displayed response-quality scores use Gemini 3.8 Flash, Qwen3.8-Omni-Flash and GPT-5.6-Sol. Archived paper answers and hosted runs remain separate because their candidate input and classification protocols differ. Each group records its source and sample counts.",
+    sourcesTitle: "Evaluation", sourcesText: "Response quality is scored by Gemini 3.8 Flash, Qwen3.8-Omni-Flash and GPT-5.6-Sol. Earlier models’ existing responses have been rescored by the same judges.",
     archive: "Historical results and original materials ↗",
     missingText: "Missing or unfinished evaluations are not assigned a score. This page does not combine the six metrics into an overall score.",
     correction: "Report a correction ↗", updated: "Updated", source: "Source", samples: "Samples", positive: "gold-positive", pending: "Evaluation pending", partial: "Quality scoring pending",
-    empty: "No published results in this group yet.", noMatch: "No models match your search.", noData: "Results are being prepared. No scores have been published here yet.",
+    noMatch: "No models match your search.", noData: "Results are being prepared. No scores have been published here yet.",
     loadError: "Results could not be loaded. Please reload the page, or use the Download results link.", count: "models shown",
     metrics: [
       ["Who", "Accuracy in identifying who is speaking from the available audio and video."],
@@ -29,16 +29,16 @@ const messages = {
     skip: "跳转到结果", eyebrow: "面向社会交互的多模态评测", title: "排行榜",
     intro: "谁在说话、何时回应、说什么。比较全模态模型如何利用音频与视频理解社会交互，并作出回应。",
     resources: "研究资源", paper: "论文", code: "代码", dataset: "数据集", download: "下载结果 ↓",
-    results: "评测结果", comparison: "结果按评测协议和来源分组，每次查看一组。不同组的分数不混合排名。",
-    group: "评测分组", search: "查找模型", placeholder: "输入模型名称", loading: "正在加载结果…",
+    results: "评测结果", comparison: "",
+    search: "查找模型", placeholder: "输入模型名称", loading: "正在加载结果…",
     tableRegion: "模型结果，可横向滚动查看全部指标", caption: "模型分数均采用 0–100 标度，越高越好。点击列标题排序。",
     model: "模型", tableHelp: "点击指标名称排序。所有分数均采用 0–100 标度，越高越好。— 表示缺失值，升序和降序均置于末尾。",
     metricsTitle: "指标说明", jointNote: "QEns_joint = QEns × Cov+ / 100。回答质量高，不一定意味着模型能可靠判断何时应该开口。",
-    sourcesTitle: "来源与可比性", sourcesText: "当前展示的回答质量分统一使用 Gemini 3.8 Flash、Qwen3.8-Omni-Flash 和 GPT-5.6-Sol。论文原回答与托管实测的候选输入和分类协议存在差异，仍分组展示。每组均注明来源和样本数。",
+    sourcesTitle: "评测方法", sourcesText: "回答质量统一由 Gemini 3.8 Flash、Qwen3.8-Omni-Flash 和 GPT-5.6-Sol 评分。此前模型的已有回答也已使用同一组评委重新评分。",
     archive: "历史结果与原始材料 ↗",
     missingText: "缺失或尚未完成的评测不赋予分数。本站不把六项指标合成为一个总分。",
     correction: "反馈勘误 ↗", updated: "更新日期", source: "来源", samples: "样本", positive: "应回应样本", pending: "评测待完成", partial: "回答质量待评分",
-    empty: "此组暂未发布评测结果。", noMatch: "没有匹配的模型。", noData: "结果整理中，本站暂未发布分数。",
+    noMatch: "没有匹配的模型。", noData: "结果整理中，本站暂未发布分数。",
     loadError: "无法加载结果。请刷新页面，或使用“下载结果”链接。", count: "个模型",
     metrics: [
       ["Who", "说话者归属判断的准确率，即根据可见的音视频信息识别谁正在说话。"],
@@ -51,14 +51,17 @@ const messages = {
   }
 };
 
+Object.assign(messages.en, {"navIntro":"Introduction","navResults":"Leaderboard","navExamples":"Dataset examples","subtitle":"Who speaks. When to respond. What to say.","overview":"Social interaction requires more than understanding a video. SocialOmni evaluates whether a model can identify speakers, recognize when it should respond, and generate an appropriate reply from audio and visual context.","level1Title":"Who is speaking?","level1Text":"Connect voices to people using audio and visual cues.","level2Title":"When and how to respond?","level2Text":"Decide whether to speak at a given moment, then produce a context-appropriate response.","filmCaption":"SocialOmni · Project introduction","examplesIntro":"Explore the tasks through selected videos and their reference annotations.","question":"Question","reference":"Reference answer","showAnswer":"Show reference answer","caseSource":"Source annotation ↗"});
+Object.assign(messages.zh, {"navIntro":"项目介绍","navResults":"排行榜","navExamples":"视频案例","subtitle":"谁在说话，何时回应，如何回应。","overview":"社会交互不止于理解视频。SocialOmni 评测模型能否结合音视频线索识别说话者、判断何时应当开口，并生成符合语境的回应。","level1Title":"谁在说话？","level1Text":"结合声音与视觉线索，将说话内容与人物对应。","level2Title":"何时回应，如何回应？","level2Text":"在指定时刻判断是否应该开口，并生成符合当前语境的回答。","filmCaption":"SocialOmni · 项目介绍视频","examplesIntro":"通过精选视频和原始参考标注，了解两个层级的评测任务。","question":"题目","reference":"参考答案","showAnswer":"查看参考答案","caseSource":"查看原始标注 ↗"});
+let examples = [];
+
 const metricKeys = ["who", "when", "qgold", "qens", "cov_plus", "qens_joint"];
 let language = "en";
 try { language = localStorage.getItem("socialomni-language") === "zh" ? "zh" : "en"; } catch {}
 let dataset;
 let failed = false;
-let sortKey = "model";
-let descending = false;
-const cohortSelect = document.getElementById("cohort");
+let sortKey = "qens_joint";
+let descending = true;
 const search = document.getElementById("search");
 const status = document.getElementById("load-status");
 const localized = (value) => typeof value === "string" ? value : value?.[language] || value?.en || "";
@@ -93,41 +96,19 @@ function render() {
   document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => { node.placeholder = t[node.dataset.i18nPlaceholder]; });
   document.querySelectorAll("[data-lang]").forEach((node) => node.setAttribute("aria-pressed", String(node.dataset.lang === language)));
   document.getElementById("metric-definitions").replaceChildren(...t.metrics.flatMap(([name, definition]) => [element("dt", name), element("dd", definition)]));
+  renderCases();
   if (!dataset) {
     status.textContent = failed ? t.loadError : t.loading;
     return;
   }
-  const selected = cohortSelect.value;
-  cohortSelect.replaceChildren(...dataset.cohorts.map((cohort) => {
-    const option = element("option", localized(cohort.label));
-    option.value = cohort.id;
-    return option;
-  }));
-  if (dataset.cohorts.some((cohort) => cohort.id === selected)) cohortSelect.value = selected;
   document.getElementById("updated").textContent = dataset.updated_at ? `${t.updated} ${dataset.updated_at}` : "";
   renderRows();
 }
 
 function renderRows() {
   const t = messages[language];
-  const cohort = dataset.cohorts.find((item) => item.id === cohortSelect.value);
-  const detail = document.getElementById("cohort-detail");
-  const notes = document.getElementById("result-notes");
-  detail.replaceChildren();
-  notes.replaceChildren();
-  if (cohort) {
-    detail.append(element("h3", localized(cohort.label)), element("p", localized(cohort.description)));
-    const counts = Object.entries(cohort.samples || {}).filter(([, value]) => value !== null).map(([key, value]) => `${key === "gold_positive" ? t.positive : key === "who" ? "Who" : key === "when" ? "When" : key}: ${value}`);
-    if (counts.length) detail.append(element("p", `${t.samples} · ${counts.join(" / ")}`));
-    if (cohort.source) {
-      const source = element("p", `${t.source} · `);
-      source.append(sourceLink(cohort.source));
-      detail.append(source);
-    }
-    if (cohort.notes) detail.append(element("p", localized(cohort.notes)));
-  }
   const query = search.value.trim().toLocaleLowerCase();
-  const records = dataset.records.filter((item) => item.cohort === cohort?.id && `${item.model} ${item.variant || ""}`.toLocaleLowerCase().includes(query));
+  const records = dataset.records.filter((item) => `${item.model} ${item.variant || ""}`.toLocaleLowerCase().includes(query));
   records.sort((a, b) => {
     if (sortKey === "model") return a.model.localeCompare(b.model) * (descending ? -1 : 1);
     const av = score(a, sortKey), bv = score(b, sortKey);
@@ -137,22 +118,18 @@ function renderRows() {
   });
   document.getElementById("rows").replaceChildren(...records.map((record) => {
     const row = element("tr");
-    const name = element("td", record.model);
+    const name = element("td");
+    if (record.source) name.append(sourceLink({ label: record.model, url: record.source.url }));
+    else name.textContent = record.model;
     if (record.variant) name.append(element("span", record.variant, "model-meta"));
     if (record.status === "pending") name.append(element("span", t.pending, "model-meta"));
     if (record.status === "partial") name.append(element("span", t.partial, "model-meta"));
     row.append(name);
     metricKeys.forEach((key) => row.append(element("td", validScore(score(record, key)) ? score(record, key).toFixed(2) : "—")));
-    if (record.notes || record.source) {
-      const note = element("p");
-      note.append(element("strong", `${record.model}: `), document.createTextNode(localized(record.notes)));
-      if (record.source) { note.append(document.createTextNode(" "), sourceLink(record.source)); }
-      notes.append(note);
-    }
     return row;
   }));
   document.getElementById("table-wrap").hidden = !records.length;
-  status.textContent = records.length ? `${records.length} ${language === "en" && records.length === 1 ? "model shown" : t.count}` : !cohort ? t.noData : query ? t.noMatch : t.empty;
+  status.textContent = records.length ? `${records.length} ${language === "en" && records.length === 1 ? "model shown" : t.count}` : query ? t.noMatch : t.noData;
   document.querySelectorAll("th[data-key]").forEach((header) => {
     const selected = header.dataset.key === sortKey;
     if (selected) header.setAttribute("aria-sort", descending ? "descending" : "ascending");
@@ -172,28 +149,52 @@ document.querySelectorAll("[data-sort]").forEach((button) => button.addEventList
   sortKey = key;
   renderRows();
 }));
-cohortSelect.addEventListener("change", renderRows);
 search.addEventListener("input", renderRows);
 render();
 fetch("data.json").then((response) => {
   if (!response.ok) throw new Error("Data unavailable");
   return response.json();
 }).then((data) => {
-  if (!Array.isArray(data.cohorts) || !Array.isArray(data.records)) throw new Error("Invalid data format");
+  if (!Array.isArray(data.records)) throw new Error("Invalid data format");
   dataset = data;
   Object.entries(data.links || {}).forEach(([key, value]) => {
     const link = document.getElementById(`${key}-link`);
     if (link) link.href = safeUrl(value);
   });
-  cohortSelect.disabled = !data.cohorts.length;
   search.disabled = !data.records.length;
   render();
 }).catch(() => {
   dataset = undefined;
   failed = true;
-  cohortSelect.disabled = true;
   search.disabled = true;
   status.classList.add("error");
   document.getElementById("table-wrap").hidden = true;
   render();
 });
+
+function renderCases() {
+  const list = document.getElementById("case-list");
+  const t = messages[language];
+  list.replaceChildren(...examples.map((item) => {
+    const article = element("article", undefined, "case");
+    const media = element("video");
+    media.controls = true; media.playsInline = true; media.preload = "none";
+    media.src = safeUrl(item.video); if (item.poster) media.poster = safeUrl(item.poster);
+    media.setAttribute("aria-label", localized(item.title));
+    const content = element("div", undefined, "case-content");
+    content.append(element("span", "LEVEL " + item.level + " · " + item.id, "level-label"), element("h3", localized(item.title)));
+    if (item.description) content.append(element("p", localized(item.description), "case-description"));
+    content.append(element("h4", t.question), element("p", language === "zh" && item.question_zh ? item.question_zh : item.question));
+    const options = language === "zh" && item.options_zh ? item.options_zh : item.options;
+    if (options?.length) { const ul = element("ul", undefined, "case-options"); options.forEach(option => ul.append(element("li", option))); content.append(ul); }
+    const details = element("details"); details.append(element("summary", t.showAnswer));
+    details.append(element("p", (language === "zh" && item.reference_zh ? item.answer + ". " + item.reference_zh : item.reference)));
+    if (item.how_reference) { details.append(element("h4", language === "zh" ? item.how_question_zh : item.how_question), element("p", item.how_reference)); if(language === "zh" && item.how_reference_zh) details.append(element("p", item.how_reference_zh)); }
+    content.append(details);
+    if(item.source_url) content.append(sourceLink({label: t.caseSource, url: item.source_url}));
+    article.append(media, content); return article;
+  }));
+}
+fetch("cases.json").then(response => { if (!response.ok) throw new Error("Examples unavailable"); return response.json(); })
+  .then(data => { examples = data.cases; renderCases(); })
+  .catch(() => { document.getElementById("examples").hidden = true; });
