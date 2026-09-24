@@ -488,6 +488,68 @@
         },
         "url": "https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/modern-panel-20260924/qwen35flash"
       }
+    },
+    {
+      "id": "modern-gemini-3.1-pro-preview",
+      "model": "Gemini 3.1 Pro Preview",
+      "variant": "Native AV · Default thinking",
+      "status": "published",
+      "metrics": {
+        "who": 45.05,
+        "when": 84.0,
+        "qgold": 80.01302083333333,
+        "qens": 81.9182389937107,
+        "cov_plus": 82.8125,
+        "qens_joint": 67.83854166666667
+      },
+      "classification": {
+        "who_macro_f1": 59.38685587776218,
+        "when_macro_f1": 83.1862126944094
+      },
+      "judge_panel": "modern-20260924",
+      "judges": [
+        "gemini-3.8-flash",
+        "qwen3.8-omni",
+        "gpt-5.6-sol"
+      ],
+      "source": {
+        "label": {
+          "en": "Answers and scores",
+          "zh": "回答与评分"
+        },
+        "url": "https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/gemini-native-av-20260924/gemini31pro"
+      }
+    },
+    {
+      "id": "modern-gemini-3.5-flash",
+      "model": "Gemini 3.5 Flash",
+      "variant": "Native AV · Default thinking",
+      "status": "published",
+      "metrics": {
+        "who": 6.0,
+        "when": 60.5,
+        "qgold": 79.55729166666667,
+        "qens": 82.94871794871796,
+        "cov_plus": 50.78125,
+        "qens_joint": 42.122395833333336
+      },
+      "classification": {
+        "who_macro_f1": 11.267280757667388,
+        "when_macro_f1": 71.68949771689496
+      },
+      "judge_panel": "modern-20260924",
+      "judges": [
+        "gemini-3.8-flash",
+        "qwen3.8-omni",
+        "gpt-5.6-sol"
+      ],
+      "source": {
+        "label": {
+          "en": "Answers and scores",
+          "zh": "回答与评分"
+        },
+        "url": "https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/gemini-native-av-20260924/gemini35flash"
+      }
     }
   ],
   "judges": [
