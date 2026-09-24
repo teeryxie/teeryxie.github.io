@@ -2,6 +2,8 @@
 
 Static English / Chinese results page for GitHub Pages. No build step or third-party JavaScript dependencies. Serve this directory over HTTP for local preview; the page loads `data.json` with `fetch`.
 
+Only the `modern-20260924` judge panel is displayed. The paper-answer and hosted-run groups share that panel but retain separate rankings. Previous panels and the original source materials remain in the [repository archive](https://github.com/MAC-AutoML/SocialOmni/tree/main/evaluation/results/archive).
+
 ## Results data
 
 `data.json` contains:
