@@ -3,155 +3,88 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tianyu Xie / 谢天宇 | Omni Models and Agentic Systems</title>
-  <meta name="description" content="Tianyu Xie's academic homepage on interaction-native omni models, agentic systems, long-video reasoning, and efficient multimodal inference.">
+  <title>Tianyu Xie / 谢天宇 | Academic Homepage</title>
+  <meta name="description" content="Tianyu Xie's academic homepage on multimodal AI, omni models, agentic systems, long-video reasoning, and efficient inference.">
   <link rel="icon" href="/images/profile.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
-  <link rel="preload" as="image" type="image/webp" href="/images/home/research-orbit-poster.webp">
   <link rel="stylesheet" href="/site.css">
-  <link rel="stylesheet" href="/home-cinematic.css">
+  <link rel="stylesheet" href="/home-academic.css">
 </head>
-<body class="home-page cinematic-home">
-  <header class="cinematic-masthead" data-home-header>
-    <nav class="cinematic-nav" aria-label="Primary navigation">
-      <a class="cinematic-brand" aria-current="page" href="/">Tianyu Xie <small lang="zh-CN">谢天宇</small></a>
-      <div class="cinematic-links" aria-label="Site sections">
+<body class="home-page">
+  <header class="masthead">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" aria-current="page" href="/">Tianyu Xie <small lang="zh-CN">谢天宇</small></a>
+      <div class="links">
         <a href="/publications/">Publications</a>
         <a href="/projects/">Projects</a>
         <a href="/blog/">Blog</a>
         <a href="/cv/">CV</a>
       </div>
-      <a class="nav-contact" href="mailto:teery@stu.xmu.edu.cn">Contact</a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation" data-menu-toggle>
-        <span></span><span></span><span></span>
-      </button>
     </nav>
   </header>
 
-  <div class="menu-backdrop" data-menu-backdrop hidden></div>
-  <aside class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" aria-hidden="true" data-mobile-menu>
-    <div class="mobile-menu-head">
-      <span>Tianyu Xie</span>
-      <button type="button" aria-label="Close navigation" data-menu-close><span aria-hidden="true">×</span></button>
-    </div>
-    <nav>
-      <a href="/publications/">Publications</a>
-      <a href="/projects/">Projects</a>
-      <a href="/blog/">Blog</a>
-      <a href="/cv/">Curriculum Vitae</a>
-    </nav>
-    <a class="mobile-contact" href="mailto:teery@stu.xmu.edu.cn">teery@stu.xmu.edu.cn</a>
-  </aside>
+  <main class="shell home-shell">
+    <aside class="sidebar">
+      <section class="profile-card">
+        <img class="avatar" src="/images/profile.png" alt="Portrait of Tianyu Xie" width="156" height="156">
+        <h2 class="name">Tianyu Xie</h2>
+        <p class="cn-name" lang="zh-CN">谢天宇</p>
+        <p class="bio">M.S. student at the MAC Lab, Xiamen University, advised by <a href="https://sites.google.com/view/zhengxiawu">Prof. Xiawu Zheng</a>.</p>
+        <ul class="profile-links">
+          <li><span class="icon" aria-hidden="true">✉</span><a href="mailto:teery@stu.xmu.edu.cn">Email</a></li>
+          <li><span class="icon" aria-hidden="true">G</span><a href="https://scholar.google.com/citations?hl=zh-CN&amp;user=_vZWAnkAAAAJ">Google Scholar</a></li>
+          <li><span class="icon" aria-hidden="true">O</span><a href="https://openreview.net/profile?id=~Tianyu_Xie2">OpenReview</a></li>
+          <li><span class="icon" aria-hidden="true">GH</span><a href="https://github.com/teeryxie">GitHub</a></li>
+        </ul>
+      </section>
+    </aside>
 
-  <main>
-    <section class="cinematic-hero" data-hero aria-labelledby="home-title">
-      <video class="hero-video" autoplay muted loop playsinline poster="/images/home/research-orbit-poster.webp" aria-hidden="true">
-        <source src="/images/home/research-orbit.mp4" type="video/mp4">
-      </video>
-      <div class="hero-overlay" aria-hidden="true"></div>
-      <div class="hero-content">
-        <div class="hero-person">
-          <img src="/images/profile.png" width="460" height="460" alt="Portrait of Tianyu Xie">
-          <p><strong>M.S. student at MAC Lab</strong><span>Xiamen University</span></p>
-        </div>
-        <p class="hero-kicker">Interactive multimodal intelligence</p>
-        <h1 id="home-title">Tianyu Xie <span lang="zh-CN">/ 谢天宇</span></h1>
-        <p class="hero-lede">I study how AI systems can listen, see, reason, act, and revise continuously across time.</p>
-        <div class="hero-actions">
-          <a class="cinematic-button primary" href="/publications/">View publications</a>
-          <a class="cinematic-button secondary" href="/blog/">Read research notes</a>
-        </div>
-      </div>
-      <div class="hero-status">
-        <span aria-hidden="true"></span>
-        <p>Omni models · Agentic systems<br>Long-video reasoning · Efficient inference</p>
-      </div>
-      <nav class="hero-profiles" aria-label="Academic profiles">
-        <a href="https://scholar.google.com/citations?hl=zh-CN&amp;user=_vZWAnkAAAAJ">Scholar</a>
-        <a href="https://openreview.net/profile?id=~Tianyu_Xie2">OpenReview</a>
-        <a href="https://github.com/teeryxie">GitHub</a>
-      </nav>
-    </section>
+    <article class="content home-content">
+      <header class="home-intro">
+        <p class="home-kicker">Academic homepage</p>
+        <h1>Tianyu Xie <span lang="zh-CN">/ 谢天宇</span></h1>
+        <p class="hero-intro">I build efficient and extensible multimodal AI systems that perceive, reason, act, and revise across language, vision, audio, and video.</p>
+        <p class="home-affiliation">I am an M.S. student in Artificial Intelligence at Xiamen University, working with the Media Analytics and Computing Lab.</p>
+      </header>
 
-    <section class="belief-section" data-belief-section aria-labelledby="belief-title">
-      <img class="belief-arc" src="/images/home/atmospheric-arc.webp" width="1920" height="745" alt="" data-belief-arc>
-      <img class="belief-cloud belief-cloud-left" src="/images/home/atmospheric-cloud.webp" width="1600" height="942" alt="" data-cloud-left>
-      <img class="belief-cloud belief-cloud-right" src="/images/home/atmospheric-cloud.webp" width="1600" height="942" alt="" data-cloud-right>
-      <div class="belief-content">
-        <blockquote>
-          <p id="belief-title">“The task we must set for ourselves is not to feel secure, but to be able to tolerate insecurity.”</p>
-          <p class="belief-translation" lang="zh-CN">我们需要为自己设定的任务，不是拥有安全感，而是能够接受不安全感。</p>
-          <cite>Erich Fromm</cite>
-        </blockquote>
-      </div>
-    </section>
-
-    <section class="research-section" aria-labelledby="research-title">
-      <div class="research-shell">
-        <div class="research-intro">
-          <p class="section-label">Current research</p>
-          <h2 id="research-title">Building systems that stay present.</h2>
-          <p>I am an M.S. student admitted in Fall 2025 at the MAC Lab, Xiamen University, advised by <a href="https://sites.google.com/view/zhengxiawu">Prof. Xiawu Zheng</a>.</p>
-          <div class="research-contact">
-            <img src="/images/profile.png" width="460" height="460" alt="Tianyu Xie">
-            <div><strong>Tianyu Xie</strong><span>MAC Lab · Xiamen University</span><a href="mailto:teery@stu.xmu.edu.cn">teery@stu.xmu.edu.cn</a></div>
-          </div>
-        </div>
-        <div class="research-focus-list">
-          <article><span>01</span><div><h3>Omni-modal orchestration</h3><p>Training-free coordination of modality experts through LLM routing, persistent memory, and full-duplex interaction.</p></div></article>
-          <article><span>02</span><div><h3>Agentic systems and world models</h3><p>Policies, memory, tools, and HCI-oriented evaluation for AI systems that must complete grounded tasks.</p></div></article>
-          <article><span>03</span><div><h3>Long-video reasoning</h3><p>Event-aware and semantic-boundary-aware frame selection for efficient long-form video understanding.</p></div></article>
-          <article><span>04</span><div><h3>Efficient and adaptive inference</h3><p>Speculative decoding, online drafting, and lightweight adaptation for deployable foundation models.</p></div></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="publication-section" aria-labelledby="selected-publications-title">
-      <div class="publication-shell">
-        <header class="publication-heading">
-          <p class="section-label">Selected publications</p>
-          <h2 id="selected-publications-title">Work across interaction, perception, and inference.</h2>
-          <a href="/publications/">View the full publication index</a>
-        </header>
-        <div class="cinematic-publications">
-          <article class="cinematic-paper">
-            <a class="cinematic-paper-image" href="https://openreview.net/forum?id=V2fTGbSD7Q"><img loading="lazy" decoding="async" src="/images/papers/orchestration.jpg" width="1275" height="1650" alt="First page of Training-Free Multimodal Large Language Model Orchestration"></a>
-            <div class="cinematic-paper-copy"><p class="paper-context">ICML 2026 · First author · CCF-A</p><h3><a href="https://openreview.net/forum?id=V2fTGbSD7Q">Training-Free Multimodal Large Language Model Orchestration</a></h3><p class="paper-authors"><strong>Tianyu Xie</strong>, Yuexiao Ma, Yuhang Wu, Wang Chen, Jiayi Ji, Tat-Seng Chua, Xiawu Zheng, Rongrong Ji</p><p>A modular orchestration framework with explicit expert routing, cross-modal memory, and full-duplex streaming interaction.</p><div class="paper-links"><button class="cite-action" type="button" data-bib="@article{xie2025trainingfree,&#10;  title={Training-Free Multimodal Large Language Model Orchestration},&#10;  author={Xie, Tianyu and Ma, Yuexiao and Wu, Yuhang and Chen, Wang and Ji, Jiayi and Chua, Tat-Seng and Zheng, Xiawu and Ji, Rongrong},&#10;  journal={arXiv preprint arXiv:2508.10016},&#10;  year={2025}&#10;}">Cite</button><a href="/blog/training-free-orchestration/">Research note</a><a href="https://arxiv.org/abs/2508.10016">arXiv</a><a href="https://github.com/MAC-AutoML/Trainingfree-LLM-Orchestration">Code</a></div></div>
-            <span class="paper-number">01</span>
+      <section class="section home-section" aria-labelledby="publications-title">
+        <div class="section-head"><h2 id="publications-title">Representative work</h2><a href="/publications/">View all publications</a></div>
+        <div class="home-publications">
+          <article class="home-publication">
+            <p class="home-publication-meta">ICML 2026 · First author · CCF-A</p>
+            <h3><a href="https://openreview.net/forum?id=V2fTGbSD7Q">Training-Free Multimodal Large Language Model Orchestration</a></h3>
+            <p class="home-authors"><strong>Tianyu Xie</strong>, Yuexiao Ma, Yuhang Wu, Wang Chen, Jiayi Ji, Tat-Seng Chua, Xiawu Zheng, Rongrong Ji</p>
+            <p>Training-free coordination of modality experts through explicit LLM routing, cross-modal memory, and streaming interaction.</p>
+            <div class="home-links"><a href="https://openreview.net/forum?id=V2fTGbSD7Q">OpenReview</a><a href="https://arxiv.org/abs/2508.10016">arXiv</a><a href="https://github.com/MAC-AutoML/Trainingfree-LLM-Orchestration">Code</a></div>
           </article>
-          <article class="cinematic-paper">
-            <a class="cinematic-paper-image" href="https://arxiv.org/abs/2603.16859"><img loading="lazy" decoding="async" src="/images/papers/socialomni.jpg" width="1275" height="1650" alt="First page of SocialOmni"></a>
-            <div class="cinematic-paper-copy"><p class="paper-context">Audio-visual benchmark · First author</p><h3><a href="https://arxiv.org/abs/2603.16859">SocialOmni: Benchmarking Audio-Visual Social Interactivity in Omni Models</a></h3><p class="paper-authors"><strong>Tianyu Xie</strong>, Jinfa Huang, Yuexiao Ma, Rongfang Luo, Yan Yang, Wang Chen, Yuhui Zeng, Yixuan Zou, Qingchuan Ma, Zhiqiang Lu, Ruize Fang, Xiawu Zheng, Jiebo Luo, Rongrong Ji</p><p>A benchmark for who speaks, when to intervene, and how to generate natural interruptions in audio-visual interaction.</p><div class="paper-links"><button class="cite-action" type="button" data-bib="@article{xie2026socialomni,&#10;  title={SocialOmni: Benchmarking Audio-Visual Social Interactivity in Omni Models},&#10;  author={Xie, Tianyu and Huang, Jinfa and Ma, Yuexiao and Luo, Rongfang and Yang, Yan and Chen, Wang and Zeng, Yuhui and Zou, Yixuan and Ma, Qingchuan and Lu, Zhiqiang and Fang, Ruize and Zheng, Xiawu and Luo, Jiebo and Ji, Rongrong},&#10;  journal={arXiv preprint arXiv:2603.16859},&#10;  year={2026}&#10;}">Cite</button><a href="/socialomni/">Leaderboard</a><a href="/blog/socialomni/">Research note</a><a href="https://github.com/MAC-AutoML/SocialOmni">Code</a><a href="https://huggingface.co/datasets/alexisty/SocialOmni">Dataset</a></div></div>
-            <span class="paper-number">02</span>
+          <article class="home-publication">
+            <p class="home-publication-meta">arXiv 2026 · First author</p>
+            <h3><a href="https://arxiv.org/abs/2603.16859">SocialOmni: Benchmarking Audio-Visual Social Interactivity in Omni Models</a></h3>
+            <p class="home-authors"><strong>Tianyu Xie</strong>, Jinfa Huang, Yuexiao Ma, Rongfang Luo, Yan Yang, Wang Chen, Yuhui Zeng, Yixuan Zou, Qingchuan Ma, Zhiqiang Lu, Ruize Fang, Xiawu Zheng, Jiebo Luo, Rongrong Ji</p>
+            <p>An audio-visual benchmark for speaker awareness, interruption timing, and natural interactive responses.</p>
+            <div class="home-links"><a href="https://arxiv.org/abs/2603.16859">arXiv</a><a href="/socialomni/">Leaderboard</a><a href="https://github.com/MAC-AutoML/SocialOmni">Code</a><a href="/blog/socialomni/">Research note</a></div>
           </article>
-          <article class="cinematic-paper">
-            <a class="cinematic-paper-image" href="https://arxiv.org/abs/2603.00512"><img loading="lazy" decoding="async" src="/images/papers/wfs-sb.jpg" width="1275" height="1650" alt="First page of WFS-SB"></a>
-            <div class="cinematic-paper-copy"><p class="paper-context">CVPR 2026 · CCF-A</p><h3><a href="https://arxiv.org/abs/2603.00512">Wavelet-based Frame Selection by Detecting Semantic Boundary for Long Video Understanding</a></h3><p class="paper-authors">Wang Chen, Yuhui Zeng, Yongdong Luo, <strong>Tianyu Xie</strong>, Luojun Lin, Jiayi Ji, Yan Zhang, Xiawu Zheng</p><p>Semantic-boundary-aware frame selection for compact, informative, and coherent long-video understanding.</p><div class="paper-links"><button class="cite-action" type="button" data-bib="@article{chen2026wavelet,&#10;  title={Wavelet-based Frame Selection by Detecting Semantic Boundary for Long Video Understanding},&#10;  author={Chen, Wang and Zeng, Yuhui and Luo, Yongdong and Xie, Tianyu and Lin, Luojun and Ji, Jiayi and Zhang, Yan and Zheng, Xiawu},&#10;  journal={arXiv preprint arXiv:2603.00512},&#10;  year={2026}&#10;}">Cite</button><a href="/blog/wfs-sb/">Research note</a><a href="https://arxiv.org/abs/2603.00512">arXiv</a><a href="https://github.com/MAC-AutoML/WFS-SB">Code</a></div></div>
-            <span class="paper-number">03</span>
+          <article class="home-publication">
+            <p class="home-publication-meta">CVPR 2026 · Fourth author · CCF-A</p>
+            <h3><a href="https://arxiv.org/abs/2603.00512">Wavelet-based Frame Selection by Detecting Semantic Boundary for Long Video Understanding</a></h3>
+            <p class="home-authors">Wang Chen, Yuhui Zeng, Yongdong Luo, <strong>Tianyu Xie</strong>, Luojun Lin, Jiayi Ji, Yan Zhang, Xiawu Zheng</p>
+            <p>Wavelet-based semantic boundary detection for efficient long-video frame selection.</p>
+            <div class="home-links"><a href="https://arxiv.org/abs/2603.00512">arXiv</a><a href="https://github.com/MAC-AutoML/WFS-SB">Code</a><a href="/blog/wfs-sb/">Research note</a></div>
           </article>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="news-section" aria-labelledby="news-title">
-      <div class="news-shell">
-        <header><p class="section-label">News</p><h2 id="news-title">Recent milestones.</h2></header>
-        <ol>
-          <li><time datetime="2026">2026</time><p>Training-Free Multimodal Large Language Model Orchestration was accepted to <strong>ICML 2026</strong> as first-author work.</p></li>
-          <li><time datetime="2026">2026</time><p>SocialOmni was released on arXiv as a first-author benchmark for audio-visual social interactivity.</p></li>
-          <li><time datetime="2026">2026</time><p>WFS-SB was accepted to <strong>CVPR 2026</strong> for efficient long-video understanding.</p></li>
-          <li><time datetime="2025-09">2025.09</time><p>Joined Xiamen University MAC Lab as a master's student in Artificial Intelligence.</p></li>
-          <li><time datetime="2025">2025</time><p>Submitted routing-guided expert selection work for mitigating gradient interference in MoE models.</p></li>
+      <section class="section home-section" aria-labelledby="news-title">
+        <div class="section-head"><h2 id="news-title">News</h2></div>
+        <ol class="home-news">
+          <li><time datetime="2026">2026</time><span>Training-Free Multimodal Large Language Model Orchestration was accepted to <strong>ICML 2026</strong>.</span></li>
+          <li><time datetime="2026">2026</time><span>SocialOmni was released on arXiv as a benchmark for audio-visual social interactivity.</span></li>
+          <li><time datetime="2026">2026</time><span>WFS-SB was accepted to <strong>CVPR 2026</strong> for efficient long-video understanding.</span></li>
+          <li><time datetime="2025-09">2025.09</time><span>Joined Xiamen University MAC Lab as a master's student in Artificial Intelligence.</span></li>
         </ol>
-      </div>
-    </section>
+      </section>
+    </article>
   </main>
 
-  <footer class="cinematic-footer"><div><strong>Tianyu Xie</strong><span>Omni models · Agentic systems · Multimodal interaction</span></div><nav aria-label="Footer navigation"><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a href="/blog/">Blog</a><a href="/cv/">CV</a></nav><p>© 2026 Tianyu Xie</p></footer>
-
-  <script src="/cite.js"></script>
-  <script src="/home-cinematic.js"></script>
+  <footer class="footer"><div class="footer-inner">© 2026 Tianyu Xie.</div></footer>
 </body>
 </html>

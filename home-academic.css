@@ -1,0 +1,91 @@
+/* Restrained academic homepage layer. Keep the shared site shell in site.css. */
+.home-page {
+  background: #fff;
+  color: #242a31;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.home-page .masthead { position: sticky; border-bottom-color: #e4e7ea; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(8px); }
+.home-page .nav { min-height: 62px; padding-top: 0; padding-bottom: 0; }
+.home-page .brand { color: #20262d; font-size: 16px; font-weight: 700; }
+.home-page .brand small { color: #717983; font-size: 13px; font-weight: 400; }
+.home-page .links { gap: 5px; font-size: 14px; }
+.home-page .links a { border-radius: 3px; padding: 6px 9px; color: #4d5660; box-shadow: none; }
+.home-page .links a:hover, .home-page .links a:focus-visible { background: #f2f4f6; border-color: #dce1e6; color: #1e5a8f; transform: none; }
+
+.home-shell { grid-template-columns: 224px minmax(0, 1fr); gap: 54px; max-width: 1080px; padding-top: 54px; padding-bottom: 80px; }
+.home-page .sidebar { top: 88px; }
+.home-page .profile-card { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.home-page .avatar { width: 148px; height: 148px; border-color: #dce1e6; }
+.home-page .name { margin-top: 17px; color: #20262d; font-size: 22px; font-weight: 700; }
+.home-page .cn-name { margin: 0; color: #6b747d; }
+.home-page .bio { margin: 14px 0 18px; color: #5b6570; font-size: 14px; line-height: 1.6; }
+.home-page .profile-links { gap: 7px; margin-top: 0; font-size: 13px; }
+.home-page .profile-links li { gap: 8px; }
+.home-page .profile-links a { color: #315f87; }
+.home-page .profile-links a:hover { text-decoration: underline; }
+.home-page .icon { color: #8a949e; font-size: 12px; font-weight: 700; }
+
+.home-content { min-width: 0; }
+.home-intro { padding: 2px 0 22px; border-bottom: 1px solid #e1e5e8; }
+.home-kicker { margin: 0 0 8px; color: #6d7780; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.home-intro h1 { margin: 0 0 15px; color: #1d252d; font-family: Georgia, "Times New Roman", serif; font-size: 42px; font-weight: 400; line-height: 1.15; }
+.home-intro h1 span { color: #69737c; font-size: 0.62em; }
+.home-page .hero-intro { max-width: 760px; margin: 0 0 10px; color: #303a44; font-size: 19px; line-height: 1.55; }
+.home-affiliation { max-width: 760px; margin: 0; color: #68737d; font-size: 14px; }
+
+.home-page .home-section { margin-top: 36px; }
+.home-page .section-head { margin-bottom: 16px; border-top: 0; border-bottom: 1px solid #dfe4e8; padding: 0 0 8px; }
+.home-page .section-head h2 { color: #252d35; font-size: 22px; font-weight: 700; }
+.home-page .section-head a { color: #315f87; font-size: 13px; }
+
+.home-interest-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 30px; }
+.home-interest-list article { padding: 14px 0 15px; border-bottom: 1px solid #edf0f2; }
+.home-interest-list h3 { margin: 0 0 4px; color: #2d3740; font-size: 16px; }
+.home-interest-list p, .home-publication > p:not(.home-publication-meta):not(.home-authors) { margin: 0; color: #5f6973; font-size: 14px; line-height: 1.55; }
+
+.home-publications { display: grid; gap: 0; }
+.home-publication { padding: 18px 0 20px; border-bottom: 1px solid #edf0f2; }
+.home-publication-meta { margin: 0 0 5px; color: #65717c; font-size: 12px; font-weight: 700; }
+.home-publication h3 { margin: 0 0 5px; font-size: 18px; line-height: 1.35; }
+.home-publication h3 a { color: #234f78; }
+.home-publication h3 a:hover { text-decoration: underline; }
+.home-publication .home-authors { margin: 0 0 5px; color: #6a747d; font-size: 13px; line-height: 1.5; }
+.home-publication .home-authors strong { color: #263c50; }
+.home-links { display: flex; flex-wrap: wrap; gap: 0 15px; margin-top: 9px; font-size: 13px; }
+.home-links a { color: #315f87; }
+.home-links a:hover { text-decoration: underline; }
+
+.home-news { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.home-news li { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 15px; padding: 10px 0; border-bottom: 1px solid #edf0f2; color: #4f5b66; font-size: 14px; }
+.home-news time { color: #6e7881; font-variant-numeric: tabular-nums; }
+.home-page .footer { border-top-color: #e1e5e8; background: #fff; }
+
+@media (max-width: 900px) {
+  .home-shell { grid-template-columns: 1fr; gap: 24px; }
+  .home-page .sidebar { position: static; }
+  .home-page .profile-card { display: grid; grid-template-columns: 82px minmax(0, 1fr); gap: 15px; align-items: start; }
+  .home-page .avatar { width: 82px; height: 82px; grid-row: span 3; }
+  .home-page .name { margin: 0; }
+  .home-page .cn-name { margin-top: 2px; }
+  .home-page .bio { margin: 5px 0 7px; }
+  .home-page .profile-links li { display: flex; align-items: baseline; }
+  .home-page .profile-links { display: flex; flex-wrap: wrap; gap: 5px 14px; }
+}
+
+@media (max-width: 680px) {
+  .home-shell { padding-top: 26px; padding-bottom: 58px; }
+  .home-page .profile-card { grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding-bottom: 5px; border-bottom: 1px solid #e1e5e8; }
+  .home-page .avatar { width: 64px; height: 64px; }
+  .home-page .name { font-size: 18px; }
+  .home-page .bio { font-size: 13px; line-height: 1.45; }
+  .home-page .profile-links { margin: 0; font-size: 13px; }
+  .home-page .profile-links li { display: flex; gap: 6px; }
+  .home-page .profile-links a { display: inline; width: auto; height: auto; padding: 0; border: 0; border-radius: 0; background: transparent; font-size: 13px; }
+  .home-page .profile-links a span { position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal; }
+  .home-intro h1 { font-size: 34px; }
+  .home-page .hero-intro { font-size: 17px; }
+  .home-interest-list { grid-template-columns: 1fr; }
+  .home-page .section-head h2 { font-size: 20px; }
+  .home-news li { grid-template-columns: 58px minmax(0, 1fr); gap: 10px; }
+}
