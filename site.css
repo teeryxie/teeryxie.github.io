@@ -3907,3 +3907,260 @@ body:not(.home-page) .action:hover {
     font-size: 29px;
   }
 }
+
+/* Shared restrained academic shell -------------------------------------- */
+
+body:not(.home-page) {
+  background: #fff;
+  color: #242a31;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body:not(.home-page) a {
+  color: #315f87;
+}
+
+body:not(.home-page) a:hover {
+  color: #1e5a8f;
+}
+
+body:not(.home-page) .masthead {
+  min-height: 62px;
+  border-bottom: 1px solid #e4e7ea;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+}
+
+body:not(.home-page) .nav {
+  min-height: 62px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+body:not(.home-page) .brand {
+  color: #20262d;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+body:not(.home-page) .brand small {
+  color: #717983;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+body:not(.home-page) .links {
+  gap: 5px;
+  font-size: 14px;
+}
+
+body:not(.home-page) .links a {
+  border: 1px solid transparent;
+  border-radius: 3px;
+  padding: 6px 9px;
+  background: transparent;
+  color: #4d5660;
+  box-shadow: none;
+  transform: none;
+}
+
+body:not(.home-page) .links a::after {
+  display: none;
+}
+
+body:not(.home-page) .links a:hover,
+body:not(.home-page) .links a.active {
+  border-color: #dce1e6;
+  background: #f2f4f6;
+  color: #1e5a8f;
+  box-shadow: none;
+  transform: none;
+}
+
+body:not(.home-page) .inner-hero {
+  min-height: 0;
+  margin-right: 0;
+  margin-left: 0;
+  padding: 44px 0 24px;
+  background: transparent;
+  color: #242a31;
+}
+
+body:not(.home-page) .inner-hero::after {
+  background: #dfe4e8;
+}
+
+body:not(.home-page) .inner-kicker {
+  color: #6d7780;
+}
+
+body:not(.home-page) .inner-hero .page-title {
+  color: #1d252d;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+body:not(.home-page) .inner-hero .lead {
+  color: #68737d;
+  font-size: 15px;
+}
+
+body:not(.home-page) .section-head {
+  border-bottom-color: #dfe4e8;
+}
+
+body:not(.home-page) .section-head h2 {
+  color: #252d35;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+body:not(.home-page) .profile-card {
+  border-color: #e1e5e8;
+  background: #fff;
+  box-shadow: none;
+}
+
+body:not(.home-page) .footer {
+  border-top-color: #e1e5e8;
+  background: #fff;
+  color: #68737d;
+}
+
+/* Blog posts keep their reading tools, but share the same quiet page shell. */
+
+.blog-post .blog-shell::before {
+  display: none;
+}
+
+.blog-post .inner-hero {
+  min-height: 0;
+  padding: 30px 0 24px;
+  background: transparent;
+}
+
+.blog-post .inner-hero .blog-breadcrumb {
+  color: #6d7780;
+}
+
+.blog-post .inner-hero .blog-breadcrumb a {
+  color: #315f87;
+}
+
+.blog-post .inner-hero .page-title {
+  color: #1d252d;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 42px;
+}
+
+.blog-post .inner-hero .post-subtitle,
+.blog-post .inner-hero [data-post-meta] {
+  color: #68737d;
+}
+
+.blog-post > .blog-shell > .content > .blog-breadcrumb {
+  color: #6d7780;
+}
+
+.blog-post > .blog-shell > .content > .blog-breadcrumb a {
+  color: #315f87;
+}
+
+.blog-post > .blog-shell > .content > .page-title {
+  color: #1d252d;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.blog-post > .blog-shell > .content > .lead {
+  color: #68737d;
+}
+
+.blog-post .article-toc {
+  border-color: #e1e5e8;
+  background: #fff;
+}
+
+.blog-post .article-toc > strong {
+  color: #252d35;
+}
+
+.blog-post .toc-back,
+.blog-post .toc-link {
+  color: #68737d;
+}
+
+.blog-post .toc-link:hover,
+.blog-post .toc-link.active {
+  border-left-color: #315f87;
+  background: #f2f4f6;
+  color: #1e5a8f;
+}
+
+.blog-post .back-to-top {
+  border-color: #dce1e6;
+  background: #fff;
+  color: #315f87;
+}
+
+@media (max-width: 680px) {
+  body:not(.home-page) .masthead,
+  body:not(.home-page) .nav {
+    min-height: 62px;
+  }
+
+  body:not(.home-page) .nav {
+    padding: 0 14px;
+  }
+
+  body:not(.home-page) .brand {
+    display: block;
+    font-size: 16px;
+  }
+
+  body:not(.home-page) .links {
+    gap: 2px;
+    font-size: 12px;
+  }
+
+  body:not(.home-page) .links a {
+    padding: 6px 5px;
+  }
+
+  body:not(.home-page) .inner-hero {
+    min-height: 0;
+    padding: 30px 0 22px;
+    background: transparent;
+  }
+
+  body:not(.home-page) .inner-hero .page-title {
+    color: #1d252d;
+    font-size: 34px;
+    line-height: 1.12;
+  }
+
+  body:not(.home-page) .inner-hero .lead {
+    color: #68737d;
+  }
+
+  .blog-post .inner-hero {
+    min-height: 0;
+    padding: 28px 0 24px;
+  }
+
+  .blog-post .inner-hero .page-title {
+    color: #1d252d;
+    font-size: 34px;
+  }
+
+  .blog-post > .blog-shell > .content > .page-title {
+    font-size: 34px;
+  }
+}
