@@ -37,11 +37,6 @@
 .home-links { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0 0 9px; font-weight: 600; }
 .home-links a { white-space: nowrap; }
 .paper-summary { margin: 0; padding-left: 14px; border-left: 2px solid var(--home-rule); font-size: 14px; }
-.visitor-map { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--home-rule); }
-.visitor-map h2 { margin: 0 0 12px; color: var(--home-muted); font-size: 15px; font-weight: 400; }
-.visitor-map-image { display: block; max-width: 600px; }
-.visitor-map-image img { display: block; width: 100%; height: auto; }
-.visitor-map-caption { margin: 10px 0 0; color: var(--home-muted); font-size: 13px; }
 .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--home-rule); color: var(--home-muted); font-size: 13px; }
 .footer a { white-space: nowrap; }
 

@@ -18,6 +18,3 @@ It renders the published HTML with the same Markdown renderer used by the
 browser and reserves local image dimensions, so opening an article does not
 wait for a second content download. Keep the generated article pages in Git.
 
-The homepage footer uses Flag Counter `rGrE` for the visitor map and country
-statistics, starting in October 2026. Keep its image eager-loaded so homepage
-visits count even when readers do not scroll to the footer.
