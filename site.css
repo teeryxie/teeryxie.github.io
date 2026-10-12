@@ -1,4 +1,4 @@
-@import url('/academic.css');
+@import url('/academic.css?v=20261012-unified');
 /* Hallmark · design-system: design.md · theme: studied-DNA (howardli1984.github.io)
  * pre-emit critique: P5 H5 E4 S5 R5 V4. Shared components retain their existing data-* contracts. */
 .shell { width: 100%; max-width: var(--max-width); margin: 0 auto; padding: 28px 30px 48px; display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 48px; }
