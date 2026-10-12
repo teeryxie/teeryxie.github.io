@@ -5,23 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Training-Free Multimodal LLM Orchestration | Tianyu Xie</title><meta name="description" content="Coordinating pretrained modality experts through language-model routing, shared memory, and streaming interaction without joint retraining.">
   <link rel="icon" href="/images/profile.png">
-  <link rel="stylesheet" href="/site.css?v=20261012-unified">
-  <script src="/blog/blog-data.js?v=20261012-unified" defer></script>
-  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-unified" defer></script>
+  <link rel="stylesheet" href="/site.css?v=20261012-stable">
+  <script src="/blog/blog-data.js?v=20261012-stable" defer></script>
+  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-stable" defer></script>
 </head>
 <body class="blog-post" data-post-slug="training-free-orchestration">
-  <header class="masthead"><nav class="nav" aria-label="Primary navigation">
-    <a class="home-brand" href="/">Homepage</a>
-    <a href="/#about-me">About Me</a>
-    <a href="/#news">News</a>
-    <a href="/publications/">Publications</a>
-    <a href="/projects/">Projects</a>
-    <a href="/#education">Education</a>
-    <a href="/#service">Academic Service</a>
-    <a aria-current="page" href="/blog/">Research Notes</a>
-    <a href="/cv/">CV</a>
-  </nav></header>
-  <main class="shell blog-shell"><aside class="sidebar"><section class="profile-card"><img class="avatar" src="/images/profile.png" alt="Tianyu Xie profile photo"><h2 class="name">Blog</h2><p class="bio"><a href="/blog/">Back to Blog</a></p></section></aside><article class="content"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a><span aria-hidden="true">/</span><span data-breadcrumb-section>Article</span></nav><h1 class="page-title" data-post-title>Training-Free Multimodal LLM Orchestration</h1><p class="lead" data-post-meta>Markdown article</p><div class="markdown-body" data-markdown-article></div></article></main>
+  <header class="masthead"><nav class="nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a aria-current="page" href="/blog/">Notes</a><a href="/cv/">CV</a></nav></header>
+  <main class="shell blog-shell"><aside class="sidebar" aria-label="Personal profile"><section class="profile-card">
+        <img class="avatar" src="/images/profile.png" alt="Portrait of Tianyu Xie" width="170" height="170">
+        <h2 class="name">Tianyu Xie <span lang="zh-CN">谢天宇</span></h2>
+        <p class="affiliation">Xiamen University</p><p class="bio">M.S. student · MAC Lab</p>
+        <ul class="profile-links">
+          <li><a href="mailto:teery@stu.xmu.edu.cn">Email</a></li><li><a href="https://github.com/teeryxie">GitHub</a></li>
+          <li><a href="https://scholar.google.com/citations?hl=en&amp;user=_vZWAnkAAAAJ">Google Scholar</a></li><li><a href="https://openreview.net/profile?id=~Tianyu_Xie2">OpenReview</a></li>
+        </ul></section><nav class="article-toc" aria-label="本文目录"><strong>本文目录</strong><div class="toc-links"><a class="toc-link toc-level-2" href="#why-it-matters" data-toc-id="why-it-matters">Why it matters</a>
+<a class="toc-link toc-level-2" href="#links" data-toc-id="links">Links</a></div></nav></aside><article class="content"><header class="inner-hero article-hero"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← Research notes</a></nav><h1 class="page-title" data-post-title>Training-Free Multimodal LLM Orchestration</h1><p class="lead" data-post-meta>2026 · Publications</p></header><details class="mobile-toc"><summary>本文目录</summary><nav aria-label="移动端本文目录"><a class="toc-link toc-level-2" href="#why-it-matters" data-toc-id="why-it-matters">Why it matters</a>
+<a class="toc-link toc-level-2" href="#links" data-toc-id="links">Links</a></nav></details><div class="markdown-body" data-markdown-article data-rendered="true"><p>Modern omni-modal assistants should not be rebuilt from scratch every time a new vision, audio, speech, or language expert appears. This work studies a more modular path: coordinate existing modality experts through an LLM-based orchestration layer, then make the system interactive through routing, memory, and streaming control.</p>
+<p>The key idea is <strong>training-free composition</strong>. Instead of paying the cost of end-to-end multimodal retraining, the system treats specialized models as callable experts and lets a language model decide when and how to use them. The design allows experts to be replaced independently and makes routing decisions available for inspection.</p>
+<h2 id="why-it-matters">Why it matters</h2>
+<ul><li>Multimodal systems often need fast iteration across speech, image, video, and text components.</li><li>Training-free orchestration lowers the barrier for building new omni-modal workflows.</li><li>Explicit routing and memory make system behavior more inspectable than a monolithic model.</li><li>Streaming and interruption handling support evaluation in interactive settings.</li></ul>
+<h2 id="links">Links</h2>
+<ul><li><a href="https://openreview.net/forum?id=V2fTGbSD7Q">OpenReview</a></li><li><a href="https://arxiv.org/abs/2508.10016">arXiv</a></li><li><a href="https://github.com/MAC-AutoML/Trainingfree-LLM-Orchestration">Code</a></li></ul></div><script type="application/json" data-article-headings>[{"id":"why-it-matters","level":2,"text":"Why it matters"},{"id":"links","level":2,"text":"Links"}]</script></article></main>
   <footer class="footer"><div class="footer-inner">© 2026 Tianyu Xie.</div></footer>
 </body>
 </html>

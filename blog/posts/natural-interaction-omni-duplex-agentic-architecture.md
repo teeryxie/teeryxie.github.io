@@ -2,13 +2,13 @@
 
 自然人机交互的架构取决于任务。教培中的板书可以静默生成，电话销售更依赖语音节奏，银行业务需要严格管理外部操作，被动会议纪要则不一定需要系统发声。本文讨论各场景何时需要 Omni 多模态感知、全双工交互，以及具备状态维护和工具操作能力的 Agent。
 
-真正的问题不应该是“是否必须训练 Omni 全双工模型”，而应该是：**任务依赖哪些观测，哪些输入必须在输出期间保持开放，新证据多快影响当前行为，系统是否要改变外部世界，以及错误能否撤销。**
+决定是否训练 Omni 全双工模型前，需要先确认任务依赖哪些观测，哪些输入必须在输出期间保持开放，新证据需要多快影响当前行为，以及外部操作的错误能否撤销。
 
-本文基于 DuplexOmni、ROMA、FireRedChat、DuplexSLA、Full-Duplex-Bench 系列与多人语音 Agent 等工作，给出一个任务条件化的关系框架。结论先说：自然交互是一种系统性质；Omni、全双工、Reasoning、Agentic、Memory 和 Governance 分别解决不同子问题，没有任何一个单独构成充分条件。
+本文基于 DuplexOmni、ROMA、FireRedChat、DuplexSLA、Full-Duplex-Bench 系列与多人语音 Agent 等工作，给出一个任务条件化的关系框架。这里将自然交互作为一种系统性质来考察；Omni、全双工、Reasoning、Agentic、Memory 和 Governance 分别解决不同子问题，没有任何一个单独构成充分条件。
 
 ![Capability map](/images/blog/natural-interaction-capability-map.svg "图 1：自然交互由感知、时间、交互、认知、行动与治理六个正交维度共同决定。Omni、全双工和 Agentic 只覆盖其中一部分。")
 
-## 1. 核心结论
+## 1. 场景需求与设计取舍
 
 - **单体 Omni 几乎从来不是逻辑必要条件。** 必要的是系统覆盖任务不可替代的模态；模块化感知也可以做到。
 - **系统级双工是自然语音产品的常见必要条件。** 用户必须能在助手输出时继续输入、打断或纠正，但这可由 VAD、EoT、对话控制器和可取消 TTS 实现。
@@ -19,7 +19,7 @@
 - **最稳健的默认方案是混合架构。** 快交互层持续听看和控制时机；慢认知层推理；Agent Runtime 执行；Commit Governor 管权限与副作用。
 - **评测也必须分层。** 自然度、打断、工具正确率、任务成功率、恢复成本与安全违规不能压成一个平均分。
 
-一句话概括：**你要研究的不是“Omni 全双工模型”，而是基于共享时间轴、可中断输出、持续状态、异步推理、可撤销行动和明确治理的 interaction-native Agent system。**
+因此，我会把共享时间轴、可中断输出、持续状态、异步推理和可撤销行动分别列为研究问题，再检查它们如何组成一个面向实时交互的 Agent 系统。
 
 ## 2. 六个正交维度
 
@@ -294,7 +294,7 @@ PREPARE -> VERIFY IDENTITY -> FREEZE PARAMETERS
 
 Full-Duplex-Bench 从 pause、turn-taking、backchannel、interruption 扩展到 v1.5 的 overlap handling，再到 v3 的真实 disfluency 与 chained API，正说明评测对象正在从“会不会同时说听”转向“在混乱输入中能否正确完成任务”。
 
-## 16. 最终判断
+## 16. 架构选择仍需场景验证
 
 自然人机交互没有一个脱离任务的单模型充分条件。更准确的关系是：
 

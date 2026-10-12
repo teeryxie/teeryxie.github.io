@@ -4,25 +4,354 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>全双工 Omni 模型：交互协调与用户体验 | Tianyu Xie</title>
-  <meta name="description" content="讨论全双工模型的话权协调、错误修复、任务连续性、感知延迟与用户控制，并提出相应评测实验。">
+  <meta name="description" content="话权、纠正、任务恢复与用户控制，比自然度分数更具体。如何为这些全双工交互问题设置可检验的实验。">
   <link rel="icon" href="/images/profile.png">
-  <link rel="stylesheet" href="/site.css?v=20261012-unified">
-  <script src="/blog/blog-data.js?v=20261012-unified" defer></script>
-  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-unified" defer></script>
+  <link rel="stylesheet" href="/site.css?v=20261012-stable">
+  <script src="/blog/blog-data.js?v=20261012-stable" defer></script>
+  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-stable" defer></script>
 </head>
 <body class="blog-post" data-post-slug="full-duplex-omni-core-user-experience">
-  <header class="masthead"><nav class="nav" aria-label="Primary navigation">
-    <a class="home-brand" href="/">Homepage</a>
-    <a href="/#about-me">About Me</a>
-    <a href="/#news">News</a>
-    <a href="/publications/">Publications</a>
-    <a href="/projects/">Projects</a>
-    <a href="/#education">Education</a>
-    <a href="/#service">Academic Service</a>
-    <a aria-current="page" href="/blog/">Research Notes</a>
-    <a href="/cv/">CV</a>
-  </nav></header>
-  <main class="shell blog-shell"><aside class="sidebar"><section class="profile-card"><img class="avatar" src="/images/profile.png" alt="Tianyu Xie profile photo"><h2 class="name">Blog</h2><p class="bio"><a href="/blog/">Back to Blog</a></p></section></aside><article class="content"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a><span aria-hidden="true">/</span><span data-breadcrumb-section>Article</span></nav><h1 class="page-title" data-post-title>全双工 Omni 模型：交互协调与用户体验</h1><p class="lead" data-post-meta>Markdown article</p><div class="markdown-body" data-markdown-article></div></article></main>
+  <header class="masthead"><nav class="nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a aria-current="page" href="/blog/">Notes</a><a href="/cv/">CV</a></nav></header>
+  <main class="shell blog-shell"><aside class="sidebar" aria-label="Personal profile"><section class="profile-card">
+        <img class="avatar" src="/images/profile.png" alt="Portrait of Tianyu Xie" width="170" height="170">
+        <h2 class="name">Tianyu Xie <span lang="zh-CN">谢天宇</span></h2>
+        <p class="affiliation">Xiamen University</p><p class="bio">M.S. student · MAC Lab</p>
+        <ul class="profile-links">
+          <li><a href="mailto:teery@stu.xmu.edu.cn">Email</a></li><li><a href="https://github.com/teeryxie">GitHub</a></li>
+          <li><a href="https://scholar.google.com/citations?hl=en&amp;user=_vZWAnkAAAAJ">Google Scholar</a></li><li><a href="https://openreview.net/profile?id=~Tianyu_Xie2">OpenReview</a></li>
+        </ul></section><nav class="article-toc" aria-label="本文目录"><strong>本文目录</strong><div class="toc-links"><a class="toc-link toc-level-2" href="#section-1-人类如何协调话轮与共同理解" data-toc-id="section-1-人类如何协调话轮与共同理解">1. 人类如何协调话轮与共同理解</a>
+<a class="toc-link toc-level-2" href="#section-2-一个更准确的系统抽象-sense-believe-coordinate-act-repair" data-toc-id="section-2-一个更准确的系统抽象-sense-believe-coordinate-act-repair">2. 一个更准确的系统抽象：Sense、Believe、Coordinate、Act、Repair</a>
+<a class="toc-link toc-level-3" href="#section-2-1-sense-持续感知-而不是等待用户说完" data-toc-id="section-2-1-sense-持续感知-而不是等待用户说完">2.1 Sense：持续感知，而不是等待用户说完</a>
+<a class="toc-link toc-level-3" href="#section-2-2-believe-维护不确定状态-而不是过早得出单一结论" data-toc-id="section-2-2-believe-维护不确定状态-而不是过早得出单一结论">2.2 Believe：维护不确定状态，而不是过早得出单一结论</a>
+<a class="toc-link toc-level-3" href="#section-2-3-coordinate-管理话权和共同注意" data-toc-id="section-2-3-coordinate-管理话权和共同注意">2.3 Coordinate：管理话权和共同注意</a>
+<a class="toc-link toc-level-3" href="#section-2-4-act-把语言与任务行动统一起来" data-toc-id="section-2-4-act-把语言与任务行动统一起来">2.4 Act：把语言与任务行动统一起来</a>
+<a class="toc-link toc-level-3" href="#section-2-5-repair-发现共同状态不一致后恢复" data-toc-id="section-2-5-repair-发现共同状态不一致后恢复">2.5 Repair：发现共同状态不一致后恢复</a>
+<a class="toc-link toc-level-2" href="#section-3-首先减少倾听与指令归属的错误" data-toc-id="section-3-首先减少倾听与指令归属的错误">3. 首先减少倾听与指令归属的错误</a>
+<a class="toc-link toc-level-3" href="#section-3-1-研究上应该优先测什么" data-toc-id="section-3-1-研究上应该优先测什么">3.1 研究上应该优先测什么</a>
+<a class="toc-link toc-level-2" href="#section-4-第二优先-让用户能够低成本纠正-而不是追求零错误幻觉" data-toc-id="section-4-第二优先-让用户能够低成本纠正-而不是追求零错误幻觉">4. 第二优先：让用户能够低成本纠正，而不是追求零错误幻觉</a>
+<a class="toc-link toc-level-3" href="#section-4-1-repair-应成为一等动作" data-toc-id="section-4-1-repair-应成为一等动作">4.1 Repair 应成为一等动作</a>
+<a class="toc-link toc-level-2" href="#section-5-第三优先-从话轮自然度走向-任务连续性" data-toc-id="section-5-第三优先-从话轮自然度走向-任务连续性">5. 第三优先：从话轮自然度走向“任务连续性”</a>
+<a class="toc-link toc-level-2" href="#section-6-第四优先-策略必须可控-不能只有一种-礼貌人格" data-toc-id="section-6-第四优先-策略必须可控-不能只有一种-礼貌人格">6. 第四优先：策略必须可控，不能只有一种“礼貌人格”</a>
+<a class="toc-link toc-level-3" href="#section-6-1-产品应暴露哪些控制项" data-toc-id="section-6-1-产品应暴露哪些控制项">6.1 产品应暴露哪些控制项</a>
+<a class="toc-link toc-level-2" href="#section-7-第五优先-利用视觉建立共同注意" data-toc-id="section-7-第五优先-利用视觉建立共同注意">7. 第五优先：利用视觉建立共同注意</a>
+<a class="toc-link toc-level-2" href="#section-8-第六优先-延迟要按用户感知拆解-而不是只报一个-ttft" data-toc-id="section-8-第六优先-延迟要按用户感知拆解-而不是只报一个-ttft">8. 第六优先：延迟要按用户感知拆解，而不是只报一个 TTFT</a>
+<a class="toc-link toc-level-3" href="#section-8-1-最快并不总是最好" data-toc-id="section-8-1-最快并不总是最好">8.1 最快并不总是最好</a>
+<a class="toc-link toc-level-2" href="#section-9-第七优先-让回应时机符合情境" data-toc-id="section-9-第七优先-让回应时机符合情境">9. 第七优先：让回应时机符合情境</a>
+<a class="toc-link toc-level-2" href="#section-10-内容智能与交互动态必须解耦评估" data-toc-id="section-10-内容智能与交互动态必须解耦评估">10. 内容智能与交互动态必须解耦评估</a>
+<a class="toc-link toc-level-2" href="#section-11-目前的评测为什么仍不足以代表用户体验" data-toc-id="section-11-目前的评测为什么仍不足以代表用户体验">11. 目前的评测为什么仍不足以代表用户体验</a>
+<a class="toc-link toc-level-3" href="#section-11-1-局部片段多-完整任务少" data-toc-id="section-11-1-局部片段多-完整任务少">11.1 局部片段多，完整任务少</a>
+<a class="toc-link toc-level-3" href="#section-11-2-系统输出多-用户适应少" data-toc-id="section-11-2-系统输出多-用户适应少">11.2 系统输出多，用户适应少</a>
+<a class="toc-link toc-level-3" href="#section-11-3-平均分多-严重失败少" data-toc-id="section-11-3-平均分多-严重失败少">11.3 平均分多，严重失败少</a>
+<a class="toc-link toc-level-3" href="#section-11-4-语音多-共同注意少" data-toc-id="section-11-4-语音多-共同注意少">11.4 语音多，共同注意少</a>
+<a class="toc-link toc-level-3" href="#section-11-5-自然度多-控制感少" data-toc-id="section-11-5-自然度多-控制感少">11.5 自然度多，控制感少</a>
+<a class="toc-link toc-level-2" href="#section-12-一个面向用户体验的评测框架" data-toc-id="section-12-一个面向用户体验的评测框架">12. 一个面向用户体验的评测框架</a>
+<a class="toc-link toc-level-3" href="#layer-1-感知与指向" data-toc-id="layer-1-感知与指向">Layer 1：感知与指向</a>
+<a class="toc-link toc-level-3" href="#layer-2-交互控制" data-toc-id="layer-2-交互控制">Layer 2：交互控制</a>
+<a class="toc-link toc-level-3" href="#layer-3-共同状态" data-toc-id="layer-3-共同状态">Layer 3：共同状态</a>
+<a class="toc-link toc-level-3" href="#layer-4-内容与任务" data-toc-id="layer-4-内容与任务">Layer 4：内容与任务</a>
+<a class="toc-link toc-level-3" href="#layer-5-体验与行为" data-toc-id="layer-5-体验与行为">Layer 5：体验与行为</a>
+<a class="toc-link toc-level-3" href="#layer-6-安全与边界" data-toc-id="layer-6-安全与边界">Layer 6：安全与边界</a>
+<a class="toc-link toc-level-2" href="#section-13-不要一上来训练-先做五个-toy-experiment" data-toc-id="section-13-不要一上来训练-先做五个-toy-experiment">13. 不要一上来训练：先做五个 Toy Experiment</a>
+<a class="toc-link toc-level-3" href="#实验-a-停顿还是结束" data-toc-id="实验-a-停顿还是结束">实验 A：停顿还是结束</a>
+<a class="toc-link toc-level-3" href="#实验-b-附和还是真打断" data-toc-id="实验-b-附和还是真打断">实验 B：附和还是真打断</a>
+<a class="toc-link toc-level-3" href="#实验-c-停止声音还是恢复任务" data-toc-id="实验-c-停止声音还是恢复任务">实验 C：停止声音还是恢复任务</a>
+<a class="toc-link toc-level-3" href="#实验-d-策略是否适配角色" data-toc-id="实验-d-策略是否适配角色">实验 D：策略是否适配角色</a>
+<a class="toc-link toc-level-3" href="#实验-e-音频线索还是-omni-共同注意" data-toc-id="实验-e-音频线索还是-omni-共同注意">实验 E：音频线索还是 Omni 共同注意</a>
+<a class="toc-link toc-level-2" href="#section-14-我认为最值得专注的七个研究方向" data-toc-id="section-14-我认为最值得专注的七个研究方向">14. 我认为最值得专注的七个研究方向</a>
+<a class="toc-link toc-level-3" href="#section-14-1-semantic-addressee-and-interruption-belief" data-toc-id="section-14-1-semantic-addressee-and-interruption-belief">14.1 Semantic addressee and interruption belief</a>
+<a class="toc-link toc-level-3" href="#section-14-2-repair-first-interaction-policy" data-toc-id="section-14-2-repair-first-interaction-policy">14.2 Repair-first interaction policy</a>
+<a class="toc-link toc-level-3" href="#section-14-3-task-aware-duplex-agent" data-toc-id="section-14-3-task-aware-duplex-agent">14.3 Task-aware duplex agent</a>
+<a class="toc-link toc-level-3" href="#section-14-4-controllable-role-conditioned-dynamics" data-toc-id="section-14-4-controllable-role-conditioned-dynamics">14.4 Controllable role-conditioned dynamics</a>
+<a class="toc-link toc-level-3" href="#section-14-5-multimodal-common-ground" data-toc-id="section-14-5-multimodal-common-ground">14.5 Multimodal common ground</a>
+<a class="toc-link toc-level-3" href="#section-14-6-perceived-latency-orchestration" data-toc-id="section-14-6-perceived-latency-orchestration">14.6 Perceived-latency orchestration</a>
+<a class="toc-link toc-level-3" href="#section-14-7-longitudinal-ux-and-user-adaptation" data-toc-id="section-14-7-longitudinal-ux-and-user-adaptation">14.7 Longitudinal UX and user adaptation</a>
+<a class="toc-link toc-level-2" href="#section-15-产品落地的优先级-什么先做-什么后做" data-toc-id="section-15-产品落地的优先级-什么先做-什么后做">15. 产品落地的优先级：什么先做，什么后做</a>
+<a class="toc-link toc-level-2" href="#section-16-我更关心的评测目标" data-toc-id="section-16-我更关心的评测目标">16. 我更关心的评测目标</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></div></nav></aside><article class="content"><header class="inner-hero article-hero"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a></nav><h1 class="page-title" data-post-title>全双工 Omni 模型：交互协调与用户体验</h1><p class="lead" data-post-meta>2026-08 · 研究笔记</p></header><details class="mobile-toc"><summary>本文目录</summary><nav aria-label="移动端本文目录"><a class="toc-link toc-level-2" href="#section-1-人类如何协调话轮与共同理解" data-toc-id="section-1-人类如何协调话轮与共同理解">1. 人类如何协调话轮与共同理解</a>
+<a class="toc-link toc-level-2" href="#section-2-一个更准确的系统抽象-sense-believe-coordinate-act-repair" data-toc-id="section-2-一个更准确的系统抽象-sense-believe-coordinate-act-repair">2. 一个更准确的系统抽象：Sense、Believe、Coordinate、Act、Repair</a>
+<a class="toc-link toc-level-3" href="#section-2-1-sense-持续感知-而不是等待用户说完" data-toc-id="section-2-1-sense-持续感知-而不是等待用户说完">2.1 Sense：持续感知，而不是等待用户说完</a>
+<a class="toc-link toc-level-3" href="#section-2-2-believe-维护不确定状态-而不是过早得出单一结论" data-toc-id="section-2-2-believe-维护不确定状态-而不是过早得出单一结论">2.2 Believe：维护不确定状态，而不是过早得出单一结论</a>
+<a class="toc-link toc-level-3" href="#section-2-3-coordinate-管理话权和共同注意" data-toc-id="section-2-3-coordinate-管理话权和共同注意">2.3 Coordinate：管理话权和共同注意</a>
+<a class="toc-link toc-level-3" href="#section-2-4-act-把语言与任务行动统一起来" data-toc-id="section-2-4-act-把语言与任务行动统一起来">2.4 Act：把语言与任务行动统一起来</a>
+<a class="toc-link toc-level-3" href="#section-2-5-repair-发现共同状态不一致后恢复" data-toc-id="section-2-5-repair-发现共同状态不一致后恢复">2.5 Repair：发现共同状态不一致后恢复</a>
+<a class="toc-link toc-level-2" href="#section-3-首先减少倾听与指令归属的错误" data-toc-id="section-3-首先减少倾听与指令归属的错误">3. 首先减少倾听与指令归属的错误</a>
+<a class="toc-link toc-level-3" href="#section-3-1-研究上应该优先测什么" data-toc-id="section-3-1-研究上应该优先测什么">3.1 研究上应该优先测什么</a>
+<a class="toc-link toc-level-2" href="#section-4-第二优先-让用户能够低成本纠正-而不是追求零错误幻觉" data-toc-id="section-4-第二优先-让用户能够低成本纠正-而不是追求零错误幻觉">4. 第二优先：让用户能够低成本纠正，而不是追求零错误幻觉</a>
+<a class="toc-link toc-level-3" href="#section-4-1-repair-应成为一等动作" data-toc-id="section-4-1-repair-应成为一等动作">4.1 Repair 应成为一等动作</a>
+<a class="toc-link toc-level-2" href="#section-5-第三优先-从话轮自然度走向-任务连续性" data-toc-id="section-5-第三优先-从话轮自然度走向-任务连续性">5. 第三优先：从话轮自然度走向“任务连续性”</a>
+<a class="toc-link toc-level-2" href="#section-6-第四优先-策略必须可控-不能只有一种-礼貌人格" data-toc-id="section-6-第四优先-策略必须可控-不能只有一种-礼貌人格">6. 第四优先：策略必须可控，不能只有一种“礼貌人格”</a>
+<a class="toc-link toc-level-3" href="#section-6-1-产品应暴露哪些控制项" data-toc-id="section-6-1-产品应暴露哪些控制项">6.1 产品应暴露哪些控制项</a>
+<a class="toc-link toc-level-2" href="#section-7-第五优先-利用视觉建立共同注意" data-toc-id="section-7-第五优先-利用视觉建立共同注意">7. 第五优先：利用视觉建立共同注意</a>
+<a class="toc-link toc-level-2" href="#section-8-第六优先-延迟要按用户感知拆解-而不是只报一个-ttft" data-toc-id="section-8-第六优先-延迟要按用户感知拆解-而不是只报一个-ttft">8. 第六优先：延迟要按用户感知拆解，而不是只报一个 TTFT</a>
+<a class="toc-link toc-level-3" href="#section-8-1-最快并不总是最好" data-toc-id="section-8-1-最快并不总是最好">8.1 最快并不总是最好</a>
+<a class="toc-link toc-level-2" href="#section-9-第七优先-让回应时机符合情境" data-toc-id="section-9-第七优先-让回应时机符合情境">9. 第七优先：让回应时机符合情境</a>
+<a class="toc-link toc-level-2" href="#section-10-内容智能与交互动态必须解耦评估" data-toc-id="section-10-内容智能与交互动态必须解耦评估">10. 内容智能与交互动态必须解耦评估</a>
+<a class="toc-link toc-level-2" href="#section-11-目前的评测为什么仍不足以代表用户体验" data-toc-id="section-11-目前的评测为什么仍不足以代表用户体验">11. 目前的评测为什么仍不足以代表用户体验</a>
+<a class="toc-link toc-level-3" href="#section-11-1-局部片段多-完整任务少" data-toc-id="section-11-1-局部片段多-完整任务少">11.1 局部片段多，完整任务少</a>
+<a class="toc-link toc-level-3" href="#section-11-2-系统输出多-用户适应少" data-toc-id="section-11-2-系统输出多-用户适应少">11.2 系统输出多，用户适应少</a>
+<a class="toc-link toc-level-3" href="#section-11-3-平均分多-严重失败少" data-toc-id="section-11-3-平均分多-严重失败少">11.3 平均分多，严重失败少</a>
+<a class="toc-link toc-level-3" href="#section-11-4-语音多-共同注意少" data-toc-id="section-11-4-语音多-共同注意少">11.4 语音多，共同注意少</a>
+<a class="toc-link toc-level-3" href="#section-11-5-自然度多-控制感少" data-toc-id="section-11-5-自然度多-控制感少">11.5 自然度多，控制感少</a>
+<a class="toc-link toc-level-2" href="#section-12-一个面向用户体验的评测框架" data-toc-id="section-12-一个面向用户体验的评测框架">12. 一个面向用户体验的评测框架</a>
+<a class="toc-link toc-level-3" href="#layer-1-感知与指向" data-toc-id="layer-1-感知与指向">Layer 1：感知与指向</a>
+<a class="toc-link toc-level-3" href="#layer-2-交互控制" data-toc-id="layer-2-交互控制">Layer 2：交互控制</a>
+<a class="toc-link toc-level-3" href="#layer-3-共同状态" data-toc-id="layer-3-共同状态">Layer 3：共同状态</a>
+<a class="toc-link toc-level-3" href="#layer-4-内容与任务" data-toc-id="layer-4-内容与任务">Layer 4：内容与任务</a>
+<a class="toc-link toc-level-3" href="#layer-5-体验与行为" data-toc-id="layer-5-体验与行为">Layer 5：体验与行为</a>
+<a class="toc-link toc-level-3" href="#layer-6-安全与边界" data-toc-id="layer-6-安全与边界">Layer 6：安全与边界</a>
+<a class="toc-link toc-level-2" href="#section-13-不要一上来训练-先做五个-toy-experiment" data-toc-id="section-13-不要一上来训练-先做五个-toy-experiment">13. 不要一上来训练：先做五个 Toy Experiment</a>
+<a class="toc-link toc-level-3" href="#实验-a-停顿还是结束" data-toc-id="实验-a-停顿还是结束">实验 A：停顿还是结束</a>
+<a class="toc-link toc-level-3" href="#实验-b-附和还是真打断" data-toc-id="实验-b-附和还是真打断">实验 B：附和还是真打断</a>
+<a class="toc-link toc-level-3" href="#实验-c-停止声音还是恢复任务" data-toc-id="实验-c-停止声音还是恢复任务">实验 C：停止声音还是恢复任务</a>
+<a class="toc-link toc-level-3" href="#实验-d-策略是否适配角色" data-toc-id="实验-d-策略是否适配角色">实验 D：策略是否适配角色</a>
+<a class="toc-link toc-level-3" href="#实验-e-音频线索还是-omni-共同注意" data-toc-id="实验-e-音频线索还是-omni-共同注意">实验 E：音频线索还是 Omni 共同注意</a>
+<a class="toc-link toc-level-2" href="#section-14-我认为最值得专注的七个研究方向" data-toc-id="section-14-我认为最值得专注的七个研究方向">14. 我认为最值得专注的七个研究方向</a>
+<a class="toc-link toc-level-3" href="#section-14-1-semantic-addressee-and-interruption-belief" data-toc-id="section-14-1-semantic-addressee-and-interruption-belief">14.1 Semantic addressee and interruption belief</a>
+<a class="toc-link toc-level-3" href="#section-14-2-repair-first-interaction-policy" data-toc-id="section-14-2-repair-first-interaction-policy">14.2 Repair-first interaction policy</a>
+<a class="toc-link toc-level-3" href="#section-14-3-task-aware-duplex-agent" data-toc-id="section-14-3-task-aware-duplex-agent">14.3 Task-aware duplex agent</a>
+<a class="toc-link toc-level-3" href="#section-14-4-controllable-role-conditioned-dynamics" data-toc-id="section-14-4-controllable-role-conditioned-dynamics">14.4 Controllable role-conditioned dynamics</a>
+<a class="toc-link toc-level-3" href="#section-14-5-multimodal-common-ground" data-toc-id="section-14-5-multimodal-common-ground">14.5 Multimodal common ground</a>
+<a class="toc-link toc-level-3" href="#section-14-6-perceived-latency-orchestration" data-toc-id="section-14-6-perceived-latency-orchestration">14.6 Perceived-latency orchestration</a>
+<a class="toc-link toc-level-3" href="#section-14-7-longitudinal-ux-and-user-adaptation" data-toc-id="section-14-7-longitudinal-ux-and-user-adaptation">14.7 Longitudinal UX and user adaptation</a>
+<a class="toc-link toc-level-2" href="#section-15-产品落地的优先级-什么先做-什么后做" data-toc-id="section-15-产品落地的优先级-什么先做-什么后做">15. 产品落地的优先级：什么先做，什么后做</a>
+<a class="toc-link toc-level-2" href="#section-16-我更关心的评测目标" data-toc-id="section-16-我更关心的评测目标">16. 我更关心的评测目标</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></nav></details><div class="markdown-body" data-markdown-article data-rendered="true"><blockquote>全双工允许系统同时接收输入和生成输出。面向真实任务，还需要评估模型能否协调话权、识别纠正、恢复任务，并让用户持续掌握控制权。本文将这些问题作为交互设计与评测的研究目标。</blockquote>
+<p>全双工 Omni 模型能够一边生成语音，一边继续接收音视频输入。用户可以随时打断，系统也可以在完整话轮结束前更新判断。GPT-4o、Moshi 及后续研究使这些行为逐步成为可测量的系统能力。这里的语音活动检测（Voice Activity Detection，VAD）用于判断音频中是否有人声，但仅靠它不足以决定用户是否说完。</p>
+<p>同时收发音频已经能够实现，但实际使用中仍有几类常见问题：</p>
+<ul><li>用户停顿半秒思考，模型就急着抢答；</li><li>用户只说“嗯”，模型误以为被打断并停止；</li><li>用户真的说“等一下，不是这个”，模型却继续讲两秒；</li><li>电视里有人说话，助手把它当作新指令；</li><li>模型发出自然的“我明白”，后续回答却没有利用用户的情绪或上下文；</li><li>用户打断复杂任务后，系统停下了声音，却丢失了原任务和工具状态；</li><li>面向陪伴、教学、面试和紧急协助时，模型仍使用同一套“永远礼让”的交互策略。</li></ul>
+<p>这些失败需要在交互控制层面处理。可以将其建模为连续时间中的 joint-action policy：用户和模型共同推进一个对话或任务，双方持续发出不完整证据，模型必须决定何时观察、等待、附和、接话、让出话权、澄清、行动、撤销和修复。</p>
+<p>本文不再重复完整模型时间线，而是集中回答两个问题：</p>
+<ol><li>全双工 Omni 模型需要哪些交互能力？</li><li>为了提升用户交互体验，研究资源应该优先投入在哪里？</li></ol>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/full-duplex-ux-essence.svg" data-image-alt="Full-duplex essence" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/full-duplex-ux-essence.svg" width="1200" height="720" alt="Full-duplex essence" loading="lazy" decoding="async"></button><figcaption>图 1：双向音频流只是基础设施；共同状态、话权策略、任务行动和修复能力才决定用户体验。</figcaption></figure>
+<h2 id="section-1-人类如何协调话轮与共同理解">1. 人类如何协调话轮与共同理解</h2>
+<p>人类对话表面上是声音交替或重叠，内部却是一个持续协调过程。说话者在组织内容，听者在预测话轮边界、判断意图、给出反馈并准备下一步动作。一个短暂停顿可能是换气、寻找词语、强调，也可能是真正结束；一个“嗯”可能表示继续听、同意、质疑，甚至准备夺回话权。</p>
+<p>经典 conversation analysis 将 turn-taking 视为参与者共同组织的秩序，而不是固定轮询协议。Sacks、Schegloff 与 Jefferson 在 1974 年描述了人类话轮转换的系统性；Stivers 等人在跨语言研究中观察到，不同文化的具体时长存在差异，但人类普遍会预测并协调话轮边界。Clark 的共同基础理论则强调，交流不是发送句子，而是参与者不断建立“双方都认为已被理解”的 common ground。</p>
+<p>因此，完整的交互状态至少包括：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>谁正在说？
+这句话说给谁？
+用户是否还在构造当前意图？
+用户是在附和、犹豫、纠正，还是夺回话权？
+哪些内容已经被双方确认？
+模型当前说到哪里，用户实际听到哪里？
+当前任务、工具和计划是否仍有效？
+此刻沉默、短反馈、完整回答或执行动作，哪个成本最低？</code></pre></div>
+<p>如果模型只学习 <code>audio_in → audio_out</code>，这些变量只能被隐式压进下一 token 预测。它可能在平均数据上产生自然重叠，却很难保证在高风险、多人、嘈杂和长任务中做出一致决策。</p>
+<p>我的操作性定义是：</p>
+<blockquote><strong>全双工 Omni 模型是在连续时间中，对多模态部分观测进行共同状态估计，并选择对话控制、内容表达和现实行动的策略模型。</strong></blockquote>
+<p>“同时听说”只是它具备实时观测和实时动作的必要条件，不是最终能力。</p>
+<h2 id="section-2-一个更准确的系统抽象-sense-believe-coordinate-act-repair">2. 一个更准确的系统抽象：Sense、Believe、Coordinate、Act、Repair</h2>
+<p>可以把全双工交互拆成五个持续并行的过程。</p>
+<h3 id="section-2-1-sense-持续感知-而不是等待用户说完">2.1 Sense：持续感知，而不是等待用户说完</h3>
+<p>系统持续接收用户语音、面部、视线、手势、屏幕操作、环境声和工具事件。关键不是有没有人声，而是这些信号在当前任务中意味着什么。</p>
+<h3 id="section-2-2-believe-维护不确定状态-而不是过早得出单一结论">2.2 Believe：维护不确定状态，而不是过早得出单一结论</h3>
+<p>用户说“帮我订明天……”时，模型可以判断任务可能与日程、交通或餐厅有关，但不应立刻固化意图。好的系统维护多个假设和置信度，随着新证据更新。</p>
+<h3 id="section-2-3-coordinate-管理话权和共同注意">2.3 Coordinate：管理话权和共同注意</h3>
+<p>模型决定继续听、给出 backchannel、开始说、继续持有话权、让出话权或请求澄清。在带视频的 Omni 场景中，还要判断双方是否在关注同一个人、物体或屏幕区域。</p>
+<h3 id="section-2-4-act-把语言与任务行动统一起来">2.4 Act：把语言与任务行动统一起来</h3>
+<p>回答、搜索、调用工具、修改 artifact 和写入记忆都是动作。全双工意味着这些动作可以异步发生：模型说“我先查一下”的同时开始检索，也能在用户改口时取消旧查询。</p>
+<h3 id="section-2-5-repair-发现共同状态不一致后恢复">2.5 Repair：发现共同状态不一致后恢复</h3>
+<p>用户说“不是，我指左边那个”，不是一次普通新输入，而是对共同状态的修复。模型必须撤销旧指代、停止依赖旧指代的动作、确认新对象，并从正确位置继续任务。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/full-duplex-ux-joint-action-loop.svg" data-image-alt="Continuous joint action loop" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/full-duplex-ux-joint-action-loop.svg" width="1200" height="760" alt="Continuous joint action loop" loading="lazy" decoding="async"></button><figcaption>图 2：高质量全双工体验来自感知、状态估计、交互协调、任务行动和修复的持续闭环。</figcaption></figure>
+<p>这五个过程可以共享一个流式 backbone，也可以由多个模块协作。用户并不关心内部是否“端到端”；用户关心的是同步点是否阻塞、状态是否一致、错误是否可恢复。因此，架构判断应服从交互目标，而不是把 monolithic 当作信仰。</p>
+<h2 id="section-3-首先减少倾听与指令归属的错误">3. 首先减少倾听与指令归属的错误</h2>
+<p>很多实时系统首先优化 TTFT，但用户对延迟的感知不是单一数字。一个 250ms 开口却打断用户的模型，比 600ms 后正确接话更令人烦躁。一个立即停止但误把“嗯”当作新指令的模型，也不比半双工更自然。</p>
+<p>这里优先考虑 <strong>interaction precision</strong>：</p>
+<ul><li>用户没说完时不要开始完整回答；</li><li>backchannel 不应触发停止；</li><li>真正纠正和紧急抢话必须及时响应；</li><li>用户对旁人说话时不要介入；</li><li>电视、回声和扬声器泄漏不能改变任务状态；</li><li>不确定时用低成本澄清，而不是武断执行。</li></ul>
+<p><a href="https://arxiv.org/abs/2603.24144">Semantic-Aware Interruption Detection</a> 将当前系统概括为两个极端：VAD 方案 trigger-happy，容易把附和误判为打断；较稳健的端到端模型又可能停止太慢。该工作构建的 SID-Bench 来自真实人类对话，包含约 10 小时音频和 3,700 个实例，显式区分 genuine interruption、backchannel 与 ambiguous event。这比“有声音就停”更接近产品需求。</p>
+<p><a href="https://arxiv.org/abs/2604.01897">FastTurn</a> 则同时使用流式 CTC 语义与声学特征，目标是在 partial observation 下平衡早决策和语义完整性。它代表一个重要方向：不必等待完整 ASR，也不能只看音量；系统需要尽早获得“足够语义”，同时保留不确定性。</p>
+<p><a href="https://arxiv.org/abs/2606.06559">IRAF</a> 进一步关注现实声学干扰。全双工系统播放自己的声音时，麦克风会收到回声、漏音和旁人语音；如果这些信号直接污染 user stream，LLM 会把自己的话或干扰者内容当作用户状态。声学 echo cancellation、speaker attribution 与语义 addressee detection 因此不是低层工程细节，而是交互正确性的地基。</p>
+<h3 id="section-3-1-研究上应该优先测什么">3.1 研究上应该优先测什么</h3>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>False interruption rate
+Missed interruption rate
+Premature response rate
+Addressee error rate
+Background-speech contamination
+Semantic completeness at action time
+Clarification precision and user effort</code></pre></div>
+<p>平均 stop latency 不能单独代表体验。应该按事件条件报告：真实抢话希望低 stop latency；backchannel 和背景语音则希望模型继续说。相同的“停止”动作，在不同语境中可能完全相反。</p>
+<h2 id="section-4-第二优先-让用户能够低成本纠正-而不是追求零错误幻觉">4. 第二优先：让用户能够低成本纠正，而不是追求零错误幻觉</h2>
+<p>真实交互一定会出现误听、指代错误、目标变化和工具失败。产品体验的上限不由“模型永不出错”决定，而由 <strong>repair cost</strong> 决定。</p>
+<p>假设用户说：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>“把右边这张图放到第一页……不对，是第二页，右上角。”</code></pre></div>
+<p>系统需要完成：</p>
+<ol><li>立即停止依赖旧目标的编辑；</li><li>保留“右边这张图”这一仍然有效的实体绑定；</li><li>将 page=1 supersede 为 page=2；</li><li>新增 region=top-right；</li><li>如果旧工具已经执行，恢复或生成可逆补丁；</li><li>用一句简短确认建立新的 common ground；</li><li>继续任务，而不是从头询问全部信息。</li></ol>
+<p>这要求 interruption handling 不只是停音频，而是 plan invalidation、tool cancellation、slot revision、playback rollback 和 artifact recovery。</p>
+<p><a href="https://arxiv.org/abs/2606.19595">IHBench</a> 关注被中断后能不能正确续接工作流。它揭示了一个容易被忽略的事实：模型可能在声学上成功停止，却在任务层面不知道应该恢复旧回答、接受新目标，还是丢弃旧计划。用户体验真正关心的不是“停没停”，而是“停下之后事情还在不在”。</p>
+<h3 id="section-4-1-repair-应成为一等动作">4.1 Repair 应成为一等动作</h3>
+<p>建议将交互动作显式表示为：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>HOLD       保持话权
+YIELD      让出话权
+BACKCH     短反馈但不夺话
+ABORT      停止当前语音或动作
+REVISE     更新部分状态
+RESUME     从有效状态继续
+CLARIFY    请求最小必要信息
+CONFIRM    高风险动作前确认</code></pre></div>
+<p>如果系统只有 <code>speak / silence</code>，修复只能靠下一段自然语言临时解释，难以保证工具和 memory 同步。</p>
+<h2 id="section-5-第三优先-从话轮自然度走向-任务连续性">5. 第三优先：从话轮自然度走向“任务连续性”</h2>
+<p>全双工模型最容易展示的是闲聊，但最有产品价值的是在任务中减少协调成本。例如：</p>
+<ul><li>用户一边描述行程，Agent 一边预取航班；</li><li>用户在看屏幕时说“这个字段不对”，Agent 绑定当前 UI 区域；</li><li>面试中候选人停顿思考，系统不催促，但必要时进行中性追问；</li><li>教学中学生出现明确概念错误，系统适时打断，而不是等完整错误推导结束；</li><li>客服中用户改口，系统撤销旧业务动作并保留已验证身份。</li></ul>
+<p>这说明全双工 Omni 的目标不是让语音更像人，而是让 <strong>human-agent joint work</strong> 更顺畅。</p>
+<p>可以把交互效用写成一个产品目标：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>Interaction Utility
+= Task Success
++ Shared Understanding
++ User Control
+- Waiting Cost
+- Coordination Cost
+- Repair Cost
+- Unsafe Action Risk
+- Cognitive Load</code></pre></div>
+<p>更自然的 backchannel 可能提升 shared understanding，也可能增加 cognitive load；更积极的抢话可能提升教学纠错，却会破坏心理咨询中的表达安全。不存在一种全局最优的“像人”策略。</p>
+<h2 id="section-6-第四优先-策略必须可控-不能只有一种-礼貌人格">6. 第四优先：策略必须可控，不能只有一种“礼貌人格”</h2>
+<p>全双工系统常见的默认策略是 always-yield：检测到用户声音就停止。它在通用助手中看起来礼貌，却不适合所有角色。</p>
+<ul><li><strong>心理支持</strong>：应保守倾听，减少主动打断；</li><li><strong>教学纠错</strong>：学生出现关键错误时可以及时介入；</li><li><strong>紧急辅助</strong>：识别危险信号后应主动打断；</li><li><strong>访谈和面试</strong>：应允许完整叙述，但在答非所问时结构化追问；</li><li><strong>任务协作</strong>：用户只是口头附和时，Agent 应继续当前操作说明；</li><li><strong>多人会议</strong>：系统多数时候应保持旁观，只有被点名或满足触发条件才发言。</li></ul>
+<p><a href="https://arxiv.org/abs/2601.11329">F-Actor</a> 将 backchannel、interruption、话题、声音和主动发起作为可指令控制的行为，而不只被动处理用户打断。<a href="https://arxiv.org/abs/2607.20460">Instruct-FD</a> 更直接评估模型能否遵循 turn-management instruction。其六个系统对比中，最佳模型的 instruction adherence 也只有 <code>64.4%</code>，主动 backchannel 和主动 interruption 尤其困难。</p>
+<p>这说明“模型会打断”与“模型能按产品策略打断”是两种能力。训练集中出现过某类行为，不等于部署时能稳定控制它。</p>
+<p><a href="https://arxiv.org/abs/2605.06007">PersonaKit</a> 则把 Yield、Resume、Bridge、Override 等策略做成可配置对象，并提供实时用户测试平台。它的试验规模很小，不能作为总体体验结论，但产品思路值得重视：turn-taking policy 应像声音和 prompt 一样可配置、可记录、可 A/B test，而不是藏在不可解释的模型权重里。</p>
+<h3 id="section-6-1-产品应暴露哪些控制项">6.1 产品应暴露哪些控制项</h3>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>interruptibility       用户多容易打断模型
+initiative             模型多主动发起或介入
+backchannel density    附和频率
+floor persistence      模型维持话权的倾向
+silence tolerance      对用户停顿的容忍时间
+clarification policy   不确定时何时询问
+repair style           简短改口或完整解释
+risk threshold         何时必须显式确认</code></pre></div>
+<p>这些参数不一定直接暴露给普通用户，但产品角色、场景和无障碍设置必须能够控制它们。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/full-duplex-ux-priority-stack.svg" data-image-alt="UX priority stack" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/full-duplex-ux-priority-stack.svg" width="1200" height="780" alt="UX priority stack" loading="lazy" decoding="async"></button><figcaption>图 3：全双工体验应先保证听对、可修复和任务连续，再优化策略个性、表现力与拟人感。</figcaption></figure>
+<h2 id="section-7-第五优先-利用视觉建立共同注意">7. 第五优先：利用视觉建立共同注意</h2>
+<p>纯语音 full duplex 主要协调话权；Omni 还必须协调“我们正在看什么”。视频、视线、手势、屏幕指针和空间位置使 turn-taking 变成 joint-attention policy。</p>
+<p>用户说“这个不对”时，系统需要知道：</p>
+<ul><li>用户看向屏幕还是现实物体；</li><li>指向的是哪个区域；</li><li>该对象是否在上一帧移动；</li><li>“不对”是在纠正对象、内容还是 Agent 的动作；</li><li>模型是否应该继续说、停下看、还是立即撤销操作。</li></ul>
+<p><a href="https://arxiv.org/abs/2606.21970">Moshi-Face</a> 将用户音频与面部输入、模型语音与面部动作放入全双工生成框架，代表从 audio duplex 向 embodied duplex 扩展的一步。但研究不能停在“能生成同步表情”。真正的 Omni 价值是使用目光、点头、困惑表情、手势和场景变化改善 belief update 与 action timing。</p>
+<p>例如用户皱眉不一定意味着否定，也可能是看不清屏幕。系统应该把非语言信号作为概率证据，选择“暂停并确认”而不是直接推断心理状态。</p>
+<p><a href="https://arxiv.org/abs/2606.26083">Real-Time Voice AI Hears but Does Not Listen</a> 的核心警示正是：模型可能感知到非语言线索，却没有在最终回复 policy 中正确利用它。感知 benchmark 高分不等于交互行为变好。</p>
+<h2 id="section-8-第六优先-延迟要按用户感知拆解-而不是只报一个-ttft">8. 第六优先：延迟要按用户感知拆解，而不是只报一个 TTFT</h2>
+<p>对全双工产品，至少有七种延迟：</p>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>延迟</th><th>起点与终点</th><th>用户体验含义</th></tr></thead><tbody><tr><td>Perception latency</td><td>信号发生到系统识别</td><td>是否及时注意到用户</td></tr><tr><td>Stop latency</td><td>用户真实抢话到助手静音</td><td>是否尊重用户夺回话权</td></tr><tr><td>Backchannel latency</td><td>适合反馈的语义点到短反馈</td><td>是否显得在认真听</td></tr><tr><td>Turn-start latency</td><td>用户完成意图到助手开口</td><td>是否有尴尬等待</td></tr><tr><td>First-useful latency</td><td>信息足够到第一条有用内容</td><td>是否真的开始解决问题</td></tr><tr><td>Action latency</td><td>参数足够到工具启动</td><td>是否利用用户讲话时间并行做事</td></tr><tr><td>Recovery latency</td><td>用户纠正到状态恢复一致</td><td>错误后多久重新可用</td></tr></tbody></table></div>
+<p>用户不总是要求立即得到完整答案。对于复杂任务，及时的 grounded acknowledgement、可见进度和允许继续补充，能够降低 perceived latency；但空洞 filler 不能伪装成进度。</p>
+<p><a href="https://arxiv.org/abs/2509.22243">FLEXI</a> 同时关注延迟、质量和交互有效性，并加入 emergency 场景。论文提出 <code>&lt;150ms</code> 和 <code>&lt;400ms</code> 的交互等级划分，这是其 benchmark 的操作性定义，不应被当成所有产品的通用人类阈值。更可靠的做法是固定客户端、网络、音频设备和事件定义，报告 P50/P95/P99，并与任务成功和误触发联合解释。</p>
+<h3 id="section-8-1-最快并不总是最好">8.1 最快并不总是最好</h3>
+<p>在用户仍可能补充关键信息时，等待 300ms 可能降低一次错误澄清；对紧急“停”指令，多等 300ms 又可能不可接受。延迟目标必须条件化于：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>semantic completeness
+action reversibility
+user urgency
+confidence
+interaction role
+current floor state</code></pre></div>
+<h2 id="section-9-第七优先-让回应时机符合情境">9. 第七优先：让回应时机符合情境</h2>
+<p>高音质、情绪和笑声会增强 social presence，但也可能掩盖模型没有理解。用户更容易把流畅表达误认为可靠推理。</p>
+<p><a href="https://arxiv.org/abs/2607.01345">TurnNat</a> 尝试用自然双人对话训练的因果活动预测器，估计一个话轮边界之后双方语音活动的可能性，再用 NLL 衡量 timing atypicality。它的重要意义是将不同 timing failure 放到统一自然度框架中，而不是分别人为设定“停顿必须 300ms”之类的硬阈值。</p>
+<p><a href="https://arxiv.org/abs/2604.21406">HumDial 2026 Full-Duplex Interaction</a> 则将 interruption 与 rejection 拆成多个场景：follow-up、correction、emergency、backchannel、第三方语音、pause 等。这里的 <code>rejection</code> 不是拒绝用户，而是拒绝对无效或非面向系统的语音做出错误响应。</p>
+<p>这说明自然度是条件分布：在相同 500ms 重叠下，用户纠正时应该停止，用户附和时应该继续，用户对旁人说话时应该忽略。单一 pause threshold 永远无法覆盖这些语义。</p>
+<h2 id="section-10-内容智能与交互动态必须解耦评估">10. 内容智能与交互动态必须解耦评估</h2>
+<p>当前全双工模型经常面临一个表面 trade-off：互动自然的模型内容较弱，强 reasoning 级联系统又显得迟钝。这不代表二者理论上不可兼得，而可能是训练目标和推理路径绑定造成的。</p>
+<p><a href="https://arxiv.org/abs/2607.07148">DuplexPO</a> 的核心观点是将 <code>when to speak</code> 与 <code>what to say</code> 解耦，在 dynamics-critical window 优化开始、停止、附和和让出话权，同时保护 reasoning 和 instruction-following。<a href="https://arxiv.org/abs/2606.11167">Multi-Faceted Interactivity Alignment</a> 也将 pause、turn-taking、backchannel 和 interruption 分开构造奖励，并额外加入内容质量约束，避免只优化 timing 后语义退化。</p>
+<p>产品架构也可以解耦：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>fast interaction path:
+  streaming perception
+  floor control
+  short acknowledgement
+  interruption handling
+  state repair
+
+slow cognition path:
+  deep reasoning
+  retrieval
+  planning
+  tool execution
+
+merge policy:
+  validate freshness
+  cancel stale work
+  decide when and how to present result</code></pre></div>
+<p>关键不是所有模块是否位于同一个模型，而是二者是否共享一致状态、能否异步工作、旧结果是否可取消。<code>Policy monolithic, execution and reasoning modular</code> 往往比“所有能力强塞进一个串行 token 流”更符合实时产品。</p>
+<h2 id="section-11-目前的评测为什么仍不足以代表用户体验">11. 目前的评测为什么仍不足以代表用户体验</h2>
+<p>现有 benchmark 已经覆盖 pause、turn、backchannel、interruption、emergency、第三方语音和自然度，但仍有五个缺口。</p>
+<h3 id="section-11-1-局部片段多-完整任务少">11.1 局部片段多，完整任务少</h3>
+<p>模型在 10 秒片段里正确停止，不代表它能在 20 分钟客服任务中维护订单、工具和授权。</p>
+<h3 id="section-11-2-系统输出多-用户适应少">11.2 系统输出多，用户适应少</h3>
+<p>用户会因模型行为改变说话方式：缩短句子、避免停顿、提高音量、重复唤醒词。短期成功可能来自用户迁就，而不是系统自然。</p>
+<h3 id="section-11-3-平均分多-严重失败少">11.3 平均分多，严重失败少</h3>
+<p>一次紧急中断漏检、错误发送或持续抢话，可能比 100 次自然 backchannel 更重要。应报告 tail risk 和 failure slice。</p>
+<h3 id="section-11-4-语音多-共同注意少">11.4 语音多，共同注意少</h3>
+<p>视频、视线、屏幕和多人空间中的 addressee、reference 与 privacy 尚缺统一协议。</p>
+<h3 id="section-11-5-自然度多-控制感少">11.5 自然度多，控制感少</h3>
+<p>用户是否知道模型在听谁、是否能暂停、能否改变打断策略、错误后要重复多少信息，这些产品指标常被忽略。</p>
+<h2 id="section-12-一个面向用户体验的评测框架">12. 一个面向用户体验的评测框架</h2>
+<p>我建议把评测分成六层。</p>
+<h3 id="layer-1-感知与指向">Layer 1：感知与指向</h3>
+<p>speaker、addressee、声学事件、情绪线索、视觉对象、视线和指针是否识别正确。</p>
+<h3 id="layer-2-交互控制">Layer 2：交互控制</h3>
+<p>wait、start、hold、yield、backchannel、interrupt、resume 的条件精度和时延。</p>
+<h3 id="layer-3-共同状态">Layer 3：共同状态</h3>
+<p>用户和模型已确认什么、用户实际听到什么、指代绑定什么、纠正后哪些状态失效。</p>
+<h3 id="layer-4-内容与任务">Layer 4：内容与任务</h3>
+<p>回答质量、工具正确率、task success、异步结果是否过期、被中断后能否继续。</p>
+<h3 id="layer-5-体验与行为">Layer 5：体验与行为</h3>
+<p>用户认知负担、重复次数、修复时间、控制感、信任校准、长期使用意愿，以及用户是否开始迁就系统。</p>
+<h3 id="layer-6-安全与边界">Layer 6：安全与边界</h3>
+<p>紧急中断、不可逆动作确认、旁人隐私、公共空间录音、情绪误判和未成年人场景。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/full-duplex-ux-evaluation.svg" data-image-alt="Full-duplex UX evaluation" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/full-duplex-ux-evaluation.svg" width="1200" height="820" alt="Full-duplex UX evaluation" loading="lazy" decoding="async"></button><figcaption>图 4：全双工评测应从感知、控制、共同状态一直追踪到任务、用户行为和安全后果。</figcaption></figure>
+<p>关键指标不应只有模型分数，还应包括：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>User repetition count
+Clarification turns
+Repair completion time
+Task abandonment rate
+False-interruption frustration
+User adaptation index
+Perceived control
+Trust calibration
+Long-session state consistency
+Critical failure rate</code></pre></div>
+<h2 id="section-13-不要一上来训练-先做五个-toy-experiment">13. 不要一上来训练：先做五个 Toy Experiment</h2>
+<h3 id="实验-a-停顿还是结束">实验 A：停顿还是结束</h3>
+<p>构造相同句子，仅改变停顿位置、音高延续和后续词。固定模型，只比较 VAD、声学 turn detector、流式语义 detector 和融合策略。测 premature response、真实结束等待和用户重复成本。</p>
+<h3 id="实验-b-附和还是真打断">实验 B：附和还是真打断</h3>
+<p>使用相同“嗯”“对”“等一下”，改变其语义上下文和说话重音。测 false stop、missed interruption 和恢复时延。根因若是 addressee/intent，而非音频质量，换更大 codec 不应显著解决。</p>
+<h3 id="实验-c-停止声音还是恢复任务">实验 C：停止声音还是恢复任务</h3>
+<p>让用户在工具执行、解释和确认三个阶段分别打断。比较仅停止播放、保存 turn state、完整 task/tool/playback state 三种系统。测任务连续性、重复信息量和 stale action rate。</p>
+<h3 id="实验-d-策略是否适配角色">实验 D：策略是否适配角色</h3>
+<p>同一段用户行为分别放入心理支持、教学和紧急辅助场景。比较固定 always-yield、规则策略和 instruction-conditioned policy。测策略遵循、主观适配和严重误介入。</p>
+<h3 id="实验-e-音频线索还是-omni-共同注意">实验 E：音频线索还是 Omni 共同注意</h3>
+<p>用户说“这个不对”，分别提供无视频、当前帧、带时间戳视线/指针和完整 artifact state。测澄清率、错误对象动作和修复成本，验证体验收益是否来自共同注意而非更自然语音。</p>
+<p>这些实验都应固定 backbone、语音、网络和内容能力，只改变一个交互变量。Toy 环境稳定后，再扩展到噪声、多人、多语言、长会话和真实用户。</p>
+<h2 id="section-14-我认为最值得专注的七个研究方向">14. 我认为最值得专注的七个研究方向</h2>
+<h3 id="section-14-1-semantic-addressee-and-interruption-belief">14.1 Semantic addressee and interruption belief</h3>
+<p>从“检测到声音”走向“谁在什么语境下试图改变共同任务”。联合声学、streaming semantics、speaker、gaze 和历史状态。</p>
+<h3 id="section-14-2-repair-first-interaction-policy">14.2 Repair-first interaction policy</h3>
+<p>把 revise、resume、rollback 和 clarify 作为显式动作，优化错误后的恢复成本，而不是只优化首次正确率。</p>
+<h3 id="section-14-3-task-aware-duplex-agent">14.3 Task-aware duplex agent</h3>
+<p>让对话控制与工具、memory、artifact 和授权状态连接。打断必须影响计划，不只是音频播放器。</p>
+<h3 id="section-14-4-controllable-role-conditioned-dynamics">14.4 Controllable role-conditioned dynamics</h3>
+<p>让 backchannel、initiative、interruptibility、silence tolerance 和 risk threshold 可配置，并验证 instruction adherence。</p>
+<h3 id="section-14-5-multimodal-common-ground">14.5 Multimodal common ground</h3>
+<p>研究 gaze、gesture、screen pointer、facial feedback 和空间场景如何改善 referent binding、理解确认与行动时机。</p>
+<h3 id="section-14-6-perceived-latency-orchestration">14.6 Perceived-latency orchestration</h3>
+<p>同时优化 stop、first-useful、action 和 recovery latency；允许快路径反馈、慢路径推理和异步工具协作，但禁止伪造进度。</p>
+<h3 id="section-14-7-longitudinal-ux-and-user-adaptation">14.7 Longitudinal UX and user adaptation</h3>
+<p>研究用户使用数周后是否被迫改变表达方式、是否产生错误信任、个性化策略是否漂移，以及记忆和隐私边界是否仍可控。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/full-duplex-ux-research-roadmap.svg" data-image-alt="Research focus roadmap" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/full-duplex-ux-research-roadmap.svg" width="1200" height="780" alt="Research focus roadmap" loading="lazy" decoding="async"></button><figcaption>图 5：研究路线从听对与修复出发，推进到任务 Agent、策略控制、共同注意和长期体验。</figcaption></figure>
+<h2 id="section-15-产品落地的优先级-什么先做-什么后做">15. 产品落地的优先级：什么先做，什么后做</h2>
+<p>如果要做一个真正可用的全双工 Omni 产品，我会按以下顺序投入。</p>
+<p><strong>P0：声学稳定与对象边界。</strong> AEC、噪声、speaker、addressee、播放位置和客户端事件必须可靠。否则上层模型收到的是错误世界。</p>
+<p><strong>P1：turn policy precision。</strong> 先解决不该说时闭嘴、该停时及时停、附和不误停。不要先追求丰富笑声和情绪。</p>
+<p><strong>P2：repair 与状态一致性。</strong> 用户纠正后，语音、计划、工具、memory 和 artifact 一起更新。</p>
+<p><strong>P3：任务连续性。</strong> 加入异步工具、取消、过期检查、两阶段提交和跨设备状态。</p>
+<p><strong>P4：角色与用户控制。</strong> 为不同业务设置 interaction contract，让用户能调节或关闭主动打断和持续监听。</p>
+<p><strong>P5：Omni common ground。</strong> 用视频、视线、手势和屏幕提高共同注意，而不是只生成表情。</p>
+<p><strong>P6：表现力与人格。</strong> 在理解、修复和安全可靠后，再优化音色、笑声、风格和高拟人感。</p>
+<p>这个排序优先处理误听、纠正和任务恢复，再优化表现力；是否改善长期使用体验，还需要用户研究验证。</p>
+<h2 id="section-16-我更关心的评测目标">16. 我更关心的评测目标</h2>
+<p>全双工 Omni 的最低定义是双方流可以同时工作；工程核心是低延迟流式感知与生成；研究核心是连续时间中的 state estimation 和 policy；产品核心则是 <strong>共同完成事情时的协调质量</strong>。</p>
+<p>自然停顿、附和、打断、眼神和表情都只是外在行为。它们之所以有价值，是因为帮助用户判断模型是否在听、是否理解、谁拥有话权、任务是否仍受控制。脱离这些目标，拟人化行为反而会增加干扰和错误信任。</p>
+<p>因此，我对下一阶段的结论是：</p>
+<p>我更关心模型能否判断该听谁、已经理解到哪一步、何时应暂缓行动，以及状态出错后怎样修复。这些问题可以分别设置实验，不必用一个自然度分数代替。</p>
+<p>全双工 Omni 模型的交互质量应同时通过注意保持、话权协调、纠正响应、任务恢复与用户控制来评估。自然度和响应速度只是其中的一部分。</p>
+<h2 id="参考资料">参考资料</h2>
+<ol><li><a href="https://arxiv.org/abs/2410.00037">Moshi: a speech-text foundation model for real-time dialogue</a></li><li><a href="https://arxiv.org/abs/2507.23159">Full-Duplex-Bench v1.5</a></li><li><a href="https://arxiv.org/abs/2509.22243">FLEXI: Benchmarking Full-duplex Human-LLM Speech Interaction</a></li><li><a href="https://arxiv.org/abs/2601.11329">F-Actor: Controllable Conversational Behaviour in Full-Duplex Models</a></li><li><a href="https://arxiv.org/abs/2603.24144">Semantic-Aware Interruption Detection in Spoken Dialogue Systems</a></li><li><a href="https://arxiv.org/abs/2604.01897">FastTurn: Unifying Acoustic and Streaming Semantic Cues</a></li><li><a href="https://arxiv.org/abs/2604.21406">Full-Duplex Interaction from the ICASSP 2026 HumDial Challenge</a></li><li><a href="https://arxiv.org/abs/2605.06007">PersonaKit: User Testing Diverse Roles in Full-Duplex Dialogue</a></li><li><a href="https://arxiv.org/abs/2606.21970">Integrating Facial Generation into Full-Duplex Spoken Dialogue Systems</a></li><li><a href="https://arxiv.org/abs/2606.26083">Real-Time Voice AI Hears but Does Not Listen</a></li><li><a href="https://arxiv.org/abs/2606.11167">Multi-Faceted Interactivity Alignment in Full-Duplex Speech Models</a></li><li><a href="https://arxiv.org/abs/2606.06559">IRAF: Noise-Robust End-to-End Full-Duplex Spoken Dialogue</a></li><li><a href="https://arxiv.org/abs/2607.01345">TurnNat: Automatic Evaluation of Turn-Taking Naturalness</a></li><li><a href="https://arxiv.org/abs/2607.07148">DuplexPO: Decoupling Conversational Dynamics through RL</a></li><li><a href="https://arxiv.org/abs/2607.20460">Instruct-FD: Can Full-Duplex Systems Follow Turn-Taking Instructions?</a></li><li><a href="https://arxiv.org/abs/2606.19595">IHBench: Interruption Handling in Real-Time Voice Agents</a></li><li><a href="https://doi.org/10.2307/412243">Sacks, Schegloff, Jefferson: A Simplest Systematics for Turn-Taking</a></li><li><a href="https://pubmed.ncbi.nlm.nih.gov/19805143/">Stivers et al.: Universals and Cultural Variation in Turn-Taking</a></li></ol>
+<p>文中的架构优先级、体验框架和 Toy Experiment 是基于现有证据提出的研究判断，不代表相关论文已经完成整套产品验证。论文中的数字仅限其各自实验协议；跨模型比较必须统一客户端、网络、音频设备、事件定义和测试日期。</p></div><script type="application/json" data-article-headings>[{"id":"section-1-人类如何协调话轮与共同理解","level":2,"text":"1. 人类如何协调话轮与共同理解"},{"id":"section-2-一个更准确的系统抽象-sense-believe-coordinate-act-repair","level":2,"text":"2. 一个更准确的系统抽象：Sense、Believe、Coordinate、Act、Repair"},{"id":"section-2-1-sense-持续感知-而不是等待用户说完","level":3,"text":"2.1 Sense：持续感知，而不是等待用户说完"},{"id":"section-2-2-believe-维护不确定状态-而不是过早得出单一结论","level":3,"text":"2.2 Believe：维护不确定状态，而不是过早得出单一结论"},{"id":"section-2-3-coordinate-管理话权和共同注意","level":3,"text":"2.3 Coordinate：管理话权和共同注意"},{"id":"section-2-4-act-把语言与任务行动统一起来","level":3,"text":"2.4 Act：把语言与任务行动统一起来"},{"id":"section-2-5-repair-发现共同状态不一致后恢复","level":3,"text":"2.5 Repair：发现共同状态不一致后恢复"},{"id":"section-3-首先减少倾听与指令归属的错误","level":2,"text":"3. 首先减少倾听与指令归属的错误"},{"id":"section-3-1-研究上应该优先测什么","level":3,"text":"3.1 研究上应该优先测什么"},{"id":"section-4-第二优先-让用户能够低成本纠正-而不是追求零错误幻觉","level":2,"text":"4. 第二优先：让用户能够低成本纠正，而不是追求零错误幻觉"},{"id":"section-4-1-repair-应成为一等动作","level":3,"text":"4.1 Repair 应成为一等动作"},{"id":"section-5-第三优先-从话轮自然度走向-任务连续性","level":2,"text":"5. 第三优先：从话轮自然度走向“任务连续性”"},{"id":"section-6-第四优先-策略必须可控-不能只有一种-礼貌人格","level":2,"text":"6. 第四优先：策略必须可控，不能只有一种“礼貌人格”"},{"id":"section-6-1-产品应暴露哪些控制项","level":3,"text":"6.1 产品应暴露哪些控制项"},{"id":"section-7-第五优先-利用视觉建立共同注意","level":2,"text":"7. 第五优先：利用视觉建立共同注意"},{"id":"section-8-第六优先-延迟要按用户感知拆解-而不是只报一个-ttft","level":2,"text":"8. 第六优先：延迟要按用户感知拆解，而不是只报一个 TTFT"},{"id":"section-8-1-最快并不总是最好","level":3,"text":"8.1 最快并不总是最好"},{"id":"section-9-第七优先-让回应时机符合情境","level":2,"text":"9. 第七优先：让回应时机符合情境"},{"id":"section-10-内容智能与交互动态必须解耦评估","level":2,"text":"10. 内容智能与交互动态必须解耦评估"},{"id":"section-11-目前的评测为什么仍不足以代表用户体验","level":2,"text":"11. 目前的评测为什么仍不足以代表用户体验"},{"id":"section-11-1-局部片段多-完整任务少","level":3,"text":"11.1 局部片段多，完整任务少"},{"id":"section-11-2-系统输出多-用户适应少","level":3,"text":"11.2 系统输出多，用户适应少"},{"id":"section-11-3-平均分多-严重失败少","level":3,"text":"11.3 平均分多，严重失败少"},{"id":"section-11-4-语音多-共同注意少","level":3,"text":"11.4 语音多，共同注意少"},{"id":"section-11-5-自然度多-控制感少","level":3,"text":"11.5 自然度多，控制感少"},{"id":"section-12-一个面向用户体验的评测框架","level":2,"text":"12. 一个面向用户体验的评测框架"},{"id":"layer-1-感知与指向","level":3,"text":"Layer 1：感知与指向"},{"id":"layer-2-交互控制","level":3,"text":"Layer 2：交互控制"},{"id":"layer-3-共同状态","level":3,"text":"Layer 3：共同状态"},{"id":"layer-4-内容与任务","level":3,"text":"Layer 4：内容与任务"},{"id":"layer-5-体验与行为","level":3,"text":"Layer 5：体验与行为"},{"id":"layer-6-安全与边界","level":3,"text":"Layer 6：安全与边界"},{"id":"section-13-不要一上来训练-先做五个-toy-experiment","level":2,"text":"13. 不要一上来训练：先做五个 Toy Experiment"},{"id":"实验-a-停顿还是结束","level":3,"text":"实验 A：停顿还是结束"},{"id":"实验-b-附和还是真打断","level":3,"text":"实验 B：附和还是真打断"},{"id":"实验-c-停止声音还是恢复任务","level":3,"text":"实验 C：停止声音还是恢复任务"},{"id":"实验-d-策略是否适配角色","level":3,"text":"实验 D：策略是否适配角色"},{"id":"实验-e-音频线索还是-omni-共同注意","level":3,"text":"实验 E：音频线索还是 Omni 共同注意"},{"id":"section-14-我认为最值得专注的七个研究方向","level":2,"text":"14. 我认为最值得专注的七个研究方向"},{"id":"section-14-1-semantic-addressee-and-interruption-belief","level":3,"text":"14.1 Semantic addressee and interruption belief"},{"id":"section-14-2-repair-first-interaction-policy","level":3,"text":"14.2 Repair-first interaction policy"},{"id":"section-14-3-task-aware-duplex-agent","level":3,"text":"14.3 Task-aware duplex agent"},{"id":"section-14-4-controllable-role-conditioned-dynamics","level":3,"text":"14.4 Controllable role-conditioned dynamics"},{"id":"section-14-5-multimodal-common-ground","level":3,"text":"14.5 Multimodal common ground"},{"id":"section-14-6-perceived-latency-orchestration","level":3,"text":"14.6 Perceived-latency orchestration"},{"id":"section-14-7-longitudinal-ux-and-user-adaptation","level":3,"text":"14.7 Longitudinal UX and user adaptation"},{"id":"section-15-产品落地的优先级-什么先做-什么后做","level":2,"text":"15. 产品落地的优先级：什么先做，什么后做"},{"id":"section-16-我更关心的评测目标","level":2,"text":"16. 我更关心的评测目标"},{"id":"参考资料","level":2,"text":"参考资料"}]</script></article></main>
   <footer class="footer"><div class="footer-inner">© 2026 Tianyu Xie.</div></footer>
 </body>
 </html>

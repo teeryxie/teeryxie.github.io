@@ -378,7 +378,7 @@ Video subset 从 per-shot script 与 dialogue 开始，人工检查视觉和音�
 
 MENTIS 推理时再生成 `WorldState`、`Observation`、`ActionPlan` 和 `BranchScore`。这与人工 process gold 是两个不同层次。
 
-## 9. 结果诊断：最大的瓶颈不是读状态，而是模拟变化
+## 9. 结果诊断：状态变化的模拟更困难
 
 论文在八个 world-model backbones 上测试，Full MWM 均优于对照。平均消融为：
 
@@ -529,7 +529,7 @@ commitment signal: you may execute
 
 用户说“嗯，你继续”最多支持前两个，不能自动升级为支付、提交或取消订单的授权。
 
-### 11.3 ToM 的价值不是更大胆，而是更会选择低风险动作
+### 11.3 不确定状态下如何选择低风险动作
 
 模型不确定用户是困惑还是反对时，最佳动作常常不是猜中标签，而是提出最小区分问题：
 
@@ -593,7 +593,7 @@ commitment signal: you may execute
 
 **指标**：任务成功率、用户打断次数、澄清轮数、repair cost、主观被理解感，而不只看 state accuracy。
 
-## 13. 怎样构建真正的 ToM trajectory 标签
+## 13. ToM trajectory 标签的构建步骤
 
 如果下一步要做 full-duplex Omni 数据，我建议四层标注，而不是一开始训练一个大模型猜心理：
 
@@ -748,7 +748,7 @@ MWM taxonomy 包含 preference、values、personality。研究框架可以容纳
 
 离线片段只能测解释能力。真正的 Omni ToM 必须在行动后接受用户反应：模型澄清是否真的减少误解，沉默是否让用户继续，错误推断是否能被纠正。只有 closed-loop outcome 才能验证 mental model 对产品有用。
 
-## 18. 最终判断
+## 18. 从离线判断到在线交互
 
 MeetingToM 的贡献，是把 ToM 从单人故事题推进到真实多人会议中的个体、二人和群体推理，并用严格人工流程说明“可观察社会解释”怎样成为 benchmark label。MWM 的贡献，是证明 mental variables 不能只作为答案后的 rationale，而应进入 target observation、candidate action、successor state 和 value evaluation。
 

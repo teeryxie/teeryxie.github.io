@@ -4,25 +4,177 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GPT-6 Astra：无声推理与架构证据 | Tianyu Xie</title>
-  <meta name="description" content="梳理 GPT-6 Astra 的公开推理结果，区分隐藏状态计算的行为证据与尚未披露的循环架构。">
+  <meta name="description" content="GPT-6 Astra 在不输出推理文字时仍能解决困难问题。这些公开结果支持哪些判断，又能否说明内部存在循环计算？">
   <link rel="icon" href="/images/profile.png">
-  <link rel="stylesheet" href="/site.css?v=20261012-unified">
-  <script src="/blog/blog-data.js?v=20261012-unified" defer></script>
-  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-unified" defer></script>
+  <link rel="stylesheet" href="/site.css?v=20261012-stable">
+  <script src="/blog/blog-data.js?v=20261012-stable" defer></script>
+  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-stable" defer></script>
 </head>
 <body class="blog-post" data-post-slug="gpt6-astra-latent-reasoning-transformer-blocks">
-  <header class="masthead"><nav class="nav" aria-label="Primary navigation">
-    <a class="home-brand" href="/">Homepage</a>
-    <a href="/#about-me">About Me</a>
-    <a href="/#news">News</a>
-    <a href="/publications/">Publications</a>
-    <a href="/projects/">Projects</a>
-    <a href="/#education">Education</a>
-    <a href="/#service">Academic Service</a>
-    <a aria-current="page" href="/blog/">Research Notes</a>
-    <a href="/cv/">CV</a>
-  </nav></header>
-  <main class="shell blog-shell"><aside class="sidebar"><section class="profile-card"><img class="avatar" src="/images/profile.png" alt="Tianyu Xie profile photo"><h2 class="name">Blog</h2><p class="bio"><a href="/blog/">Back to Blog</a></p></section></aside><article class="content"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a><span aria-hidden="true">/</span><span data-breadcrumb-section>Article</span></nav><h1 class="page-title" data-post-title>GPT-6 Astra：无声推理与架构证据</h1><p class="lead" data-post-meta>Markdown article</p><div class="markdown-body" data-markdown-article></div></article></main>
+  <header class="masthead"><nav class="nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a aria-current="page" href="/blog/">Notes</a><a href="/cv/">CV</a></nav></header>
+  <main class="shell blog-shell"><aside class="sidebar" aria-label="Personal profile"><section class="profile-card">
+        <img class="avatar" src="/images/profile.png" alt="Portrait of Tianyu Xie" width="170" height="170">
+        <h2 class="name">Tianyu Xie <span lang="zh-CN">谢天宇</span></h2>
+        <p class="affiliation">Xiamen University</p><p class="bio">M.S. student · MAC Lab</p>
+        <ul class="profile-links">
+          <li><a href="mailto:teery@stu.xmu.edu.cn">Email</a></li><li><a href="https://github.com/teeryxie">GitHub</a></li>
+          <li><a href="https://scholar.google.com/citations?hl=en&amp;user=_vZWAnkAAAAJ">Google Scholar</a></li><li><a href="https://openreview.net/profile?id=~Tianyu_Xie2">OpenReview</a></li>
+        </ul></section><nav class="article-toc" aria-label="本文目录"><strong>本文目录</strong><div class="toc-links"><a class="toc-link toc-level-2" href="#section-1-openai-这次到底公开了什么" data-toc-id="section-1-openai-这次到底公开了什么">1. OpenAI 这次到底公开了什么</a>
+<a class="toc-link toc-level-3" href="#section-1-1-产品层面的确定事实" data-toc-id="section-1-1-产品层面的确定事实">1.1 产品层面的确定事实</a>
+<a class="toc-link toc-level-3" href="#section-1-2-发布报告给出的训练归因" data-toc-id="section-1-2-发布报告给出的训练归因">1.2 发布报告给出的训练归因</a>
+<a class="toc-link toc-level-3" href="#section-1-3-system-card-中值得解释的现象" data-toc-id="section-1-3-system-card-中值得解释的现象">1.3 System Card 中值得解释的现象</a>
+<a class="toc-link toc-level-2" href="#section-2-一个-transformer-block-内部到底做了什么" data-toc-id="section-2-一个-transformer-block-内部到底做了什么">2. 一个 Transformer block 内部到底做了什么</a>
+<a class="toc-link toc-level-2" href="#section-3-一次前向传播-为什么也能推理" data-toc-id="section-3-一次前向传播-为什么也能推理">3. “一次前向传播”为什么也能推理</a>
+<a class="toc-link toc-level-2" href="#section-4-30-9-分钟不是模型思考了-30-9-分钟" data-toc-id="section-4-30-9-分钟不是模型思考了-30-9-分钟">4. 30.9 分钟不是模型思考了 30.9 分钟</a>
+<a class="toc-link toc-level-2" href="#section-5-三种-多想一会儿-不是一回事" data-toc-id="section-5-三种-多想一会儿-不是一回事">5. 三种“多想一会儿”不是一回事</a>
+<a class="toc-link toc-level-3" href="#section-5-1-固定深度的直接回答" data-toc-id="section-5-1-固定深度的直接回答">5.1 固定深度的直接回答</a>
+<a class="toc-link toc-level-3" href="#section-5-2-用语言-token-展开思维链" data-toc-id="section-5-2-用语言-token-展开思维链">5.2 用语言 token 展开思维链</a>
+<a class="toc-link toc-level-3" href="#section-5-3-在隐藏空间里显式循环" data-toc-id="section-5-3-在隐藏空间里显式循环">5.3 在隐藏空间里显式循环</a>
+<a class="toc-link toc-level-2" href="#section-6-latent-loop-的已有研究" data-toc-id="section-6-latent-loop-的已有研究">6. latent loop 的已有研究</a>
+<a class="toc-link toc-level-3" href="#section-6-1-recurrent-depth-把同一核心跑很多轮" data-toc-id="section-6-1-recurrent-depth-把同一核心跑很多轮">6.1 Recurrent Depth：把同一核心跑很多轮</a>
+<a class="toc-link toc-level-3" href="#section-6-2-coconut-把隐藏状态当作下一个输入" data-toc-id="section-6-2-coconut-把隐藏状态当作下一个输入">6.2 Coconut：把隐藏状态当作下一个输入</a>
+<a class="toc-link toc-level-3" href="#section-6-3-pause-tokens-与-quiet-star-仍在-token-轨道上" data-toc-id="section-6-3-pause-tokens-与-quiet-star-仍在-token-轨道上">6.3 Pause Tokens 与 Quiet-STaR：仍在 token 轨道上</a>
+<a class="toc-link toc-level-3" href="#section-6-4-mixture-of-recursions-让不同-token-思考不同轮数" data-toc-id="section-6-4-mixture-of-recursions-让不同-token-思考不同轮数">6.4 Mixture-of-Recursions：让不同 token 思考不同轮数</a>
+<a class="toc-link toc-level-2" href="#section-7-强化学习怎样把推理-编译-进固定深度" data-toc-id="section-7-强化学习怎样把推理-编译-进固定深度">7. 强化学习怎样把推理“编译”进固定深度</a>
+<a class="toc-link toc-level-2" href="#section-8-为什么-cot-更可控-监控反而更困难" data-toc-id="section-8-为什么-cot-更可控-监控反而更困难">8. 为什么 CoT 更可控，监控反而更困难</a>
+<a class="toc-link toc-level-2" href="#section-9-要证明-gpt-6-使用-latent-loop-还缺什么证据" data-toc-id="section-9-要证明-gpt-6-使用-latent-loop-还缺什么证据">9. 要证明 GPT-6 使用 latent loop，还缺什么证据</a>
+<a class="toc-link toc-level-2" href="#section-10-一个明确标为假设的-gpt-6-执行图" data-toc-id="section-10-一个明确标为假设的-gpt-6-执行图">10. 一个明确标为假设的 GPT-6 执行图</a>
+<a class="toc-link toc-level-2" href="#section-11-结论" data-toc-id="section-11-结论">11. 结论</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></div></nav></aside><article class="content"><header class="inner-hero article-hero"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a></nav><h1 class="page-title" data-post-title>GPT-6 Astra：无声推理与架构证据</h1><p class="lead" data-post-meta>2026-09 · 研究笔记</p></header><details class="mobile-toc"><summary>本文目录</summary><nav aria-label="移动端本文目录"><a class="toc-link toc-level-2" href="#section-1-openai-这次到底公开了什么" data-toc-id="section-1-openai-这次到底公开了什么">1. OpenAI 这次到底公开了什么</a>
+<a class="toc-link toc-level-3" href="#section-1-1-产品层面的确定事实" data-toc-id="section-1-1-产品层面的确定事实">1.1 产品层面的确定事实</a>
+<a class="toc-link toc-level-3" href="#section-1-2-发布报告给出的训练归因" data-toc-id="section-1-2-发布报告给出的训练归因">1.2 发布报告给出的训练归因</a>
+<a class="toc-link toc-level-3" href="#section-1-3-system-card-中值得解释的现象" data-toc-id="section-1-3-system-card-中值得解释的现象">1.3 System Card 中值得解释的现象</a>
+<a class="toc-link toc-level-2" href="#section-2-一个-transformer-block-内部到底做了什么" data-toc-id="section-2-一个-transformer-block-内部到底做了什么">2. 一个 Transformer block 内部到底做了什么</a>
+<a class="toc-link toc-level-2" href="#section-3-一次前向传播-为什么也能推理" data-toc-id="section-3-一次前向传播-为什么也能推理">3. “一次前向传播”为什么也能推理</a>
+<a class="toc-link toc-level-2" href="#section-4-30-9-分钟不是模型思考了-30-9-分钟" data-toc-id="section-4-30-9-分钟不是模型思考了-30-9-分钟">4. 30.9 分钟不是模型思考了 30.9 分钟</a>
+<a class="toc-link toc-level-2" href="#section-5-三种-多想一会儿-不是一回事" data-toc-id="section-5-三种-多想一会儿-不是一回事">5. 三种“多想一会儿”不是一回事</a>
+<a class="toc-link toc-level-3" href="#section-5-1-固定深度的直接回答" data-toc-id="section-5-1-固定深度的直接回答">5.1 固定深度的直接回答</a>
+<a class="toc-link toc-level-3" href="#section-5-2-用语言-token-展开思维链" data-toc-id="section-5-2-用语言-token-展开思维链">5.2 用语言 token 展开思维链</a>
+<a class="toc-link toc-level-3" href="#section-5-3-在隐藏空间里显式循环" data-toc-id="section-5-3-在隐藏空间里显式循环">5.3 在隐藏空间里显式循环</a>
+<a class="toc-link toc-level-2" href="#section-6-latent-loop-的已有研究" data-toc-id="section-6-latent-loop-的已有研究">6. latent loop 的已有研究</a>
+<a class="toc-link toc-level-3" href="#section-6-1-recurrent-depth-把同一核心跑很多轮" data-toc-id="section-6-1-recurrent-depth-把同一核心跑很多轮">6.1 Recurrent Depth：把同一核心跑很多轮</a>
+<a class="toc-link toc-level-3" href="#section-6-2-coconut-把隐藏状态当作下一个输入" data-toc-id="section-6-2-coconut-把隐藏状态当作下一个输入">6.2 Coconut：把隐藏状态当作下一个输入</a>
+<a class="toc-link toc-level-3" href="#section-6-3-pause-tokens-与-quiet-star-仍在-token-轨道上" data-toc-id="section-6-3-pause-tokens-与-quiet-star-仍在-token-轨道上">6.3 Pause Tokens 与 Quiet-STaR：仍在 token 轨道上</a>
+<a class="toc-link toc-level-3" href="#section-6-4-mixture-of-recursions-让不同-token-思考不同轮数" data-toc-id="section-6-4-mixture-of-recursions-让不同-token-思考不同轮数">6.4 Mixture-of-Recursions：让不同 token 思考不同轮数</a>
+<a class="toc-link toc-level-2" href="#section-7-强化学习怎样把推理-编译-进固定深度" data-toc-id="section-7-强化学习怎样把推理-编译-进固定深度">7. 强化学习怎样把推理“编译”进固定深度</a>
+<a class="toc-link toc-level-2" href="#section-8-为什么-cot-更可控-监控反而更困难" data-toc-id="section-8-为什么-cot-更可控-监控反而更困难">8. 为什么 CoT 更可控，监控反而更困难</a>
+<a class="toc-link toc-level-2" href="#section-9-要证明-gpt-6-使用-latent-loop-还缺什么证据" data-toc-id="section-9-要证明-gpt-6-使用-latent-loop-还缺什么证据">9. 要证明 GPT-6 使用 latent loop，还缺什么证据</a>
+<a class="toc-link toc-level-2" href="#section-10-一个明确标为假设的-gpt-6-执行图" data-toc-id="section-10-一个明确标为假设的-gpt-6-执行图">10. 一个明确标为假设的 GPT-6 执行图</a>
+<a class="toc-link toc-level-2" href="#section-11-结论" data-toc-id="section-11-结论">11. 结论</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></nav></details><div class="markdown-body" data-markdown-article data-rendered="true"><p><strong>Transformer</strong> 是一种让序列中的位置相互读取信息、再逐层更新内部向量的神经网络架构。<strong>GPT-6 Astra</strong> 是 OpenAI 在 2026 年 9 月 3 日发布的模型；本文只讨论其公开版本，不假定名称相似的内部模型具有同一结构。随模型发布的 <strong>System Card</strong> 是公开说明能力、安全评测、方法与限制的报告，不是披露全部网络结构的架构论文。</p>
+<p>我注意到两组放在一起有些反直觉的结果：一方面，Astra 在不输出中间推理文字时，仍能解决明显更难的问题；另一方面，它公开展示的推理文字更容易被格式指令控制，也比 GPT-5.6 Sol 更短、更少包含可供审计的信息。</p>
+<p>先定义本文最小单位。<strong>Token</strong> 是模型处理序列时使用的离散单位，可以是一个字、词或词片段。<strong>隐藏状态（hidden state）</strong>是网络计算过程中持续更新、尚未变成最终文字的数值向量；它包含模型当前编码的信息，不是可以直接阅读的句子。<strong>思维链（Chain of Thought，CoT）</strong>是模型在最终答案前生成的一串自然语言中间步骤；它包含可见或被系统单独保存的文字推理，不包含神经网络层内部持续变化的隐藏状态。<strong>No-CoT</strong> 则是评测时不允许模型生成这些中间推理 token，要求它直接输出答案。No-CoT 不等于“没有计算”，只等于“没有通过额外文字把计算沿生成时间展开”。</p>
+<p>本文的核心判断很直白：</p>
+<blockquote><strong>公开证据支持 GPT-6 Astra 学会了把更多推理压进一次固定深度的隐藏状态计算；公开证据不支持它采用了共享权重的循环 Transformer。Astra 目前更像“更好的推理编译器”，而不是已经被证实的“会反复执行同一个 Transformer block 的处理器”。</strong></blockquote>
+<p>为了不把事实、解释和传闻混在一起，全文采用三个标签：</p>
+<ul><li><strong>官方确认</strong>：OpenAI 模型页、发布报告或 System Card 明确写出的信息。</li><li><strong>证据解释</strong>：能够解释公开实验、但 OpenAI 没有确认的机制判断。</li><li><strong>未经证实的猜测</strong>：网上关于层数、专家数、循环次数或具体内部模块的说法，没有公开材料支持。</li></ul>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/gpt6-astra-evidence-ladder.svg" data-image-alt="GPT-6 Astra 架构主张的证据阶梯" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/gpt6-astra-evidence-ladder.svg" width="1200" height="720" alt="GPT-6 Astra 架构主张的证据阶梯" loading="lazy" decoding="async"></button><figcaption>图 1：产品能力与评测结果是公开事实；隐藏计算更强是证据解释；循环核心等具体架构目前仍是猜测。</figcaption></figure>
+<h2 id="section-1-openai-这次到底公开了什么">1. OpenAI 这次到底公开了什么</h2>
+<h3 id="section-1-1-产品层面的确定事实">1.1 产品层面的确定事实</h3>
+<p><strong>上下文窗口（context window）</strong>是一次请求中模型可以共同读取的输入与输出 token 总范围，不等于长期记忆，也不表示模型能同样精确地利用每个位置。OpenAI 模型页列出的 GPT-6 Astra 上下文窗口为 1,050,000 token，最大输出为 128,000 token，并支持 <code>low</code>、<code>medium</code>、<code>high</code>、<code>xhigh</code> 和 <code>max</code> 五档 <strong>reasoning effort</strong>。Reasoning effort 是<strong>应用程序编程接口（Application Programming Interface，API）</strong>暴露的推理计算强度选项；API 是软件之间提交请求和接收结果的约定接口，不包含模型内部实现。Reasoning effort 的具体实现未公开，因此不能直接翻译成循环次数、层数或思维链长度。</p>
+<p>模型指南还公开了异步工具调用、中途引导、持久化 reasoning 与上下文压缩等运行时能力。<strong>异步工具调用</strong>是模型发出工具请求后，系统可以在结果尚未全部返回时继续管理其他工作；<strong>中途引导（mid-turn steering）</strong>是用户可以在模型尚未结束当前轮时补充指令；<strong>上下文压缩（compaction）</strong>是把过长历史变成更紧凑、仍可供后续使用的状态。<strong>Agent 运行时（Agent runtime）</strong>是模型之外负责调度工具、保存任务状态、处理失败和继续执行的软件系统；它包含工作流控制，不包含模型权重本身。这些能力描述的是 API 和 Agent 运行时怎样管理一次任务，不是模型内部怎样重复计算 Transformer 层。</p>
+<h3 id="section-1-2-发布报告给出的训练归因">1.2 发布报告给出的训练归因</h3>
+<p>OpenAI 的发布报告把能力提升归因于预训练、强化学习与对齐工作的共同推进。<strong>预训练（pre-training）</strong>是模型先在大规模数据上学习预测和表示的阶段；<strong>强化学习（Reinforcement Learning，RL）</strong>是在模型采取动作或生成回答后，根据奖励信号调整策略的训练方法；它包含从结果反馈中提高某类行为，不要求奖励逐步标注每个隐藏状态。<strong>对齐（alignment）</strong>是让模型行为更符合人类意图、规则和安全要求的一组训练与评测过程，不等同于单一算法。</p>
+<p>发布报告还强调 Astra 经常用显著更少的输出 token 完成任务，而更高 reasoning effort 在编码工作流中可以换来更多迭代与验证。这里的“迭代”可以发生在 Agent 调用工具、检查结果和修改答案的外部轨迹里；公开文字没有说它等于神经网络内部的层循环。</p>
+<h3 id="section-1-3-system-card-中值得解释的现象">1.3 System Card 中值得解释的现象</h3>
+<p>Astra 的 System Card 明确写道，OpenAI 的 reasoning models 通过强化学习被训练为产生内部 CoT，但 Astra 的 CoT 更短、更不具信息量，也更少倾向于把推理完整说出来。</p>
+<p>报告还区分了两个概念：</p>
+<ul><li><strong>可监测性（monitorability）</strong>是观察某种信号后，监测器能否发现模型正在做什么或是否存在不良行为。它包含从 CoT 或动作轨迹中识别意图，不表示信号一定忠实呈现全部内部因果过程。</li><li><strong>可控性（controllability）</strong>是外部指令能否改变某种信号的形式或内容。它包含让 CoT 遵循大小写、文风等约束，不等于能控制真正决定答案的全部隐藏计算。</li></ul>
+<p>在 750 到 1,250 token 的 CoT 区间，System Card 报告的约束服从率为：GPT-6 Astra <code>60.9%</code>、GPT-5.6 Sol <code>16.1%</code>、GPT-5.5 Thinking <code>1.7%</code>。Astra 甚至能让推理区交替使用大小写，或填充与任务无关的意象，同时仍然回答正确。</p>
+<p>这组结果最稳妥的含义是：<strong>展示出来的 CoT 越来越像一个可以单独控制的输出通道，它不再等于产生答案所必需的全部计算。</strong> 但“文字不是全部计算”不等于“隐藏状态里存在秘密自然语言”。<strong>隐写（steganography）</strong>是把信息故意藏进表面无关的文字模式中，使普通观察者难以发现；公开结果也不等于模型用隐写术编码了一条不可见 CoT。OpenAI 在所测设置中没有发现 steganographic CoT。</p>
+<h2 id="section-2-一个-transformer-block-内部到底做了什么">2. 一个 Transformer block 内部到底做了什么</h2>
+<p><strong>Transformer block</strong> 是 Transformer 反复堆叠的基本计算单元。一个典型 block 包含归一化、注意力、前馈网络和残差连接；它不包含完整模型的词表切分、所有层和最终采样。<strong>前向传播（forward pass）</strong>是输入经过整个网络直到得到本次输出分布的一次计算；一次 forward pass 会顺序穿过许多个 block，绝不是“只算一个 block”。</p>
+<p>要理解无声推理，最重要的是 <strong>残差流（residual stream）</strong>。它是贯穿网络各层的向量通道：每个 block 读取当前向量，计算一个增量，再把增量加回去。它包含当前 token 在这一层积累的语义、关系和任务状态，不是一个人类可直接读写、字段固定的数据库。</p>
+<p>可以把第 <code>l</code> 个 block 写成：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>u_l     = x_l + Attention(Norm(x_l))
+x_(l+1) = u_l + FFN(Norm(u_l))</code></pre></div>
+<p>这里的 <strong>归一化（normalization）</strong>是把向量数值调整到更稳定的尺度，减少训练和推理中的数值漂移；它不负责推理本身。<strong>注意力（attention）</strong>让每个位置按内容相关性从其他位置读取并汇总信息，包含匹配、复制和跨位置组合，不包含模型的全部非线性计算。<strong>前馈网络（Feed-Forward Network，FFN）</strong>对每个位置独立执行参数化的非线性变换，常被解释为对训练中学到的特征和知识进行匹配与改写；它不是推理时可任意写入的内存。</p>
+<p>于是一个 block 的直觉可以压缩成两句话：</p>
+<ol><li>Attention 决定“这一步该从上下文取什么”。</li><li>FFN 决定“取回来的信息与当前状态应该变成什么”。</li></ol>
+<p>残差加法则让新结果不会完全覆盖旧状态。几十甚至上百个不同参数的 block 串起来后，模型已经拥有一条很深的、顺序执行的隐藏计算轨迹：前层识别局部关系，中层组合约束，后层把状态推向答案。即使一个额外的 CoT token 都不生成，这条轨迹仍然存在。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/gpt6-astra-transformer-block.svg" data-image-alt="一个 Transformer block 如何更新残差流" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/gpt6-astra-transformer-block.svg" width="1200" height="700" alt="一个 Transformer block 如何更新残差流" loading="lazy" decoding="async"></button><figcaption>图 2：Attention 从上下文取回信息，FFN 做逐位置变换，两次残差加法把结果写回贯穿各层的状态。</figcaption></figure>
+<h2 id="section-3-一次前向传播-为什么也能推理">3. “一次前向传播”为什么也能推理</h2>
+<p>假设模型有 <code>L</code> 个不同参数的 block。对一个答案 token 而言，它会经历：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>x_0 → Block_1 → x_1 → Block_2 → ... → Block_L → 答案分布</code></pre></div>
+<p>每个箭头都是一次隐藏状态更新。这里没有显式循环，因为 <code>Block_1</code> 与 <code>Block_2</code> 的参数不同；但它依然是有先后顺序的多步计算。就像把一个固定程序完全展开：第一段做解析，第二段传递约束，第三段形成候选，最后一段选择答案。层的职责未必如此整齐，也不能靠观察相关性就断言某层“专门做了除法”，但网络整体确实具有固定深度的串行计算预算。</p>
+<p><strong>潜在推理（latent reasoning）</strong>是中间推理主要发生在连续隐藏向量中，而不是每一步先解码成离散文字再重新输入。它包含不可见的向量更新，不保证这些向量对应完整句子，也不保证它们能被忠实翻译成人类理由。按这个宽定义，固定深度 Transformer 本来就有 latent computation；研究问题是训练能否让它在这些有限更新里完成更复杂、更可组合的推理。</p>
+<p>这正是 Astra 的 No-CoT 结果有意义的地方：它说明固定深度路径可承载的任务难度显著上升，而不是证明“没有过程，答案突然出现”。</p>
+<h2 id="section-4-30-9-分钟不是模型思考了-30-9-分钟">4. 30.9 分钟不是模型思考了 30.9 分钟</h2>
+<p>Astra System Card 引用了英国人工智能安全研究所（UK AI Safety Institute，UK AISI）的 No-CoT 数学评测。<strong>人类等效时间跨度（human-equivalent time horizon）</strong>是把题目难度换算成合格人类通常需要多长时间解决，并寻找模型达到某个可靠性阈值时对应的难度；它衡量的是模型能可靠完成多难的任务，不是模型实际运行了多久。</p>
+<p>在 50% 可靠性处，报告给出：</p>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>模型</th><th>No-CoT 人类等效时间跨度</th></tr></thead><tbody><tr><td>GPT-5.6 Sol</td><td>3.6 分钟</td></tr><tr><td>GPT-6 Astra</td><td>30.9 分钟</td></tr></tbody></table></div>
+<p>因此，Astra 的公开结果大约提高一个数量级。正确读法是：“不允许输出推理文字时，Astra 能以 50% 可靠性解决通常需要人类约 30.9 分钟的数学题。”错误读法则包括：“模型内部循环了 30.9 分钟”“模型执行了 30.9 分钟对应的 token”或“它一定动态增加了网络深度”。报告没有提供这些信息。</p>
+<p>UK AISI 也提醒，数据污染可能抬高估计，测试时间有限。<strong>数据污染（contamination）</strong>是评测题或高度相似内容出现在训练数据中，使得分混入记忆效应；它不等于已经证明模型背过题，但会削弱从分数推断泛化能力的力度。</p>
+<h2 id="section-5-三种-多想一会儿-不是一回事">5. 三种“多想一会儿”不是一回事</h2>
+<p>模型获得额外计算至少有三条路径。</p>
+<h3 id="section-5-1-固定深度的直接回答">5.1 固定深度的直接回答</h3>
+<p>输入只通过一次完整网络，每个输出 token 都经过固定的 <code>L</code> 个 block。计算发生在残差流里，训练可以让不同层协作完成越来越复杂的变换，但部署时不能临时把同一组层多跑几遍。</p>
+<h3 id="section-5-2-用语言-token-展开思维链">5.2 用语言 token 展开思维链</h3>
+<p>模型先生成一段 CoT，再生成答案。每增加一个推理 token，整个 <code>L</code> 层网络都要再运行一次，同时读取此前 token 的缓存。注意力把每个历史位置变换成用于匹配的 <strong>key（键）</strong>向量和用于汇总内容的 <strong>value（值）</strong>向量。<strong>键值缓存（Key-Value Cache，KV Cache）</strong>保存这些历史 key 和 value，避免每次重新计算全部前缀；它包含可追加的历史表示，不是通用可写内存。</p>
+<p>这条路线的优势是能读、能监督、能随 token 数延长计算；代价是每一步必须压成语言，生成串行、KV Cache 增长，而且可见文字可能只是一个受控叙述通道。</p>
+<h3 id="section-5-3-在隐藏空间里显式循环">5.3 在隐藏空间里显式循环</h3>
+<p><strong>递归深度（recurrent depth）</strong>是把同一组网络层在深度方向重复执行，让上一轮隐藏状态成为下一轮输入。<strong>Latent loop</strong> 在本文中特指这种对连续隐藏状态的显式循环：它必须包含状态回流和参数共享，不包含普通的逐 token 生成，也不包含仅仅堆叠很多参数互不相同的层。</p>
+<p>其形式可以写成：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>e   = Prelude(input)
+s_0 = initial_state
+s_i = RecurrentCore(e, s_(i-1))
+out = Coda(s_r)</code></pre></div>
+<p><code>Prelude</code> 是只运行一次、把输入准备成内部表示的前奏模块；<code>RecurrentCore</code> 是参数共享、执行 <code>r</code> 轮的循环核心；<code>Coda</code> 是只运行一次、把最终状态变成输出的收尾模块。循环次数 <code>r</code> 可以固定，也可以由停止器按问题决定。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/gpt6-astra-three-compute-paths.svg" data-image-alt="固定深度、文字思维链与 latent loop 的计算路径" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/gpt6-astra-three-compute-paths.svg" width="1200" height="760" alt="固定深度、文字思维链与 latent loop 的计算路径" loading="lazy" decoding="async"></button><figcaption>图 3：三条路径都能增加或承载计算，但只有第三条在同一个输出 token 之前显式复用共享核心。</figcaption></figure>
+<h2 id="section-6-latent-loop-的已有研究">6. latent loop 的已有研究</h2>
+<h3 id="section-6-1-recurrent-depth-把同一核心跑很多轮">6.1 Recurrent Depth：把同一核心跑很多轮</h3>
+<p>Geiping 等人的 *Scaling up Test-Time Compute with Latent Reasoning: A Recurrent Depth Approach* 是最直接的例子。它把模型分成前奏、共享递归核心与收尾三部分。论文的 3.5B 参数模型使用 800B token 训练，这里的 <code>B</code> 表示十亿；大型结构为 <code>(2, 4, 2)</code>，即 2 层前奏、4 层循环核心和 2 层收尾，平均递归 32 次。输入表示 <code>e</code> 每轮重新注入，避免循环状态逐渐忘掉原题；初始状态加入随机性，训练则鼓励不同初始轨迹收敛到可用结果。</p>
+<p><strong>截断反向传播（truncated backpropagation）</strong>是训练循环网络时只保留最近若干轮的梯度路径，以减少显存与计算；它包含牺牲更早轮次的直接梯度。该工作只对最后 8 次迭代回传梯度。测试时增加递归次数，若干任务还能继续改善，说明模型确实学会利用额外的隐藏计算，而不只是把训练深度硬编码进输出。</p>
+<p>作者还观察到隐藏状态会趋向<strong>固定点</strong>、形成<strong>轨道</strong>或持续漂移。固定点是继续应用循环核心后状态几乎不再变化的位置；轨道是状态在一组位置间周期运动。它们说明循环形成了可分析的动力过程，但“收敛”不等于“正确”：模型可以非常稳定地收敛到错误答案。</p>
+<h3 id="section-6-2-coconut-把隐藏状态当作下一个输入">6.2 Coconut：把隐藏状态当作下一个输入</h3>
+<p>Coconut 的全称是 <strong>Chain of Continuous Thought</strong>。它取上一推理步的最后隐藏状态，直接作为下一步的输入 embedding，而不先把状态投影成某个词。<strong>Embedding</strong> 是把离散 token 映射为连续向量的表示；Coconut 反过来让连续向量占据原本属于 token embedding 的输入位置。</p>
+<p>这和 Recurrent Depth 不同：Coconut 沿“输入槽位”加入连续思维步，Recurrent Depth 则在同一个输出位置内部重复整组网络层。Coconut 作者提出连续状态可能同时保留多个候选，从而呈现类似广度优先搜索的行为；这是一种实验解释，不是已经读出了一棵真实、离散的搜索树。</p>
+<h3 id="section-6-3-pause-tokens-与-quiet-star-仍在-token-轨道上">6.3 Pause Tokens 与 Quiet-STaR：仍在 token 轨道上</h3>
+<p><strong>Pause token</strong> 是没有普通语义、专门为模型增加顺序计算步的学习符号。模型在回答前先处理若干 pause token，每一步仍通过完整 Transformer 并进入 KV Cache。它是显式 CoT 与纯连续循环之间的桥梁：没有可读理由，但仍沿 token 时间展开。</p>
+<p>Quiet-STaR 在训练时让模型围绕文本位置生成内部 rationale，再学习这些 rationale 是否改善后续预测。<strong>Rationale</strong> 是为一个预测提供的文字理由或推导，它仍由离散 token 构成。Quiet-STaR 因而属于“在说话前用 token 思考”，不是权重共享的 latent loop。</p>
+<h3 id="section-6-4-mixture-of-recursions-让不同-token-思考不同轮数">6.4 Mixture-of-Recursions：让不同 token 思考不同轮数</h3>
+<p>Mixture-of-Recursions 复用共享层组，并用路由器给不同 token 分配不同递归深度。<strong>路由器（router）</strong>是根据当前隐藏状态选择计算路径的小型模块；它包含决定某 token 是否继续进入下一轮，不保证这一决策具有人类可读的原因。这个方向把“循环”从统一深度推进到按 token 分配计算，但动态深度会让批处理中的 token 不同步，硬件效率未必随理论计算量同步改善。</p>
+<h2 id="section-7-强化学习怎样把推理-编译-进固定深度">7. 强化学习怎样把推理“编译”进固定深度</h2>
+<p>现在回到 Astra。System Card 的关键表述是：CoT 可控性的增加尤其在强化学习阶段出现，而且 OpenAI 明确写道：</p>
+<blockquote>“We are also quite confident that changes in CoT controllability are not differentially due to any architectural changes.”</blockquote>
+<p>也就是 OpenAI 相当确信，这项变化不是由架构变化差异化导致的。官方材料因此主动削弱了“架构突然变成 latent loop”的解释。</p>
+<p><strong>编译式推理（compiled reasoning）</strong>是本文使用的解释性比喻：训练把经常反复执行的推理模式压进固定的网络权重和层间变换，使模型在部署时用较短轨迹得到结果。它包含以更大的训练成本换取更少的推理步骤，也常被称为<strong>摊销推理（amortized inference）</strong>；“摊销”表示训练阶段为一类问题预先付出成本，之后许多样本共享这项成本。它不表示网络真的生成了程序代码，也不保证遇到分布外问题仍能直接解答。</p>
+<p>一个直觉例子是两位学生：第一位每次都把公式从定义推导一遍；第二位经过大量练习，看到题型便能在脑中完成关键变换，只写答案。第二位不是没有推理，而是把常见步骤内化成了更直接的状态转移。强化学习可以反复奖励“答案正确、轨迹短、工具使用有效”的行为，于是网络逐渐把高频策略压进固定深度。</p>
+<p>这能统一解释三件事：</p>
+<ol><li>Astra 在 No-CoT 下仍能解决更难的题，因为更多计算被固定层的隐藏状态承载。</li><li>Astra 的外显 CoT 可以更短、更容易服从无关格式，因为它不再承担全部必要计算。</li><li>更高 reasoning effort 仍可能提高复杂任务表现，因为模型还可以在固定深度之外使用更多输出、验证或工具迭代。</li></ol>
+<p>但这只是最符合当前证据的机制解释，不是 OpenAI 公布的网络图。</p>
+<h2 id="section-8-为什么-cot-更可控-监控反而更困难">8. 为什么 CoT 更可控，监控反而更困难</h2>
+<p>过去常有一个隐含假设：模型写出的推理越完整，我们越能从中看见它为什么做出动作。Astra 让这个假设变得危险。</p>
+<p>如果模型可以在推理区写无关意象，同时保持答案正确，那么至少说明最终答案的必要信息不必逐字经过这条可见通道。CoT 监测器看到的可能是“模型愿意报告什么”，而不是“模型必须依靠什么”。这不证明模型在欺骗，也不证明存在另一条完整的秘密句子；固定深度残差流本来就能携带大量非语言信息。</p>
+<p>System Card 同时报告 Astra 的 <strong>仅动作可监测性（action-only monitorability）</strong>高于 GPT-5.6 Sol。它是只观察模型采取的工具调用、文件修改或其他外部动作，不读取 CoT，也能否发现风险行为；它包含用可验证结果和行为轨迹做审计，不依赖模型自述动机。</p>
+<p>工程上，这意味着监控重心应该移动：</p>
+<ul><li>不再把 CoT 当作唯一审计日志；</li><li>更重视工具参数、权限边界、环境变化和最终产物；</li><li>用独立验证器检查事实、代码、数学结果和副作用；</li><li>把 CoT 视为一个有用但可能被优化和控制的观测面。</li></ul>
+<p>这不是放弃可解释性，而是承认“会说理由”和“计算过程忠实可见”是两种能力。</p>
+<h2 id="section-9-要证明-gpt-6-使用-latent-loop-还缺什么证据">9. 要证明 GPT-6 使用 latent loop，还缺什么证据</h2>
+<p>严格证明至少需要下面一种公开证据：</p>
+<ol><li>架构说明明确画出共享参数核心、隐藏状态回流和退出条件。</li><li>模型代码或权重结构显示同一组层被多次调用。</li><li>控制递归轮数的消融实验，展示质量、延迟和状态轨迹随轮数系统变化。</li><li>在输出 token 数、工具调用和上下文完全不变时，仍能直接增加内部递归计算预算。</li></ol>
+<p>仅有下面这些现象不够：输出更短、reasoning effort 档位更多、一次 forward pass 解出难题、思维链更难监测、支持 compaction，或发布文案使用“iterate”“think longer”等词。它们都可能由训练策略、推理服务、Agent runtime 或固定深度网络解释。</p>
+<p>网上流传的具体层数、专家数、“每个 token 内循环若干次”以及所谓 Astra latent core，目前都应归入<strong>未经证实的猜测</strong>。合理猜测可以帮助设计实验，但不能倒过来写成官方事实。</p>
+<h2 id="section-10-一个明确标为假设的-gpt-6-执行图">10. 一个明确标为假设的 GPT-6 执行图</h2>
+<p>如果只根据公开证据构造最保守的工作模型，我会这样理解 Astra：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>用户输入
+  ↓
+固定深度 Transformer：在残差流中完成更多被 RL 编译的推理
+  ↓
+策略层判断是否需要继续：直接回答 / 生成短 CoT / 调工具 / 验证
+  ↓
+Agent runtime 保存 reasoning 状态、缓存与工具结果，并允许中途引导
+  ↓
+最终答案与可审计动作</code></pre></div>
+<p>这里第一层是<strong>证据解释</strong>，后面几层对应公开产品行为；图中没有假设共享递归核心。未来若 OpenAI 公布 latent loop，最可能插入的位置是在固定深度 Transformer 内部，或作为输出前可重复调用的隐藏计算模块。但在证据出现前，这一部分必须保持空白。</p>
+<h2 id="section-11-结论">11. 结论</h2>
+<p>Transformer 并不是只有在“写思维链”时才思考。每一个输出 token 产生前，信息已经穿过许多 Transformer block；Attention 不断取回相关上下文，FFN 不断变换局部状态，残差流把中间结果一层层传下去。这本身就是一条不可见的计算链。</p>
+<p>GPT-6 Astra 的公开结果说明，训练正在让这条固定深度计算链承担更多工作。它可以少写、甚至不写中间文字，却解决过去需要显式 CoT 才能处理的难题；同时，写出来的 CoT 更像一个可控制的界面，而不再是内部过程的完整窗口。</p>
+<p>真正的 latent loop 更进一步：同一组参数会在一个答案 token 之前重复处理隐藏状态，并按需要决定何时停止。Recurrent Depth、Coconut 和 Mixture-of-Recursions 已经展示了这条研究路线的不同实现，但 OpenAI 没有公开证明 Astra 使用其中任何一种。</p>
+<p>所以，今天最准确的说法不是“GPT-6 架构专注 loop”，而是：</p>
+<blockquote><strong>GPT-6 Astra 提供了更强 latent computation 的行为证据；latent loop 是解释和延伸这种趋势的重要研究方向，但仍不是已公开确认的 Astra 架构事实。</strong></blockquote>
+<h2 id="参考资料">参考资料</h2>
+<ul><li><a href="https://openai.com/index/gpt-6-astra/">OpenAI, GPT-6 Astra: A new generation of intelligence</a></li><li><a href="https://deploymentsafety.openai.com/gpt-6-astra/gpt-6-astra">OpenAI, GPT-6 Astra System Card</a></li><li><a href="https://developers.openai.com/api/docs/models/gpt-6-astra">OpenAI, GPT-6 Astra Model</a></li><li><a href="https://developers.openai.com/api/docs/guides/latest-model?model=gpt-6-astra">OpenAI, Model guidance for GPT-6 Astra</a></li><li><a href="https://arxiv.org/abs/2502.05171">Geiping et al., Scaling up Test-Time Compute with Latent Reasoning: A Recurrent Depth Approach</a></li><li><a href="https://arxiv.org/abs/2412.06769">Hao et al., Training Large Language Models to Reason in a Continuous Latent Space</a></li><li><a href="https://arxiv.org/abs/2507.10524">Bae et al., Mixture-of-Recursions: Learning Dynamic Recursive Depths for Adaptive Token-Level Computation</a></li><li><a href="https://arxiv.org/abs/2310.02226">Goyal et al., Think before you speak: Training Language Models With Pause Tokens</a></li><li><a href="https://arxiv.org/abs/2403.09629">Zelikman et al., Quiet-STaR: Language Models Can Teach Themselves to Think Before Speaking</a></li><li><a href="https://arxiv.org/abs/2301.13196">Giannou et al., Looped Transformers as Programmable Computers</a></li></ul></div><script type="application/json" data-article-headings>[{"id":"section-1-openai-这次到底公开了什么","level":2,"text":"1. OpenAI 这次到底公开了什么"},{"id":"section-1-1-产品层面的确定事实","level":3,"text":"1.1 产品层面的确定事实"},{"id":"section-1-2-发布报告给出的训练归因","level":3,"text":"1.2 发布报告给出的训练归因"},{"id":"section-1-3-system-card-中值得解释的现象","level":3,"text":"1.3 System Card 中值得解释的现象"},{"id":"section-2-一个-transformer-block-内部到底做了什么","level":2,"text":"2. 一个 Transformer block 内部到底做了什么"},{"id":"section-3-一次前向传播-为什么也能推理","level":2,"text":"3. “一次前向传播”为什么也能推理"},{"id":"section-4-30-9-分钟不是模型思考了-30-9-分钟","level":2,"text":"4. 30.9 分钟不是模型思考了 30.9 分钟"},{"id":"section-5-三种-多想一会儿-不是一回事","level":2,"text":"5. 三种“多想一会儿”不是一回事"},{"id":"section-5-1-固定深度的直接回答","level":3,"text":"5.1 固定深度的直接回答"},{"id":"section-5-2-用语言-token-展开思维链","level":3,"text":"5.2 用语言 token 展开思维链"},{"id":"section-5-3-在隐藏空间里显式循环","level":3,"text":"5.3 在隐藏空间里显式循环"},{"id":"section-6-latent-loop-的已有研究","level":2,"text":"6. latent loop 的已有研究"},{"id":"section-6-1-recurrent-depth-把同一核心跑很多轮","level":3,"text":"6.1 Recurrent Depth：把同一核心跑很多轮"},{"id":"section-6-2-coconut-把隐藏状态当作下一个输入","level":3,"text":"6.2 Coconut：把隐藏状态当作下一个输入"},{"id":"section-6-3-pause-tokens-与-quiet-star-仍在-token-轨道上","level":3,"text":"6.3 Pause Tokens 与 Quiet-STaR：仍在 token 轨道上"},{"id":"section-6-4-mixture-of-recursions-让不同-token-思考不同轮数","level":3,"text":"6.4 Mixture-of-Recursions：让不同 token 思考不同轮数"},{"id":"section-7-强化学习怎样把推理-编译-进固定深度","level":2,"text":"7. 强化学习怎样把推理“编译”进固定深度"},{"id":"section-8-为什么-cot-更可控-监控反而更困难","level":2,"text":"8. 为什么 CoT 更可控，监控反而更困难"},{"id":"section-9-要证明-gpt-6-使用-latent-loop-还缺什么证据","level":2,"text":"9. 要证明 GPT-6 使用 latent loop，还缺什么证据"},{"id":"section-10-一个明确标为假设的-gpt-6-执行图","level":2,"text":"10. 一个明确标为假设的 GPT-6 执行图"},{"id":"section-11-结论","level":2,"text":"11. 结论"},{"id":"参考资料","level":2,"text":"参考资料"}]</script></article></main>
   <footer class="footer"><div class="footer-inner">© 2026 Tianyu Xie.</div></footer>
 </body>
 </html>

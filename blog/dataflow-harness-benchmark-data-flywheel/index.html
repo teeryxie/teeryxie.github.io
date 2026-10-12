@@ -4,25 +4,306 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DataFlow-Harness：可编辑数据流水线与评测反馈 | Tianyu Xie</title>
-  <meta name="description" content="精读可编辑数据流水线，并提出以评测反馈改进训练数据的方案，重点讨论验证、污染隔离与独立测试。">
+  <meta name="description" content="可编辑数据流水线如何接入评测反馈？以 DataFlow-Harness 为起点，考虑数据验证、污染隔离与独立测试。">
   <link rel="icon" href="/images/profile.png">
-  <link rel="stylesheet" href="/site.css?v=20261012-unified">
-  <script src="/blog/blog-data.js?v=20261012-unified" defer></script>
-  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-unified" defer></script>
+  <link rel="stylesheet" href="/site.css?v=20261012-stable">
+  <script src="/blog/blog-data.js?v=20261012-stable" defer></script>
+  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-stable" defer></script>
 </head>
 <body class="blog-post" data-post-slug="dataflow-harness-benchmark-data-flywheel">
-  <header class="masthead"><nav class="nav" aria-label="Primary navigation">
-    <a class="home-brand" href="/">Homepage</a>
-    <a href="/#about-me">About Me</a>
-    <a href="/#news">News</a>
-    <a href="/publications/">Publications</a>
-    <a href="/projects/">Projects</a>
-    <a href="/#education">Education</a>
-    <a href="/#service">Academic Service</a>
-    <a aria-current="page" href="/blog/">Research Notes</a>
-    <a href="/cv/">CV</a>
-  </nav></header>
-  <main class="shell blog-shell"><aside class="sidebar"><section class="profile-card"><img class="avatar" src="/images/profile.png" alt="Tianyu Xie profile photo"><h2 class="name">Blog</h2><p class="bio"><a href="/blog/">Back to Blog</a></p></section></aside><article class="content"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a><span aria-hidden="true">/</span><span data-breadcrumb-section>Article</span></nav><h1 class="page-title" data-post-title>DataFlow-Harness：可编辑数据流水线与评测反馈</h1><p class="lead" data-post-meta>Markdown article</p><div class="markdown-body" data-markdown-article></div></article></main>
+  <header class="masthead"><nav class="nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a aria-current="page" href="/blog/">Notes</a><a href="/cv/">CV</a></nav></header>
+  <main class="shell blog-shell"><aside class="sidebar" aria-label="Personal profile"><section class="profile-card">
+        <img class="avatar" src="/images/profile.png" alt="Portrait of Tianyu Xie" width="170" height="170">
+        <h2 class="name">Tianyu Xie <span lang="zh-CN">谢天宇</span></h2>
+        <p class="affiliation">Xiamen University</p><p class="bio">M.S. student · MAC Lab</p>
+        <ul class="profile-links">
+          <li><a href="mailto:teery@stu.xmu.edu.cn">Email</a></li><li><a href="https://github.com/teeryxie">GitHub</a></li>
+          <li><a href="https://scholar.google.com/citations?hl=en&amp;user=_vZWAnkAAAAJ">Google Scholar</a></li><li><a href="https://openreview.net/profile?id=~Tianyu_Xie2">OpenReview</a></li>
+        </ul></section><nav class="article-toc" aria-label="本文目录"><strong>本文目录</strong><div class="toc-links"><a class="toc-link toc-level-2" href="#section-1-从-nl2code-到-nl2pipeline-维护平台流水线" data-toc-id="section-1-从-nl2code-到-nl2pipeline-维护平台流水线">1. 从 NL2Code 到 NL2Pipeline：维护平台流水线</a>
+<a class="toc-link toc-level-2" href="#section-2-dataflow-harness-的四个组成部分" data-toc-id="section-2-dataflow-harness-的四个组成部分">2. DataFlow-Harness 的四个组成部分</a>
+<a class="toc-link toc-level-3" href="#section-2-1-data-pipeline-backend-唯一状态真源" data-toc-id="section-2-1-data-pipeline-backend-唯一状态真源">2.1 Data Pipeline Backend：唯一状态真源</a>
+<a class="toc-link toc-level-3" href="#section-2-2-mcp-tools-layer-把-agent-ground-到实时平台" data-toc-id="section-2-2-mcp-tools-layer-把-agent-ground-到实时平台">2.2 MCP Tools Layer：把 Agent ground 到实时平台</a>
+<a class="toc-link toc-level-3" href="#section-2-3-dataflow-skills-补足-operator-文档没有写出的程序知识" data-toc-id="section-2-3-dataflow-skills-补足-operator-文档没有写出的程序知识">2.3 DataFlow-Skills：补足 operator 文档没有写出的程序知识</a>
+<a class="toc-link toc-level-3" href="#section-2-4-dataflow-webui-对话和画布同步编辑" data-toc-id="section-2-4-dataflow-webui-对话和画布同步编辑">2.4 DataFlow-WebUI：对话和画布同步编辑</a>
+<a class="toc-link toc-level-2" href="#section-3-typed-mutation-验证了什么-没有验证什么" data-toc-id="section-3-typed-mutation-验证了什么-没有验证什么">3. Typed mutation 验证了什么，没有验证什么</a>
+<a class="toc-link toc-level-2" href="#section-4-论文实验应该怎样读" data-toc-id="section-4-论文实验应该怎样读">4. 论文实验应该怎样读</a>
+<a class="toc-link toc-level-3" href="#section-4-1-pipeline-构建可靠性与成本" data-toc-id="section-4-1-pipeline-构建可靠性与成本">4.1 Pipeline 构建可靠性与成本</a>
+<a class="toc-link toc-level-3" href="#section-4-2-textbook-to-vqa" data-toc-id="section-4-2-textbook-to-vqa">4.2 Textbook-to-VQA</a>
+<a class="toc-link toc-level-3" href="#section-4-3-数据质量的下游训练证据" data-toc-id="section-4-3-数据质量的下游训练证据">4.3 数据质量的下游训练证据</a>
+<a class="toc-link toc-level-2" href="#section-5-能否结合数据飞轮造数据-可以-但要重构目标函数" data-toc-id="section-5-能否结合数据飞轮造数据-可以-但要重构目标函数">5. 能否结合数据飞轮造数据？可以，但要重构目标函数</a>
+<a class="toc-link toc-level-3" href="#section-5-1-control-plane-dataflow-harness" data-toc-id="section-5-1-control-plane-dataflow-harness">5.1 Control Plane：DataFlow-Harness</a>
+<a class="toc-link toc-level-3" href="#section-5-2-execution-plane-dataflow-rayorch-serving" data-toc-id="section-5-2-execution-plane-dataflow-rayorch-serving">5.2 Execution Plane：DataFlow + RayOrch / serving</a>
+<a class="toc-link toc-level-3" href="#section-5-3-optimization-plane-loopai-或独立-supervisor" data-toc-id="section-5-3-optimization-plane-loopai-或独立-supervisor">5.3 Optimization Plane：LoopAI 或独立 supervisor</a>
+<a class="toc-link toc-level-2" href="#section-6-核心新增层-benchmark-contract" data-toc-id="section-6-核心新增层-benchmark-contract">6. 核心新增层：Benchmark Contract</a>
+<a class="toc-link toc-level-2" href="#section-7-一个可落地的飞轮-dag" data-toc-id="section-7-一个可落地的飞轮-dag">7. 一个可落地的飞轮 DAG</a>
+<a class="toc-link toc-level-3" href="#stage-a-固定评测并生成-failure-ledger" data-toc-id="stage-a-固定评测并生成-failure-ledger">Stage A：固定评测并生成 failure ledger</a>
+<a class="toc-link toc-level-3" href="#stage-b-把-failure-slice-转成-generation-specification" data-toc-id="stage-b-把-failure-slice-转成-generation-specification">Stage B：把 failure slice 转成 generation specification</a>
+<a class="toc-link toc-level-3" href="#stage-c-多源候选生成" data-toc-id="stage-c-多源候选生成">Stage C：多源候选生成</a>
+<a class="toc-link toc-level-3" href="#stage-d-八道筛选-gate" data-toc-id="stage-d-八道筛选-gate">Stage D：八道筛选 gate</a>
+<a class="toc-link toc-level-3" href="#stage-e-dataset-manifest-与-immutable-snapshot" data-toc-id="stage-e-dataset-manifest-与-immutable-snapshot">Stage E：Dataset manifest 与 immutable snapshot</a>
+<a class="toc-link toc-level-3" href="#stage-f-shadow-training-和-promotion" data-toc-id="stage-f-shadow-training-和-promotion">Stage F：Shadow training 和 promotion</a>
+<a class="toc-link toc-level-2" href="#section-8-筛选不是-分数大于-0-8" data-toc-id="section-8-筛选不是-分数大于-0-8">8. 筛选不是“分数大于 0.8”</a>
+<a class="toc-link toc-level-2" href="#section-9-如何估计-learning-value" data-toc-id="section-9-如何估计-learning-value">9. 如何估计 learning value</a>
+<a class="toc-link toc-level-2" href="#section-10-如何避免-benchmark-驱动变成-benchmark-overfitting" data-toc-id="section-10-如何避免-benchmark-驱动变成-benchmark-overfitting">10. 如何避免 benchmark 驱动变成 benchmark overfitting</a>
+<a class="toc-link toc-level-2" href="#section-11-dataflow-中需要新增哪些-operator" data-toc-id="section-11-dataflow-中需要新增哪些-operator">11. DataFlow 中需要新增哪些 operator</a>
+<a class="toc-link toc-level-2" href="#section-12-如何把-skills-写成研究协议-而不是经验提示词" data-toc-id="section-12-如何把-skills-写成研究协议-而不是经验提示词">12. 如何把 Skills 写成研究协议，而不是经验提示词</a>
+<a class="toc-link toc-level-2" href="#section-13-一个最小可行版本" data-toc-id="section-13-一个最小可行版本">13. 一个最小可行版本</a>
+<a class="toc-link toc-level-2" href="#section-14-研究上可以形成什么新工作" data-toc-id="section-14-研究上可以形成什么新工作">14. 研究上可以形成什么新工作</a>
+<a class="toc-link toc-level-2" href="#section-15-适用范围与待验证环节" data-toc-id="section-15-适用范围与待验证环节">15. 适用范围与待验证环节</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></div></nav></aside><article class="content"><header class="inner-hero article-hero"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a></nav><h1 class="page-title" data-post-title>DataFlow-Harness：可编辑数据流水线与评测反馈</h1><p class="lead" data-post-meta>2026-07 · 研究笔记</p></header><details class="mobile-toc"><summary>本文目录</summary><nav aria-label="移动端本文目录"><a class="toc-link toc-level-2" href="#section-1-从-nl2code-到-nl2pipeline-维护平台流水线" data-toc-id="section-1-从-nl2code-到-nl2pipeline-维护平台流水线">1. 从 NL2Code 到 NL2Pipeline：维护平台流水线</a>
+<a class="toc-link toc-level-2" href="#section-2-dataflow-harness-的四个组成部分" data-toc-id="section-2-dataflow-harness-的四个组成部分">2. DataFlow-Harness 的四个组成部分</a>
+<a class="toc-link toc-level-3" href="#section-2-1-data-pipeline-backend-唯一状态真源" data-toc-id="section-2-1-data-pipeline-backend-唯一状态真源">2.1 Data Pipeline Backend：唯一状态真源</a>
+<a class="toc-link toc-level-3" href="#section-2-2-mcp-tools-layer-把-agent-ground-到实时平台" data-toc-id="section-2-2-mcp-tools-layer-把-agent-ground-到实时平台">2.2 MCP Tools Layer：把 Agent ground 到实时平台</a>
+<a class="toc-link toc-level-3" href="#section-2-3-dataflow-skills-补足-operator-文档没有写出的程序知识" data-toc-id="section-2-3-dataflow-skills-补足-operator-文档没有写出的程序知识">2.3 DataFlow-Skills：补足 operator 文档没有写出的程序知识</a>
+<a class="toc-link toc-level-3" href="#section-2-4-dataflow-webui-对话和画布同步编辑" data-toc-id="section-2-4-dataflow-webui-对话和画布同步编辑">2.4 DataFlow-WebUI：对话和画布同步编辑</a>
+<a class="toc-link toc-level-2" href="#section-3-typed-mutation-验证了什么-没有验证什么" data-toc-id="section-3-typed-mutation-验证了什么-没有验证什么">3. Typed mutation 验证了什么，没有验证什么</a>
+<a class="toc-link toc-level-2" href="#section-4-论文实验应该怎样读" data-toc-id="section-4-论文实验应该怎样读">4. 论文实验应该怎样读</a>
+<a class="toc-link toc-level-3" href="#section-4-1-pipeline-构建可靠性与成本" data-toc-id="section-4-1-pipeline-构建可靠性与成本">4.1 Pipeline 构建可靠性与成本</a>
+<a class="toc-link toc-level-3" href="#section-4-2-textbook-to-vqa" data-toc-id="section-4-2-textbook-to-vqa">4.2 Textbook-to-VQA</a>
+<a class="toc-link toc-level-3" href="#section-4-3-数据质量的下游训练证据" data-toc-id="section-4-3-数据质量的下游训练证据">4.3 数据质量的下游训练证据</a>
+<a class="toc-link toc-level-2" href="#section-5-能否结合数据飞轮造数据-可以-但要重构目标函数" data-toc-id="section-5-能否结合数据飞轮造数据-可以-但要重构目标函数">5. 能否结合数据飞轮造数据？可以，但要重构目标函数</a>
+<a class="toc-link toc-level-3" href="#section-5-1-control-plane-dataflow-harness" data-toc-id="section-5-1-control-plane-dataflow-harness">5.1 Control Plane：DataFlow-Harness</a>
+<a class="toc-link toc-level-3" href="#section-5-2-execution-plane-dataflow-rayorch-serving" data-toc-id="section-5-2-execution-plane-dataflow-rayorch-serving">5.2 Execution Plane：DataFlow + RayOrch / serving</a>
+<a class="toc-link toc-level-3" href="#section-5-3-optimization-plane-loopai-或独立-supervisor" data-toc-id="section-5-3-optimization-plane-loopai-或独立-supervisor">5.3 Optimization Plane：LoopAI 或独立 supervisor</a>
+<a class="toc-link toc-level-2" href="#section-6-核心新增层-benchmark-contract" data-toc-id="section-6-核心新增层-benchmark-contract">6. 核心新增层：Benchmark Contract</a>
+<a class="toc-link toc-level-2" href="#section-7-一个可落地的飞轮-dag" data-toc-id="section-7-一个可落地的飞轮-dag">7. 一个可落地的飞轮 DAG</a>
+<a class="toc-link toc-level-3" href="#stage-a-固定评测并生成-failure-ledger" data-toc-id="stage-a-固定评测并生成-failure-ledger">Stage A：固定评测并生成 failure ledger</a>
+<a class="toc-link toc-level-3" href="#stage-b-把-failure-slice-转成-generation-specification" data-toc-id="stage-b-把-failure-slice-转成-generation-specification">Stage B：把 failure slice 转成 generation specification</a>
+<a class="toc-link toc-level-3" href="#stage-c-多源候选生成" data-toc-id="stage-c-多源候选生成">Stage C：多源候选生成</a>
+<a class="toc-link toc-level-3" href="#stage-d-八道筛选-gate" data-toc-id="stage-d-八道筛选-gate">Stage D：八道筛选 gate</a>
+<a class="toc-link toc-level-3" href="#stage-e-dataset-manifest-与-immutable-snapshot" data-toc-id="stage-e-dataset-manifest-与-immutable-snapshot">Stage E：Dataset manifest 与 immutable snapshot</a>
+<a class="toc-link toc-level-3" href="#stage-f-shadow-training-和-promotion" data-toc-id="stage-f-shadow-training-和-promotion">Stage F：Shadow training 和 promotion</a>
+<a class="toc-link toc-level-2" href="#section-8-筛选不是-分数大于-0-8" data-toc-id="section-8-筛选不是-分数大于-0-8">8. 筛选不是“分数大于 0.8”</a>
+<a class="toc-link toc-level-2" href="#section-9-如何估计-learning-value" data-toc-id="section-9-如何估计-learning-value">9. 如何估计 learning value</a>
+<a class="toc-link toc-level-2" href="#section-10-如何避免-benchmark-驱动变成-benchmark-overfitting" data-toc-id="section-10-如何避免-benchmark-驱动变成-benchmark-overfitting">10. 如何避免 benchmark 驱动变成 benchmark overfitting</a>
+<a class="toc-link toc-level-2" href="#section-11-dataflow-中需要新增哪些-operator" data-toc-id="section-11-dataflow-中需要新增哪些-operator">11. DataFlow 中需要新增哪些 operator</a>
+<a class="toc-link toc-level-2" href="#section-12-如何把-skills-写成研究协议-而不是经验提示词" data-toc-id="section-12-如何把-skills-写成研究协议-而不是经验提示词">12. 如何把 Skills 写成研究协议，而不是经验提示词</a>
+<a class="toc-link toc-level-2" href="#section-13-一个最小可行版本" data-toc-id="section-13-一个最小可行版本">13. 一个最小可行版本</a>
+<a class="toc-link toc-level-2" href="#section-14-研究上可以形成什么新工作" data-toc-id="section-14-研究上可以形成什么新工作">14. 研究上可以形成什么新工作</a>
+<a class="toc-link toc-level-2" href="#section-15-适用范围与待验证环节" data-toc-id="section-15-适用范围与待验证环节">15. 适用范围与待验证环节</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></nav></details><div class="markdown-body" data-markdown-article data-rendered="true"><blockquote><strong>论文</strong>：<a href="https://arxiv.org/abs/2607.16617">DataFlow-Harness: A Grounded Code-Agent Platform for Constructing Editable LLM Data Pipelines</a>，arXiv:2607.16617v2，2026 年 7 月。作者来自北京大学、上海算法创新研究院与北京中关村学院。本文不只介绍论文，还回答一个更具体的问题：能否用 DataFlow-Harness 结合数据飞轮，参照 benchmark 的标准协议自动生成、筛选和回流训练数据？</blockquote>
+<p>DataFlow-Harness 可以作为数据改进循环的编辑与管理层，但它本身不构成完整的数据飞轮。这里的“数据飞轮”指根据评测错误生成候选数据，再通过训练和独立评测验证效果的循环。可靠的方案还需要固定评测协议、记录数据来源、确定性验证、污染隔离、难度与覆盖控制，以及进入正式训练前的小规模验证。仅检查流水线结构或由大模型打分，不能保证数据质量。</p>
+<p>这项工作将 Agent 的编辑对象设为平台原生 DAG，使生成结果能保存在平台中继续查看、修改与复用。对持续维护数据流水线的团队，这比只交付一次性脚本更方便。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/dataflow-harness-overview.svg" data-image-alt="DataFlow-Harness overview" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/dataflow-harness-overview.svg" width="1200" height="690" alt="DataFlow-Harness overview" loading="lazy" decoding="async"></button><figcaption>图 1：DataFlow-Harness 通过 Skills、MCP、typed mutation 和 WebUI，把自然语言需求落成平台原生、持久化的可编辑 DAG。</figcaption></figure>
+<h2 id="section-1-从-nl2code-到-nl2pipeline-维护平台流水线">1. 从 NL2Code 到 NL2Pipeline：维护平台流水线</h2>
+<p>很多 Code Agent 已经能写出数据清洗脚本：读 JSONL、调用模型、过滤低分样本、再导出数据。这在一次实验中可能足够，但在持续造数和团队协作中会暴露四个问题。</p>
+<ol><li><strong>脚本与平台状态分离。</strong> Agent 不知道平台当前有哪些 operator、字段 schema、模型 endpoint 和历史 pipeline，只能依赖 prompt 或仓库搜索。</li><li><strong>结果是 disposable script。</strong> 代码能运行，不等于能在可视化平台中继续编辑、复用、治理和比较版本。</li><li><strong>自由代码容易幻觉。</strong> Agent 可能调用不存在的算子、旧接口或错误字段，并把所有逻辑揉成一个难审计的程序。</li><li><strong>人工修改无法实时回流。</strong> 用户在 GUI 中调整了参数或连线，下一轮 Agent 仍可能基于旧状态继续修改。</li></ol>
+<p>论文把这种自然语言意图与平台原生 pipeline artifact 之间的断裂称为 <strong>NL2Pipeline gap</strong>。其目标不是证明 DAG 比 Python 更有表达力，而是让 Agent 生成的对象从一段文本代码变成平台能够长期管理的工作流。</p>
+<h2 id="section-2-dataflow-harness-的四个组成部分">2. DataFlow-Harness 的四个组成部分</h2>
+<h3 id="section-2-1-data-pipeline-backend-唯一状态真源">2.1 Data Pipeline Backend：唯一状态真源</h3>
+<p>论文将 pipeline 表示为：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>P = (D, O, E, S, R)
+
+D: 数据源及 URI
+O: 已配置的 operator 实例
+E: operator 间的数据依赖边
+S: 输入和输出字段 schema
+R: 模型服务 endpoint 等运行时状态</code></pre></div>
+<p>Backend 是 conversational interface、WebUI 和程序化访问的 authoritative source of truth。Agent 不直接重写一个完整 pipeline 文件，而是发出 typed mutation：增加或删除 operator、更新参数、连接边、变更数据源。每次 mutation 都只修改显式状态。</p>
+<p>这种增量编辑有两个工程优势。第一，失败的变更可以被拒绝，而不是等整段脚本生成后才发现。第二，用户与 Agent 共用同一个 artifact，GUI 的人工修改会立即成为下一轮 Agent 的上下文。</p>
+<h3 id="section-2-2-mcp-tools-layer-把-agent-ground-到实时平台">2.2 MCP Tools Layer：把 Agent ground 到实时平台</h3>
+<p>每次 pipeline 变更遵循 <strong>Request-Validate-Commit</strong>：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>读取最新 pipeline + operator registry
+→ Agent 提交 typed mutation
+→ 检查 DAG 与字段 schema
+→ 通过后写入 backend
+→ WebSocket 广播给 WebUI</code></pre></div>
+<p>MCP 在这里不是“再接一个工具”这么简单。它向 Agent 暴露的是<strong>当前真实可用的 operator 集合和实时 workflow state</strong>，从而缩小 Agent 的动作空间。相比把整个代码仓库塞进上下文，registry metadata 更紧凑，也更容易约束。</p>
+<h3 id="section-2-3-dataflow-skills-补足-operator-文档没有写出的程序知识">2.3 DataFlow-Skills：补足 operator 文档没有写出的程序知识</h3>
+<p>只知道“有哪些 operator”仍然不够。比如从教材 PDF 提取 VQA，需要依次考虑文档解析、layout recovery、OCR、图表提取、题目与答案跨页匹配、质量过滤。每个算子的签名都正确，也可能组成语义错误的流程。</p>
+<p>DataFlow-Skills 因此编码两类知识：</p>
+<ul><li><strong>procedural blueprint</strong>：schema 推断、operator 选择、参数配置、模型服务验证和推荐组装顺序；</li><li><strong>compositional constraint</strong>：模态匹配、nested field 流转、上下游字段兼容和前置步骤。</li></ul>
+<p>这也是论文消融中最明确的结果：在 QA basic、QA with filter 和 Text-to-QA chain 三类依赖隐式程序知识的任务上，MCP-only 的总成功次数为 <code>18/30</code>，加入 Skills 后升至 <code>29/30</code>；而字段重命名、nested flatten、长度过滤等简单任务，两者都是满分。</p>
+<h3 id="section-2-4-dataflow-webui-对话和画布同步编辑">2.4 DataFlow-WebUI：对话和画布同步编辑</h3>
+<p>WebUI 同时提供自然语言对话和 DAG 画布。用户可以观察 Agent 添加了哪些 operator、直接改参数和连线，再让 Agent 基于新状态继续。这一点对数据飞轮尤其重要：评测协议和过滤阈值不应该永久埋在脚本里，而应成为可以审阅和版本化的节点。</p>
+<h2 id="section-3-typed-mutation-验证了什么-没有验证什么">3. Typed mutation 验证了什么，没有验证什么</h2>
+<p>DataFlow-Harness 在 commit 前检查两项性质：</p>
+<ul><li>更新后的图仍是 DAG；</li><li>相邻 operator 的输出字段 schema 与输入字段 schema 兼容。</li></ul>
+<p>这能排除循环依赖、缺字段和明显的类型错误，但论文明确承认：<strong>structural validity 不等于 semantic correctness，也不保证 endpoint 可用或输出质量。</strong></p>
+<p>例如下面的 pipeline 在结构上完全合法：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>Benchmark Test Set
+→ LLM 改写题目
+→ LLM 生成答案
+→ LLM Judge 高分过滤
+→ 加入训练集</code></pre></div>
+<p>但它在研究上可能是灾难：测试集被变体改写后泄漏进训练数据，同一家族模型同时生成和评分造成 correlated bias，最终 benchmark 上升可能只是 contamination，而不是泛化提升。</p>
+<p>因此，用 DataFlow-Harness 做飞轮时，必须把 validation 从“图是否能运行”扩展到至少四层：</p>
+<ol><li><strong>结构验证</strong>：DAG、schema、必填字段、资源配置；</li><li><strong>数据验证</strong>：格式、执行结果、答案一致性、重复、PII、license；</li><li><strong>协议验证</strong>：训练源是否越过 benchmark 隔离边界，metric 与后处理是否固定；</li><li><strong>效果验证</strong>：相同训练预算下是否提升目标能力，同时不损害保留集。</li></ol>
+<h2 id="section-4-论文实验应该怎样读">4. 论文实验应该怎样读</h2>
+<h3 id="section-4-1-pipeline-构建可靠性与成本">4.1 Pipeline 构建可靠性与成本</h3>
+<p>论文使用 Claude Opus 4.7，在 12 个任务上每种方法独立运行 10 次，共 120 次。任务覆盖 QA generation、review governance、long-document processing、multi-field scoring、schema normalization 和 low-quality filtering。</p>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>方法</th><th>Artifact</th><th>E2E Pass</th><th>平均成本</th><th>生成延迟</th></tr></thead><tbody><tr><td>Vanilla Claude Code</td><td>Disposable Script</td><td>91.7%</td><td>$0.950</td><td>190.7s</td></tr><tr><td>Context-Aware Claude Code</td><td>Disposable Script</td><td>94.2%</td><td>$0.456</td><td>115.9s</td></tr><tr><td>MCP-only</td><td>Native DAG</td><td>83.3%</td><td>$0.321</td><td>105.5s</td></tr><tr><td>DataFlow-Harness</td><td>Native DAG</td><td>93.3%</td><td>$0.261</td><td>95.5s</td></tr></tbody></table></div>
+<p>相对 Vanilla CC，Harness 的测量成本降低 <code>72.5%</code>，生成延迟降低 <code>49.9%</code>；相对 Context-Aware CC，成功率只低 <code>0.9</code> 个百分点，但成本低 <code>42.8%</code>。不过论文没有做预注册的 non-inferiority test，因此“数值接近”不能写成统计等价。</p>
+<p>更重要的是，四种方法的动作空间不同：自由脚本可以生成任意 Python，Harness 只能组合 registry 中已有 operator。这个比较反映的是<strong>完整系统的工程 trade-off</strong>，不是纯模型能力排行榜。</p>
+<h3 id="section-4-2-textbook-to-vqa">4.2 Textbook-to-VQA</h3>
+<p>教材到 VQA 的 case study 中，Harness 达到 <code>0.972</code> precision 和 <code>0.873</code> coverage，Context-Aware CC 为 <code>0.893/0.801</code>，MCP-only 为 <code>0.784/0.621</code>。结果支持“成熟 operator + 程序知识”优于每次从零实现，但论文也指出需要重复实验和更完整的 annotation protocol 才能确认泛化性。</p>
+<h3 id="section-4-3-数据质量的下游训练证据">4.3 数据质量的下游训练证据</h3>
+<p>论文真正与数据飞轮相关的是两个 controlled case study。</p>
+<p><strong>数学 pipeline。</strong> 同一 prompt 要求 Agent 验证并过滤 seed problem、丢弃 ill-posed item、每道题扩展两个新问题、生成 reasoning trace、再做 n-gram dedup。用生成数据微调 Qwen2.5-32B-Instruct，在相同训练预算下，Harness pipeline 的八项平均分一轮为 <code>51.6</code>，Vanilla CC 为 <code>49.9</code>；两轮为 <code>55.7 vs. 54.5</code>。一轮训练时 AIME24@32 为 <code>35.9 vs. 25.1</code>，AIME25@32 为 <code>34.5 vs. 21.6</code>。</p>
+<p><strong>General SFT pipeline。</strong> 从零生成 10K instruction-response pair，流程为 topic-conditioned generation、critique-then-rewrite、LLM judge 过滤。相同配置微调 Qwen2.5-7B-Base 后，Harness pipeline 在九项 benchmark 上平均 <code>63.8</code>，Vanilla CC 为 <code>61.5</code>；差异主要来自 code，MBPP 为 <code>75.4 vs. 64.6</code>。</p>
+<p>这些结果说明 grounded pipeline <strong>有可能</strong>产生更有用的数据，却不能视为普遍因果结论。每个场景只有一条 Agent 构建的 pipeline，没有多个独立 pipeline seed 和训练 seed；数学表中 Harness 并非每个 benchmark 都更强；最敏感的 AIME 提升还需要独立污染审计。论文自己也明确列出了这些限制。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/dataflow-harness-evidence.svg" data-image-alt="Evidence boundaries" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/dataflow-harness-evidence.svg" width="1200" height="660" alt="Evidence boundaries" loading="lazy" decoding="async"></button><figcaption>图 2：93.3% 证明的是 pipeline 构建与执行通过率；数据质量需要独立的数据审计和下游训练证据。</figcaption></figure>
+<h2 id="section-5-能否结合数据飞轮造数据-可以-但要重构目标函数">5. 能否结合数据飞轮造数据？可以，但要重构目标函数</h2>
+<p>仅循环生成高分样本容易重复已有模式。数据改进循环应先用固定 evaluation contract 暴露能力缺口，再针对缺口采集或合成数据，通过多道 gate 后训练候选模型，最后只有在独立保留集上获得可信增益的数据策略才能进入下一版本。</p>
+<p>我建议把系统拆成三个平面。</p>
+<h3 id="section-5-1-control-plane-dataflow-harness">5.1 Control Plane：DataFlow-Harness</h3>
+<p>负责 pipeline authoring、operator discovery、typed mutation、版本比较、人工编辑、审批和回滚。它回答“流程是什么、谁改了什么、现在执行哪个版本”。</p>
+<h3 id="section-5-2-execution-plane-dataflow-rayorch-serving">5.2 Execution Plane：DataFlow + RayOrch / serving</h3>
+<p>负责批量生成、模型调用、deterministic verifier、dedup、embedding、sandbox execution、统计聚合和 artifact 存储。它回答“数据如何被计算出来”。</p>
+<h3 id="section-5-3-optimization-plane-loopai-或独立-supervisor">5.3 Optimization Plane：LoopAI 或独立 supervisor</h3>
+<p>OpenDCAI 的 <a href="https://github.com/OpenDCAI/Dataflow-LoopAI">Dataflow-LoopAI</a> 已经把 Judger、Analyzer、Obtainer、Constructor 和 Trainer 组织成闭环，覆盖评测、错误分析、数据获取和训练。它可以负责“为什么启动下一轮、针对哪个 slice、何时停止”。</p>
+<p>Harness 和 LoopAI 不是替代关系：前者适合成为可治理的 pipeline control plane，后者适合成为跨 evaluation、data、training 的 flywheel supervisor。</p>
+<h2 id="section-6-核心新增层-benchmark-contract">6. 核心新增层：Benchmark Contract</h2>
+<p>参照 benchmark 协议构建筛选流程时，需要将评测要求写成机器可读 contract，并固定版本，避免生成和过滤期间逐步改变标准。</p>
+<div class="code-block"><span class="code-language">yaml</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>benchmark_id: math_reasoning_v3
+version: 2026-07-28
+task_schema:
+  input: {problem: string}
+  output: {answer: string, reasoning: string}
+splits:
+  train_seed: allowed
+  dev: diagnostics_only
+  test: quarantined
+generation:
+  temperature: 0
+  max_tokens: 8192
+normalization:
+  answer: math_equivalence_v2
+metrics:
+  - exact_or_symbolic_match
+  - pass_at_k
+contamination:
+  protected_corpora: [dev, test, canary]
+  exact_hash: reject
+  normalized_ngram: {n: 13, threshold: 0.8}
+  semantic_review_band: [0.82, 0.94]
+promotion:
+  target_delta_min: 1.0
+  retain_delta_min: -0.2
+  seeds: [17, 42, 73]</code></pre></div>
+<p>一份完整 contract 至少固定以下内容。</p>
+<ul><li><strong>task schema</strong>：输入、输出、必填字段、允许工具、答案类型；</li><li><strong>split policy</strong>：哪些数据可用于生成，哪些只能诊断，哪些必须 quarantine；</li><li><strong>prompt/protocol</strong>：system prompt、few-shot、stop sequence、sampling、max tokens；</li><li><strong>normalizer</strong>：大小写、单位、数学等价、代码入口、SQL canonicalization；</li><li><strong>metric</strong>：exact match、F1、pass@k、execution success、judge rubric；</li><li><strong>test environment</strong>：依赖版本、sandbox、timeout、随机种子；</li><li><strong>contamination policy</strong>：protected corpus、hash、n-gram、embedding 阈值与人工复核带；</li><li><strong>promotion rule</strong>：目标集增益、retain set 退化上限、方差、成本和安全 gate。</li></ul>
+<p>可以参考四类现有协议设计：</p>
+<ul><li><a href="https://github.com/EleutherAI/lm-evaluation-harness">lm-evaluation-harness</a> 的 task config、request construction、filter 和 metric 定义；</li><li><a href="https://github.com/stanford-crfm/helm">HELM</a> 的 scenario、适配、metric 与透明报告；</li><li><a href="https://github.com/evalplus/evalplus">EvalPlus</a> 的代码执行与扩展测试，而不是只让 LLM 判断代码；</li><li><a href="https://github.com/LiveCodeBench/LiveCodeBench">LiveCodeBench</a> 的时间切分与污染控制思想。</li></ul>
+<p>Benchmark Contract 应是只读版本化 artifact，Agent 可以选择它、引用它、生成配套 pipeline，但不能在优化过程中悄悄修改 metric 或 test split。</p>
+<h2 id="section-7-一个可落地的飞轮-dag">7. 一个可落地的飞轮 DAG</h2>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/dataflow-harness-flywheel.svg" data-image-alt="Benchmark-grounded flywheel" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/dataflow-harness-flywheel.svg" width="1200" height="760" alt="Benchmark-grounded flywheel" loading="lazy" decoding="async"></button><figcaption>图 3：Benchmark-grounded 数据飞轮从失败切片开始，经候选生成、多道过滤、shadow training 和 promotion gate 回流。</figcaption></figure>
+<h3 id="stage-a-固定评测并生成-failure-ledger">Stage A：固定评测并生成 failure ledger</h3>
+<p>先运行当前模型，逐条保存：benchmark version、sample id、model snapshot、raw output、normalized answer、verifier result、latency、token、错误类型与 uncertainty。不要只保存总分。</p>
+<p>Analyzer 将失败归类为可操作 slice，例如：</p>
+<ul><li>数学中的约束遗漏、代数化简、几何构造；</li><li>代码中的边界条件、状态污染、复杂度超限；</li><li>Agent 中的错误 tool selection、参数遗漏、恢复失败；</li><li>Omni 中的说话人判断、时序 grounding、社会意图错误。</li></ul>
+<p>failure ledger 只记录缺口，不直接把测试题送进生成器。</p>
+<h3 id="stage-b-把-failure-slice-转成-generation-specification">Stage B：把 failure slice 转成 generation specification</h3>
+<p>从错误类型抽取能力标签、约束模式和难度，而不是复制原题文本。生成 specification 应包含：目标 skill、允许知识源、禁止相似字段、答案验证器、难度范围、数量预算和多样性 quota。</p>
+<p>例如 AIME 错题只能提供抽象能力标签 “modular arithmetic + hidden divisibility constraint”，不能把原题或详细解法交给 generator。否则所谓 targeted synthesis 很容易变成 benchmark paraphrase。</p>
+<h3 id="stage-c-多源候选生成">Stage C：多源候选生成</h3>
+<p>候选数据最好来自独立来源组合：真实许可数据、程序化模板、symbolic generator、retrieval-grounded source、多个模型家族生成和人工 seed。每条记录必须附 provenance：</p>
+<div class="code-block"><span class="code-language">json</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>{
+  &quot;sample_id&quot;: &quot;...&quot;,
+  &quot;source_uri&quot;: &quot;...&quot;,
+  &quot;source_license&quot;: &quot;...&quot;,
+  &quot;generator_model&quot;: &quot;...&quot;,
+  &quot;generator_prompt_hash&quot;: &quot;...&quot;,
+  &quot;pipeline_version&quot;: &quot;...&quot;,
+  &quot;parent_ids&quot;: [&quot;...&quot;],
+  &quot;created_at&quot;: &quot;...&quot;,
+  &quot;target_slice&quot;: &quot;constraint_reasoning&quot;,
+  &quot;benchmark_contract&quot;: &quot;math_reasoning_v3&quot;
+}</code></pre></div>
+<p>没有 lineage 的样本，不应该进入正式训练集。</p>
+<h3 id="stage-d-八道筛选-gate">Stage D：八道筛选 gate</h3>
+<p>以下 gate 应拆成独立 operator，输出原因码，不要做成一个黑盒总分。</p>
+<p><strong>Gate 1：Schema 与格式。</strong> JSON schema、字段完整、长度、语言、编码、答案可解析。失败直接拒绝。</p>
+<p><strong>Gate 2：确定性正确性。</strong> 数学用 symbolic equivalence、数值回代和约束检查；代码用 sandbox unit test、EvalPlus 风格扩展测试、静态和复杂度检查；SQL 用隔离数据库执行与 result equivalence。能执行验证时，不应让 LLM judge 取代执行器。</p>
+<p><strong>Gate 3：内部一致性。</strong> 问题、reasoning、final answer、引用证据相互一致；多次采样或独立 solver 的答案分歧进入复核带。</p>
+<p><strong>Gate 4：质量与可学性。</strong> rubric 分开评估 clarity、self-containedness、reasoning validity、pedagogical value 和 verbosity。至少使用与 generator 不同的 judge family，并对 judge 做人工校准。</p>
+<p><strong>Gate 5：重复与近重复。</strong> exact hash → normalized text hash → MinHash/LSH → embedding cluster 分层执行。重复不是只浪费 token，还会改变训练权重并放大某类模式。</p>
+<p><strong>Gate 6：Benchmark contamination。</strong> 对 quarantine corpus 运行 exact、normalized n-gram、结构 fingerprint 和 semantic retrieval。高相似直接拒绝，中间带人工复核，低相似才通过。污染扫描必须早于训练。</p>
+<p><strong>Gate 7：难度与覆盖。</strong> 依据 solver pass rate、推理步数、执行复杂度、discriminator margin 和能力标签分桶。按 quota 采样，而不是简单取 judge 最高分；否则数据会集中在“写得漂亮但容易”的区域。</p>
+<p><strong>Gate 8：安全、隐私与许可。</strong> PII、敏感内容、版权、来源许可、域策略和高风险行为。过滤结果和原因需要保留审计日志。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/dataflow-harness-filter-gates.svg" data-image-alt="Multi-gate filtering" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/dataflow-harness-filter-gates.svg" width="1200" height="760" alt="Multi-gate filtering" loading="lazy" decoding="async"></button><figcaption>图 4：候选样本必须通过可解释的多道 gate；单个 LLM 总分不能同时承担正确性、污染、难度和安全判断。</figcaption></figure>
+<h3 id="stage-e-dataset-manifest-与-immutable-snapshot">Stage E：Dataset manifest 与 immutable snapshot</h3>
+<p>输出不应只是 <code>train.jsonl</code>，而应包含：dataset version、pipeline commit、operator version、contract version、source distribution、filter attrition、difficulty histogram、dedup cluster、contamination report、sampling weights 和 rejected-reason statistics。</p>
+<p>训练使用 immutable snapshot，后续 pipeline 变化不能修改已经报告过的 dataset。这样才能回答“哪一版数据导致哪一版模型变化”。</p>
+<h3 id="stage-f-shadow-training-和-promotion">Stage F：Shadow training 和 promotion</h3>
+<p>在固定 base checkpoint、训练预算和多个 seed 下做 candidate-vs-control。至少同时评估：</p>
+<ul><li>target slice：是否修复预期错误；</li><li>benchmark holdout：是否泛化，而不是只拟合诊断模板；</li><li>retain suite：通用能力是否退化；</li><li>adversarial/canary：是否发生污染或策略绕过；</li><li>calibration 与 safety：模型是否更自信地犯错；</li><li>成本：每单位增益需要多少生成、过滤和训练成本。</li></ul>
+<p>只有满足 promotion contract 的数据版本才进入主训练池。失败版本不删除，保留 pipeline、数据 manifest 和结果，避免未来重复踩坑。</p>
+<h2 id="section-8-筛选不是-分数大于-0-8">8. 筛选不是“分数大于 0.8”</h2>
+<p>数据飞轮最常见的设计错误，是让一个 LLM 输出 <code>quality_score</code>，然后设阈值。这会混淆四种不同问题。</p>
+<ol><li><strong>Validity</strong>：样本格式是否完整、程序能否运行；</li><li><strong>Correctness</strong>：答案是否正确、推理是否忠实；</li><li><strong>Utility</strong>：样本对目标模型是否有学习价值；</li><li><strong>Risk</strong>：是否泄漏 benchmark、侵犯隐私或违反许可。</li></ol>
+<p>一个样本可以“正确但无用”，例如模型已经 100% 掌握的简单题；也可以“高质量但有污染”，例如对测试题做了精美改写。总分无法表达 hard gate 和 soft ranking 的区别。</p>
+<p>推荐的 selection 形式是：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>eligible(x) = schema_ok
+           ∧ deterministic_verify
+           ∧ contamination_risk &lt; hard_limit
+           ∧ privacy_license_ok
+
+rank(x) = learning_value
+        + coverage_gain
+        + diversity_gain
+        - redundancy
+        - uncertainty_penalty
+        - generation_cost</code></pre></div>
+<p>先用 hard gate 决定能否进入候选池，再用多目标 ranking 和 quota 选择训练集。阈值、权重和 quota 都应进入 pipeline version，而不是散落在 prompt 中。</p>
+<h2 id="section-9-如何估计-learning-value">9. 如何估计 learning value</h2>
+<p>筛选数据时，需要估计它对当前模型的增益，而不只看它与标准答案的相似度。可以组合以下信号。</p>
+<ul><li><strong>当前模型失败、强 verifier 通过</strong>：优先级高；</li><li><strong>多个同级模型分歧</strong>：可能处于能力边界；</li><li><strong>训练前 loss 高但非噪声</strong>：有潜在学习价值；</li><li><strong>influence / gradient similarity</strong>：与目标 failure slice 的梯度方向相关；</li><li><strong>小规模 probe training gain</strong>：在廉价代理模型上验证收益；</li><li><strong>覆盖增益</strong>：填补能力 taxonomy 的低覆盖桶；</li><li><strong>重复惩罚</strong>：与已选样本相似时边际价值降低。</li></ul>
+<p>K-center greedy 之类的 diversity operator 可以作为一部分，但不能单独决定质量。最佳流程通常是 hard gate 后，在每个 difficulty × skill bucket 内做多样性选择。</p>
+<h2 id="section-10-如何避免-benchmark-驱动变成-benchmark-overfitting">10. 如何避免 benchmark 驱动变成 benchmark overfitting</h2>
+<p>Benchmark-grounded 不等于 benchmark-derived。前者用 benchmark 定义能力和评测 contract，后者直接从题目派生训练数据。二者必须隔离。</p>
+<p>建议建立三层仓库：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>public/dev diagnostics
+    可用于错误分类，但默认不进入生成 prompt
+
+private holdout
+    只允许 evaluator 读取，generator 和 trainer 无权限
+
+canary / temporal set
+    定期更新，用于发现策略对固定 benchmark 的过拟合</code></pre></div>
+<p>训练数据构造服务只能得到聚合 failure taxonomy，不能访问 private item text。Contamination operator 在受控环境中读取 protected set，只返回相似度和原因码，不返回命中的 benchmark 内容。</p>
+<p>对于代码，可借鉴 LiveCodeBench 的时间切分；对于可执行任务，用 hidden tests；对于数学，用新的程序化实例和 theorem constraints；对于 Agent，用私有数据库状态和任务变体。每轮飞轮还应保留从未参与错误分析的 outer holdout。</p>
+<h2 id="section-11-dataflow-中需要新增哪些-operator">11. DataFlow 中需要新增哪些 operator</h2>
+<p>现有 DataFlow 已有 generate、filter、refine、eval operator，以及 benchmark evaluator、K-center greedy、PromptedFilter、GeneralFilter 等组件。要实现严谨飞轮，建议新增或标准化以下 operator contract。</p>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>Operator</th><th>输入</th><th>输出</th><th>关键要求</th></tr></thead><tbody><tr><td>BenchmarkContractLoader</td><td>contract URI</td><td>immutable spec</td><td>hash + version pin</td></tr><tr><td>FailureSliceMiner</td><td>eval ledger</td><td>taxonomy + counts</td><td>不泄露 private item text</td></tr><tr><td>ProvenanceAttacher</td><td>sample + runtime</td><td>lineage record</td><td>parent/prompt/model/pipeline hash</td></tr><tr><td>DeterministicVerifier</td><td>task sample</td><td>pass + evidence</td><td>sandbox/symbolic/database</td></tr><tr><td>DecontaminationScanner</td><td>candidate + protected index</td><td>risk + reason</td><td>exact/ngram/semantic 分层</td></tr><tr><td>JudgeEnsemble</td><td>candidate + rubric</td><td>vector scores</td><td>generator-judge family 分离</td></tr><tr><td>DifficultyCalibrator</td><td>sample + solver pool</td><td>difficulty bucket</td><td>固定 solver snapshot</td></tr><tr><td>CoverageBalancer</td><td>candidate pool + taxonomy</td><td>weighted subset</td><td>quota + diversity</td></tr><tr><td>DatasetManifestWriter</td><td>accepted/rejected logs</td><td>manifest</td><td>attrition 与版本信息</td></tr><tr><td>PromotionGate</td><td>train/eval reports</td><td>promote/reject</td><td>多 seed、retain 与安全阈值</td></tr></tbody></table></div>
+<p>这些 operator 的输出应是结构化 evidence，而不是只输出 <code>keep=true</code>。WebUI 中点击样本或节点时，应能看到“在哪一关被拒绝、使用了哪个规则、匹配了哪个受保护 corpus 的 hash、由谁批准”。</p>
+<h2 id="section-12-如何把-skills-写成研究协议-而不是经验提示词">12. 如何把 Skills 写成研究协议，而不是经验提示词</h2>
+<p>DataFlow-Skills 在论文中主要注入程序知识。用于飞轮时，Skill 应进一步包含：</p>
+<ul><li>前置条件：输入 schema、允许数据源、所需 verifier；</li><li>流程模板：operator 顺序和可替换节点；</li><li>hard invariant：test quarantine、执行验证优先、provenance 必填；</li><li>failure recovery：endpoint 失败、judge 分歧、schema 漂移如何处理；</li><li>acceptance criteria：每一步的最小覆盖率、最大拒绝率和审计要求；</li><li>forbidden shortcut：禁止用 test item 生成、禁止同模型自评即通过；</li><li>reporting：必须输出的 manifest、统计和 diff。</li></ul>
+<p>Skill 不是越详细越好。论文消融中 <code>Review governance</code> 任务 MCP-only 为 <code>10/10</code>，Harness 为 <code>9/10</code>，说明过度 prescriptive guidance 可能压缩合法策略空间。正确做法是把不可违背的 invariant 固定，把可替换策略作为显式 choice，而不是把整条 pipeline 写死。</p>
+<h2 id="section-13-一个最小可行版本">13. 一个最小可行版本</h2>
+<p>如果现在就开始做，我建议不要直接追求全自动训练闭环。先做一个窄领域 MVP。</p>
+<p><strong>范围</strong>：选择数学、代码或你自己的 Omni interaction benchmark 中一个可验证子任务。</p>
+<p><strong>第一阶段：只做数据工厂。</strong> 固定 benchmark contract，建立 generator、deterministic verifier、dedup、contamination、difficulty bucket、manifest 六类 operator。每轮输出候选池与审计报告，不自动训练。</p>
+<p><strong>第二阶段：shadow training。</strong> 固定一个小模型或 LoRA recipe，比较 baseline data、Harness data 和 ablation data；至少三个 seed，报告平均与方差。</p>
+<p><strong>第三阶段：加入 failure-driven routing。</strong> 评测错误只以 taxonomy 和 aggregate statistics 回流，private benchmark 内容与 generator 物理隔离。</p>
+<p><strong>第四阶段：加入 promotion/rollback。</strong> 让 LoopAI 或 supervisor 自动触发，但高风险 gate、数据发布和主模型更新保留人工审批。</p>
+<p>MVP 的成功标准不是“生成了 100 万条”，而是：</p>
+<ul><li>pipeline 可复现，重新执行得到相同 selection；</li><li>每条训练样本有 lineage；</li><li>protected benchmark 无越权访问；</li><li>过滤 attrition 可解释；</li><li>相同训练预算下，多 seed 的 target gain 为正；</li><li>retain suite、safety 和 calibration 不显著退化；</li><li>数据版本失败时可以完整回滚。</li></ul>
+<h2 id="section-14-研究上可以形成什么新工作">14. 研究上可以形成什么新工作</h2>
+<p>DataFlow-Harness 已经证明 Agent 可以低成本构建 editable pipeline。下一篇更有价值的工作，不应只是“增加更多 filter operator”，而可以提出 <strong>Benchmark-Contract-Grounded Data Flywheel</strong>：</p>
+<ol><li>用机器可读 contract 绑定 generation、filter、evaluation 和 promotion；</li><li>用权限隔离阻止 benchmark item 泄漏到 generator；</li><li>用 typed evidence graph 记录每个样本从来源到训练的 lineage；</li><li>用 deterministic verifier + judge ensemble + contamination scan 做多道 gate；</li><li>用 failure slice 和 learning value 驱动 selection，而不是只追求静态质量分；</li><li>用 shadow training、多 seed 与 retain suite 作为最终 pipeline evaluator；</li><li>让 Agent 只在允许的 mutation space 内优化 pipeline，并支持人工编辑与 rollback。</li></ol>
+<p>可以设计如下研究问题：</p>
+<ul><li>Contract grounding 是否降低 Agent 私自改变 metric、split 和阈值的比例？</li><li>多道 evidence gate 相比单 LLM judge，能否提升真实下游收益并降低污染？</li><li>failure-driven selection 是否比 top-quality selection 更节省 token 和训练算力？</li><li>editable DAG 是否提高 pipeline 修复速度、跨人复用和审计准确率？</li><li>在相同生成预算下，哪些 operator mutation 真正产生因果增益？</li><li>自动飞轮迭代多轮后，能力覆盖是否扩大，还是发生 diversity collapse？</li></ul>
+<p>实验应至少包含 pipeline seed、training seed、outer holdout、人工污染审计和成本曲线。否则很容易把一次幸运 pipeline 当成系统性提升。</p>
+<h2 id="section-15-适用范围与待验证环节">15. 适用范围与待验证环节</h2>
+<p>DataFlow-Harness 将 Code Agent 的输出保存在平台约束下，支持后续编辑与回滚。它可以为数据改进循环提供可视化、复用、审计和增量编辑，但数据质量仍需独立验证。</p>
+<p>但数据飞轮的闭环不能是：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>benchmark 低分 → LLM 仿写题 → LLM 自己打高分 → 加入训练 → benchmark 上升</code></pre></div>
+<p>这条路径会把污染、judge bias 和 benchmark overfitting 伪装成进步。更合理的闭环是：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>冻结 Benchmark Contract
+→ 生成 failure taxonomy
+→ 从独立来源构造候选数据
+→ 确定性验证 + 多道过滤 + 污染隔离
+→ 难度、覆盖和 learning value 选择
+→ immutable dataset snapshot
+→ shadow training + outer holdout
+→ promotion / reject / rollback</code></pre></div>
+<p>因此，我对“能不能基于 DataFlow-Harness 结合数据飞轮造数据”的回答是：</p>
+<blockquote><strong>能。最合理的组合是 DataFlow-Harness 负责可编辑 DAG 和治理，DataFlow 负责 operator 执行，LoopAI 负责评测到训练的闭环，而新增的 Benchmark Contract 和 evidence-based gates 负责保证飞轮优化的是真实能力，不是 benchmark 泄漏或 judge 偏好。</strong></blockquote>
+<h2 id="参考资料">参考资料</h2>
+<ol><li>He et al., <a href="https://arxiv.org/abs/2607.16617">DataFlow-Harness: A Grounded Code-Agent Platform for Constructing Editable LLM Data Pipelines</a>, 2026.</li><li><a href="https://github.com/OpenDCAI/DataFlow-WebUI">OpenDCAI/DataFlow-WebUI</a>, source code for the Harness interaction and engineering layer.</li><li>Liang et al., <a href="https://arxiv.org/abs/2512.16676">DataFlow: An LLM-Driven Framework for Unified Data Preparation and Workflow Automation</a>, 2025.</li><li><a href="https://github.com/OpenDCAI/DataFlow">OpenDCAI/DataFlow</a>, operator and pipeline framework.</li><li><a href="https://github.com/OpenDCAI/DataFlow-Skills">OpenDCAI/DataFlow-Skills</a>, procedural pipeline construction skills.</li><li><a href="https://github.com/OpenDCAI/Dataflow-LoopAI">OpenDCAI/Dataflow-LoopAI</a>, closed-loop evaluation, data acquisition, and training framework.</li><li>Li et al., <a href="https://arxiv.org/abs/2406.11794">DataComp-LM: In search of the next generation of training sets for language models</a>, 2024.</li><li><a href="https://github.com/EleutherAI/lm-evaluation-harness">EleutherAI/lm-evaluation-harness</a>.</li><li>Liang et al., <a href="https://arxiv.org/abs/2211.09110">HELM: Holistic Evaluation of Language Models</a>.</li><li>Liu et al., <a href="https://github.com/evalplus/evalplus">EvalPlus: Rigorous Evaluation of LLM-Synthesized Code</a>.</li><li>Jain et al., <a href="https://github.com/LiveCodeBench/LiveCodeBench">LiveCodeBench: Holistic and Contamination Free Evaluation of Large Language Models for Code</a>.</li></ol>
+<p>*Research note by Tianyu Xie. Last reviewed: July 28, 2026.*</p></div><script type="application/json" data-article-headings>[{"id":"section-1-从-nl2code-到-nl2pipeline-维护平台流水线","level":2,"text":"1. 从 NL2Code 到 NL2Pipeline：维护平台流水线"},{"id":"section-2-dataflow-harness-的四个组成部分","level":2,"text":"2. DataFlow-Harness 的四个组成部分"},{"id":"section-2-1-data-pipeline-backend-唯一状态真源","level":3,"text":"2.1 Data Pipeline Backend：唯一状态真源"},{"id":"section-2-2-mcp-tools-layer-把-agent-ground-到实时平台","level":3,"text":"2.2 MCP Tools Layer：把 Agent ground 到实时平台"},{"id":"section-2-3-dataflow-skills-补足-operator-文档没有写出的程序知识","level":3,"text":"2.3 DataFlow-Skills：补足 operator 文档没有写出的程序知识"},{"id":"section-2-4-dataflow-webui-对话和画布同步编辑","level":3,"text":"2.4 DataFlow-WebUI：对话和画布同步编辑"},{"id":"section-3-typed-mutation-验证了什么-没有验证什么","level":2,"text":"3. Typed mutation 验证了什么，没有验证什么"},{"id":"section-4-论文实验应该怎样读","level":2,"text":"4. 论文实验应该怎样读"},{"id":"section-4-1-pipeline-构建可靠性与成本","level":3,"text":"4.1 Pipeline 构建可靠性与成本"},{"id":"section-4-2-textbook-to-vqa","level":3,"text":"4.2 Textbook-to-VQA"},{"id":"section-4-3-数据质量的下游训练证据","level":3,"text":"4.3 数据质量的下游训练证据"},{"id":"section-5-能否结合数据飞轮造数据-可以-但要重构目标函数","level":2,"text":"5. 能否结合数据飞轮造数据？可以，但要重构目标函数"},{"id":"section-5-1-control-plane-dataflow-harness","level":3,"text":"5.1 Control Plane：DataFlow-Harness"},{"id":"section-5-2-execution-plane-dataflow-rayorch-serving","level":3,"text":"5.2 Execution Plane：DataFlow + RayOrch / serving"},{"id":"section-5-3-optimization-plane-loopai-或独立-supervisor","level":3,"text":"5.3 Optimization Plane：LoopAI 或独立 supervisor"},{"id":"section-6-核心新增层-benchmark-contract","level":2,"text":"6. 核心新增层：Benchmark Contract"},{"id":"section-7-一个可落地的飞轮-dag","level":2,"text":"7. 一个可落地的飞轮 DAG"},{"id":"stage-a-固定评测并生成-failure-ledger","level":3,"text":"Stage A：固定评测并生成 failure ledger"},{"id":"stage-b-把-failure-slice-转成-generation-specification","level":3,"text":"Stage B：把 failure slice 转成 generation specification"},{"id":"stage-c-多源候选生成","level":3,"text":"Stage C：多源候选生成"},{"id":"stage-d-八道筛选-gate","level":3,"text":"Stage D：八道筛选 gate"},{"id":"stage-e-dataset-manifest-与-immutable-snapshot","level":3,"text":"Stage E：Dataset manifest 与 immutable snapshot"},{"id":"stage-f-shadow-training-和-promotion","level":3,"text":"Stage F：Shadow training 和 promotion"},{"id":"section-8-筛选不是-分数大于-0-8","level":2,"text":"8. 筛选不是“分数大于 0.8”"},{"id":"section-9-如何估计-learning-value","level":2,"text":"9. 如何估计 learning value"},{"id":"section-10-如何避免-benchmark-驱动变成-benchmark-overfitting","level":2,"text":"10. 如何避免 benchmark 驱动变成 benchmark overfitting"},{"id":"section-11-dataflow-中需要新增哪些-operator","level":2,"text":"11. DataFlow 中需要新增哪些 operator"},{"id":"section-12-如何把-skills-写成研究协议-而不是经验提示词","level":2,"text":"12. 如何把 Skills 写成研究协议，而不是经验提示词"},{"id":"section-13-一个最小可行版本","level":2,"text":"13. 一个最小可行版本"},{"id":"section-14-研究上可以形成什么新工作","level":2,"text":"14. 研究上可以形成什么新工作"},{"id":"section-15-适用范围与待验证环节","level":2,"text":"15. 适用范围与待验证环节"},{"id":"参考资料","level":2,"text":"参考资料"}]</script></article></main>
   <footer class="footer"><div class="footer-inner">© 2026 Tianyu Xie.</div></footer>
 </body>
 </html>

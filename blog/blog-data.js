@@ -7,7 +7,7 @@ window.BLOG_POSTS = [
     category: "Research Note",
     section: "Research Notes",
     status: "GPT-6 Astra · Latent Reasoning · Transformer · No-CoT",
-    summary: "梳理 GPT-6 Astra 的公开推理结果，区分隐藏状态计算的行为证据与尚未披露的循环架构。",
+    summary: "GPT-6 Astra 在不输出推理文字时仍能解决困难问题。这些公开结果支持哪些判断，又能否说明内部存在循环计算？",
   },
   {
     slug: "transformers-as-computers-looped-latent-reasoning",
@@ -17,7 +17,7 @@ window.BLOG_POSTS = [
     category: "Research Note",
     section: "Research Notes",
     status: "Looped Transformer · Recurrent Depth · Latent Reasoning · MoE",
-    summary: "从信息路由、专家选择与递归深度理解 Transformer 的计算结构，讨论隐空间推理和计算机类比的边界。",
+    summary: "注意力负责读取，专家路由选择参数，循环结构分配计算深度。沿着这组类比，考察隐空间推理还缺少哪些机制。",
   },
   {
     slug: "physics-of-multimodal-pretraining",
@@ -27,7 +27,7 @@ window.BLOG_POSTS = [
     category: "Paper Reading",
     section: "Paper Readings",
     status: "Knowledge Flow · Modality Synergy · Early Unification · Data Recipes",
-    summary: "精读语言、图像理解与图像生成之间的知识迁移，分析共享参数的协同与竞争，以及论文提出的数据配比。",
+    summary: "语言、图像理解与图像生成之间的知识迁移并不对称。论文的受控实验如何解释协同、容量竞争与数据配比？",
   },
   {
     slug: "megatron-deepspeed-colossalai-distributed-training",
@@ -37,7 +37,7 @@ window.BLOG_POSTS = [
     category: "Survey",
     section: "Surveys",
     status: "Megatron-LM · DeepSpeed · Colossal-AI · Distributed Training",
-    summary: "比较三类训练框架对模型、显存、并行执行与检查点的管理方式，讨论选型和恢复验证。",
+    summary: "三套训练框架如何管理模型、显存、并行执行与检查点，以及选型前需要验证哪些恢复条件。",
   },
   {
     slug: "mfu-moe-4d-5d-parallelism",
@@ -47,7 +47,7 @@ window.BLOG_POSTS = [
     category: "Training",
     section: "Research Notes",
     status: "MFU · MoE · 4D/5D Parallelism · Distributed Training",
-    summary: "解释模型计算利用率与数据、张量、流水线、专家、上下文并行之间的关系，分析通信拓扑和性能瓶颈。",
+    summary: "MoE 的计算利用率需要结合并行进程组来计算；不同并行策略的通信与同步开销，也决定了性能瓶颈。",
   },
   {
     slug: "multi-query-attention-rope-kv-cache",
@@ -57,7 +57,7 @@ window.BLOG_POSTS = [
     category: "Research Note",
     section: "Research Notes",
     status: "MQA · GQA · RoPE · KV Cache",
-    summary: "解释注意力头共享如何减少解码缓存与带宽开销，以及旋转位置编码如何表达相对位置。",
+    summary: "注意力头共享减少解码缓存与带宽开销，旋转位置编码表达相对位置。两种设计的公式、实现与适用范围。",
   },
   {
     slug: "team-harness-human-agent-collaboration",
@@ -67,7 +67,7 @@ window.BLOG_POSTS = [
     category: "Research Note",
     section: "Research Notes",
     status: "Team Harness · Vibe Coding · Human-Agent Collaboration",
-    summary: "提出面向人机协作团队的任务管理方案，讨论共享状态、证据、权限、干预与交接；方案仍需团队实验验证。",
+    summary: "人机协作团队怎样保存共享任务状态、证据和交接记录？一份尚需团队实验验证的设计提案。",
   },
   {
     slug: "omni-model-training-full-pipeline",
@@ -77,7 +77,7 @@ window.BLOG_POSTS = [
     category: "Training",
     section: "Research Notes",
     status: "Omni Training · Compute Planning · Data Mixture",
-    summary: "梳理从模态对齐到全双工交互和强化学习的分阶段训练路线，讨论算力、数据配比与进入下一阶段的评测条件。",
+    summary: "从模态对齐到全双工交互和强化学习，各阶段训练什么、需要哪些数据，以及何时值得投入更多算力。",
   },
   {
     slug: "agent-harness-engineering-four-projects",
@@ -87,7 +87,7 @@ window.BLOG_POSTS = [
     category: "Survey",
     section: "Surveys",
     status: "Agent Harness · Verification · Open Source",
-    summary: "分析编码 Agent 所需的执行环境、验证与恢复机制，并比较 OpenHands、mini-SWE-agent、Aider 和 Goose。",
+    summary: "以 OpenHands、mini-SWE-agent、Aider 和 Goose 为例，比较编码 Agent 的执行环境、结果验证与失败恢复。",
   },
   {
     slug: "natural-interaction-omni-duplex-agentic-architecture",
@@ -97,7 +97,7 @@ window.BLOG_POSTS = [
     category: "Survey",
     section: "Surveys",
     status: "Natural Interaction · Full Duplex · Agentic Architecture",
-    summary: "从教培、销售、客服与会议任务出发，分析多模态感知、全双工、工具、记忆和外部操作的具体需求。",
+    summary: "教培、销售、客服与会议各自需要怎样的感知、全双工、工具和记忆能力？从任务需求看架构取舍。",
   },
   {
     slug: "seedrealtime-audio-visual-full-duplex",
@@ -107,7 +107,7 @@ window.BLOG_POSTS = [
     category: "Research Note",
     section: "Research Notes",
     status: "SeedRealtime · Audio-Visual Full Duplex · Proactive Interaction",
-    summary: "分析 SeedRealtime 的连续音视频感知、主动交互与时机控制，区分公开演示和可复现技术证据。",
+    summary: "SeedRealtime 的演示中，视频如何参与指代、目标保持与回应时机？公开演示与可复现技术证据需要分别判断。",
   },
   {
     slug: "learning-when-to-think-while-listening",
@@ -117,7 +117,7 @@ window.BLOG_POSTS = [
     category: "Paper Reading",
     section: "Paper Readings",
     status: "Wait-Think-Answer · DAPO · Streaming Audio",
-    summary: "精读音频语言模型的等待、思考与回答控制，分析训练奖励、基准结果及延迟结论的适用范围。",
+    summary: "音频模型怎样在倾听期间选择等待或思考？论文的奖励设计与实验结果，以及延迟指标尚不能回答的问题。",
   },
   {
     slug: "silent-thought-flair-latent-reasoning",
@@ -127,7 +127,7 @@ window.BLOG_POSTS = [
     category: "Paper Reading",
     section: "Paper Readings",
     status: "FLAIR · ICML 2026 · Latent Reasoning",
-    summary: "精读 FLAIR 在倾听期间更新内部状态的方法，分析因果推理设计、训练监督、基准结果与消融证据。",
+    summary: "FLAIR 在倾听期间递归更新内部状态。因果模型如何获得训练监督，消融实验又支持了哪些结论？",
   },
   {
     slug: "site-specific-vision-ai-overfitting-business",
@@ -137,7 +137,7 @@ window.BLOG_POSTS = [
     category: "Research Note",
     section: "Research Notes",
     status: "Vertical AI · Edge Vision · Micro-Model Factory",
-    summary: "分析面向固定摄像头的专用视觉模型，讨论自动化部署、现场成本、分布漂移、隐私与试点验收。",
+    summary: "固定摄像头场景可以用更小的专用视觉模型，但交付成本、分布漂移与误报率仍需通过现场试点检验。",
   },
   {
     slug: "full-duplex-omni-theory-of-mind-trajectories",
@@ -147,7 +147,7 @@ window.BLOG_POSTS = [
     category: "Paper Reading",
     section: "Paper Readings",
     status: "MeetingToM · Mental World Modeling · ToM Trajectories",
-    summary: "联合精读 MeetingToM 与 Mental World Modeling，分析标签构造及从离线判断到可修订在线状态的研究路径。",
+    summary: "MeetingToM 与 Mental World Modeling 如何构造心理状态标签，以及这些离线标签怎样用于可修订的在线判断。",
   },
   {
     slug: "full-duplex-omni-core-user-experience",
@@ -157,7 +157,7 @@ window.BLOG_POSTS = [
     category: "Research Note",
     section: "Research Notes",
     status: "Full Duplex · Joint Action · Interaction UX",
-    summary: "讨论全双工模型的话权协调、错误修复、任务连续性、感知延迟与用户控制，并提出相应评测实验。",
+    summary: "话权、纠正、任务恢复与用户控制，比自然度分数更具体。如何为这些全双工交互问题设置可检验的实验。",
   },
   {
     slug: "omni-model-memory-for-real-world-agents",
@@ -167,7 +167,7 @@ window.BLOG_POSTS = [
     category: "Research Note",
     section: "Research Notes",
     status: "Omni Memory · Product State · Toy Experiments",
-    summary: "围绕任务状态、用户纠正、实体关联、权限与回滚设计记忆，用小规模实验检验各项机制。",
+    summary: "用户改口或工具结果过期后，Agent 应怎样修订任务状态、实体关联与权限？用小规模对照实验检查记忆机制。",
   },
   {
     slug: "dataflow-harness-benchmark-data-flywheel",
@@ -177,7 +177,7 @@ window.BLOG_POSTS = [
     category: "Research Note",
     section: "Research Notes",
     status: "DataFlow-Harness · Data Flywheel · Benchmark Contract",
-    summary: "精读可编辑数据流水线，并提出以评测反馈改进训练数据的方案，重点讨论验证、污染隔离与独立测试。",
+    summary: "可编辑数据流水线如何接入评测反馈？以 DataFlow-Harness 为起点，考虑数据验证、污染隔离与独立测试。",
   },
   {
     slug: "gpt-live-openai-realtime",
@@ -187,7 +187,7 @@ window.BLOG_POSTS = [
     category: "Survey",
     section: "Surveys",
     status: "GPT-Live-1 · Full Duplex · Delegation",
-    summary: "回顾 GPT-Live-1 发布时的全双工语音与后台推理委派，区分官方说明、早期体验和待验证问题。",
+    summary: "GPT-Live-1 将全双工语音与后台推理委派结合。发布时的官方说明、早期体验和仍待验证的交互问题。",
   },
   {
     slug: "continuous-time-speech-language-action-policy",
@@ -197,7 +197,7 @@ window.BLOG_POSTS = [
     category: "Research Note",
     section: "Research Notes",
     status: "Speech-Language-Action · Streaming Policy · Tool Use",
-    summary: "提出联合建模语音、语言与行动的连续时间策略，讨论因果训练轨迹、异步工具和中断恢复。",
+    summary: "让语音、语言与行动共享连续时间状态的研究提案，涉及训练轨迹、异步工具与中断恢复。",
   },
   {
     slug: "realtime-human-ai-work-agents",
@@ -207,7 +207,7 @@ window.BLOG_POSTS = [
     category: "Survey",
     section: "Surveys",
     status: "Human-AI Interaction · AI Interviewer · Work Agents",
-    summary: "梳理面试、客服与信息采集 Agent，分析可靠性、部署条件及承担人类互动工作所需的效果证据。",
+    summary: "面试、客服与信息采集 Agent 已能承担部分互动任务，但任务完成、部署条件与职业替代需要不同层次的证据。",
   },
   {
     slug: "realtime-theory-of-mind-human-ai-interaction",
@@ -217,7 +217,7 @@ window.BLOG_POSTS = [
     category: "Survey",
     section: "Surveys",
     status: "Theory of Mind · Interaction · Evaluation",
-    summary: "综述信念追踪与多模态社会推理，分析离线心智理论分数为何不足以证明实时交互可靠性。",
+    summary: "离线心智理论分数能说明什么？从信念追踪和多模态社会推理出发，检查实时交互还需要哪些评测。",
   },
   {
     slug: "full-duplex-spoken-agents-post-gpt4o",
@@ -227,7 +227,7 @@ window.BLOG_POSTS = [
     category: "Survey",
     section: "Surveys",
     status: "Full Duplex · Turn-Taking · RL",
-    summary: "梳理 GPT-4o 之后的全双工语音架构、话轮时机、隐空间推理、强化学习与评测方法。",
+    summary: "GPT-4o 之后，全双工语音研究如何从双流架构走向话轮时机、隐空间推理、强化学习与行为评测。",
   },
   {
     slug: "realtime-omni-interaction-models",
@@ -237,7 +237,7 @@ window.BLOG_POSTS = [
     category: "Survey",
     section: "Surveys",
     status: "Realtime Omni · Full Duplex · Agents",
-    summary: "综述实时语音与音视频交互，比较延迟定义、流式架构、推理服务及评测证据的边界。",
+    summary: "实时语音与音视频模型使用不同的延迟定义和流式架构。对照模型、推理服务与评测条件，理解结果的适用范围。",
   },
   {
     slug: "qwen35-omni-paper-reading",
@@ -247,7 +247,7 @@ window.BLOG_POSTS = [
     category: "Paper Reading",
     section: "Paper Readings",
     status: "Qwen3.5-Omni · arXiv 2604.15804",
-    summary: "精读混合注意力、长上下文训练、时间戳建模与 ARIA 语音对齐，分析论文评测结论的适用范围。",
+    summary: "Qwen3.5-Omni 的混合注意力、长上下文训练、时间戳建模与 ARIA 语音对齐，以及实验结论的适用范围。",
   },
   {
     slug: "qwen3-omni-paper-reading",
@@ -257,7 +257,7 @@ window.BLOG_POSTS = [
     category: "Paper Reading",
     section: "Paper Readings",
     status: "Qwen3-Omni · arXiv 2509.17765",
-    summary: "精读早期多模态预训练、Thinker-Talker 架构与流式语音生成，分析保持单模态能力的实验证据。",
+    summary: "Qwen3-Omni 如何结合早期多模态预训练、Thinker-Talker 与流式语音生成？重点看单模态能力的受控对比。",
   },
   {
     slug: "omni-model-training-methods",
@@ -267,7 +267,7 @@ window.BLOG_POSTS = [
     category: "Training",
     section: "Research Notes",
     status: "Omni Training · RLHF",
-    summary: "概述模态编码、对齐预训练、监督微调、流式生成与强化学习后训练的目标和方法。",
+    summary: "模态编码、对齐预训练、监督微调、流式生成与强化学习后训练，各自处理不同的训练问题。",
   },
   {
     slug: "omni-model-research-survey",
@@ -277,7 +277,7 @@ window.BLOG_POSTS = [
     category: "Survey",
     section: "Surveys",
     status: "Omni Models · GPT-4o",
-    summary: "梳理 GPT-4o 之后的 Omni 架构、时间对齐、流式交互与评测工作，讨论仍待解决的研究问题。",
+    summary: "以 GPT-4o 为起点，沿着端到端语音、音视频时间对齐与流式交互，回顾 Omni 模型研究和仍待解决的问题。",
   },
   {
     slug: "verl-omni-rl-framework",
@@ -287,7 +287,7 @@ window.BLOG_POSTS = [
     category: "Framework",
     section: "Research Notes",
     status: "verl · vLLM-Omni · RLHF",
-    summary: "分析 VeRL-Omni 的多模态采样、异步奖励与分布式训练，讨论模型适配、版本依赖和实验复现。",
+    summary: "VeRL-Omni 将多模态采样、异步奖励与分布式训练组织在一起。模型适配与版本依赖如何影响实验复现？",
   },
   {
     slug: "hybrid-attention-moe",
@@ -297,7 +297,7 @@ window.BLOG_POSTS = [
     category: "Research Note",
     section: "Research Notes",
     status: "Hybrid Attention · MoE",
-    summary: "分析混合注意力与稀疏专家如何分别处理长序列成本和模型容量，以及训练、通信与部署的权衡。",
+    summary: "混合注意力降低长序列处理成本，稀疏专家扩大条件容量。两者结合时，训练、通信与部署有哪些取舍？",
   },
   {
     slug: "tmrope-qwen25-omni",
@@ -307,7 +307,7 @@ window.BLOG_POSTS = [
     category: "Research Note",
     section: "Research Notes",
     status: "Qwen2.5-Omni",
-    summary: "解释 TMRoPE 如何为音频和视频建立共同时间坐标，讨论位置对齐的作用及其不能单独解决的问题。",
+    summary: "TMRoPE 为音频和视频建立共同时间坐标。位置对齐怎样帮助后续融合，又有哪些问题仍需训练与系统设计解决？",
   },
   {
     slug: "training-free-orchestration",

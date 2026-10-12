@@ -12,3 +12,8 @@ Blog content lives in `blog/posts/*.md`, with metadata in `blog/blog-data.js`.
 Keep each `displayTitle` identical to the Markdown heading, and update the HTML
 page title and description when changing its metadata. The index renders from
 metadata directly; it must not fetch every article to display the list.
+
+After editing article Markdown or blog metadata, run `node blog/build.mjs`.
+It renders the published HTML with the same Markdown renderer used by the
+browser and reserves local image dimensions, so opening an article does not
+wait for a second content download. Keep the generated article pages in Git.

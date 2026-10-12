@@ -4,26 +4,297 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Agent Harness 工程：执行验证、恢复与四个开源项目 | Tianyu Xie</title>
-  <meta name="description" content="分析编码 Agent 所需的执行环境、验证与恢复机制，并比较 OpenHands、mini-SWE-agent、Aider 和 Goose。">
+  <meta name="description" content="以 OpenHands、mini-SWE-agent、Aider 和 Goose 为例，比较编码 Agent 的执行环境、结果验证与失败恢复。">
   <link rel="icon" href="/images/profile.png">
-  <link rel="stylesheet" href="/site.css?v=20261012-unified">
-  <script src="/blog/blog-data.js?v=20261012-unified" defer></script>
+  <link rel="stylesheet" href="/site.css?v=20261012-stable">
+  <script src="/blog/blog-data.js?v=20261012-stable" defer></script>
   <script src="/site-ui.js" defer></script>
-  <script src="/blog/markdown.js?v=20261012-unified" defer></script>
+  <script src="/blog/markdown.js?v=20261012-stable" defer></script>
 </head>
 <body class="blog-post" data-post-slug="agent-harness-engineering-four-projects">
-  <header class="masthead"><nav class="nav" aria-label="Primary navigation">
-    <a class="home-brand" href="/">Homepage</a>
-    <a href="/#about-me">About Me</a>
-    <a href="/#news">News</a>
-    <a href="/publications/">Publications</a>
-    <a href="/projects/">Projects</a>
-    <a href="/#education">Education</a>
-    <a href="/#service">Academic Service</a>
-    <a aria-current="page" href="/blog/">Research Notes</a>
-    <a href="/cv/">CV</a>
-  </nav></header>
-  <main class="shell blog-shell"><aside class="sidebar"><section class="profile-card"><img class="avatar" src="/images/profile.png" alt="Tianyu Xie profile photo"><h2 class="name">Blog</h2><p class="bio"><a href="/blog/">Back to Blog</a></p></section></aside><article class="content"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a><span aria-hidden="true">/</span><span data-breadcrumb-section>Article</span></nav><h1 class="page-title" data-post-title>Agent Harness 工程：执行验证、恢复与四个开源项目</h1><p class="lead" data-post-meta>Markdown article</p><div class="markdown-body" data-markdown-article></div></article></main>
+  <header class="masthead"><nav class="nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a aria-current="page" href="/blog/">Notes</a><a href="/cv/">CV</a></nav></header>
+  <main class="shell blog-shell"><aside class="sidebar" aria-label="Personal profile"><section class="profile-card">
+        <img class="avatar" src="/images/profile.png" alt="Portrait of Tianyu Xie" width="170" height="170">
+        <h2 class="name">Tianyu Xie <span lang="zh-CN">谢天宇</span></h2>
+        <p class="affiliation">Xiamen University</p><p class="bio">M.S. student · MAC Lab</p>
+        <ul class="profile-links">
+          <li><a href="mailto:teery@stu.xmu.edu.cn">Email</a></li><li><a href="https://github.com/teeryxie">GitHub</a></li>
+          <li><a href="https://scholar.google.com/citations?hl=en&amp;user=_vZWAnkAAAAJ">Google Scholar</a></li><li><a href="https://openreview.net/profile?id=~Tianyu_Xie2">OpenReview</a></li>
+        </ul></section><nav class="article-toc" aria-label="本文目录"><strong>本文目录</strong><div class="toc-links"><a class="toc-link toc-level-2" href="#section-1-阅读要点" data-toc-id="section-1-阅读要点">1. 阅读要点</a>
+<a class="toc-link toc-level-2" href="#section-2-harness-为什么在今天变得重要" data-toc-id="section-2-harness-为什么在今天变得重要">2. Harness 为什么在今天变得重要</a>
+<a class="toc-link toc-level-2" href="#section-3-先纠正一个过宽的定义" data-toc-id="section-3-先纠正一个过宽的定义">3. 先纠正一个过宽的定义</a>
+<a class="toc-link toc-level-2" href="#section-4-从-guides-sensors-到完整闭环" data-toc-id="section-4-从-guides-sensors-到完整闭环">4. 从 Guides / Sensors 到完整闭环</a>
+<a class="toc-link toc-level-3" href="#section-4-1-guides-减少搜索空间" data-toc-id="section-4-1-guides-减少搜索空间">4.1 Guides：减少搜索空间</a>
+<a class="toc-link toc-level-3" href="#section-4-2-actuators-把意图变成受控动作" data-toc-id="section-4-2-actuators-把意图变成受控动作">4.2 Actuators：把意图变成受控动作</a>
+<a class="toc-link toc-level-3" href="#section-4-3-state-让新一步知道旧一步发生了什么" data-toc-id="section-4-3-state-让新一步知道旧一步发生了什么">4.3 State：让新一步知道旧一步发生了什么</a>
+<a class="toc-link toc-level-3" href="#section-4-4-sensors-把环境事实送回循环" data-toc-id="section-4-4-sensors-把环境事实送回循环">4.4 Sensors：把环境事实送回循环</a>
+<a class="toc-link toc-level-3" href="#section-4-5-governor-决定哪些动作不能只靠模型自觉" data-toc-id="section-4-5-governor-决定哪些动作不能只靠模型自觉">4.5 Governor：决定哪些动作不能只靠模型自觉</a>
+<a class="toc-link toc-level-2" href="#section-5-四类常见失败-根因不都在-后置缺位" data-toc-id="section-5-四类常见失败-根因不都在-后置缺位">5. 四类常见失败，根因不都在“后置缺位”</a>
+<a class="toc-link toc-level-2" href="#section-6-prompt-skill-mcp-与-harness-到底是什么关系" data-toc-id="section-6-prompt-skill-mcp-与-harness-到底是什么关系">6. Prompt、Skill、MCP 与 Harness 到底是什么关系</a>
+<a class="toc-link toc-level-3" href="#section-6-1-prompt-是策略先验-不是权限系统" data-toc-id="section-6-1-prompt-是策略先验-不是权限系统">6.1 Prompt 是策略先验，不是权限系统</a>
+<a class="toc-link toc-level-3" href="#section-6-2-skill-是可按需装载的过程知识" data-toc-id="section-6-2-skill-是可按需装载的过程知识">6.2 Skill 是可按需装载的过程知识</a>
+<a class="toc-link toc-level-3" href="#section-6-3-mcp-是工具协议-不是可靠性本身" data-toc-id="section-6-3-mcp-是工具协议-不是可靠性本身">6.3 MCP 是工具协议，不是可靠性本身</a>
+<a class="toc-link toc-level-3" href="#section-6-4-subagent-是并行执行方式-不是独立真相" data-toc-id="section-6-4-subagent-是并行执行方式-不是独立真相">6.4 Subagent 是并行执行方式，不是独立真相</a>
+<a class="toc-link toc-level-2" href="#section-7-验证-agent-为什么不等于验证" data-toc-id="section-7-验证-agent-为什么不等于验证">7. “验证 Agent”为什么不等于验证</a>
+<a class="toc-link toc-level-2" href="#section-8-评价一个-harness-项目-应该看什么" data-toc-id="section-8-评价一个-harness-项目-应该看什么">8. 评价一个 Harness 项目，应该看什么</a>
+<a class="toc-link toc-level-2" href="#section-9-openhands-平台与控制面路线" data-toc-id="section-9-openhands-平台与控制面路线">9. OpenHands：平台与控制面路线</a>
+<a class="toc-link toc-level-3" href="#section-9-1-它体现了什么-harness-思想" data-toc-id="section-9-1-它体现了什么-harness-思想">9.1 它体现了什么 Harness 思想</a>
+<a class="toc-link toc-level-3" href="#section-9-2-最适合谁" data-toc-id="section-9-2-最适合谁">9.2 最适合谁</a>
+<a class="toc-link toc-level-3" href="#section-9-3-主要边界" data-toc-id="section-9-3-主要边界">9.3 主要边界</a>
+<a class="toc-link toc-level-2" href="#section-10-mini-swe-agent-极简-可读与可复现实验路线" data-toc-id="section-10-mini-swe-agent-极简-可读与可复现实验路线">10. mini-SWE-agent：极简、可读与可复现实验路线</a>
+<a class="toc-link toc-level-3" href="#section-10-1-它体现了什么-harness-思想" data-toc-id="section-10-1-它体现了什么-harness-思想">10.1 它体现了什么 Harness 思想</a>
+<a class="toc-link toc-level-3" href="#section-10-2-最适合谁" data-toc-id="section-10-2-最适合谁">10.2 最适合谁</a>
+<a class="toc-link toc-level-3" href="#section-10-3-主要边界" data-toc-id="section-10-3-主要边界">10.3 主要边界</a>
+<a class="toc-link toc-level-2" href="#section-11-aider-git-原生的人机结对路线" data-toc-id="section-11-aider-git-原生的人机结对路线">11. Aider：Git 原生的人机结对路线</a>
+<a class="toc-link toc-level-3" href="#section-11-1-它体现了什么-harness-思想" data-toc-id="section-11-1-它体现了什么-harness-思想">11.1 它体现了什么 Harness 思想</a>
+<a class="toc-link toc-level-3" href="#section-11-2-最适合谁" data-toc-id="section-11-2-最适合谁">11.2 最适合谁</a>
+<a class="toc-link toc-level-3" href="#section-11-3-主要边界" data-toc-id="section-11-3-主要边界">11.3 主要边界</a>
+<a class="toc-link toc-level-2" href="#section-12-goose-mcp-recipes-与本地通用-agent-路线" data-toc-id="section-12-goose-mcp-recipes-与本地通用-agent-路线">12. Goose：MCP、Recipes 与本地通用 Agent 路线</a>
+<a class="toc-link toc-level-3" href="#section-12-1-它体现了什么-harness-思想" data-toc-id="section-12-1-它体现了什么-harness-思想">12.1 它体现了什么 Harness 思想</a>
+<a class="toc-link toc-level-3" href="#section-12-2-最适合谁" data-toc-id="section-12-2-最适合谁">12.2 最适合谁</a>
+<a class="toc-link toc-level-3" href="#section-12-3-主要边界" data-toc-id="section-12-3-主要边界">12.3 主要边界</a>
+<a class="toc-link toc-level-2" href="#section-13-四个项目放在同一张表里" data-toc-id="section-13-四个项目放在同一张表里">13. 四个项目放在同一张表里</a>
+<a class="toc-link toc-level-2" href="#section-14-怎么选-四种直接决策" data-toc-id="section-14-怎么选-四种直接决策">14. 怎么选：四种直接决策</a>
+<a class="toc-link toc-level-3" href="#section-14-1-我只想在本地与-agent-一起改代码" data-toc-id="section-14-1-我只想在本地与-agent-一起改代码">14.1 我只想在本地与 Agent 一起改代码</a>
+<a class="toc-link toc-level-3" href="#section-14-2-我要研究-harness-本身或做-benchmark" data-toc-id="section-14-2-我要研究-harness-本身或做-benchmark">14.2 我要研究 Harness 本身或做 benchmark</a>
+<a class="toc-link toc-level-3" href="#section-14-3-我要让多个-agent-持续处理团队任务" data-toc-id="section-14-3-我要让多个-agent-持续处理团队任务">14.3 我要让多个 Agent 持续处理团队任务</a>
+<a class="toc-link toc-level-3" href="#section-14-4-我要连接很多-mcp-并把流程复用给团队" data-toc-id="section-14-4-我要连接很多-mcp-并把流程复用给团队">14.4 我要连接很多 MCP，并把流程复用给团队</a>
+<a class="toc-link toc-level-2" href="#section-15-从零搭自己的-harness-不要一上来造平台" data-toc-id="section-15-从零搭自己的-harness-不要一上来造平台">15. 从零搭自己的 Harness：不要一上来造平台</a>
+<a class="toc-link toc-level-3" href="#第-0-层-先定义完成" data-toc-id="第-0-层-先定义完成">第 0 层：先定义完成</a>
+<a class="toc-link toc-level-3" href="#第-1-层-建立真实反馈" data-toc-id="第-1-层-建立真实反馈">第 1 层：建立真实反馈</a>
+<a class="toc-link toc-level-3" href="#第-2-层-加入恢复点" data-toc-id="第-2-层-加入恢复点">第 2 层：加入恢复点</a>
+<a class="toc-link toc-level-3" href="#第-3-层-把高风险动作移出模型自觉" data-toc-id="第-3-层-把高风险动作移出模型自觉">第 3 层：把高风险动作移出模型自觉</a>
+<a class="toc-link toc-level-3" href="#第-4-层-再增加并行-agent-与自动化" data-toc-id="第-4-层-再增加并行-agent-与自动化">第 4 层：再增加并行 Agent 与自动化</a>
+<a class="toc-link toc-level-2" href="#section-16-harness-也需要测试" data-toc-id="section-16-harness-也需要测试">16. Harness 也需要测试</a>
+<a class="toc-link toc-level-2" href="#section-17-什么时候应该删除-harness" data-toc-id="section-17-什么时候应该删除-harness">17. 什么时候应该删除 Harness</a>
+<a class="toc-link toc-level-2" href="#section-18-选型前需要回答的问题" data-toc-id="section-18-选型前需要回答的问题">18. 选型前需要回答的问题</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></div></nav></aside><article class="content"><header class="inner-hero article-hero"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a></nav><h1 class="page-title" data-post-title>Agent Harness 工程：执行验证、恢复与四个开源项目</h1><p class="lead" data-post-meta>2026-08 · 综述</p></header><details class="mobile-toc"><summary>本文目录</summary><nav aria-label="移动端本文目录"><a class="toc-link toc-level-2" href="#section-1-阅读要点" data-toc-id="section-1-阅读要点">1. 阅读要点</a>
+<a class="toc-link toc-level-2" href="#section-2-harness-为什么在今天变得重要" data-toc-id="section-2-harness-为什么在今天变得重要">2. Harness 为什么在今天变得重要</a>
+<a class="toc-link toc-level-2" href="#section-3-先纠正一个过宽的定义" data-toc-id="section-3-先纠正一个过宽的定义">3. 先纠正一个过宽的定义</a>
+<a class="toc-link toc-level-2" href="#section-4-从-guides-sensors-到完整闭环" data-toc-id="section-4-从-guides-sensors-到完整闭环">4. 从 Guides / Sensors 到完整闭环</a>
+<a class="toc-link toc-level-3" href="#section-4-1-guides-减少搜索空间" data-toc-id="section-4-1-guides-减少搜索空间">4.1 Guides：减少搜索空间</a>
+<a class="toc-link toc-level-3" href="#section-4-2-actuators-把意图变成受控动作" data-toc-id="section-4-2-actuators-把意图变成受控动作">4.2 Actuators：把意图变成受控动作</a>
+<a class="toc-link toc-level-3" href="#section-4-3-state-让新一步知道旧一步发生了什么" data-toc-id="section-4-3-state-让新一步知道旧一步发生了什么">4.3 State：让新一步知道旧一步发生了什么</a>
+<a class="toc-link toc-level-3" href="#section-4-4-sensors-把环境事实送回循环" data-toc-id="section-4-4-sensors-把环境事实送回循环">4.4 Sensors：把环境事实送回循环</a>
+<a class="toc-link toc-level-3" href="#section-4-5-governor-决定哪些动作不能只靠模型自觉" data-toc-id="section-4-5-governor-决定哪些动作不能只靠模型自觉">4.5 Governor：决定哪些动作不能只靠模型自觉</a>
+<a class="toc-link toc-level-2" href="#section-5-四类常见失败-根因不都在-后置缺位" data-toc-id="section-5-四类常见失败-根因不都在-后置缺位">5. 四类常见失败，根因不都在“后置缺位”</a>
+<a class="toc-link toc-level-2" href="#section-6-prompt-skill-mcp-与-harness-到底是什么关系" data-toc-id="section-6-prompt-skill-mcp-与-harness-到底是什么关系">6. Prompt、Skill、MCP 与 Harness 到底是什么关系</a>
+<a class="toc-link toc-level-3" href="#section-6-1-prompt-是策略先验-不是权限系统" data-toc-id="section-6-1-prompt-是策略先验-不是权限系统">6.1 Prompt 是策略先验，不是权限系统</a>
+<a class="toc-link toc-level-3" href="#section-6-2-skill-是可按需装载的过程知识" data-toc-id="section-6-2-skill-是可按需装载的过程知识">6.2 Skill 是可按需装载的过程知识</a>
+<a class="toc-link toc-level-3" href="#section-6-3-mcp-是工具协议-不是可靠性本身" data-toc-id="section-6-3-mcp-是工具协议-不是可靠性本身">6.3 MCP 是工具协议，不是可靠性本身</a>
+<a class="toc-link toc-level-3" href="#section-6-4-subagent-是并行执行方式-不是独立真相" data-toc-id="section-6-4-subagent-是并行执行方式-不是独立真相">6.4 Subagent 是并行执行方式，不是独立真相</a>
+<a class="toc-link toc-level-2" href="#section-7-验证-agent-为什么不等于验证" data-toc-id="section-7-验证-agent-为什么不等于验证">7. “验证 Agent”为什么不等于验证</a>
+<a class="toc-link toc-level-2" href="#section-8-评价一个-harness-项目-应该看什么" data-toc-id="section-8-评价一个-harness-项目-应该看什么">8. 评价一个 Harness 项目，应该看什么</a>
+<a class="toc-link toc-level-2" href="#section-9-openhands-平台与控制面路线" data-toc-id="section-9-openhands-平台与控制面路线">9. OpenHands：平台与控制面路线</a>
+<a class="toc-link toc-level-3" href="#section-9-1-它体现了什么-harness-思想" data-toc-id="section-9-1-它体现了什么-harness-思想">9.1 它体现了什么 Harness 思想</a>
+<a class="toc-link toc-level-3" href="#section-9-2-最适合谁" data-toc-id="section-9-2-最适合谁">9.2 最适合谁</a>
+<a class="toc-link toc-level-3" href="#section-9-3-主要边界" data-toc-id="section-9-3-主要边界">9.3 主要边界</a>
+<a class="toc-link toc-level-2" href="#section-10-mini-swe-agent-极简-可读与可复现实验路线" data-toc-id="section-10-mini-swe-agent-极简-可读与可复现实验路线">10. mini-SWE-agent：极简、可读与可复现实验路线</a>
+<a class="toc-link toc-level-3" href="#section-10-1-它体现了什么-harness-思想" data-toc-id="section-10-1-它体现了什么-harness-思想">10.1 它体现了什么 Harness 思想</a>
+<a class="toc-link toc-level-3" href="#section-10-2-最适合谁" data-toc-id="section-10-2-最适合谁">10.2 最适合谁</a>
+<a class="toc-link toc-level-3" href="#section-10-3-主要边界" data-toc-id="section-10-3-主要边界">10.3 主要边界</a>
+<a class="toc-link toc-level-2" href="#section-11-aider-git-原生的人机结对路线" data-toc-id="section-11-aider-git-原生的人机结对路线">11. Aider：Git 原生的人机结对路线</a>
+<a class="toc-link toc-level-3" href="#section-11-1-它体现了什么-harness-思想" data-toc-id="section-11-1-它体现了什么-harness-思想">11.1 它体现了什么 Harness 思想</a>
+<a class="toc-link toc-level-3" href="#section-11-2-最适合谁" data-toc-id="section-11-2-最适合谁">11.2 最适合谁</a>
+<a class="toc-link toc-level-3" href="#section-11-3-主要边界" data-toc-id="section-11-3-主要边界">11.3 主要边界</a>
+<a class="toc-link toc-level-2" href="#section-12-goose-mcp-recipes-与本地通用-agent-路线" data-toc-id="section-12-goose-mcp-recipes-与本地通用-agent-路线">12. Goose：MCP、Recipes 与本地通用 Agent 路线</a>
+<a class="toc-link toc-level-3" href="#section-12-1-它体现了什么-harness-思想" data-toc-id="section-12-1-它体现了什么-harness-思想">12.1 它体现了什么 Harness 思想</a>
+<a class="toc-link toc-level-3" href="#section-12-2-最适合谁" data-toc-id="section-12-2-最适合谁">12.2 最适合谁</a>
+<a class="toc-link toc-level-3" href="#section-12-3-主要边界" data-toc-id="section-12-3-主要边界">12.3 主要边界</a>
+<a class="toc-link toc-level-2" href="#section-13-四个项目放在同一张表里" data-toc-id="section-13-四个项目放在同一张表里">13. 四个项目放在同一张表里</a>
+<a class="toc-link toc-level-2" href="#section-14-怎么选-四种直接决策" data-toc-id="section-14-怎么选-四种直接决策">14. 怎么选：四种直接决策</a>
+<a class="toc-link toc-level-3" href="#section-14-1-我只想在本地与-agent-一起改代码" data-toc-id="section-14-1-我只想在本地与-agent-一起改代码">14.1 我只想在本地与 Agent 一起改代码</a>
+<a class="toc-link toc-level-3" href="#section-14-2-我要研究-harness-本身或做-benchmark" data-toc-id="section-14-2-我要研究-harness-本身或做-benchmark">14.2 我要研究 Harness 本身或做 benchmark</a>
+<a class="toc-link toc-level-3" href="#section-14-3-我要让多个-agent-持续处理团队任务" data-toc-id="section-14-3-我要让多个-agent-持续处理团队任务">14.3 我要让多个 Agent 持续处理团队任务</a>
+<a class="toc-link toc-level-3" href="#section-14-4-我要连接很多-mcp-并把流程复用给团队" data-toc-id="section-14-4-我要连接很多-mcp-并把流程复用给团队">14.4 我要连接很多 MCP，并把流程复用给团队</a>
+<a class="toc-link toc-level-2" href="#section-15-从零搭自己的-harness-不要一上来造平台" data-toc-id="section-15-从零搭自己的-harness-不要一上来造平台">15. 从零搭自己的 Harness：不要一上来造平台</a>
+<a class="toc-link toc-level-3" href="#第-0-层-先定义完成" data-toc-id="第-0-层-先定义完成">第 0 层：先定义完成</a>
+<a class="toc-link toc-level-3" href="#第-1-层-建立真实反馈" data-toc-id="第-1-层-建立真实反馈">第 1 层：建立真实反馈</a>
+<a class="toc-link toc-level-3" href="#第-2-层-加入恢复点" data-toc-id="第-2-层-加入恢复点">第 2 层：加入恢复点</a>
+<a class="toc-link toc-level-3" href="#第-3-层-把高风险动作移出模型自觉" data-toc-id="第-3-层-把高风险动作移出模型自觉">第 3 层：把高风险动作移出模型自觉</a>
+<a class="toc-link toc-level-3" href="#第-4-层-再增加并行-agent-与自动化" data-toc-id="第-4-层-再增加并行-agent-与自动化">第 4 层：再增加并行 Agent 与自动化</a>
+<a class="toc-link toc-level-2" href="#section-16-harness-也需要测试" data-toc-id="section-16-harness-也需要测试">16. Harness 也需要测试</a>
+<a class="toc-link toc-level-2" href="#section-17-什么时候应该删除-harness" data-toc-id="section-17-什么时候应该删除-harness">17. 什么时候应该删除 Harness</a>
+<a class="toc-link toc-level-2" href="#section-18-选型前需要回答的问题" data-toc-id="section-18-选型前需要回答的问题">18. 选型前需要回答的问题</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></nav></details><div class="markdown-body" data-markdown-article data-rendered="true"><p>编码 Agent 可能在任务尚未完成时宣布交付，或在切换会话后丢失关键决定。这类失败不仅取决于模型能力，也与系统是否提供明确的完成条件、真实环境反馈、权限边界、验证证据和恢复路径有关。</p>
+<p><strong>Agent Harness</strong> 指支撑模型执行任务的运行环境与控制机制：它管理状态和工具操作，接收外部反馈，并帮助系统验证结果、从失败中恢复。</p>
+<p>本文从一份流传很广的 Harness 入门教程出发，但不复述其中未经核实的排行榜数字，也不把 <code>CLAUDE.md + Skills + MCP</code> 当作完整答案。我查阅了 Mitchell Hashimoto 的原始文章、Anthropic 关于有效 Agent 与长任务 Harness 的工程文章，并逐项阅读 OpenHands、mini-SWE-agent、Aider、Goose 的官方仓库和文档。这些材料让我更关注验证与恢复：</p>
+<p>Harness 为模型提供执行环境，并在操作前后检查约束、结果与恢复条件。这个定义有具体边界，也便于判断某项机制是否必要。</p>
+<p>一个强模型可以提高单步决策质量；一个好的 Harness 则让错误更早暴露、影响范围更小、恢复成本更低，并让成功过程可以重复。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/harness-control-loop.svg" data-image-alt="Harness control loop" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/harness-control-loop.svg" width="1200" height="660" alt="Harness control loop" loading="lazy" decoding="async"></button><figcaption>图 1：Harness 不是模型外围的一圈配置，而是从任务契约、上下文、执行到验证、恢复和经验沉淀的闭环。</figcaption></figure>
+<h2 id="section-1-阅读要点">1. 阅读要点</h2>
+<ul><li><code>Agent = Model + Harness</code> 是有用的入门公式，但 <strong>Harness 不能被无限扩张成“除权重外的一切”</strong>，否则它失去工程边界。</li><li>Prompt、<code>CLAUDE.md</code>、Skills 和 MCP 都只是 Harness 的部件。它们分别提供指令、可复用过程和工具接口，不天然提供完成证明、权限隔离或失败恢复。</li><li>Harness 需要明确任务的约束、当前状态、反馈来源和停止条件，使完成与失败都有可检查的依据。</li><li>最可靠的验证顺序通常是：确定性检查、真实环境测试、外部状态核对、独立实现交叉验证，最后才是 LLM judge。</li><li>“另一个 Agent 来审查”并不天然独立。Actor 与 Verifier 若共享模型、上下文和错误假设，会产生相关失败。</li><li><code>CLAUDE.md</code> 不应只是愿望清单，也不应只是一份不断膨胀的翻车记录。它更适合保存稳定 invariant、项目 contract、危险边界和已被真实失败证明必要的规则。</li><li>Harness 不是越厚越好。每个机制都应回答：它拦截什么失败、用什么证据判断、误拦截成本是多少、何时可以删除。</li><li>OpenHands、mini-SWE-agent、Aider 与 Goose 并不是同一赛道的“四强”。它们分别代表<strong>平台控制面、极简研究循环、Git 原生结对编程、MCP 可扩展本地 Agent</strong>四条路线。</li><li>项目选择应从任务、风险和运行方式出发，而不是从 Star 数或功能清单出发。</li></ul>
+<h2 id="section-2-harness-为什么在今天变得重要">2. Harness 为什么在今天变得重要</h2>
+<p>Mitchell Hashimoto 在 2026 年 2 月的文章 <strong>My AI Adoption Journey</strong> 中把第五阶段命名为 <strong>Engineer the Harness</strong>。他描述的不是一个新框架，而是一种工作方式：拆分清晰任务，把计划与执行分开，给 Agent 可以验证工作的手段，并在发现重复错误时改造环境，使下一次更难犯同类错误。[1]</p>
+<p>这里最重要的变化是工程对象发生了转移：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>Prompt engineering: 如何让模型这一次更可能给出好答案？
+Context engineering: 这一步应把哪些信息放进上下文？
+Harness engineering: 如何让整个过程可执行、可观测、可验证、可恢复？</code></pre></div>
+<p>这三者不是替代关系。Prompt 和 Context 都位于 Harness 内部，但 Harness 还要处理模型看不到或不应自行决定的事情，例如：</p>
+<ul><li>当前工作区到底有哪些文件；</li><li>命令是否真的成功，退出码是什么；</li><li>浏览器中是否真实渲染；</li><li>一个 GitHub Pages URL 是否已经返回新内容；</li><li>数据库写入是否需要二次确认；</li><li>任务是完成了 3/10，还是 10/10；</li><li>上一个上下文窗口做了什么，哪些假设仍然有效；</li><li>失败后应该重试、回滚、换策略，还是请求人工判断。</li></ul>
+<p>模型能力提升会降低某些错误概率，却不会自动创造这些外部事实。只要任务跨越多步、多个系统或多个上下文窗口，Harness 就不再是可选装饰。</p>
+<h2 id="section-3-先纠正一个过宽的定义">3. 先纠正一个过宽的定义</h2>
+<p>“Harness = 模型之外的一切”容易记忆，但不够可操作。按这个定义，操作系统、云厂商、显示器甚至办公室网络都属于 Harness，工程讨论会迅速失焦。</p>
+<p>更严格的定义是：</p>
+<blockquote><strong>Agent Harness 是围绕模型决策循环建立的运行时与控制平面。它负责装载任务状态和上下文，暴露可执行动作，实施权限和资源约束，收集环境反馈，判定结果是否满足契约，并支持恢复、追踪与审计。</strong></blockquote>
+<p>可写成：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>Harness =
+  Task Contract
+  + Context Loader
+  + Agent Loop
+  + Tool Runtime
+  + State and Memory
+  + Policy and Permissions
+  + Verification
+  + Recovery
+  + Observability</code></pre></div>
+<p>Model 仍负责语义理解、规划、代码生成和不确定条件下的判断。Harness 不替代智能，而是规定智能<strong>在哪里行动、看见什么证据、最多走多远、怎样证明完成</strong>。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/harness-six-layers.svg" data-image-alt="Harness layers" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/harness-six-layers.svg" width="1200" height="660" alt="Harness layers" loading="lazy" decoding="async"></button><figcaption>图 2：一个可操作的 Harness 可划分为契约与上下文、决策循环、工具运行时、状态与记忆、验证与恢复、权限与可观测性六层。</figcaption></figure>
+<h2 id="section-4-从-guides-sensors-到完整闭环">4. 从 Guides / Sensors 到完整闭环</h2>
+<p>入门教程把 Harness 分成前置 <code>Guides</code> 和后置 <code>Sensors</code>，这是很好的第一步：前者告诉 Agent 应该怎样做，后者检查它是否做对。但生产系统还需要补上中间的 <strong>Actuators</strong> 与跨轮次的 <strong>State</strong>。</p>
+<h3 id="section-4-1-guides-减少搜索空间">4.1 Guides：减少搜索空间</h3>
+<p>包括系统提示、项目说明、Skills、示例、工作流模板和工具文档。它们的作用不是强制，而是让模型更快找到合理路径。</p>
+<h3 id="section-4-2-actuators-把意图变成受控动作">4.2 Actuators：把意图变成受控动作</h3>
+<p>包括 shell、文件编辑器、浏览器、数据库、MCP、API、Git 和部署系统。一个工具接口是否清晰、返回值是否结构化、错误是否可区分，会直接影响 Agent 的上限。SWE-agent 论文把这类设计称为 Agent-Computer Interface；Anthropic 也强调工具文档与测试是 Agent 工程的核心。[2][3]</p>
+<h3 id="section-4-3-state-让新一步知道旧一步发生了什么">4.3 State：让新一步知道旧一步发生了什么</h3>
+<p>状态不只是聊天历史，还包括任务清单、工作树 diff、测试结果、预算、外部任务 ID、已获得的用户确认和可恢复 checkpoint。长任务若只依赖上下文压缩，往往会逐步把“做过什么”和“为什么这样做”混在摘要里。</p>
+<h3 id="section-4-4-sensors-把环境事实送回循环">4.4 Sensors：把环境事实送回循环</h3>
+<p>退出码、测试报告、DOM、截图、HTTP 内容、数据库读取和远端 commit hash 都是传感器。只有结果进入下一轮决策，Agent 才是真的闭环，而不是“生成后顺便跑一下命令”。</p>
+<h3 id="section-4-5-governor-决定哪些动作不能只靠模型自觉">4.5 Governor：决定哪些动作不能只靠模型自觉</h3>
+<p>删除、支付、发布、迁移和权限变更不能只写一句“请小心”。真正的边界应由 allowlist、sandbox、审批门、幂等键、两阶段提交和不可变审计记录实施。</p>
+<p>因此，完整过程应是：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>目标 -&gt; 可检查契约 -&gt; 装载最小上下文 -&gt; 规划一步
+     -&gt; 权限检查 -&gt; 在真实环境执行 -&gt; 收集证据
+     -&gt; 验证契约 -&gt; 完成 / 修复 / 回滚 / 请求人工
+     -&gt; 把必要经验写回稳定状态</code></pre></div>
+<h2 id="section-5-四类常见失败-根因不都在-后置缺位">5. 四类常见失败，根因不都在“后置缺位”</h2>
+<p>入门教程列出的四种失败很有代表性，但它们需要更精确地映射到机制。</p>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>症状</th><th>更深根因</th><th>优先机制</th><th>不充分的做法</th></tr></thead><tbody><tr><td>提前交卷</td><td>没有机器可检查的完成契约</td><td>manifest、计数器、acceptance tests、stop gate</td><td>提示“必须做完”</td></tr><tr><td>环境盲区</td><td>推理环境与交付环境分离</td><td>sandbox、真实运行、浏览器/设备测试</td><td>只读代码自检</td></tr><tr><td>虚标完成</td><td>Actor 自选容易通过的证据</td><td>外部 oracle、端到端测试、独立验收清单</td><td>再问同一模型“对吗”</td></tr><tr><td>跨会话失忆</td><td>状态只存在于易丢失的对话</td><td>Git、progress file、任务状态、决策记录</td><td>无限增长聊天历史</td></tr></tbody></table></div>
+<p>Anthropic 在长任务实验中观察到两个主要模式：Agent 试图一次完成过多工作，以及后续上下文留下半成品环境。其工程方案包括初始化 Agent、结构化 feature list、每次只做一个功能、描述性 Git commit、进度文件，以及把浏览器端到端测试作为完成证据。[4]</p>
+<p>这不是证明某种固定模板“最佳”，而是给出一条可迁移原则：</p>
+<blockquote><strong>把主观完成感替换为外部可读状态，把一次性生成替换为可恢复增量。</strong></blockquote>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/harness-failure-map.svg" data-image-alt="Failure map" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/harness-failure-map.svg" width="1200" height="660" alt="Failure map" loading="lazy" decoding="async"></button><figcaption>图 3：四类常见失败分别对应完成契约、真实环境、独立证据和持久状态；仅增加提示词无法形成硬约束。</figcaption></figure>
+<h2 id="section-6-prompt-skill-mcp-与-harness-到底是什么关系">6. Prompt、Skill、MCP 与 Harness 到底是什么关系</h2>
+<h3 id="section-6-1-prompt-是策略先验-不是权限系统">6.1 Prompt 是策略先验，不是权限系统</h3>
+<p>Prompt 能说明目标、风格和约束，但它最终仍由同一个概率模型解释。高风险规则若只存在于 Prompt，就无法提供强制保证。</p>
+<h3 id="section-6-2-skill-是可按需装载的过程知识">6.2 Skill 是可按需装载的过程知识</h3>
+<p>Skill 适合封装“如何做 PDF 验收”“如何发布博客”“如何审查前端”等稳定流程。它能降低上下文噪声并复用经验，但必须与实际工具和验收器连接，否则只是更长的说明书。</p>
+<h3 id="section-6-3-mcp-是工具协议-不是可靠性本身">6.3 MCP 是工具协议，不是可靠性本身</h3>
+<p>MCP 解决工具、资源和提示如何被标准化发现与调用。它不自动解决：</p>
+<ul><li>MCP Server 是否可信；</li><li>工具参数是否需要确认；</li><li>调用是否产生不可逆副作用；</li><li>返回“成功”是否等于业务状态已更新；</li><li>Prompt injection 是否经由工具内容进入上下文。</li></ul>
+<p>接入更多 MCP 会扩大能力面，也会扩大攻击面和失败面。Harness 要做的是对工具进行分级、授权、追踪和结果核验。</p>
+<h3 id="section-6-4-subagent-是并行执行方式-不是独立真相">6.4 Subagent 是并行执行方式，不是独立真相</h3>
+<p>用第二个 Agent 做 review 可以增加视角，但不能默认得到独立性。如果两个 Agent 使用相同模型、相同上下文和同一套测试，它们很可能一起忽略同一个问题。</p>
+<h2 id="section-7-验证-agent-为什么不等于验证">7. “验证 Agent”为什么不等于验证</h2>
+<p>验证强度可按证据与被验证对象的独立程度排序：</p>
+<ol><li><strong>确定性 oracle</strong>：schema、类型检查、hash、计数、编译器、数据库约束。</li><li><strong>真实环境测试</strong>：浏览器、设备、API、部署后的 URL 和外部状态。</li><li><strong>性质与差分测试</strong>：不只检查样例答案，而是检查 invariant 或与独立实现对比。</li><li><strong>人工 checkpoint</strong>：高风险、价值判断和需求歧义处由人确认。</li><li><strong>LLM critic / judge</strong>：适合开放文本、视觉观感和难形式化问题，但应保留输入、评分依据与不确定性。</li></ol>
+<p>例如 Agent 声称“博客已经推送”：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>弱证据：git push 命令看起来没有报错
+较强证据：本地 HEAD == origin/main
+更强证据：线上 URL 返回 200 且包含新标题
+完整证据：文章、索引、图片资源和移动交互均在线验证</code></pre></div>
+<p>Harness 的工作不是让 Agent 更自信，而是让结论绑定到对应强度的证据。</p>
+<h2 id="section-8-评价一个-harness-项目-应该看什么">8. 评价一个 Harness 项目，应该看什么</h2>
+<p>功能越多不代表越适合。本文用十二个问题判断项目：</p>
+<ol><li>它服务于交互结对、异步任务、批量 benchmark，还是团队自动化？</li><li>Agent loop 是否清晰可读、可替换、可中止？</li><li>上下文如何选择、压缩和恢复？</li><li>工具接口是 shell、专用 ACI、MCP，还是多种协议？</li><li>默认在宿主机、容器、VM 还是远端执行？</li><li>权限是提示、逐次确认、allowlist 还是 sandbox？</li><li>是否保存 trajectory、diff、事件和成本？</li><li>完成由模型声明，还是由外部验收器判定？</li><li>失败后能否 retry、undo、resume、revert？</li><li>是否支持多模型，以及切换模型会损失哪些能力？</li><li>是否适合复现实验和批量评测？</li><li>运维复杂度与任务价值是否匹配？</li></ol>
+<p>下面四个项目不是按“最好”排序，而是四种不同答案。仓库状态和 Star 仅是 <strong>2026-08-14 的动态快照</strong>，不作为质量结论。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/harness-project-landscape.svg" data-image-alt="Project landscape" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/harness-project-landscape.svg" width="1200" height="660" alt="Project landscape" loading="lazy" decoding="async"></button><figcaption>图 4：四个项目分布在从轻量人机结对到持续自动化、从专用代码工作流到通用扩展平台的不同位置。</figcaption></figure>
+<h2 id="section-9-openhands-平台与控制面路线">9. OpenHands：平台与控制面路线</h2>
+<p><strong>官方定位。</strong> OpenHands 主仓库当前的产品名称是 Agent Canvas，定位为自托管的开发者控制中心：可以运行 OpenHands 自身，也可以连接 Claude Code、Codex、Gemini 或其他支持 Agent Client Protocol 的 Agent；后端可位于本地、Docker、VM、企业基础设施或云端，并可通过 schedule 或 webhook 运行自动化。[5]</p>
+<p>截至快照时间，主仓库约 8.4 万 Star、MIT License，最新 release 为 <code>v1.13.0</code>。更值得关注的不是数字，而是它已从“一个会改代码的 Agent”演进为<strong>多 Agent 后端的操作平面</strong>：</p>
+<ul><li>Agent Canvas 管会话、后端切换和自动化入口；</li><li>Agent Server 提供运行 Agent 的服务接口；</li><li>Software Agent SDK 提供 Agent、Conversation、Tool 等模块；</li><li>工作区可以直接使用本机，也可置于 Docker/Kubernetes 等临时环境；</li><li>Automation Server 把对话式 Agent 接到 GitHub、Slack、Linear 等事件流。</li></ul>
+<h3 id="section-9-1-它体现了什么-harness-思想">9.1 它体现了什么 Harness 思想</h3>
+<p>OpenHands 把 Harness 的重点放在<strong>执行位置、持久运行、团队入口和后端治理</strong>。当任务来自 webhook、需要在笔记本关闭后继续，或多个 Agent 共享远端算力时，单个 CLI 循环已经不够，必须有控制面。</p>
+<h3 id="section-9-2-最适合谁">9.2 最适合谁</h3>
+<ul><li>希望自托管 coding agents 的团队；</li><li>需要把 issue、review、依赖升级等任务做成持续自动化的工程组织；</li><li>需要本地、容器、VM 与云后端统一入口的用户；</li><li>想基于 SDK 构建自有开发者体验的研究者或平台团队。</li></ul>
+<h3 id="section-9-3-主要边界">9.3 主要边界</h3>
+<p>它的部署面与信任面也最大。官方 Quickstart 明确警告：不使用 sandbox 时，Agent Server 会直接访问宿主文件系统。[5] 因此“能连接很多 Agent”不等于“默认安全”。生产使用仍需要网络隔离、secret 管理、最小权限、镜像治理和自动化触发源验证。对于只想在一个仓库里结对改两处代码的人，完整平台可能过重。</p>
+<h2 id="section-10-mini-swe-agent-极简-可读与可复现实验路线">10. mini-SWE-agent：极简、可读与可复现实验路线</h2>
+<p>原始 SWE-agent 是 NeurIPS 2024 工作，核心贡献是通过专门设计的 Agent-Computer Interface 让语言模型处理真实 GitHub issue。[2] 但截至 2026 年，SWE-agent 官方 README 已明确表示主要开发转向 <strong>mini-SWE-agent</strong>，并建议新用户优先使用后者。[6]</p>
+<p>截至快照时间，mini-SWE-agent 约 6.5 千 Star、MIT License，最新 release 为 <code>v2.4.6</code>。它最有价值的特点不是“功能最多”，而是默认 Agent 类只有约百行 Python，核心循环可以直接读懂：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>render task and system templates
+-&gt; model.query(messages)
+-&gt; parse actions
+-&gt; environment.execute(action)
+-&gt; append observations
+-&gt; repeat until exit or limit</code></pre></div>
+<p>代码中显式实现了 step limit、cost limit、wall-time limit、连续格式错误上限、trajectory 保存和环境 timeout。也就是说，它把 Harness 的关键机制暴露为几个小而可测的组件，而不是藏在庞大框架里。[7]</p>
+<h3 id="section-10-1-它体现了什么-harness-思想">10.1 它体现了什么 Harness 思想</h3>
+<p>mini-SWE-agent 证明：Harness 的价值不等于框架体积。一个很小的循环，只要任务模板、动作格式、环境反馈、停止条件和轨迹记录设计得好，就可以成为强研究基线。</p>
+<h3 id="section-10-2-最适合谁">10.2 最适合谁</h3>
+<ul><li>想研究 prompt、action format、环境接口和模型差异的研究者；</li><li>需要在 SWE-bench、ProgramBench 等任务上批量复现实验的团队；</li><li>想从代码层真正理解 Agent loop 的开发者；</li><li>需要快速构造一个可控专用 Agent，而不是先部署平台的人。</li></ul>
+<h3 id="section-10-3-主要边界">10.3 主要边界</h3>
+<p>极简也意味着很多生产能力不在核心循环里。默认 <code>LocalEnvironment</code> 会直接通过 shell 在给定工作目录执行命令；隔离、企业权限、人工审批、复杂记忆与团队控制面需要由使用者补充。它适合作为可读的“实验底盘”，不应因 benchmark 表现就直接等同于生产安全系统。</p>
+<h2 id="section-11-aider-git-原生的人机结对路线">11. Aider：Git 原生的人机结对路线</h2>
+<p>Aider 把自己定义为终端中的 AI pair programming。它不以长时间无人值守为第一目标，而是把<strong>代码上下文、编辑和 Git 恢复</strong>做成稳定的交互工作流。[8]</p>
+<p>截至快照时间，Aider 约 4.8 万 Star、Apache-2.0 License；GitHub 最新正式 release 为 <code>v0.86.0</code>。其几个代表性 Harness 设计是：</p>
+<ul><li>用 tree-sitter 构建 repository map，在 token 预算内向模型提供全仓库关键符号；</li><li>编辑后自动形成描述性 Git commit，支持 <code>/undo</code> 和历史审查；</li><li>对已有 dirty files 先做隔离提交，减少覆盖用户工作的风险；</li><li>可在每次变更后自动运行 lint，并支持 <code>/test</code> 或配置测试命令；</li><li>提供 ask、code、architect 等模式，把讨论、规划与直接编辑区分开。</li></ul>
+<h3 id="section-11-1-它体现了什么-harness-思想">11.1 它体现了什么 Harness 思想</h3>
+<p>Aider 的强项是利用开发者已经信任的 Git 作为<strong>状态、审计和恢复机制</strong>。它没有发明一套新的版本系统，而是把 Agent 改动映射到现有工程原语。Repo map 则体现了另一条原则：上下文工程不是把仓库全塞进窗口，而是建立可预算的结构摘要。</p>
+<h3 id="section-11-2-最适合谁">11.2 最适合谁</h3>
+<ul><li>希望保持人类在回路中、逐步审查改动的开发者；</li><li>已经使用 Git，希望每次模型修改都可见、可撤销的个人或小团队；</li><li>需要快速切换讨论、架构与代码编辑模式的工作流；</li><li>不需要额外服务端控制面的本地开发场景。</li></ul>
+<h3 id="section-11-3-主要边界">11.3 主要边界</h3>
+<p>Aider 的默认范式仍偏结对交互，而非跨系统长任务编排。自动 lint/test 提供了有价值的传感器，但测试是否覆盖真正需求仍由项目决定。另一个值得注意的细节是，Aider 默认自动 commit 可跳过 pre-commit hooks，只有显式启用 <code>--git-commit-verify</code> 才会运行它们；因此团队不能把“有 commit”误认为“已通过全部门禁”。[9]</p>
+<h2 id="section-12-goose-mcp-recipes-与本地通用-agent-路线">12. Goose：MCP、Recipes 与本地通用 Agent 路线</h2>
+<p>Goose 最初由 Block 发起，目前仓库位于 Agentic AI Foundation 组织下。它是一个开源、可扩展的本地 Agent，支持多种模型提供商，并通过 MCP 连接扩展。官方 README 当前列出 15+ provider 与 70+ extension。[10]</p>
+<p>截至快照时间，Goose 约 5.3 万 Star、Apache-2.0 License，最新 release 为 <code>v1.46.0</code>。与前三个项目相比，它更像一个通用的本地 Harness：</p>
+<ul><li>MCP Extensions 连接开发工具、数据源和应用；</li><li>Recipes 把 extensions、prompt 和 settings 打包成可复用工作流；</li><li>Sessions 保存连续交互与上下文，可恢复和检索；</li><li>内置 Analyze、Skills、Todo、Chat Recall、Top of Mind 等平台扩展；</li><li>提供 permission mode、tool permissions、extension allowlist；</li><li>安全文档还包括 prompt injection detection 与独立监视工具调用的 Adversary Mode。[11]</li></ul>
+<h3 id="section-12-1-它体现了什么-harness-思想">12.1 它体现了什么 Harness 思想</h3>
+<p>Goose 把 Harness 的重心放在<strong>扩展生态与可重复工作流</strong>：MCP 负责能力接入，Recipe 负责把一组能力和目标打包，Session 与上下文机制负责延续任务，权限与安全层负责约束执行。</p>
+<h3 id="section-12-2-最适合谁">12.2 最适合谁</h3>
+<ul><li>希望在本地使用多模型、避免绑定单一提供商的用户；</li><li>已有多个 MCP Server，希望统一编排的团队；</li><li>需要把成功会话固化为可共享 Recipe 的组织；</li><li>任务不只改代码，还要连接文档、数据库和业务系统的通用 Agent 场景。</li></ul>
+<h3 id="section-12-3-主要边界">12.3 主要边界</h3>
+<p>扩展越多，供应链、权限和 prompt injection 风险越大。Goose 文档明确说明默认可自主执行命令和修改文件，想获得更强控制需要配置 permission mode 与 tool permissions。[12] Adversary Mode 是有价值的防线，但“独立 Agent 监视”仍不是形式化安全边界；真正高风险动作仍应由确定性策略和人工审批控制。</p>
+<h2 id="section-13-四个项目放在同一张表里">13. 四个项目放在同一张表里</h2>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>维度</th><th>OpenHands</th><th>mini-SWE-agent</th><th>Aider</th><th>Goose</th></tr></thead><tbody><tr><td>核心路线</td><td>多后端控制面与自动化</td><td>极简研究循环</td><td>Git 原生结对编程</td><td>MCP 可扩展本地 Agent</td></tr><tr><td>主要交互</td><td>Web/服务/自动化</td><td>CLI/批处理</td><td>CLI 人机协作</td><td>Desktop/CLI/Recipe</td></tr><tr><td>执行环境</td><td>本地、Docker、VM、云</td><td>可替换环境，核心含本地 shell</td><td>本地仓库</td><td>本地为主，工具由扩展提供</td></tr><tr><td>上下文优势</td><td>Conversation/Server 状态</td><td>模板与完整 trajectory</td><td>repo map 与显式文件集</td><td>session、context、skills、recall</td></tr><tr><td>恢复机制</td><td>持久会话与后端运行</td><td>trajectory、limit、可重跑</td><td>Git commit、<code>/undo</code></td><td>session resume、todo、recipe</td></tr><tr><td>验证重点</td><td>取决于 Agent/Automation 配置</td><td>环境 observation 与 benchmark</td><td>lint、test、Git diff</td><td>工具反馈与可配置工作流</td></tr><tr><td>权限重点</td><td>sandbox/部署隔离必须配置</td><td>使用者负责环境隔离</td><td>本地 Git 边界，命令仍需谨慎</td><td>permission、tool policy、allowlist</td></tr><tr><td>最佳场景</td><td>团队平台、异步自动化</td><td>研究、评测、专用循环</td><td>日常结对开发</td><td>通用本地 Agent 与 MCP 编排</td></tr><tr><td>主要代价</td><td>部署与治理复杂</td><td>生产能力需自行补齐</td><td>长任务编排较弱</td><td>扩展面带来信任与安全成本</td></tr></tbody></table></div>
+<p>这张表可以用来定位主要不确定性，再决定需要哪一类工具。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/harness-selection-matrix.svg" data-image-alt="Selection matrix" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/harness-selection-matrix.svg" width="1200" height="660" alt="Selection matrix" loading="lazy" decoding="async"></button><figcaption>图 5：项目选择应由自治时长、任务范围、治理需求和研究可解释性共同决定，而不是由单一热度指标决定。</figcaption></figure>
+<h2 id="section-14-怎么选-四种直接决策">14. 怎么选：四种直接决策</h2>
+<h3 id="section-14-1-我只想在本地与-agent-一起改代码">14.1 我只想在本地与 Agent 一起改代码</h3>
+<p>先选 <strong>Aider</strong>。它对 Git、上下文和逐步审查的默认设计最贴近日常工程。你仍需配置真实测试命令和 pre-commit 验证。</p>
+<h3 id="section-14-2-我要研究-harness-本身或做-benchmark">14.2 我要研究 Harness 本身或做 benchmark</h3>
+<p>先选 <strong>mini-SWE-agent</strong>。循环短、状态明确、trajectory 可保存，更适合做消融。引入较大的平台前，应确认额外机制是否会干扰研究变量。</p>
+<h3 id="section-14-3-我要让多个-agent-持续处理团队任务">14.3 我要让多个 Agent 持续处理团队任务</h3>
+<p>评估 <strong>OpenHands</strong>。这里的核心需求已不是一个更好的 CLI，而是后端、会话、触发器、运行位置和团队治理。</p>
+<h3 id="section-14-4-我要连接很多-mcp-并把流程复用给团队">14.4 我要连接很多 MCP，并把流程复用给团队</h3>
+<p>评估 <strong>Goose</strong>。但先建立 extension allowlist、权限模式和 secret 边界，再增加扩展数量。</p>
+<h2 id="section-15-从零搭自己的-harness-不要一上来造平台">15. 从零搭自己的 Harness：不要一上来造平台</h2>
+<p>可以按风险逐层建设。</p>
+<h3 id="第-0-层-先定义完成">第 0 层：先定义完成</h3>
+<p>把“做一个登录页”改成机器可检查的 contract：URL、关键交互、错误状态、视口、测试命令和交付物清单。没有完成定义，后面所有自动化都只是在加速不确定性。</p>
+<h3 id="第-1-层-建立真实反馈">第 1 层：建立真实反馈</h3>
+<p>至少让 Agent 看到命令退出码、测试报告、Git diff 和真实运行结果。Web 任务必须用浏览器；部署任务必须检查远端和线上资源。</p>
+<h3 id="第-2-层-加入恢复点">第 2 层：加入恢复点</h3>
+<p>使用小步提交、任务状态文件、幂等 action ID 和可恢复 checkpoint。失败时优先回到已知正确状态，而不是让模型在污染环境上继续补丁。</p>
+<h3 id="第-3-层-把高风险动作移出模型自觉">第 3 层：把高风险动作移出模型自觉</h3>
+<p>读操作、可撤销写操作和不可逆提交应有不同权限。删除、支付、发布和数据库迁移设置显式审批；能用 schema、ACL 和 transaction 保证的，不依赖自然语言提醒。</p>
+<h3 id="第-4-层-再增加并行-agent-与自动化">第 4 层：再增加并行 Agent 与自动化</h3>
+<p>只有当单循环的瓶颈已经被测量，才引入 subagent、队列、schedule、webhook 和团队控制面。否则你只是把不可观测的错误并行化。</p>
+<h2 id="section-16-harness-也需要测试">16. Harness 也需要测试</h2>
+<p>Harness 自己可能制造失败：</p>
+<ul><li>旧规则与新工具冲突；</li><li>context loader 把过时文档排在最新事实前；</li><li>verifier 只检查容易通过的路径；</li><li>permission hook 误拦截合法动作；</li><li>retry 把非幂等调用执行两次；</li><li>memory 固化了已经被用户纠正的假设；</li><li>observability 保存了不该记录的 secret。</li></ul>
+<p>所以 Harness 应有自己的评测集，至少包括：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>任务成功率
+虚假完成率
+未经授权动作率
+错误恢复成功率
+人工介入次数
+每个成功任务的成本和时延
+规则误拦截率
+跨会话状态一致性</code></pre></div>
+<p>不要只跑“模型能完成多少任务”，还要做 Harness 消融：关闭 repo map、移除浏览器验证、改变权限策略、替换模型，观察哪个机制真正贡献可靠性。</p>
+<h2 id="section-17-什么时候应该删除-harness">17. 什么时候应该删除 Harness</h2>
+<p>从真实失败长出的规则并不意味着永远保留。一个健康 Harness 也要持续做减法：</p>
+<ul><li>模型或工具已经稳定消除该失败；</li><li>两条规则可以被一个确定性 invariant 替代；</li><li>规则增加的 token、时延或误拦截超过收益；</li><li>项目结构变化后旧经验已失效；</li><li>某个 verifier 与 actor 高度相关，实际没有增加证据强度。</li></ul>
+<p><code>AGENTS.md</code> 的长度很难说明 Harness 的质量；更适合检查的是其中哪些约束可以执行，以及它们覆盖了哪些实际失败。</p>
+<h2 id="section-18-选型前需要回答的问题">18. 选型前需要回答的问题</h2>
+<p>Harness Engineering 将执行环境、反馈、验证和恢复作为可检验的系统设计问题。它迫使我们回答：</p>
+<ul><li>目标如何被外部检查？</li><li>模型能看见哪些真实环境反馈？</li><li>哪些动作必须由系统强制限制？</li><li>新上下文如何恢复任务，而不是猜测历史？</li><li>完成结论绑定了什么证据？</li><li>失败后怎样回到已知正确状态？</li><li>哪些经验值得固化，哪些规则已经过时？</li></ul>
+<p>我的理解是，模型提出下一步操作，Harness 检查操作范围、接收环境反馈、保存结果证据，并在失败后提供恢复路径。</p>
+<p>OpenHands、mini-SWE-agent、Aider 和 Goose 分别从平台、研究、结对与扩展生态回答了这个问题。选择其中任何一个之前，先写下自己的任务 contract、风险边界和验收证据。这些条件不明确时，增加 Skills、MCP 或 Agent 也难以判断任务是否完成。</p>
+<h2 id="参考资料">参考资料</h2>
+<ol><li>Mitchell Hashimoto, <a href="https://mitchellh.com/writing/my-ai-adoption-journey">My AI Adoption Journey</a>, 2026-02-05.</li><li>John Yang et al., <a href="https://arxiv.org/abs/2405.15793">SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering</a>, NeurIPS 2024.</li><li>Anthropic, <a href="https://www.anthropic.com/research/building-effective-agents">Building Effective AI Agents</a>, 2024-12-19. 该页面已注明工具生态自 2024 年以来发生变化，本文只采用其通用设计原则。</li><li>Anthropic, <a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents">Effective Harnesses for Long-Running Agents</a>, 2025-11-26.</li><li>OpenHands, <a href="https://github.com/OpenHands/OpenHands">Agent Canvas Repository and Architecture</a>, accessed 2026-08-14.</li><li>SWE-agent, <a href="https://github.com/SWE-agent/SWE-agent">SWE-agent Repository</a>, accessed 2026-08-14. README 当前建议优先使用 mini-SWE-agent。</li><li>SWE-agent, <a href="https://github.com/SWE-agent/mini-swe-agent">mini-SWE-agent Repository</a>, accessed 2026-08-14.</li><li>Aider, <a href="https://github.com/Aider-AI/aider">AI Pair Programming in Your Terminal</a>, accessed 2026-08-14.</li><li>Aider, <a href="https://aider.chat/docs/git.html">Git Integration</a>, <a href="https://aider.chat/docs/repomap.html">Repository Map</a>, <a href="https://aider.chat/docs/usage/lint-test.html">Linting and Testing</a>, accessed 2026-08-14.</li><li>Goose, <a href="https://github.com/aaif-goose/goose">Goose Repository</a>, accessed 2026-08-14.</li><li>Goose, <a href="https://goose-docs.ai/docs/guides/recipes/">Recipes</a>, <a href="https://goose-docs.ai/docs/getting-started/using-extensions/">Using Extensions</a>, <a href="https://goose-docs.ai/docs/guides/sessions/">Managing Sessions</a>, accessed 2026-08-14.</li><li>Goose, <a href="https://goose-docs.ai/docs/guides/security/">Security</a>, accessed 2026-08-14.</li></ol>
+<blockquote><strong>证据说明。</strong> 文中的项目 Star、release 与仓库活跃状态来自 GitHub API 在 2026-08-14 的快照，会随时间变化；产品能力以官方 README 和文档为依据；项目适用场景与局限属于本文的工程分析。附件中“6.7% 到 68.3%”“Terminal-Bench 2.0 从 30 名外到前 5”等说法未找到足以复核实验条件的原始来源，因此没有作为事实引用。</blockquote></div><script type="application/json" data-article-headings>[{"id":"section-1-阅读要点","level":2,"text":"1. 阅读要点"},{"id":"section-2-harness-为什么在今天变得重要","level":2,"text":"2. Harness 为什么在今天变得重要"},{"id":"section-3-先纠正一个过宽的定义","level":2,"text":"3. 先纠正一个过宽的定义"},{"id":"section-4-从-guides-sensors-到完整闭环","level":2,"text":"4. 从 Guides / Sensors 到完整闭环"},{"id":"section-4-1-guides-减少搜索空间","level":3,"text":"4.1 Guides：减少搜索空间"},{"id":"section-4-2-actuators-把意图变成受控动作","level":3,"text":"4.2 Actuators：把意图变成受控动作"},{"id":"section-4-3-state-让新一步知道旧一步发生了什么","level":3,"text":"4.3 State：让新一步知道旧一步发生了什么"},{"id":"section-4-4-sensors-把环境事实送回循环","level":3,"text":"4.4 Sensors：把环境事实送回循环"},{"id":"section-4-5-governor-决定哪些动作不能只靠模型自觉","level":3,"text":"4.5 Governor：决定哪些动作不能只靠模型自觉"},{"id":"section-5-四类常见失败-根因不都在-后置缺位","level":2,"text":"5. 四类常见失败，根因不都在“后置缺位”"},{"id":"section-6-prompt-skill-mcp-与-harness-到底是什么关系","level":2,"text":"6. Prompt、Skill、MCP 与 Harness 到底是什么关系"},{"id":"section-6-1-prompt-是策略先验-不是权限系统","level":3,"text":"6.1 Prompt 是策略先验，不是权限系统"},{"id":"section-6-2-skill-是可按需装载的过程知识","level":3,"text":"6.2 Skill 是可按需装载的过程知识"},{"id":"section-6-3-mcp-是工具协议-不是可靠性本身","level":3,"text":"6.3 MCP 是工具协议，不是可靠性本身"},{"id":"section-6-4-subagent-是并行执行方式-不是独立真相","level":3,"text":"6.4 Subagent 是并行执行方式，不是独立真相"},{"id":"section-7-验证-agent-为什么不等于验证","level":2,"text":"7. “验证 Agent”为什么不等于验证"},{"id":"section-8-评价一个-harness-项目-应该看什么","level":2,"text":"8. 评价一个 Harness 项目，应该看什么"},{"id":"section-9-openhands-平台与控制面路线","level":2,"text":"9. OpenHands：平台与控制面路线"},{"id":"section-9-1-它体现了什么-harness-思想","level":3,"text":"9.1 它体现了什么 Harness 思想"},{"id":"section-9-2-最适合谁","level":3,"text":"9.2 最适合谁"},{"id":"section-9-3-主要边界","level":3,"text":"9.3 主要边界"},{"id":"section-10-mini-swe-agent-极简-可读与可复现实验路线","level":2,"text":"10. mini-SWE-agent：极简、可读与可复现实验路线"},{"id":"section-10-1-它体现了什么-harness-思想","level":3,"text":"10.1 它体现了什么 Harness 思想"},{"id":"section-10-2-最适合谁","level":3,"text":"10.2 最适合谁"},{"id":"section-10-3-主要边界","level":3,"text":"10.3 主要边界"},{"id":"section-11-aider-git-原生的人机结对路线","level":2,"text":"11. Aider：Git 原生的人机结对路线"},{"id":"section-11-1-它体现了什么-harness-思想","level":3,"text":"11.1 它体现了什么 Harness 思想"},{"id":"section-11-2-最适合谁","level":3,"text":"11.2 最适合谁"},{"id":"section-11-3-主要边界","level":3,"text":"11.3 主要边界"},{"id":"section-12-goose-mcp-recipes-与本地通用-agent-路线","level":2,"text":"12. Goose：MCP、Recipes 与本地通用 Agent 路线"},{"id":"section-12-1-它体现了什么-harness-思想","level":3,"text":"12.1 它体现了什么 Harness 思想"},{"id":"section-12-2-最适合谁","level":3,"text":"12.2 最适合谁"},{"id":"section-12-3-主要边界","level":3,"text":"12.3 主要边界"},{"id":"section-13-四个项目放在同一张表里","level":2,"text":"13. 四个项目放在同一张表里"},{"id":"section-14-怎么选-四种直接决策","level":2,"text":"14. 怎么选：四种直接决策"},{"id":"section-14-1-我只想在本地与-agent-一起改代码","level":3,"text":"14.1 我只想在本地与 Agent 一起改代码"},{"id":"section-14-2-我要研究-harness-本身或做-benchmark","level":3,"text":"14.2 我要研究 Harness 本身或做 benchmark"},{"id":"section-14-3-我要让多个-agent-持续处理团队任务","level":3,"text":"14.3 我要让多个 Agent 持续处理团队任务"},{"id":"section-14-4-我要连接很多-mcp-并把流程复用给团队","level":3,"text":"14.4 我要连接很多 MCP，并把流程复用给团队"},{"id":"section-15-从零搭自己的-harness-不要一上来造平台","level":2,"text":"15. 从零搭自己的 Harness：不要一上来造平台"},{"id":"第-0-层-先定义完成","level":3,"text":"第 0 层：先定义完成"},{"id":"第-1-层-建立真实反馈","level":3,"text":"第 1 层：建立真实反馈"},{"id":"第-2-层-加入恢复点","level":3,"text":"第 2 层：加入恢复点"},{"id":"第-3-层-把高风险动作移出模型自觉","level":3,"text":"第 3 层：把高风险动作移出模型自觉"},{"id":"第-4-层-再增加并行-agent-与自动化","level":3,"text":"第 4 层：再增加并行 Agent 与自动化"},{"id":"section-16-harness-也需要测试","level":2,"text":"16. Harness 也需要测试"},{"id":"section-17-什么时候应该删除-harness","level":2,"text":"17. 什么时候应该删除 Harness"},{"id":"section-18-选型前需要回答的问题","level":2,"text":"18. 选型前需要回答的问题"},{"id":"参考资料","level":2,"text":"参考资料"}]</script></article></main>
   <footer class="footer"><div class="footer-inner">© 2026 Tianyu Xie.</div></footer>
 </body>
 </html>

@@ -4,15 +4,13 @@
 
 用户目标可能随对话改变，语音和视频只提供部分证据，工具调用也有延迟和外部后果。因此，模型需要持续更新目标判断，在信息不足时保留多个假设，再决定等待、澄清、回答或检索。它还需要跟踪工具执行与实际播放位置，并在用户纠正后修订计划。
 
-因此，我对交互式 Omni Model 的定义是：
-
-**它不是带语音输入输出的聊天模型，而是运行在连续时间、部分可观测环境中的 Agent Policy。自然接话、倾听、打断和回复只是该 policy 的可观察动作。**
+因此，我把交互式 Omni Model 看作在连续时间中选择动作的策略模型：根据当前可获得的证据，决定倾听、接话、打断、回复或调用工具。自然对话只是这些决策的一部分表现。
 
 更完整的研究问题可以写成：如何训练一个以音频、视频、工具事件、记忆读取和播放状态为观测，以语音、对话控制、工具调用、工具撤销和记忆操作为动作的流式策略模型？
 
 ![Continuous-time policy loop](/images/blog/continuous-agent-policy-loop.svg "图 1：交互式 omni model 持续接收人、环境、工具和播放事件，在统一状态上并行决定语音、控制、工具和记忆动作。")
 
-## 1. 不是消灭模块，而是消灭推理关键路径上的串行同步点
+## 1. 减少推理关键路径上的串行等待
 
 传统级联语音 Agent 的延迟通常来自一组同步 barrier：
 
@@ -178,7 +176,7 @@ Teacher 输出 partial intent、slot belief、候选 action、最早合法执行
 - **低频 action token**：只在事件发生时输出 `CALL_TOOL`、`CANCEL_TOOL`、`ASK_CLARIFY`、`MEMORY_WRITE`、`PREPARE_COMMIT`、`COMMIT`。
 - **更低频 compact plan**：输出 `need_order_id`、`safe_to_prefetch`、`await_confirmation`、`tool_result_conflict` 等短锚点，而非长自然语言独白。
 
-## 6. 训练数据的核心不是“对话”，而是时间对齐的 Agent 轨迹
+## 6. 训练数据需要时间对齐的 Agent 轨迹
 
 普通客服文本日志缺少连续时间 policy 最关键的信息：谁何时开始说、重叠发生在哪、停顿是否意味着结束、工具最早何时可调用、用户何时纠正参数、助手哪些内容已经真正播放、哪些只在 server buffer 中生成。
 
@@ -358,9 +356,9 @@ early action metric 也不能只算越早越高。需要同时报告 early tool-
 
 最小论文比较至少包含：同步级联 Agent、异步级联 Agent、full-duplex base + 外部工具 controller、共享 backbone + action channel，以及加入 latent distillation / critical-window RL / playback rollback 的完整模型。这样才能知道收益来自模型架构、异步系统，还是数据与训练。
 
-## 14. 最有价值的研究贡献是什么
+## 14. 可以检验的研究假设
 
-“给全双工语音模型加 function calling”本身不够强。更有价值的课题是：
+加入 function calling 之后，还需要研究工具时机与对话状态如何共同学习：
 
 **将 belief update、action scheduling、conversation control 和 speech generation 放到同一连续时间策略中，通过离线级联 Teacher 蒸馏与局部时序 RL，使模型在 partial observation 下提前行动、持续修正并安全回滚。**
 
@@ -377,11 +375,11 @@ early action metric 也不能只算越早越高。需要同时报告 early tool-
 
 ## 15. 结论
 
-交互式 Omni Model 的上限不由声音多自然决定，而由它是否具备 Agentic state 和 policy 决定。自然回复、停顿、附和、倾听与打断只是最终表现；内在本质是持续估计用户目标、维护不确定 belief、异步安排工具、跟踪执行和播放状态，并在新证据到来时撤销旧计划。
+声音自然度不足以衡量交互式 Omni Model 的任务能力。还需要检查它能否持续估计用户目标、维护不确定 belief、异步安排工具、跟踪执行和播放状态，并在新证据到来时撤销旧计划。
 
 因此，下一代模型不应只是 Speech-to-Speech，而应是 Speech-Language-Action。它可以保留模块化工具与存储，但必须消除推理关键路径上的同步 barrier；它可以使用强级联 Agent，但主要将其作为离线 Teacher；它可以提前思考和检索，但必须用可撤销 action、两阶段提交和 playback-aware rollback 约束现实后果。
 
-一句话总结：**不要把现有 Agent pipeline 原样接到实时语音模型后面，而要用它生成连续时间专家轨迹，再把“理解、规划、行动、说话、停止与回滚”蒸馏进一个共享状态、多通道输出的流式 policy。**
+一个可尝试的训练路线，是先用现有 Agent pipeline 生成连续时间专家轨迹，再将理解、规划、行动、说话、停止与回滚蒸馏到共享状态、多通道输出的流式策略中。前文的假设需要分别验证，不能只凭整体演示判断有效。
 
 ## 参考资料
 

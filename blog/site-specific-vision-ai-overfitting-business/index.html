@@ -4,25 +4,418 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>现场专用视觉模型：特化、部署与商业验证 | Tianyu Xie</title>
-  <meta name="description" content="分析面向固定摄像头的专用视觉模型，讨论自动化部署、现场成本、分布漂移、隐私与试点验收。">
+  <meta name="description" content="固定摄像头场景可以用更小的专用视觉模型，但交付成本、分布漂移与误报率仍需通过现场试点检验。">
   <link rel="icon" href="/images/profile.png">
-  <link rel="stylesheet" href="/site.css?v=20261012-unified">
-  <script src="/blog/blog-data.js?v=20261012-unified" defer></script>
-  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-unified" defer></script>
+  <link rel="stylesheet" href="/site.css?v=20261012-stable">
+  <script src="/blog/blog-data.js?v=20261012-stable" defer></script>
+  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-stable" defer></script>
 </head>
 <body class="blog-post" data-post-slug="site-specific-vision-ai-overfitting-business">
-  <header class="masthead"><nav class="nav" aria-label="Primary navigation">
-    <a class="home-brand" href="/">Homepage</a>
-    <a href="/#about-me">About Me</a>
-    <a href="/#news">News</a>
-    <a href="/publications/">Publications</a>
-    <a href="/projects/">Projects</a>
-    <a href="/#education">Education</a>
-    <a href="/#service">Academic Service</a>
-    <a aria-current="page" href="/blog/">Research Notes</a>
-    <a href="/cv/">CV</a>
-  </nav></header>
-  <main class="shell blog-shell"><aside class="sidebar"><section class="profile-card"><img class="avatar" src="/images/profile.png" alt="Tianyu Xie profile photo"><h2 class="name">Blog</h2><p class="bio"><a href="/blog/">Back to Blog</a></p></section></aside><article class="content"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a><span aria-hidden="true">/</span><span data-breadcrumb-section>Article</span></nav><h1 class="page-title" data-post-title>现场专用视觉模型：特化、部署与商业验证</h1><p class="lead" data-post-meta>Markdown article</p><div class="markdown-body" data-markdown-article></div></article></main>
+  <header class="masthead"><nav class="nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a aria-current="page" href="/blog/">Notes</a><a href="/cv/">CV</a></nav></header>
+  <main class="shell blog-shell"><aside class="sidebar" aria-label="Personal profile"><section class="profile-card">
+        <img class="avatar" src="/images/profile.png" alt="Portrait of Tianyu Xie" width="170" height="170">
+        <h2 class="name">Tianyu Xie <span lang="zh-CN">谢天宇</span></h2>
+        <p class="affiliation">Xiamen University</p><p class="bio">M.S. student · MAC Lab</p>
+        <ul class="profile-links">
+          <li><a href="mailto:teery@stu.xmu.edu.cn">Email</a></li><li><a href="https://github.com/teeryxie">GitHub</a></li>
+          <li><a href="https://scholar.google.com/citations?hl=en&amp;user=_vZWAnkAAAAJ">Google Scholar</a></li><li><a href="https://openreview.net/profile?id=~Tianyu_Xie2">OpenReview</a></li>
+        </ul></section><nav class="article-toc" aria-label="本文目录"><strong>本文目录</strong><div class="toc-links"><a class="toc-link toc-level-2" href="#section-1-先看原项目到底做了什么" data-toc-id="section-1-先看原项目到底做了什么">1. 先看原项目到底做了什么</a>
+<a class="toc-link toc-level-2" href="#section-2-为什么-只管一个车库-会让问题突然简单" data-toc-id="section-2-为什么-只管一个车库-会让问题突然简单">2. 为什么“只管一个车库”会让问题突然简单</a>
+<a class="toc-link toc-level-3" href="#section-2-1-noscope-对专用化的实验" data-toc-id="section-2-1-noscope-对专用化的实验">2.1 NoScope 对专用化的实验</a>
+<a class="toc-link toc-level-3" href="#section-2-2-chameleon-与-ekya-又补上了配置和漂移" data-toc-id="section-2-2-chameleon-与-ekya-又补上了配置和漂移">2.2 Chameleon 与 Ekya 又补上了配置和漂移</a>
+<a class="toc-link toc-level-2" href="#section-3-overfit-就完了-是对的-但要说得更精确" data-toc-id="section-3-overfit-就完了-是对的-但要说得更精确">3. “Overfit 就完了”是对的，但要说得更精确</a>
+<a class="toc-link toc-level-3" href="#section-3-1-坏的-overfitting" data-toc-id="section-3-1-坏的-overfitting">3.1 坏的 overfitting</a>
+<a class="toc-link toc-level-3" href="#section-3-2-好的-specialization" data-toc-id="section-3-2-好的-specialization">3.2 好的 specialization</a>
+<a class="toc-link toc-level-2" href="#section-4-现场定制的服务成本" data-toc-id="section-4-现场定制的服务成本">4. 现场定制的服务成本</a>
+<a class="toc-link toc-level-2" href="#section-5-site-specific-model-factory-的交付流程" data-toc-id="section-5-site-specific-model-factory-的交付流程">5. Site-Specific Model Factory 的交付流程</a>
+<a class="toc-link toc-level-3" href="#section-5-1-foundation-model-是教师和开发工具" data-toc-id="section-5-1-foundation-model-是教师和开发工具">5.1 Foundation model 是教师和开发工具</a>
+<a class="toc-link toc-level-3" href="#section-5-2-site-specialist-是生产传感器" data-toc-id="section-5-2-site-specialist-是生产传感器">5.2 Site specialist 是生产传感器</a>
+<a class="toc-link toc-level-3" href="#section-5-3-agent-是模型工厂的操作系统" data-toc-id="section-5-3-agent-是模型工厂的操作系统">5.3 Agent 是模型工厂的操作系统</a>
+<a class="toc-link toc-level-2" href="#section-6-最适合的商业任务长什么样" data-toc-id="section-6-最适合的商业任务长什么样">6. 最适合的商业任务长什么样</a>
+<a class="toc-link toc-level-3" href="#section-6-1-适合首先验证的任务" data-toc-id="section-6-1-适合首先验证的任务">6.1 适合首先验证的任务</a>
+<a class="toc-link toc-level-3" href="#section-6-2-超市有没有人抽烟-为什么不能一句话说简单" data-toc-id="section-6-2-超市有没有人抽烟-为什么不能一句话说简单">6.2 “超市有没有人抽烟”为什么不能一句话说简单</a>
+<a class="toc-link toc-level-2" href="#section-7-商业机会矩阵-不要从-最酷-开始-要从-最容易验收-开始" data-toc-id="section-7-商业机会矩阵-不要从-最酷-开始-要从-最容易验收-开始">7. 商业机会矩阵：不要从“最酷”开始，要从“最容易验收”开始</a>
+<a class="toc-link toc-level-2" href="#section-8-商业模式-卖结果-不卖-一个模型" data-toc-id="section-8-商业模式-卖结果-不卖-一个模型">8. 商业模式：卖结果，不卖“一个模型”</a>
+<a class="toc-link toc-level-3" href="#section-8-1-一次性费用" data-toc-id="section-8-1-一次性费用">8.1 一次性费用</a>
+<a class="toc-link toc-level-3" href="#section-8-2-经常性收入" data-toc-id="section-8-2-经常性收入">8.2 经常性收入</a>
+<a class="toc-link toc-level-3" href="#section-8-3-结果型定价" data-toc-id="section-8-3-结果型定价">8.3 结果型定价</a>
+<a class="toc-link toc-level-2" href="#section-9-unit-economics-agent-只降低训练成本-不会自动消灭现场成本" data-toc-id="section-9-unit-economics-agent-只降低训练成本-不会自动消灭现场成本">9. Unit Economics：Agent 只降低训练成本，不会自动消灭现场成本</a>
+<a class="toc-link toc-level-2" href="#section-10-除准确率外-还要测量每日误报数" data-toc-id="section-10-除准确率外-还要测量每日误报数">10. 除准确率外，还要测量每日误报数</a>
+<a class="toc-link toc-level-2" href="#section-11-数据飞轮应该逐现场闭环-而不是把所有客户视频混成一锅" data-toc-id="section-11-数据飞轮应该逐现场闭环-而不是把所有客户视频混成一锅">11. 数据飞轮应该逐现场闭环，而不是把所有客户视频混成一锅</a>
+<a class="toc-link toc-level-3" href="#section-11-1-site-private-loop" data-toc-id="section-11-1-site-private-loop">11.1 Site-private loop</a>
+<a class="toc-link toc-level-3" href="#section-11-2-cross-site-reusable-priors" data-toc-id="section-11-2-cross-site-reusable-priors">11.2 Cross-site reusable priors</a>
+<a class="toc-link toc-level-2" href="#section-12-自动交付与运营数据的复用" data-toc-id="section-12-自动交付与运营数据的复用">12. 自动交付与运营数据的复用</a>
+<a class="toc-link toc-level-3" href="#section-12-1-任务定义资产" data-toc-id="section-12-1-任务定义资产">12.1 任务定义资产</a>
+<a class="toc-link toc-level-3" href="#section-12-2-自动化闭环" data-toc-id="section-12-2-自动化闭环">12.2 自动化闭环</a>
+<a class="toc-link toc-level-3" href="#section-12-3-运维和漂移数据" data-toc-id="section-12-3-运维和漂移数据">12.3 运维和漂移数据</a>
+<a class="toc-link toc-level-3" href="#section-12-4-业务集成" data-toc-id="section-12-4-业务集成">12.4 业务集成</a>
+<a class="toc-link toc-level-3" href="#section-12-5-信任与验收" data-toc-id="section-12-5-信任与验收">12.5 信任与验收</a>
+<a class="toc-link toc-level-2" href="#section-13-产品架构-policy-shared-perception-specialized" data-toc-id="section-13-产品架构-policy-shared-perception-specialized">13. 产品架构：Policy shared, perception specialized</a>
+<a class="toc-link toc-level-2" href="#section-14-edge-部署为什么重要-但不是所有场景都必须-esp32" data-toc-id="section-14-edge-部署为什么重要-但不是所有场景都必须-esp32">14. Edge 部署为什么重要，但不是所有场景都必须 ESP32</a>
+<a class="toc-link toc-level-2" href="#section-15-失败模式-这条生意最容易死在哪里" data-toc-id="section-15-失败模式-这条生意最容易死在哪里">15. 失败模式：这条生意最容易死在哪里</a>
+<a class="toc-link toc-level-3" href="#section-15-1-demo-accuracy-很高-真实-positive-太少" data-toc-id="section-15-1-demo-accuracy-很高-真实-positive-太少">15.1 Demo accuracy 很高，真实 positive 太少</a>
+<a class="toc-link toc-level-3" href="#section-15-2-每个站点都需要专家救火" data-toc-id="section-15-2-每个站点都需要专家救火">15.2 每个站点都需要专家救火</a>
+<a class="toc-link toc-level-3" href="#section-15-3-相机不是传感器级安装" data-toc-id="section-15-3-相机不是传感器级安装">15.3 相机不是传感器级安装</a>
+<a class="toc-link toc-level-3" href="#section-15-4-误报摧毁行为闭环" data-toc-id="section-15-4-误报摧毁行为闭环">15.4 误报摧毁行为闭环</a>
+<a class="toc-link toc-level-3" href="#section-15-5-把人的行为当作机器状态" data-toc-id="section-15-5-把人的行为当作机器状态">15.5 把人的行为当作机器状态</a>
+<a class="toc-link toc-level-3" href="#section-15-6-销售承诺超出-site-envelope" data-toc-id="section-15-6-销售承诺超出-site-envelope">15.6 销售承诺超出 site envelope</a>
+<a class="toc-link toc-level-2" href="#section-16-用-30-天试点检查交付与成本" data-toc-id="section-16-用-30-天试点检查交付与成本">16. 用 30 天试点检查交付与成本</a>
+<a class="toc-link toc-level-3" href="#section-16-1-场景选择" data-toc-id="section-16-1-场景选择">16.1 场景选择</a>
+<a class="toc-link toc-level-3" href="#section-16-2-第一周-只验证数据和标签" data-toc-id="section-16-2-第一周-只验证数据和标签">16.2 第一周：只验证数据和标签</a>
+<a class="toc-link toc-level-3" href="#section-16-3-第二周-训练-specialist-做时间后置测试" data-toc-id="section-16-3-第二周-训练-specialist-做时间后置测试">16.3 第二周：训练 specialist，做时间后置测试</a>
+<a class="toc-link toc-level-3" href="#section-16-4-第三周-shadow-deployment" data-toc-id="section-16-4-第三周-shadow-deployment">16.4 第三周：Shadow deployment</a>
+<a class="toc-link toc-level-3" href="#section-16-5-第四周-有限真实联动" data-toc-id="section-16-5-第四周-有限真实联动">16.5 第四周：有限真实联动</a>
+<a class="toc-link toc-level-3" href="#section-16-6-go-no-go-标准" data-toc-id="section-16-6-go-no-go-标准">16.6 Go / No-Go 标准</a>
+<a class="toc-link toc-level-2" href="#section-17-更大的商业含义-ai-把-非标-重新变成一种标准化能力" data-toc-id="section-17-更大的商业含义-ai-把-非标-重新变成一种标准化能力">17. 更大的商业含义：AI 把“非标”重新变成一种标准化能力</a>
+<a class="toc-link toc-level-2" href="#section-18-与-omni-和-agent-研究的关系" data-toc-id="section-18-与-omni-和-agent-研究的关系">18. 与 Omni 和 Agent 研究的关系</a>
+<a class="toc-link toc-level-2" href="#section-19-商业判断仍需哪些证据" data-toc-id="section-19-商业判断仍需哪些证据">19. 商业判断仍需哪些证据</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></div></nav></aside><article class="content"><header class="inner-hero article-hero"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a></nav><h1 class="page-title" data-post-title>现场专用视觉模型：特化、部署与商业验证</h1><p class="lead" data-post-meta>2026-08 · 研究笔记</p></header><details class="mobile-toc"><summary>本文目录</summary><nav aria-label="移动端本文目录"><a class="toc-link toc-level-2" href="#section-1-先看原项目到底做了什么" data-toc-id="section-1-先看原项目到底做了什么">1. 先看原项目到底做了什么</a>
+<a class="toc-link toc-level-2" href="#section-2-为什么-只管一个车库-会让问题突然简单" data-toc-id="section-2-为什么-只管一个车库-会让问题突然简单">2. 为什么“只管一个车库”会让问题突然简单</a>
+<a class="toc-link toc-level-3" href="#section-2-1-noscope-对专用化的实验" data-toc-id="section-2-1-noscope-对专用化的实验">2.1 NoScope 对专用化的实验</a>
+<a class="toc-link toc-level-3" href="#section-2-2-chameleon-与-ekya-又补上了配置和漂移" data-toc-id="section-2-2-chameleon-与-ekya-又补上了配置和漂移">2.2 Chameleon 与 Ekya 又补上了配置和漂移</a>
+<a class="toc-link toc-level-2" href="#section-3-overfit-就完了-是对的-但要说得更精确" data-toc-id="section-3-overfit-就完了-是对的-但要说得更精确">3. “Overfit 就完了”是对的，但要说得更精确</a>
+<a class="toc-link toc-level-3" href="#section-3-1-坏的-overfitting" data-toc-id="section-3-1-坏的-overfitting">3.1 坏的 overfitting</a>
+<a class="toc-link toc-level-3" href="#section-3-2-好的-specialization" data-toc-id="section-3-2-好的-specialization">3.2 好的 specialization</a>
+<a class="toc-link toc-level-2" href="#section-4-现场定制的服务成本" data-toc-id="section-4-现场定制的服务成本">4. 现场定制的服务成本</a>
+<a class="toc-link toc-level-2" href="#section-5-site-specific-model-factory-的交付流程" data-toc-id="section-5-site-specific-model-factory-的交付流程">5. Site-Specific Model Factory 的交付流程</a>
+<a class="toc-link toc-level-3" href="#section-5-1-foundation-model-是教师和开发工具" data-toc-id="section-5-1-foundation-model-是教师和开发工具">5.1 Foundation model 是教师和开发工具</a>
+<a class="toc-link toc-level-3" href="#section-5-2-site-specialist-是生产传感器" data-toc-id="section-5-2-site-specialist-是生产传感器">5.2 Site specialist 是生产传感器</a>
+<a class="toc-link toc-level-3" href="#section-5-3-agent-是模型工厂的操作系统" data-toc-id="section-5-3-agent-是模型工厂的操作系统">5.3 Agent 是模型工厂的操作系统</a>
+<a class="toc-link toc-level-2" href="#section-6-最适合的商业任务长什么样" data-toc-id="section-6-最适合的商业任务长什么样">6. 最适合的商业任务长什么样</a>
+<a class="toc-link toc-level-3" href="#section-6-1-适合首先验证的任务" data-toc-id="section-6-1-适合首先验证的任务">6.1 适合首先验证的任务</a>
+<a class="toc-link toc-level-3" href="#section-6-2-超市有没有人抽烟-为什么不能一句话说简单" data-toc-id="section-6-2-超市有没有人抽烟-为什么不能一句话说简单">6.2 “超市有没有人抽烟”为什么不能一句话说简单</a>
+<a class="toc-link toc-level-2" href="#section-7-商业机会矩阵-不要从-最酷-开始-要从-最容易验收-开始" data-toc-id="section-7-商业机会矩阵-不要从-最酷-开始-要从-最容易验收-开始">7. 商业机会矩阵：不要从“最酷”开始，要从“最容易验收”开始</a>
+<a class="toc-link toc-level-2" href="#section-8-商业模式-卖结果-不卖-一个模型" data-toc-id="section-8-商业模式-卖结果-不卖-一个模型">8. 商业模式：卖结果，不卖“一个模型”</a>
+<a class="toc-link toc-level-3" href="#section-8-1-一次性费用" data-toc-id="section-8-1-一次性费用">8.1 一次性费用</a>
+<a class="toc-link toc-level-3" href="#section-8-2-经常性收入" data-toc-id="section-8-2-经常性收入">8.2 经常性收入</a>
+<a class="toc-link toc-level-3" href="#section-8-3-结果型定价" data-toc-id="section-8-3-结果型定价">8.3 结果型定价</a>
+<a class="toc-link toc-level-2" href="#section-9-unit-economics-agent-只降低训练成本-不会自动消灭现场成本" data-toc-id="section-9-unit-economics-agent-只降低训练成本-不会自动消灭现场成本">9. Unit Economics：Agent 只降低训练成本，不会自动消灭现场成本</a>
+<a class="toc-link toc-level-2" href="#section-10-除准确率外-还要测量每日误报数" data-toc-id="section-10-除准确率外-还要测量每日误报数">10. 除准确率外，还要测量每日误报数</a>
+<a class="toc-link toc-level-2" href="#section-11-数据飞轮应该逐现场闭环-而不是把所有客户视频混成一锅" data-toc-id="section-11-数据飞轮应该逐现场闭环-而不是把所有客户视频混成一锅">11. 数据飞轮应该逐现场闭环，而不是把所有客户视频混成一锅</a>
+<a class="toc-link toc-level-3" href="#section-11-1-site-private-loop" data-toc-id="section-11-1-site-private-loop">11.1 Site-private loop</a>
+<a class="toc-link toc-level-3" href="#section-11-2-cross-site-reusable-priors" data-toc-id="section-11-2-cross-site-reusable-priors">11.2 Cross-site reusable priors</a>
+<a class="toc-link toc-level-2" href="#section-12-自动交付与运营数据的复用" data-toc-id="section-12-自动交付与运营数据的复用">12. 自动交付与运营数据的复用</a>
+<a class="toc-link toc-level-3" href="#section-12-1-任务定义资产" data-toc-id="section-12-1-任务定义资产">12.1 任务定义资产</a>
+<a class="toc-link toc-level-3" href="#section-12-2-自动化闭环" data-toc-id="section-12-2-自动化闭环">12.2 自动化闭环</a>
+<a class="toc-link toc-level-3" href="#section-12-3-运维和漂移数据" data-toc-id="section-12-3-运维和漂移数据">12.3 运维和漂移数据</a>
+<a class="toc-link toc-level-3" href="#section-12-4-业务集成" data-toc-id="section-12-4-业务集成">12.4 业务集成</a>
+<a class="toc-link toc-level-3" href="#section-12-5-信任与验收" data-toc-id="section-12-5-信任与验收">12.5 信任与验收</a>
+<a class="toc-link toc-level-2" href="#section-13-产品架构-policy-shared-perception-specialized" data-toc-id="section-13-产品架构-policy-shared-perception-specialized">13. 产品架构：Policy shared, perception specialized</a>
+<a class="toc-link toc-level-2" href="#section-14-edge-部署为什么重要-但不是所有场景都必须-esp32" data-toc-id="section-14-edge-部署为什么重要-但不是所有场景都必须-esp32">14. Edge 部署为什么重要，但不是所有场景都必须 ESP32</a>
+<a class="toc-link toc-level-2" href="#section-15-失败模式-这条生意最容易死在哪里" data-toc-id="section-15-失败模式-这条生意最容易死在哪里">15. 失败模式：这条生意最容易死在哪里</a>
+<a class="toc-link toc-level-3" href="#section-15-1-demo-accuracy-很高-真实-positive-太少" data-toc-id="section-15-1-demo-accuracy-很高-真实-positive-太少">15.1 Demo accuracy 很高，真实 positive 太少</a>
+<a class="toc-link toc-level-3" href="#section-15-2-每个站点都需要专家救火" data-toc-id="section-15-2-每个站点都需要专家救火">15.2 每个站点都需要专家救火</a>
+<a class="toc-link toc-level-3" href="#section-15-3-相机不是传感器级安装" data-toc-id="section-15-3-相机不是传感器级安装">15.3 相机不是传感器级安装</a>
+<a class="toc-link toc-level-3" href="#section-15-4-误报摧毁行为闭环" data-toc-id="section-15-4-误报摧毁行为闭环">15.4 误报摧毁行为闭环</a>
+<a class="toc-link toc-level-3" href="#section-15-5-把人的行为当作机器状态" data-toc-id="section-15-5-把人的行为当作机器状态">15.5 把人的行为当作机器状态</a>
+<a class="toc-link toc-level-3" href="#section-15-6-销售承诺超出-site-envelope" data-toc-id="section-15-6-销售承诺超出-site-envelope">15.6 销售承诺超出 site envelope</a>
+<a class="toc-link toc-level-2" href="#section-16-用-30-天试点检查交付与成本" data-toc-id="section-16-用-30-天试点检查交付与成本">16. 用 30 天试点检查交付与成本</a>
+<a class="toc-link toc-level-3" href="#section-16-1-场景选择" data-toc-id="section-16-1-场景选择">16.1 场景选择</a>
+<a class="toc-link toc-level-3" href="#section-16-2-第一周-只验证数据和标签" data-toc-id="section-16-2-第一周-只验证数据和标签">16.2 第一周：只验证数据和标签</a>
+<a class="toc-link toc-level-3" href="#section-16-3-第二周-训练-specialist-做时间后置测试" data-toc-id="section-16-3-第二周-训练-specialist-做时间后置测试">16.3 第二周：训练 specialist，做时间后置测试</a>
+<a class="toc-link toc-level-3" href="#section-16-4-第三周-shadow-deployment" data-toc-id="section-16-4-第三周-shadow-deployment">16.4 第三周：Shadow deployment</a>
+<a class="toc-link toc-level-3" href="#section-16-5-第四周-有限真实联动" data-toc-id="section-16-5-第四周-有限真实联动">16.5 第四周：有限真实联动</a>
+<a class="toc-link toc-level-3" href="#section-16-6-go-no-go-标准" data-toc-id="section-16-6-go-no-go-标准">16.6 Go / No-Go 标准</a>
+<a class="toc-link toc-level-2" href="#section-17-更大的商业含义-ai-把-非标-重新变成一种标准化能力" data-toc-id="section-17-更大的商业含义-ai-把-非标-重新变成一种标准化能力">17. 更大的商业含义：AI 把“非标”重新变成一种标准化能力</a>
+<a class="toc-link toc-level-2" href="#section-18-与-omni-和-agent-研究的关系" data-toc-id="section-18-与-omni-和-agent-研究的关系">18. 与 Omni 和 Agent 研究的关系</a>
+<a class="toc-link toc-level-2" href="#section-19-商业判断仍需哪些证据" data-toc-id="section-19-商业判断仍需哪些证据">19. 商业判断仍需哪些证据</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></nav></details><div class="markdown-body" data-markdown-article data-rendered="true"><blockquote><a href="https://yage.ai/esp32-garage-door-ai.html">《10小时攻关，半小时 Dev Time：在指甲盖大小的单片机上跑神经网络识别车库门》</a> 展示了现场专用视觉的工程思路：与覆盖多场景的通用模型相比，固定摄像头的模型可以针对有限环境进行优化。本文分析编码 Agent 自动化数据处理、训练与部署的潜力，以及定制成本、分布漂移和现场验收仍需验证的条件。</blockquote>
+<p>通用机器视觉模型需要适应不同车库、相机、光线、遮挡和安装角度。维持这种跨现场的泛化能力，往往需要更多数据和计算；本文沿用 <strong>generalization tax</strong> 来指代这部分成本。</p>
+<p>但一个真实客户通常并不需要“理解世界”。他只需要知道：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>这个车库门现在关没关？
+这条消防通道有没有被堵住？
+这个冷柜门是否超过两分钟没有关闭？
+这个固定工位的工人有没有佩戴指定护具？
+这个卸货口是否出现了不该出现的人或物？</code></pre></div>
+<p>如果摄像头固定、任务固定、动作固定，问题空间会骤然缩小。模型不需要对所有车库泛化，只要对<strong>这个机位未来会出现的变化</strong>泛化。</p>
+<p>我的商业判断是：</p>
+<blockquote><strong>AI Agent 正在把机器视觉从“卖一个通用模型”改造成“自动为每个现场生产一个专用传感器”。真正可规模化的产品不是某个识别算法，而是 Site-Specific Model Factory。</strong></blockquote>
+<p>这篇文章从这个车库门实验出发，讨论为什么这个机会现在才出现、哪些任务真的适合、商业模型怎样成立、护城河在哪里，以及怎样用一个最小试点验证它是不是生意，而不只是一个漂亮 Demo。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/site-vision-generalization-tax.svg" data-image-alt="Generalization tax versus site-specific scope" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/site-vision-generalization-tax.svg" width="1200" height="690" alt="Generalization tax versus site-specific scope" loading="lazy" decoding="async"></button><figcaption>图 1：固定现场主动缩小部署分布，把通用模型的泛化税换成可管理的现场校准与漂移维护。</figcaption></figure>
+<h2 id="section-1-先看原项目到底做了什么">1. 先看原项目到底做了什么</h2>
+<p>原文作者要解决的是一个具体问题：家里的车库门没有磁控传感器，曾经因为忘关而整夜敞开。作者使用一块带摄像头、Wi-Fi 和有限算力的 ESP32-CAM，希望通过拍照和片上神经网络，把它变成一个只回答 <code>open / closed</code> 的视觉传感器。</p>
+<p>这套流程中最重要的不是模型名称，而是 AI Agent 获得了一个可自行迭代的闭环。根据作者公开记录，Agent 完成了：</p>
+<ol><li>使用本地 Vision LLM 初步标注历史监控帧，并通过 contact sheet 复查；</li><li>发现车库门绝大多数时间关闭，正样本极度稀缺；</li><li>先训练初始视觉模型，扫描过去几天的几十万帧，主动挖掘更多“门开着”的稀有样本；</li><li>经过多轮数据回收后，微调一个约 90 万参数的 MobileNet V4；</li><li>评估 ESP32 端到端机会，作者报告推理约 200 ms，而拍照本身约 400 ms；</li><li>发现普通 INT8 量化造成明显预测翻转，于是进行 LSQ-based quantization-aware training；</li><li>编写测试固件，通过 HTTP POST 向单片机发送图片，批量验证精度、内存、延迟和温度；</li><li>最终固件每十分钟拍照推理，短时唤醒 Wi-Fi 上报，其余时间深度睡眠；</li><li>连供电设备的低电流自动断电问题也通过实际硬件测试纳入交付。</li></ol>
+<p>作者将整个过程描述为约 10 小时，其中自己的主动开发时间约半小时。这里的时间、精度和硬件结果是<strong>作者报告</strong>，不是本文独立复现实验；但即使不把 10 小时当作普遍 SLA，这个案例仍揭示了关键变化：AI 不只是写一段分类代码，而是在代理完整的现场机器学习生命周期。</p>
+<h2 id="section-2-为什么-只管一个车库-会让问题突然简单">2. 为什么“只管一个车库”会让问题突然简单</h2>
+<p>一个通用车库门分类器需要处理：</p>
+<ul><li>平开门、卷帘门、分段提升门和不同材质；</li><li>室内、室外、逆光、夜视、红外和雨雪；</li><li>相机在顶角、正面、侧面或车内；</li><li>门被车、人、纸箱和工具遮挡；</li><li>开门一半、维修状态、掉线画面和相机移动；</li><li>不同国家、建筑、安装标准和用户行为。</li></ul>
+<p>而一个固定机位通常拥有极强的先验：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>相机外参基本不变
+目标区域基本不变
+背景结构基本不变
+类别数量很少
+状态转移有限
+业务规则清楚
+历史视频天然存在
+错误可以由现场反馈纠正</code></pre></div>
+<p>因此，模型可以利用背景、位置、颜色、边缘和局部纹理等在通用任务里会被视为 shortcut 的信息。在这个部署合同里，它们反而是合法特征。</p>
+<h3 id="section-2-1-noscope-对专用化的实验">2.1 NoScope 对专用化的实验</h3>
+<p><a href="https://arxiv.org/abs/1703.02529">NoScope</a> 在 2017 年就研究了固定角度 webcam 和 surveillance video。它给定目标视频、要查询的对象和一个昂贵 reference network，自动搜索由 difference detector 与 specialized model 组成的 cascade。论文报告，在二分类视频查询上可实现两到三个数量级的加速，同时将准确度维持在 reference network 的 1–5% 范围内。</p>
+<p>NoScope 的关键结论不是某个加速数字，而是：<strong>最优 cascade 会随视频和对象变化。</strong> 换句话说，不存在一个对所有摄像头都最优的廉价模型；但如果允许逐视频流专用化，小模型就可以忠实模拟大模型在这一小块世界里的行为。</p>
+<h3 id="section-2-2-chameleon-与-ekya-又补上了配置和漂移">2.2 Chameleon 与 Ekya 又补上了配置和漂移</h3>
+<p><a href="https://doi.org/10.1145/3230543.3230574">Chameleon</a> 研究视频分析配置如何随着摄像头和时间变化。分辨率、帧率、模型等配置并非一套参数通吃，系统需要利用摄像头之间的相关性，低成本地重新选择配置。</p>
+<p><a href="https://arxiv.org/abs/2012.10557">Ekya</a> 则直接面对现场数据漂移：边缘端压缩模型会因为 live video 与训练数据逐渐分离而掉点。Ekya 用 continuous learning 周期性重训，并用 micro-profiler 找出最值得重训的模型。论文报告，相比基线调度器，其 accuracy gain 高 29%，而基线需要 4 倍 GPU 资源才能达到相同准确度。</p>
+<p>三项工作连起来，几乎就是这个商业机会的技术历史：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>NoScope: 每路视频值得拥有专用小模型
+Chameleon: 每路视频的最优配置不同且会变化
+Ekya: 每路视频需要现场持续学习来应对漂移
+今天的 Agent: 把上述定制和维护流程自动执行</code></pre></div>
+<h2 id="section-3-overfit-就完了-是对的-但要说得更精确">3. “Overfit 就完了”是对的，但要说得更精确</h2>
+<p>商业直觉上，<code>overfit</code> 是一个非常有力量的表达：不要承担无关场景的泛化成本。但工程上如果真的让模型记住训练帧，它会在第二天清晨、一次灯泡更换或相机被碰歪后失效。</p>
+<p>应该区分两件事。</p>
+<h3 id="section-3-1-坏的-overfitting">3.1 坏的 overfitting</h3>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>训练集和测试集来自相邻视频帧
+同一事件被切成数百张近重复图，随机分到两边
+模型记住时间戳、水印或曝光模式
+没有覆盖夜晚、逆光、雨雪、遮挡和设备故障
+离线准确率很高，未来事件召回率很差</code></pre></div>
+<h3 id="section-3-2-好的-specialization">3.2 好的 specialization</h3>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>部署范围明确限定为 camera_id + ROI + task + action
+按时间和事件分割训练、验证、测试集
+保留不同昼夜、天气、季节和运营状态
+允许模型使用稳定的现场 shortcut
+对分布外输入 abstain，而不是武断判断
+相机移动或漂移触发重新校准</code></pre></div>
+<p>所以更准确的产品承诺不是“我们故意过拟合”，而是：</p>
+<blockquote><strong>我们不追求跨现场泛化，只承诺经过验收的 site-specific generalization envelope。</strong></blockquote>
+<p>这会把一个含糊的 AI 能力，改造成可写进合同的范围：哪一路相机、哪个 ROI、哪些状态、何种光照、允许多少误报、多久发现一次漏报、发生相机位移后系统怎样降级。</p>
+<h2 id="section-4-现场定制的服务成本">4. 现场定制的服务成本</h2>
+<p>逐现场定制过去一直存在，但通常是昂贵的项目制交付：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>销售去现场定义需求
+工程师导出视频
+标注团队制定规则
+算法工程师清洗和训练
+嵌入式工程师压缩部署
+现场工程师安装调参
+客户反馈误报
+所有团队重新排期</code></pre></div>
+<p>如果换一个超市就要重复一个月，毛利会被人力和沟通吞掉。每增加一个客户，不是复制软件，而是新增一个小型咨询项目。</p>
+<p>AI Agent 改变的不是识别上限，而是<strong>定制成本曲线</strong>。它可以把大量重复但跨工具的工作变成机器时间：</p>
+<ul><li>解析客户用自然语言描述的事件；</li><li>从 NVR 历史录像中采样并去重；</li><li>用 VLM 产生弱标签和标签解释；</li><li>制作 contact sheet 供人快速确认；</li><li>用 embedding、聚类和初始模型寻找少数类；</li><li>自动执行训练、蒸馏、剪枝和量化搜索；</li><li>编译固件或边缘容器；</li><li>调用测试设备、串口和摄像头完成硬件闭环；</li><li>生成验收报告与失败样本；</li><li>上线后监测分布漂移并提出重训候选。</li></ul>
+<p>Agent 有望把部分现场定制过程转成可重复工作流；能否规模化仍取决于人工介入、安装维护与验收成本。</p>
+<h2 id="section-5-site-specific-model-factory-的交付流程">5. Site-Specific Model Factory 的交付流程</h2>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/site-vision-model-factory.svg" data-image-alt="Site-specific micro-model factory" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/site-vision-model-factory.svg" width="1200" height="700" alt="Site-specific micro-model factory" loading="lazy" decoding="async"></button><figcaption>图 2：通用 VLM 负责理解和启动，现场小模型负责稳定、廉价地执行，Agent 负责把两者变成闭环。</figcaption></figure>
+<p>一个可卖的系统不应让工程师为每个客户手工开 notebook。它应当接受一个现场任务合同，自动产出可验收的传感器：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>Input
+  camera stream / historical video
+  region of interest
+  event description
+  acceptable false alarms and misses
+  response action
+  privacy and retention policy
+
+Compiler
+  candidate mining
+  weak labeling
+  human review
+  specialist training
+  compression / quantization
+  temporal rule synthesis
+  acceptance testing
+
+Output
+  edge model
+  confidence and abstention thresholds
+  event policy
+  monitoring dashboard
+  drift trigger
+  rollback package</code></pre></div>
+<p>这个架构里，大模型和小模型的职责不同。</p>
+<h3 id="section-5-1-foundation-model-是教师和开发工具">5.1 Foundation model 是教师和开发工具</h3>
+<p>VLM 适合处理长尾语义、自然语言需求、零样本初筛、难例解释和自动标注。它强，但贵、慢，而且输出不够稳定。</p>
+<h3 id="section-5-2-site-specialist-是生产传感器">5.2 Site specialist 是生产传感器</h3>
+<p>小型 CNN、轻量 ViT、change detector 或传统规则负责高频、低延迟、可离线的持续推理。它不理解世界，但对一个固定任务足够稳定。</p>
+<h3 id="section-5-3-agent-是模型工厂的操作系统">5.3 Agent 是模型工厂的操作系统</h3>
+<p>Agent 决定何时调用教师、何时让人复核、何时重训、哪个模型满足硬件限制、怎样运行 shadow test，以及失败时如何回滚。商业价值大多聚集在这里，而不是最后那个 90 万参数网络。</p>
+<h2 id="section-6-最适合的商业任务长什么样">6. 最适合的商业任务长什么样</h2>
+<p>不是所有视觉问题都适合“一场景一模型”。可以用七个条件筛选。</p>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>条件</th><th>好机会</th><th>差机会</th></tr></thead><tbody><tr><td>机位</td><td>固定、可防碰撞</td><td>移动相机、频繁改造</td></tr><tr><td>标签</td><td>少量、互斥、可解释</td><td>开放世界复杂行为</td></tr><tr><td>ROI</td><td>目标区域稳定</td><td>目标可出现在任何位置</td></tr><tr><td>反馈</td><td>事件可被确认</td><td>无法知道模型是否错</td></tr><tr><td>价值</td><td>漏报或人工巡检成本高</td><td>看见也没有动作</td></tr><tr><td>频率</td><td>有足够历史数据或正常样本</td><td>罕见到无法验收</td></tr><tr><td>合规</td><td>可本地处理、目的明确</td><td>涉及敏感身份与高风险判断</td></tr></tbody></table></div>
+<h3 id="section-6-1-适合首先验证的任务">6.1 适合首先验证的任务</h3>
+<ul><li>门、闸、阀、盖板的开关状态；</li><li>消防通道、卸货口、工位和安全区域是否被占用；</li><li>托盘、料箱、货架、垃圾桶是否达到阈值；</li><li>设备指示灯、仪表盘或固定显示器是否异常；</li><li>固定产线的缺件、错位、卡料和停线；</li><li>冷柜、仓门或泳池门长时间未关闭；</li><li>固定停车位、充电位或装卸位占用状态；</li><li>特定区域在特定时段是否有人进入。</li></ul>
+<p>它们的共同点是：状态明确、位置固定、事件发生后存在清晰动作。</p>
+<h3 id="section-6-2-超市有没有人抽烟-为什么不能一句话说简单">6.2 “超市有没有人抽烟”为什么不能一句话说简单</h3>
+<p>以超市为例，单个现场的机位、吸烟高发位置和运营环境，比覆盖所有超市的设置更容易限定。但抽烟仍可能涉及：</p>
+<ul><li>烟很小，常被手、脸和货架遮挡；</li><li>电子烟与普通动作外观接近；</li><li>真正证据可能是时序动作或烟雾，不是单帧物体；</li><li>远距离像素不足；</li><li>误报会直接影响顾客体验；</li><li>持续人员监控涉及隐私、告知和用途限制。</li></ul>
+<p>因此 specialization 会降低难度，但不会让信息论上不可见的信号凭空出现。更现实的设计可能是：先以区域、时段和多帧行为做高召回候选，再由值班人员确认，而不是自动给顾客定性。</p>
+<h2 id="section-7-商业机会矩阵-不要从-最酷-开始-要从-最容易验收-开始">7. 商业机会矩阵：不要从“最酷”开始，要从“最容易验收”开始</h2>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/site-vision-opportunity-matrix.svg" data-image-alt="Opportunity matrix for site-specific vision" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/site-vision-opportunity-matrix.svg" width="1200" height="720" alt="Opportunity matrix for site-specific vision" loading="lazy" decoding="async"></button><figcaption>图 3：优先选择现场稳定、动作价值高且容易取得反馈的任务，而不是主观性强的人类行为判断。</figcaption></figure>
+<p>可以用两个轴选择首批垂直场景：</p>
+<ul><li><strong>现场可压缩性</strong>：固定机位、固定 ROI 和少状态能否显著减少问题空间；</li><li><strong>事件经济价值</strong>：发现事件后是否能节省人工、避免损失或触发明确流程。</li></ul>
+<p>优先象限是“高可压缩、高价值”：冷柜门、危险区域侵入、消防通道、产线卡料、固定资产状态。低可压缩、主观性强的行为判断，例如“员工是否积极”“顾客是否可疑”，不应成为早期产品。</p>
+<p>一个事件只有在下面的链路完整时才有价值：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>看见 → 判断 → 通知 → 有人处理 → 结果被记录 → 反馈进入模型</code></pre></div>
+<p>只卖 dashboard 而不连接行动，客户很快会得到另一块没人看的屏幕。</p>
+<h2 id="section-8-商业模式-卖结果-不卖-一个模型">8. 商业模式：卖结果，不卖“一个模型”</h2>
+<p>最自然的包装是 <code>hardware + setup + recurring service</code>。</p>
+<h3 id="section-8-1-一次性费用">8.1 一次性费用</h3>
+<ul><li>设备、支架、电源与安装；</li><li>现场任务定义和隐私配置；</li><li>历史数据接入；</li><li>初次模型生成与验收；</li><li>与现有 NVR、告警、工单或门禁系统集成。</li></ul>
+<h3 id="section-8-2-经常性收入">8.2 经常性收入</h3>
+<ul><li>每摄像头/月或每事件类型/月订阅；</li><li>设备健康监控；</li><li>漂移检测和模型更新；</li><li>事件存储、报表和审计；</li><li>SLA、人工复核或异常升级；</li><li>多站点管理与角色权限。</li></ul>
+<h3 id="section-8-3-结果型定价">8.3 结果型定价</h3>
+<p>对价值容易计算的任务，可以按节省或风险定价：</p>
+<ul><li>减少多少巡检工时；</li><li>避免多少冷链损耗；</li><li>缩短多少停线时间；</li><li>降低多少未关门时长；</li><li>提高多少装卸位周转。</li></ul>
+<p>但结果型合同需要强审计能力，否则“事件是否本来就会发生”“告警后为何无人处理”会变成责任争议。</p>
+<h2 id="section-9-unit-economics-agent-只降低训练成本-不会自动消灭现场成本">9. Unit Economics：Agent 只降低训练成本，不会自动消灭现场成本</h2>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/site-vision-unit-economics.svg" data-image-alt="Unit economics of a site-specific vision service" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/site-vision-unit-economics.svg" width="1200" height="690" alt="Unit economics of a site-specific vision service" loading="lazy" decoding="async"></button><figcaption>图 4：真正决定毛利的是激活时间、人工复核、现场上门、误报支持和持续维护，而不只是训练 GPU 成本。</figcaption></figure>
+<p>一个现场的贡献毛利可以粗略写成：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>Site Contribution Margin
+= subscription revenue
+− hardware amortization
+− installation and truck rolls
+− data transfer and storage
+− teacher-model and training compute
+− human review and escalation
+− customer support
+− warranty and replacement</code></pre></div>
+<p>AI 最可能大幅压缩的是：数据筛选、初标、实验、模型压缩、测试报告和一部分远程诊断。它很难自动消除支架松动、镜头脏污、Wi-Fi 死角、断电和客户流程不执行。</p>
+<p>因此最重要的商业指标不是 benchmark accuracy，而是：</p>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>指标</th><th>为什么重要</th></tr></thead><tbody><tr><td>Time to first accepted alert</td><td>决定销售承诺和现金回收速度</td></tr><tr><td>Human review minutes per camera-week</td><td>决定服务毛利能否随站点增长</td></tr><tr><td>False alerts per camera-day</td><td>决定客户多久开始忽略系统</td></tr><tr><td>Missed critical events</td><td>决定产品是否真正承担业务价值</td></tr><tr><td>Remote resolution rate</td><td>决定是否需要昂贵上门</td></tr><tr><td>Retrain frequency and cost</td><td>决定“专用模型”是不是维护陷阱</td></tr><tr><td>Camera-month retention</td><td>决定它是功能还是长期基础设施</td></tr></tbody></table></div>
+<p>如果一个模型每月只花 2 美元推理，但每周需要工程师看 30 分钟误报，它仍然是一个低毛利服务业务。</p>
+<h2 id="section-10-除准确率外-还要测量每日误报数">10. 除准确率外，还要测量每日误报数</h2>
+<p>假设某事件每天真实发生一次，模型 precision 为 90%，听起来不错。但如果它扫描数十万帧并产生 20 个告警，运营人员仍会被淹没。</p>
+<p>现场产品至少应同时报告：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>event-level recall
+false alerts per camera-day
+median and P95 detection delay
+abstention rate
+human review time
+alert-to-action completion rate
+days since last verified positive
+performance by day / night / weather / shift</code></pre></div>
+<p>数据集切分也必须按事件和时间，而不是随机帧。相邻 30 fps 视频中的两张图几乎相同，把它们随机放进训练集和测试集会制造虚假高分。</p>
+<p>推荐的验收顺序是：</p>
+<ol><li>用历史时间段做 retrospective test；</li><li>用完全后置的时间段做 prospective holdout；</li><li>在线 shadow mode 运行，不触发真实动作；</li><li>人工核验所有告警，并抽样检查未告警区间；</li><li>达到 event-level 合同后再进入 active alert；</li><li>对高风险动作始终保留人工确认或双传感器验证。</li></ol>
+<h2 id="section-11-数据飞轮应该逐现场闭环-而不是把所有客户视频混成一锅">11. 数据飞轮应该逐现场闭环，而不是把所有客户视频混成一锅</h2>
+<p>现场专用模型天然形成两层数据资产。</p>
+<h3 id="section-11-1-site-private-loop">11.1 Site-private loop</h3>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>现场新视频
+→ 低置信度与分布外片段
+→ 本地或授权范围内复核
+→ 更新该 site specialist
+→ shadow comparison
+→ 通过后替换</code></pre></div>
+<p>这层数据可能包含敏感运营信息，应默认隔离、最小保留并支持删除。</p>
+<h3 id="section-11-2-cross-site-reusable-priors">11.2 Cross-site reusable priors</h3>
+<p>可以跨客户复用的不是原始画面，而是：</p>
+<ul><li>任务 schema；</li><li>ROI 模板；</li><li>标签规范；</li><li>负样本生成方法；</li><li>漂移检测器；</li><li>压缩和量化 recipe；</li><li>评测协议；</li><li>与设备和业务系统的 connector；</li><li>经授权、去标识或合成的 generic representation。</li></ul>
+<p>这能避免两个极端：既不把每个客户当完全从零的项目，也不把所有数据混在一起制造隐私和合同风险。</p>
+<h2 id="section-12-自动交付与运营数据的复用">12. 自动交付与运营数据的复用</h2>
+<p>一个 MobileNet 分类器很容易复制，甚至客户可以让另一个 Agent 重新训练。真正的护城河更可能来自五层。</p>
+<h3 id="section-12-1-任务定义资产">12.1 任务定义资产</h3>
+<p>什么算“门没有关好”？开 5 厘米算不算？维修时是否暂停？持续多久才告警？任务 schema 越成熟，销售到验收越快。</p>
+<h3 id="section-12-2-自动化闭环">12.2 自动化闭环</h3>
+<p>从 NVR 抽帧到 edge rollout 是否真正无人值守，能不能自动发现 class imbalance、label leakage、量化翻转和硬件异常。这是原车库案例最有价值的部分。</p>
+<h3 id="section-12-3-运维和漂移数据">12.3 运维和漂移数据</h3>
+<p>哪些光照变化会使哪个模型失败、哪类摄像头多久会移动、怎样用最少复核恢复性能。这些跨站点经验会不断改善成本模型。</p>
+<h3 id="section-12-4-业务集成">12.4 业务集成</h3>
+<p>客户不购买一个概率值，而是购买短信、工单、停机、巡检、门禁联动和审计记录。连接器和责任链比模型权重更粘。</p>
+<h3 id="section-12-5-信任与验收">12.5 信任与验收</h3>
+<p>能否提供版本、数据来源、阈值、回滚、事件证据和 SLA。现场 AI 一旦参与安全与运营，可信交付本身就是产品。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/site-vision-lifecycle-moat.svg" data-image-alt="Lifecycle and moat" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/site-vision-lifecycle-moat.svg" width="1200" height="700" alt="Lifecycle and moat" loading="lazy" decoding="async"></button><figcaption>图 5：专用模型必须经历 shadow、验收、监控、漂移检测和可回滚更新；持续积累的是交付系统与运营知识。</figcaption></figure>
+<h2 id="section-13-产品架构-policy-shared-perception-specialized">13. 产品架构：Policy shared, perception specialized</h2>
+<p>每个现场都训练完全独立的软件栈会失控。更合理的边界是：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>Shared control plane
+  device registry
+  task schema
+  training orchestrator
+  model registry
+  policy engine
+  alert routing
+  monitoring / audit / rollback
+
+Site-specific artifacts
+  camera calibration
+  ROI and masks
+  event thresholds
+  specialist weights
+  temporal rules
+  local drift baseline</code></pre></div>
+<p>也就是共享平台和治理，专用感知与阈值。这样既保留 specialization 的性能优势，又不把公司变成维护几千套手工代码的外包团队。</p>
+<p>模型还需要 <code>abstain / degraded / offline</code> 三种非正常输出：</p>
+<ul><li><code>abstain</code>：当前画面超出验收分布，交给人或大模型；</li><li><code>degraded</code>：镜头污损、遮挡或机位移动，暂停自动动作；</li><li><code>offline</code>：设备或网络故障，触发设备告警而不是业务告警。</li></ul>
+<p>不会拒答的现场模型，会把 camera shift 误判成业务事件。</p>
+<h2 id="section-14-edge-部署为什么重要-但不是所有场景都必须-esp32">14. Edge 部署为什么重要，但不是所有场景都必须 ESP32</h2>
+<p>ESP32-CAM 证明极低成本硬件也能承担特定二分类任务。边缘部署有明确价值：</p>
+<ul><li>原始视频不离开现场；</li><li>带宽成本低；</li><li>断网仍可判断；</li><li>延迟稳定；</li><li>小模型功耗和 BOM 低。</li></ul>
+<p>但产品不应为了“端侧”而端侧。硬件层应按任务选择：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>MCU: 低频拍照、少类别、简单状态、极低功耗
+NPU camera: 持续视频、检测或轻量时序
+Edge GPU: 多路视频、复杂行为、现场 VLM fallback
+Cloud: 低频复核、跨站点训练、管理和报告</code></pre></div>
+<p>现代工具链已经把这条路线产品化了一部分。例如 <a href="https://docs.nvidia.com/tao/tao-toolkit/text/overview.html">NVIDIA TAO Toolkit</a> 支持用自有数据 fine-tune 预训练视觉模型、蒸馏到更小 backbone、进行量化感知训练并导出 ONNX。工具不是护城河，但它降低了搭建模型工厂的基础成本。</p>
+<h2 id="section-15-失败模式-这条生意最容易死在哪里">15. 失败模式：这条生意最容易死在哪里</h2>
+<h3 id="section-15-1-demo-accuracy-很高-真实-positive-太少">15.1 Demo accuracy 很高，真实 positive 太少</h3>
+<p>车库门案例主动挖掘稀有开门帧，说明 class imbalance 是核心。商业验收不能只看正常状态；如果三个月只有一次危险事件，就需要事件模拟、历史回放或合成数据，但必须明确它们与真实事件的差距。</p>
+<h3 id="section-15-2-每个站点都需要专家救火">15.2 每个站点都需要专家救火</h3>
+<p>如果 Agent 只能完成 80%，剩余 20% 每次都需要 senior scientist，规模化仍然失败。应该记录每次人工介入的原因，并优先自动化最高频阻塞。</p>
+<h3 id="section-15-3-相机不是传感器级安装">15.3 相机不是传感器级安装</h3>
+<p>普通监控摄像头可能被保洁碰动、被货物遮挡、自动曝光改变或被 IT 重新编码。产品要提供 tamper detection、安装基准图和一键重校准。</p>
+<h3 id="section-15-4-误报摧毁行为闭环">15.4 误报摧毁行为闭环</h3>
+<p>连续几天错误告警后，客户会静音。降低 false alerts per camera-day 往往比再提高 1 个离线 AP 点更有价值。</p>
+<h3 id="section-15-5-把人的行为当作机器状态">15.5 把人的行为当作机器状态</h3>
+<p>门的开关具有客观状态；“员工偷懒”“顾客可疑”“情绪异常”具有主观性、歧视和权力风险。早期公司应优先检测物理状态和安全流程，不要靠敏感的人类判断制造收入。</p>
+<h3 id="section-15-6-销售承诺超出-site-envelope">15.6 销售承诺超出 site envelope</h3>
+<p>客户买了“烟火检测”，之后希望同一摄像头顺便识别打架、跌倒、盗窃和库存。产品必须把每个 task 当独立验收单元，而不是默认一个摄像头接入后就获得通用智能。</p>
+<h2 id="section-16-用-30-天试点检查交付与成本">16. 用 30 天试点检查交付与成本</h2>
+<p>不要一开始建大平台，也不要直接训练所有任务。选择一个垂直行业、两个事件、五个现场。</p>
+<h3 id="section-16-1-场景选择">16.1 场景选择</h3>
+<p>例如便利店或小型仓库：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>事件 A: 后门持续打开超过 2 分钟
+事件 B: 指定消防区域被货物占用</code></pre></div>
+<p>两者都有固定 ROI、明确状态和可执行动作，且不需要识别人脸或推断人的意图。</p>
+<h3 id="section-16-2-第一周-只验证数据和标签">16.2 第一周：只验证数据和标签</h3>
+<ul><li>每站点导出 7–14 天历史录像；</li><li>测量真实 positive 数量；</li><li>定义 event-level label 与忽略区间；</li><li>用 VLM 弱标注和 change detection 挖候选；</li><li>人工核验 contact sheets；</li><li>估算每站点人工分钟数。</li></ul>
+<p>如果连 gold event 都无法稳定定义，立即停止，而不是换更大模型。</p>
+<h3 id="section-16-3-第二周-训练-specialist-做时间后置测试">16.3 第二周：训练 specialist，做时间后置测试</h3>
+<ul><li>每站点独立训练；</li><li>最后 20% 时间段完全 hold out；</li><li>对同一事件的连续帧按事件分组；</li><li>设置 abstention；</li><li>同时跑通用 VLM、共享垂直模型和 site specialist 三个基线。</li></ul>
+<p>核心不是证明 site model 一定最高，而是测量它用多小的算力换来多少现场收益。</p>
+<h3 id="section-16-4-第三周-shadow-deployment">16.4 第三周：Shadow deployment</h3>
+<ul><li>告警不通知一线人员；</li><li>记录所有候选和设备状态；</li><li>每天复核误报；</li><li>抽样未告警时段寻找漏报；</li><li>模拟相机移动、遮挡、断网和夜间条件；</li><li>测量远程恢复能力。</li></ul>
+<h3 id="section-16-5-第四周-有限真实联动">16.5 第四周：有限真实联动</h3>
+<ul><li>只对低风险事件发通知；</li><li>要求接收者确认 <code>true / false / ignored</code>；</li><li>记录告警到处理的时间；</li><li>计算客户节省的巡检和事件暴露时长；</li><li>汇总每摄像头的人力、算力和支持成本。</li></ul>
+<h3 id="section-16-6-go-no-go-标准">16.6 Go / No-Go 标准</h3>
+<p>在试点前写死阈值，例如：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>P95 time-to-activation &lt; 1 business day
+human onboarding &lt; 30 minutes per camera
+false alerts &lt; 0.2 per camera-day
+critical event recall &gt; 95% in accepted envelope
+remote issue resolution &gt; 90%
+monthly gross margin after support &gt; target
+customer confirms measurable action value</code></pre></div>
+<p>具体数字应随事件风险调整，但必须提前定义，防止在 Demo 后用另一个指标解释成功。</p>
+<h2 id="section-17-更大的商业含义-ai-把-非标-重新变成一种标准化能力">17. 更大的商业含义：AI 把“非标”重新变成一种标准化能力</h2>
+<p>传统软件喜欢标准化，因为复制的边际成本接近零；传统 AI 也努力训练一个统一模型服务所有客户。但现实世界高度非标：每家店布局不同、每台机器角度不同、每条产线规则不同。</p>
+<p>过去，非标意味着人力；现在，非标可能变成 Agent 的输入。</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>过去的标准化：所有客户使用同一个模型
+
+新的标准化：所有客户使用同一条自动定制流水线，
+             每个客户得到不同的模型和阈值</code></pre></div>
+<p>这是一种更高层的标准化。就像云平台不要求所有应用运行同一份二进制，而是标准化构建、部署、监控和扩缩容；Site-Specific AI 不要求所有摄像头使用同一模型，而是标准化模型生产和运维协议。</p>
+<p>因此，“一座超市一个模型”不是反 SaaS。只要定制过程足够自动化、可观测、可回滚，它反而可能是下一种 SaaS：<strong>Specialization as a Service。</strong></p>
+<h2 id="section-18-与-omni-和-agent-研究的关系">18. 与 Omni 和 Agent 研究的关系</h2>
+<p>这个方向表面上是 TinyML，内核却非常 agentic。系统需要：</p>
+<ul><li>理解客户自然语言中的任务和例外；</li><li>规划如何获得正负样本；</li><li>调用 VLM、训练器、编译器、设备和 NVR；</li><li>观察实验结果并修改假设；</li><li>在量化翻转、类别不平衡和设备故障时诊断；</li><li>维护每个 site 的模型、数据、硬件和验收状态；</li><li>在漂移时决定继续观察、重训、回滚还是请求人工。</li></ul>
+<p>如果加入实时音视频和自然语言反馈，Omni Agent 还可以在现场安装时与人协作：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>“请把摄像头向左转五度。”
+“现在冷柜门区域仍被货架遮挡。”
+“我需要你模拟一次门半开的状态。”
+“这三张属于正常补货，不应告警，对吗？”</code></pre></div>
+<p>它不是一个聊天助手，而是一个持续把物理世界编译成可靠数字传感器的工程 Agent。</p>
+<h2 id="section-19-商业判断仍需哪些证据">19. 商业判断仍需哪些证据</h2>
+<p>车库门案例最值得重视的，不是 ESP32-CAM 便宜，也不是 MobileNet V4 小，而是它把三个原本分离的事实连到了一起：</p>
+<ol><li>固定现场可以主动放弃无关的跨场景泛化；</li><li>小模型能在这个收缩后的分布上提供便宜、稳定、隐私友好的执行；</li><li>AI Agent 能够自动完成过去让逐现场定制无法规模化的数据和工程工作。</li></ol>
+<p>这一商业模式可以概括为：</p>
+<blockquote><strong>找到一个状态明确、机位固定、事件有价值的现实问题；用通用 AI 自动理解和构建数据；为每个现场生成一个极度专用的小模型；在边缘持续执行；再用反馈和漂移检测维护它。</strong></blockquote>
+<p>但最后决定它是不是生意的，不是“能不能做出 99% accuracy”，而是四个更朴素的问题：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>多久能让一个新摄像头通过验收？
+每路摄像头每周还需要多少人工？
+误报是否低到客户愿意长期保持告警？
+发现事件后，是否真的产生了可计价的动作和结果？</code></pre></div>
+<p>如果 Agent 把这四个数字压下来，机器视觉就可能从昂贵的通用算法项目，变成数量巨大的现场专用数字传感器。其竞争优势可能来自可重复的交付与运维能力，而不仅是通用视觉模型的性能。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul><li>grapeot. <a href="https://yage.ai/esp32-garage-door-ai.html">10小时攻关，半小时 Dev Time：在指甲盖大小的单片机上跑神经网络识别车库门</a>, 2026.</li><li>Daniel Kang et al. <a href="https://arxiv.org/abs/1703.02529">NoScope: Optimizing Neural Network Queries over Video at Scale</a>, PVLDB 2017.</li><li>Junchen Jiang et al. <a href="https://doi.org/10.1145/3230543.3230574">Chameleon: Scalable Adaptation of Video Analytics</a>, SIGCOMM 2018.</li><li>Romil Bhardwaj et al. <a href="https://arxiv.org/abs/2012.10557">Ekya: Continuous Learning of Video Analytics Models on Edge Compute Servers</a>, NSDI 2022.</li><li>NVIDIA. <a href="https://docs.nvidia.com/tao/tao-toolkit/text/overview.html">TAO Toolkit Documentation</a>.</li></ul>
+<blockquote>事实边界：车库门项目的开发时长、模型参数、延迟、量化结果和部署表现均来自原作者公开记录，本文未独立复现；NoScope 与 Ekya 的数字来自论文摘要。商业架构、机会矩阵、unit economics、试点阈值和“Site-Specific Model Factory”是本文基于这些案例提出的产品判断，不是上述作者的商业结论。</blockquote></div><script type="application/json" data-article-headings>[{"id":"section-1-先看原项目到底做了什么","level":2,"text":"1. 先看原项目到底做了什么"},{"id":"section-2-为什么-只管一个车库-会让问题突然简单","level":2,"text":"2. 为什么“只管一个车库”会让问题突然简单"},{"id":"section-2-1-noscope-对专用化的实验","level":3,"text":"2.1 NoScope 对专用化的实验"},{"id":"section-2-2-chameleon-与-ekya-又补上了配置和漂移","level":3,"text":"2.2 Chameleon 与 Ekya 又补上了配置和漂移"},{"id":"section-3-overfit-就完了-是对的-但要说得更精确","level":2,"text":"3. “Overfit 就完了”是对的，但要说得更精确"},{"id":"section-3-1-坏的-overfitting","level":3,"text":"3.1 坏的 overfitting"},{"id":"section-3-2-好的-specialization","level":3,"text":"3.2 好的 specialization"},{"id":"section-4-现场定制的服务成本","level":2,"text":"4. 现场定制的服务成本"},{"id":"section-5-site-specific-model-factory-的交付流程","level":2,"text":"5. Site-Specific Model Factory 的交付流程"},{"id":"section-5-1-foundation-model-是教师和开发工具","level":3,"text":"5.1 Foundation model 是教师和开发工具"},{"id":"section-5-2-site-specialist-是生产传感器","level":3,"text":"5.2 Site specialist 是生产传感器"},{"id":"section-5-3-agent-是模型工厂的操作系统","level":3,"text":"5.3 Agent 是模型工厂的操作系统"},{"id":"section-6-最适合的商业任务长什么样","level":2,"text":"6. 最适合的商业任务长什么样"},{"id":"section-6-1-适合首先验证的任务","level":3,"text":"6.1 适合首先验证的任务"},{"id":"section-6-2-超市有没有人抽烟-为什么不能一句话说简单","level":3,"text":"6.2 “超市有没有人抽烟”为什么不能一句话说简单"},{"id":"section-7-商业机会矩阵-不要从-最酷-开始-要从-最容易验收-开始","level":2,"text":"7. 商业机会矩阵：不要从“最酷”开始，要从“最容易验收”开始"},{"id":"section-8-商业模式-卖结果-不卖-一个模型","level":2,"text":"8. 商业模式：卖结果，不卖“一个模型”"},{"id":"section-8-1-一次性费用","level":3,"text":"8.1 一次性费用"},{"id":"section-8-2-经常性收入","level":3,"text":"8.2 经常性收入"},{"id":"section-8-3-结果型定价","level":3,"text":"8.3 结果型定价"},{"id":"section-9-unit-economics-agent-只降低训练成本-不会自动消灭现场成本","level":2,"text":"9. Unit Economics：Agent 只降低训练成本，不会自动消灭现场成本"},{"id":"section-10-除准确率外-还要测量每日误报数","level":2,"text":"10. 除准确率外，还要测量每日误报数"},{"id":"section-11-数据飞轮应该逐现场闭环-而不是把所有客户视频混成一锅","level":2,"text":"11. 数据飞轮应该逐现场闭环，而不是把所有客户视频混成一锅"},{"id":"section-11-1-site-private-loop","level":3,"text":"11.1 Site-private loop"},{"id":"section-11-2-cross-site-reusable-priors","level":3,"text":"11.2 Cross-site reusable priors"},{"id":"section-12-自动交付与运营数据的复用","level":2,"text":"12. 自动交付与运营数据的复用"},{"id":"section-12-1-任务定义资产","level":3,"text":"12.1 任务定义资产"},{"id":"section-12-2-自动化闭环","level":3,"text":"12.2 自动化闭环"},{"id":"section-12-3-运维和漂移数据","level":3,"text":"12.3 运维和漂移数据"},{"id":"section-12-4-业务集成","level":3,"text":"12.4 业务集成"},{"id":"section-12-5-信任与验收","level":3,"text":"12.5 信任与验收"},{"id":"section-13-产品架构-policy-shared-perception-specialized","level":2,"text":"13. 产品架构：Policy shared, perception specialized"},{"id":"section-14-edge-部署为什么重要-但不是所有场景都必须-esp32","level":2,"text":"14. Edge 部署为什么重要，但不是所有场景都必须 ESP32"},{"id":"section-15-失败模式-这条生意最容易死在哪里","level":2,"text":"15. 失败模式：这条生意最容易死在哪里"},{"id":"section-15-1-demo-accuracy-很高-真实-positive-太少","level":3,"text":"15.1 Demo accuracy 很高，真实 positive 太少"},{"id":"section-15-2-每个站点都需要专家救火","level":3,"text":"15.2 每个站点都需要专家救火"},{"id":"section-15-3-相机不是传感器级安装","level":3,"text":"15.3 相机不是传感器级安装"},{"id":"section-15-4-误报摧毁行为闭环","level":3,"text":"15.4 误报摧毁行为闭环"},{"id":"section-15-5-把人的行为当作机器状态","level":3,"text":"15.5 把人的行为当作机器状态"},{"id":"section-15-6-销售承诺超出-site-envelope","level":3,"text":"15.6 销售承诺超出 site envelope"},{"id":"section-16-用-30-天试点检查交付与成本","level":2,"text":"16. 用 30 天试点检查交付与成本"},{"id":"section-16-1-场景选择","level":3,"text":"16.1 场景选择"},{"id":"section-16-2-第一周-只验证数据和标签","level":3,"text":"16.2 第一周：只验证数据和标签"},{"id":"section-16-3-第二周-训练-specialist-做时间后置测试","level":3,"text":"16.3 第二周：训练 specialist，做时间后置测试"},{"id":"section-16-4-第三周-shadow-deployment","level":3,"text":"16.4 第三周：Shadow deployment"},{"id":"section-16-5-第四周-有限真实联动","level":3,"text":"16.5 第四周：有限真实联动"},{"id":"section-16-6-go-no-go-标准","level":3,"text":"16.6 Go / No-Go 标准"},{"id":"section-17-更大的商业含义-ai-把-非标-重新变成一种标准化能力","level":2,"text":"17. 更大的商业含义：AI 把“非标”重新变成一种标准化能力"},{"id":"section-18-与-omni-和-agent-研究的关系","level":2,"text":"18. 与 Omni 和 Agent 研究的关系"},{"id":"section-19-商业判断仍需哪些证据","level":2,"text":"19. 商业判断仍需哪些证据"},{"id":"参考资料","level":2,"text":"参考资料"}]</script></article></main>
   <footer class="footer"><div class="footer-inner">© 2026 Tianyu Xie.</div></footer>
 </body>
 </html>

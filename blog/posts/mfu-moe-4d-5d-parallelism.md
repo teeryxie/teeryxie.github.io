@@ -159,7 +159,7 @@ EP 的核心通信是 token All-to-All，数据量大致与 token 数、hidden s
 
 ## Dense DP 与 Expert DP 不是同一组
 
-MoE 混合并行最容易出错的地方，不是公式，而是 process group 语义。
+计算 MoE 混合并行的规模时，需要先确认 process group 的语义。
 
 非 expert 参数，例如 attention、norm、router 和 shared dense 层，通常需要在“dense data-parallel group”中同步。Expert 参数只应该在持有同一个 expert replica 的 ranks 之间同步。如果 rank A 持有 expert 0，rank B 持有 expert 1，就不能把它们当作同一 expert 的 DP replicas 去 All-Reduce gradients。
 
@@ -188,7 +188,7 @@ D_dense = EP × D_expert
 W = TP × PP × CP × EP × DP
 ```
 
-因此，看到 world-size 公式时，第一件事不是代数，而是确认其中 `DP` 的定义。
+因此，使用 world-size 公式前，应先确认其中 `DP` 的定义。
 
 ## 4D MoE：DP × TP × PP × EP
 

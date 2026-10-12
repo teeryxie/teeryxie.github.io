@@ -4,7 +4,7 @@ GPT-4o 展示了快速语音回应、情绪化表达和打断后的对话衔接�
 
 这篇文章只研究 GPT-4o 之后的 **full-duplex spoken dialogue** 工作，不再泛泛覆盖所有 omni 模型。我的结论是：该方向已经从“让模型双向流式收发音频”的架构问题，快速演化为一个显式的 agent policy 问题。2024 年解决时间同步与双流表示；2025 年建立 overlap、backchannel 和 interruption 的专门评测；2026 年开始把时机决策、潜在思考、用户流路由、状态预测和强化学习分离出来。
 
-**最重要的观点是：全双工不是“模型可以一边说一边听”的接口特性，而是“模型在不完整、持续变化的社会信号中选择何时行动”的 policy learning 问题。**
+我关注的重点是：当社会信号尚不完整、还在变化时，模型怎样学习等待、接话或让出话权。同时收发音频是前提，动作时机则需要单独训练和评测。
 
 ![Full-duplex evolution](/images/blog/full-duplex-evolution.svg "图 1：GPT-4o 之后，全双工研究从双流生成走向显式时间策略、状态预测、潜在思考与交互强化学习。")
 
@@ -70,7 +70,7 @@ Freeze-Omni 则选择保护文本 LLM 的既有智能：冻结 Qwen2-7B-Instruct
 
 ## 4. 2025：从“能双工”转向“能不能正确处理重叠”
 
-2025 年最大的变化不是又出现一个更快模型，而是社区开始承认“full-duplex”的核心难题是行为质量。Full-Duplex-Bench v1 将 pause handling、turn-taking、backchanneling 和 interruption 变成可复现自动评测；FD-Bench、FLEXI 和 Full-Duplex-Bench v1.5 再把真实 overlap 情景、紧急情况、人机多轮交互和商业 API 统一纳入。
+2025 年的评测工作开始更系统地检查全双工行为质量。Full-Duplex-Bench v1 将 pause handling、turn-taking、backchanneling 和 interruption 变成可复现自动评测；FD-Bench、FLEXI 和 Full-Duplex-Bench v1.5 再把真实 overlap 情景、紧急情况、人机多轮交互和商业 API 统一纳入。
 
 ### 4.1 四轴交互能力
 
@@ -109,7 +109,7 @@ SoulX-Duplug 是一个可插拔 streaming state prediction 模块，它联合 st
 
 FLAIR 的关键约束是因果性：每一步 latent state 只依赖当前及过去的音频，因此不引入额外等待。论文用 ELBO 风格目标在无显式 thought annotation 下训练。这条路线非常适合 spoken agent：用户可能随时停下，模型必须能立即把已经积累的内部状态转换成答案，而不是先终止一段冗长外显推理。
 
-这也与我的观点一致。full-duplex 不是“生成时仍然接收输入”，而是 **perceive → update belief → anticipate → act** 在同一时间轴上运行。
+这也是我关注这类方法的原因：**perceive → update belief → anticipate → act** 需要在同一时间轴上持续运行。
 
 ### 5.3 用户流如何进入 LLM：channel fusion 与 cross-attention 的根本权衡
 
@@ -195,7 +195,7 @@ DuplexChat 是 2026 年一个值得关注的数据工作。它从公开 podcast 
 
 第六，**安全与用户控制**。全双工模型越主动，越可能打断、诱导或泄露。用户应能调节 interruption sensitivity、backchannel 密度、主动提醒权限和语音人格；高风险场景应默认更保守。
 
-## 11. 我的结论：全双工是 agentic interaction 的训练场
+## 11. 对后续交互研究的启发
 
 GPT-4o 之后最深刻的变化，是研究者逐步发现自然对话不等价于更快 TTS。Moshi 证明双流模型能将 overlap 当作自然数据；SyncLLM 证明 LLM 可以被同步到现实时间；SALM-Duplex 证明 user / agent 流可以被独立建模；2025 年 benchmark 证明“停得快”不是总正确；2026 年的 latent reasoning、semantic state prediction、stream routing 和 RL 则证明全双工问题需要显式 policy。
 

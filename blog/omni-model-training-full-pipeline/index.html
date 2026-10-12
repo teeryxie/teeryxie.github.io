@@ -4,26 +4,349 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Omni 模型训练：算力、数据与分阶段评测 | Tianyu Xie</title>
-  <meta name="description" content="梳理从模态对齐到全双工交互和强化学习的分阶段训练路线，讨论算力、数据配比与进入下一阶段的评测条件。">
+  <meta name="description" content="从模态对齐到全双工交互和强化学习，各阶段训练什么、需要哪些数据，以及何时值得投入更多算力。">
   <link rel="icon" href="/images/profile.png">
-  <link rel="stylesheet" href="/site.css?v=20261012-unified">
-  <script src="/blog/blog-data.js?v=20261012-unified" defer></script>
+  <link rel="stylesheet" href="/site.css?v=20261012-stable">
+  <script src="/blog/blog-data.js?v=20261012-stable" defer></script>
   <script src="/site-ui.js" defer></script>
-  <script src="/blog/markdown.js?v=20261012-unified" defer></script>
+  <script src="/blog/markdown.js?v=20261012-stable" defer></script>
 </head>
 <body class="blog-post" data-post-slug="omni-model-training-full-pipeline">
-  <header class="masthead"><nav class="nav" aria-label="Primary navigation">
-    <a class="home-brand" href="/">Homepage</a>
-    <a href="/#about-me">About Me</a>
-    <a href="/#news">News</a>
-    <a href="/publications/">Publications</a>
-    <a href="/projects/">Projects</a>
-    <a href="/#education">Education</a>
-    <a href="/#service">Academic Service</a>
-    <a aria-current="page" href="/blog/">Research Notes</a>
-    <a href="/cv/">CV</a>
-  </nav></header>
-  <main class="shell blog-shell"><aside class="sidebar"><section class="profile-card"><img class="avatar" src="/images/profile.png" alt="Tianyu Xie profile photo"><h2 class="name">Blog</h2><p class="bio"><a href="/blog/">Back to Blog</a></p></section></aside><article class="content"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a><span aria-hidden="true">/</span><span data-breadcrumb-section>Article</span></nav><h1 class="page-title" data-post-title>Omni 模型训练：算力、数据与分阶段评测</h1><p class="lead" data-post-meta>Markdown article</p><div class="markdown-body" data-markdown-article></div></article></main>
+  <header class="masthead"><nav class="nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a aria-current="page" href="/blog/">Notes</a><a href="/cv/">CV</a></nav></header>
+  <main class="shell blog-shell"><aside class="sidebar" aria-label="Personal profile"><section class="profile-card">
+        <img class="avatar" src="/images/profile.png" alt="Portrait of Tianyu Xie" width="170" height="170">
+        <h2 class="name">Tianyu Xie <span lang="zh-CN">谢天宇</span></h2>
+        <p class="affiliation">Xiamen University</p><p class="bio">M.S. student · MAC Lab</p>
+        <ul class="profile-links">
+          <li><a href="mailto:teery@stu.xmu.edu.cn">Email</a></li><li><a href="https://github.com/teeryxie">GitHub</a></li>
+          <li><a href="https://scholar.google.com/citations?hl=en&amp;user=_vZWAnkAAAAJ">Google Scholar</a></li><li><a href="https://openreview.net/profile?id=~Tianyu_Xie2">OpenReview</a></li>
+        </ul></section><nav class="article-toc" aria-label="本文目录"><strong>本文目录</strong><div class="toc-links"><a class="toc-link toc-level-2" href="#section-1-训练规划要点" data-toc-id="section-1-训练规划要点">1. 训练规划要点</a>
+<a class="toc-link toc-level-2" href="#section-2-先定义-你到底在训练什么" data-toc-id="section-2-先定义-你到底在训练什么">2. 先定义：你到底在训练什么</a>
+<a class="toc-link toc-level-2" href="#section-3-为什么不应该一开始全部端到端打开" data-toc-id="section-3-为什么不应该一开始全部端到端打开">3. 为什么不应该一开始全部端到端打开</a>
+<a class="toc-link toc-level-2" href="#section-4-用显存公式建立下界" data-toc-id="section-4-用显存公式建立下界">4. 用显存公式建立下界</a>
+<a class="toc-link toc-level-2" href="#section-5-四档-gpu-配置-分别能做什么" data-toc-id="section-5-四档-gpu-配置-分别能做什么">5. 四档 GPU 配置：分别能做什么</a>
+<a class="toc-link toc-level-3" href="#section-5-1-学习与最小实验-1-80-gb" data-toc-id="section-5-1-学习与最小实验-1-80-gb">5.1 学习与最小实验：1×80 GB</a>
+<a class="toc-link toc-level-3" href="#section-5-2-研究型中等规模-4-8-80-141-gb" data-toc-id="section-5-2-研究型中等规模-4-8-80-141-gb">5.2 研究型中等规模：4–8×80/141 GB</a>
+<a class="toc-link toc-level-3" href="#section-5-3-7b-9b-全参数-mid-training-8-卡能试-16-32-卡更现实" data-toc-id="section-5-3-7b-9b-全参数-mid-training-8-卡能试-16-32-卡更现实">5.3 7B–9B 全参数 Mid-training：8 卡能试，16–32 卡更现实</a>
+<a class="toc-link toc-level-3" href="#section-5-4-论文级完整-omni-与双工-rl-32-64-公开锚点为-128-h20" data-toc-id="section-5-4-论文级完整-omni-与双工-rl-32-64-公开锚点为-128-h20">5.4 论文级完整 Omni 与双工 RL：32–64+，公开锚点为 128×H20</a>
+<a class="toc-link toc-level-2" href="#section-6-节点-网络和存储不能最后再补" data-toc-id="section-6-节点-网络和存储不能最后再补">6. 节点、网络和存储不能最后再补</a>
+<a class="toc-link toc-level-2" href="#section-7-stage-0-先冻结数据-contract-和-codec" data-toc-id="section-7-stage-0-先冻结数据-contract-和-codec">7. Stage 0：先冻结数据 contract 和 codec</a>
+<a class="toc-link toc-level-2" href="#section-8-stage-1-文本底座与模态对齐" data-toc-id="section-8-stage-1-文本底座与模态对齐">8. Stage 1：文本底座与模态对齐</a>
+<a class="toc-link toc-level-2" href="#section-9-stage-2-单流音频-视频-mid-training" data-toc-id="section-9-stage-2-单流音频-视频-mid-training">9. Stage 2：单流音频/视频 Mid-training</a>
+<a class="toc-link toc-level-2" href="#section-10-stage-3-双流连续时间训练" data-toc-id="section-10-stage-3-双流连续时间训练">10. Stage 3：双流连续时间训练</a>
+<a class="toc-link toc-level-2" href="#section-11-配比的单位-不要按文件条数" data-toc-id="section-11-配比的单位-不要按文件条数">11. 配比的单位：不要按文件条数</a>
+<a class="toc-link toc-level-2" href="#section-12-关键交互窗口要重采样" data-toc-id="section-12-关键交互窗口要重采样">12. 关键交互窗口要重采样</a>
+<a class="toc-link toc-level-2" href="#section-13-stage-4-interaction-sft" data-toc-id="section-13-stage-4-interaction-sft">13. Stage 4：Interaction SFT</a>
+<a class="toc-link toc-level-2" href="#section-14-stage-5-talker-稳定性-音色与-dpo" data-toc-id="section-14-stage-5-talker-稳定性-音色与-dpo">14. Stage 5：Talker 稳定性、音色与 DPO</a>
+<a class="toc-link toc-level-2" href="#section-15-stage-6-先优化控制策略-再优化整条语音" data-toc-id="section-15-stage-6-先优化控制策略-再优化整条语音">15. Stage 6：先优化控制策略，再优化整条语音</a>
+<a class="toc-link toc-level-2" href="#section-16-stage-7-agentic-rl-是环境问题-不只是算法问题" data-toc-id="section-16-stage-7-agentic-rl-是环境问题-不只是算法问题">16. Stage 7：Agentic RL 是环境问题，不只是算法问题</a>
+<a class="toc-link toc-level-2" href="#section-17-rl-稳定性的具体技巧" data-toc-id="section-17-rl-稳定性的具体技巧">17. RL 稳定性的具体技巧</a>
+<a class="toc-link toc-level-2" href="#section-18-冻结-loss-和学习率如何分工" data-toc-id="section-18-冻结-loss-和学习率如何分工">18. 冻结、loss 和学习率如何分工</a>
+<a class="toc-link toc-level-2" href="#section-19-数据清洗比继续加小时更重要" data-toc-id="section-19-数据清洗比继续加小时更重要">19. 数据清洗比继续加小时更重要</a>
+<a class="toc-link toc-level-2" href="#section-20-工程层面的常见稳定性-tricks" data-toc-id="section-20-工程层面的常见稳定性-tricks">20. 工程层面的常见稳定性 tricks</a>
+<a class="toc-link toc-level-2" href="#section-21-每阶段的晋级门" data-toc-id="section-21-每阶段的晋级门">21. 每阶段的晋级门</a>
+<a class="toc-link toc-level-2" href="#section-22-三套可以执行的训练方案" data-toc-id="section-22-三套可以执行的训练方案">22. 三套可以执行的训练方案</a>
+<a class="toc-link toc-level-3" href="#section-22-1-一卡方案-先学会整个闭环" data-toc-id="section-22-1-一卡方案-先学会整个闭环">22.1 一卡方案：先学会整个闭环</a>
+<a class="toc-link toc-level-3" href="#section-22-2-八卡方案-完成一篇严谨的交互训练论文" data-toc-id="section-22-2-八卡方案-完成一篇严谨的交互训练论文">22.2 八卡方案：完成一篇严谨的交互训练论文</a>
+<a class="toc-link toc-level-3" href="#section-22-3-32-卡以上-全参数-mid-training-与-agentic-rollout" data-toc-id="section-22-3-32-卡以上-全参数-mid-training-与-agentic-rollout">22.3 32 卡以上：全参数 Mid-training 与 Agentic rollout</a>
+<a class="toc-link toc-level-2" href="#section-23-框架如何选" data-toc-id="section-23-框架如何选">23. 框架如何选</a>
+<a class="toc-link toc-level-2" href="#section-24-最常见的失败-以及根因" data-toc-id="section-24-最常见的失败-以及根因">24. 最常见的失败，以及根因</a>
+<a class="toc-link toc-level-2" href="#section-25-最终推荐路线" data-toc-id="section-25-最终推荐路线">25. 最终推荐路线</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></div></nav></aside><article class="content"><header class="inner-hero article-hero"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a></nav><h1 class="page-title" data-post-title>Omni 模型训练：算力、数据与分阶段评测</h1><p class="lead" data-post-meta>2026-08 · 研究笔记</p></header><details class="mobile-toc"><summary>本文目录</summary><nav aria-label="移动端本文目录"><a class="toc-link toc-level-2" href="#section-1-训练规划要点" data-toc-id="section-1-训练规划要点">1. 训练规划要点</a>
+<a class="toc-link toc-level-2" href="#section-2-先定义-你到底在训练什么" data-toc-id="section-2-先定义-你到底在训练什么">2. 先定义：你到底在训练什么</a>
+<a class="toc-link toc-level-2" href="#section-3-为什么不应该一开始全部端到端打开" data-toc-id="section-3-为什么不应该一开始全部端到端打开">3. 为什么不应该一开始全部端到端打开</a>
+<a class="toc-link toc-level-2" href="#section-4-用显存公式建立下界" data-toc-id="section-4-用显存公式建立下界">4. 用显存公式建立下界</a>
+<a class="toc-link toc-level-2" href="#section-5-四档-gpu-配置-分别能做什么" data-toc-id="section-5-四档-gpu-配置-分别能做什么">5. 四档 GPU 配置：分别能做什么</a>
+<a class="toc-link toc-level-3" href="#section-5-1-学习与最小实验-1-80-gb" data-toc-id="section-5-1-学习与最小实验-1-80-gb">5.1 学习与最小实验：1×80 GB</a>
+<a class="toc-link toc-level-3" href="#section-5-2-研究型中等规模-4-8-80-141-gb" data-toc-id="section-5-2-研究型中等规模-4-8-80-141-gb">5.2 研究型中等规模：4–8×80/141 GB</a>
+<a class="toc-link toc-level-3" href="#section-5-3-7b-9b-全参数-mid-training-8-卡能试-16-32-卡更现实" data-toc-id="section-5-3-7b-9b-全参数-mid-training-8-卡能试-16-32-卡更现实">5.3 7B–9B 全参数 Mid-training：8 卡能试，16–32 卡更现实</a>
+<a class="toc-link toc-level-3" href="#section-5-4-论文级完整-omni-与双工-rl-32-64-公开锚点为-128-h20" data-toc-id="section-5-4-论文级完整-omni-与双工-rl-32-64-公开锚点为-128-h20">5.4 论文级完整 Omni 与双工 RL：32–64+，公开锚点为 128×H20</a>
+<a class="toc-link toc-level-2" href="#section-6-节点-网络和存储不能最后再补" data-toc-id="section-6-节点-网络和存储不能最后再补">6. 节点、网络和存储不能最后再补</a>
+<a class="toc-link toc-level-2" href="#section-7-stage-0-先冻结数据-contract-和-codec" data-toc-id="section-7-stage-0-先冻结数据-contract-和-codec">7. Stage 0：先冻结数据 contract 和 codec</a>
+<a class="toc-link toc-level-2" href="#section-8-stage-1-文本底座与模态对齐" data-toc-id="section-8-stage-1-文本底座与模态对齐">8. Stage 1：文本底座与模态对齐</a>
+<a class="toc-link toc-level-2" href="#section-9-stage-2-单流音频-视频-mid-training" data-toc-id="section-9-stage-2-单流音频-视频-mid-training">9. Stage 2：单流音频/视频 Mid-training</a>
+<a class="toc-link toc-level-2" href="#section-10-stage-3-双流连续时间训练" data-toc-id="section-10-stage-3-双流连续时间训练">10. Stage 3：双流连续时间训练</a>
+<a class="toc-link toc-level-2" href="#section-11-配比的单位-不要按文件条数" data-toc-id="section-11-配比的单位-不要按文件条数">11. 配比的单位：不要按文件条数</a>
+<a class="toc-link toc-level-2" href="#section-12-关键交互窗口要重采样" data-toc-id="section-12-关键交互窗口要重采样">12. 关键交互窗口要重采样</a>
+<a class="toc-link toc-level-2" href="#section-13-stage-4-interaction-sft" data-toc-id="section-13-stage-4-interaction-sft">13. Stage 4：Interaction SFT</a>
+<a class="toc-link toc-level-2" href="#section-14-stage-5-talker-稳定性-音色与-dpo" data-toc-id="section-14-stage-5-talker-稳定性-音色与-dpo">14. Stage 5：Talker 稳定性、音色与 DPO</a>
+<a class="toc-link toc-level-2" href="#section-15-stage-6-先优化控制策略-再优化整条语音" data-toc-id="section-15-stage-6-先优化控制策略-再优化整条语音">15. Stage 6：先优化控制策略，再优化整条语音</a>
+<a class="toc-link toc-level-2" href="#section-16-stage-7-agentic-rl-是环境问题-不只是算法问题" data-toc-id="section-16-stage-7-agentic-rl-是环境问题-不只是算法问题">16. Stage 7：Agentic RL 是环境问题，不只是算法问题</a>
+<a class="toc-link toc-level-2" href="#section-17-rl-稳定性的具体技巧" data-toc-id="section-17-rl-稳定性的具体技巧">17. RL 稳定性的具体技巧</a>
+<a class="toc-link toc-level-2" href="#section-18-冻结-loss-和学习率如何分工" data-toc-id="section-18-冻结-loss-和学习率如何分工">18. 冻结、loss 和学习率如何分工</a>
+<a class="toc-link toc-level-2" href="#section-19-数据清洗比继续加小时更重要" data-toc-id="section-19-数据清洗比继续加小时更重要">19. 数据清洗比继续加小时更重要</a>
+<a class="toc-link toc-level-2" href="#section-20-工程层面的常见稳定性-tricks" data-toc-id="section-20-工程层面的常见稳定性-tricks">20. 工程层面的常见稳定性 tricks</a>
+<a class="toc-link toc-level-2" href="#section-21-每阶段的晋级门" data-toc-id="section-21-每阶段的晋级门">21. 每阶段的晋级门</a>
+<a class="toc-link toc-level-2" href="#section-22-三套可以执行的训练方案" data-toc-id="section-22-三套可以执行的训练方案">22. 三套可以执行的训练方案</a>
+<a class="toc-link toc-level-3" href="#section-22-1-一卡方案-先学会整个闭环" data-toc-id="section-22-1-一卡方案-先学会整个闭环">22.1 一卡方案：先学会整个闭环</a>
+<a class="toc-link toc-level-3" href="#section-22-2-八卡方案-完成一篇严谨的交互训练论文" data-toc-id="section-22-2-八卡方案-完成一篇严谨的交互训练论文">22.2 八卡方案：完成一篇严谨的交互训练论文</a>
+<a class="toc-link toc-level-3" href="#section-22-3-32-卡以上-全参数-mid-training-与-agentic-rollout" data-toc-id="section-22-3-32-卡以上-全参数-mid-training-与-agentic-rollout">22.3 32 卡以上：全参数 Mid-training 与 Agentic rollout</a>
+<a class="toc-link toc-level-2" href="#section-23-框架如何选" data-toc-id="section-23-框架如何选">23. 框架如何选</a>
+<a class="toc-link toc-level-2" href="#section-24-最常见的失败-以及根因" data-toc-id="section-24-最常见的失败-以及根因">24. 最常见的失败，以及根因</a>
+<a class="toc-link toc-level-2" href="#section-25-最终推荐路线" data-toc-id="section-25-最终推荐路线">25. 最终推荐路线</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></nav></details><div class="markdown-body" data-markdown-article data-rendered="true"><p>“训练一个 Omni 模型需要多少张卡？”这个问题没有脱离训练目标的固定答案。同一个 7B 模型，做 LoRA 行为微调、冻结 codec 的双工 Mid-training、全参数多模态继续预训练，以及带 reference model 和实时音频 rollout 的 RL，所需显存和吞吐可能相差一个数量级。数据配比也不是“文本 30%、音频 40%”这样一次写死的采购清单，而是一个由能力退化、交互失败和 loss 贡献共同驱动的控制变量。</p>
+<p>本文给出一条面向研究团队、可以逐级执行的训练路线：从 codec 与数据 contract 开始，经过文本能力保留、模态对齐、单流音频、双流连续时间建模、Interaction SFT、Talker 稳定化、控制策略 RL，最后进入带工具和环境反馈的 Agentic RL。重点不是复述 Omni 架构，而是回答五个工程问题：<strong>每一阶段到底训练什么、冻结什么、需要多少卡、数据如何混合、满足什么条件才允许进入下一阶段。</strong></p>
+<p>文中数据分成三类：标注为“公开值”的数字来自论文或官方仓库；显存和存储公式是可复核的工程推导；数据百分比与 GPU 档位是本文建议的启动配置，不代表任何论文的秘密配方。资料核对截止到 2026 年 8 月 14 日。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/omni-training-stage-map.svg" data-image-alt="Omni training stage map" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/omni-training-stage-map.svg" width="1200" height="660" alt="Omni training stage map" loading="lazy" decoding="async"></button><figcaption>图 1：Omni 训练不是一次端到端联合优化，而是从表示、对齐、连续时间交互到 Agentic policy 的逐阶段晋级过程。</figcaption></figure>
+<h2 id="section-1-训练规划要点">1. 训练规划要点</h2>
+<ul><li><strong>先定义训练任务，再谈卡数。</strong> LoRA、partial tuning、全参数 CPT 和在线 RL 的资源模型完全不同；“7B 能不能用 8 卡训练”不是完整问题。</li><li><strong>默认不要从零预训练。</strong> 对多数研究团队，合理起点是强文本或现有 Omni checkpoint；从零复现多万亿文本 token 和百万小时音频不属于普通论文预算。</li><li><strong>Codec 先验证后冻结。</strong> 如果重建质量、因果性、chunk 边界和实时系数没有过关，后续模型只会学习补偿一个不稳定表示层。</li><li><strong>Thinker 与 Talker 分开控制漂移。</strong> 先 Thinker、后 Talker，或像 DuplexOmni 一样交替冻结；不要让内容、韵律、控制时机和工具策略同时改变。</li><li><strong>保留文本 replay。</strong> Moshi 在单流音频预训练中有 50% 的 batch 继续使用纯文本，并使用独立 optimizer state；只靠“从文本模型热启动”不足以长期保留文本能力。[1]</li><li><strong>双工能力来自时间结构，不来自音频总量。</strong> 单流百万小时音频可以训练听觉与语音先验，但 overlap、backchannel、纠正、停止和恢复必须由双轨时间线或可验证的模拟轨迹提供。</li><li><strong>数据配比要按有效 token 与梯度贡献定义。</strong> 文件条数、原始小时和训练中的 loss contribution 不是同一个量。</li><li><strong>先 SFT 学动作，再 RL 学取舍。</strong> WAIT、SPEAK、YIELD、STOP、REVISE、CALL、CANCEL 等基本动作应先通过 Mid-training/SFT 成形；RL 再优化时机、延迟和长程任务收益。</li><li><strong>第一版 RL 冻结 codec 与 Talker。</strong> 先优化 control/action policy，避免 reward 噪声同时破坏语音质量和内容能力。</li><li><strong>晋级由失败指标决定，而不是由训练步数决定。</strong> 每个阶段都要有 holdout、回归集、延迟预算和停止条件。</li></ul>
+<h2 id="section-2-先定义-你到底在训练什么">2. 先定义：你到底在训练什么</h2>
+<p>至少要区分四类任务。</p>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>训练任务</th><th>典型可训练参数</th><th>主要目的</th><th>资源特征</th></tr></thead><tbody><tr><td>LoRA / adapter 微调</td><td>少量线性层、control head</td><td>领域、角色、交互动作</td><td>权重状态小，activation 仍受长音频影响</td></tr><tr><td>双工 Mid-training</td><td>projector、LLM 部分层、control、Talker 部分模块</td><td>连续听说、重叠、打断、流式状态</td><td>长序列与多流 activation 是主要压力</td></tr><tr><td>全参数 Omni CPT</td><td>LLM、aligner、部分 encoder/Talker</td><td>获得新的模态与基础能力</td><td>参数、梯度、optimizer、activation 全部昂贵</td></tr><tr><td>RL / Agentic RL</td><td>policy、reference、rollout、reward</td><td>优化时机、工具和长程任务成功</td><td>训练与推理资源并存，吞吐常由 rollout 限制</td></tr></tbody></table></div>
+<p>“Omni”本身也不是一个单一模块。一个可交互模型通常包含：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>audio / vision encoder
+        ↓
+projector / aligner
+        ↓
+Thinker or multimodal backbone
+        ↓
+text head + control/action head
+        ↓
+Talker / codec predictor
+        ↓
+codec decoder / vocoder</code></pre></div>
+<p>如果只训练 Thinker 的 LoRA，框架即使写着“支持 Qwen Omni”，也不等于支持 Talker、MTP、多 codebook loss、流式 mask 和双工 rollout。训练前必须做一次参数审计：哪些参数 <code>requires_grad=true</code>，哪些 loss 真正反传，哪些 cache 路径只在推理时存在。</p>
+<h2 id="section-3-为什么不应该一开始全部端到端打开">3. 为什么不应该一开始全部端到端打开</h2>
+<p>全开联合训练看起来最“原生”，但它把四类漂移叠在一起：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>语义漂移：Thinker 开始忘记文本知识或指令能力
+表示漂移：encoder / projector 的尺度改变
+声学漂移：Talker 和 codec 的音质、音色、停顿改变
+策略漂移：模型开始过早说话、过度打断或滥用工具</code></pre></div>
+<p>此时总 loss 下降几乎没有诊断意义。内容变差可能被更容易预测的 silence token 掩盖；Talker 的 acoustic loss 下降可能伴随 WER 上升；reward 上升可能只是模型学会更短、更保守地回答。</p>
+<p>更稳妥的原则是：</p>
+<blockquote><strong>每个阶段只引入一种新的自由度，并保留上一阶段的回归门。</strong></blockquote>
+<p>Qwen2.5-Omni 把 Thinker 与 Talker 分开，Talker 接收 Thinker 的高层表示；其公开后训练将 Talker 依次做 speech/context continuation、基于 WER 与 punctuation pause error 排序的 DPO，以及 speaker fine-tuning。[2] DuplexOmni 则在每一阶段交替优化 Thinker 和 Talker：训练一方时冻结另一方，数据比例 1:1。[3] 两条路线共同说明，<strong>模块统一不等于优化变量必须同时开放。</strong></p>
+<h2 id="section-4-用显存公式建立下界">4. 用显存公式建立下界</h2>
+<p>BF16 权重的最简单下界是：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>inference weights ≈ 2 bytes × parameter count</code></pre></div>
+<p>因此 7B 权重约 14 GB，9B 约 18 GB，14B 约 28 GB。全参数 AdamW 训练的常用粗算是：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>BF16 parameters        2 bytes
+BF16 gradients         2 bytes
+FP32 master weights    4 bytes
+FP32 first moment      4 bytes
+FP32 second moment     4 bytes
+--------------------------------
+model states          16 bytes / trainable parameter</code></pre></div>
+<p>于是仅模型状态的理论量级为：</p>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>可训练参数</th><th>未分片 AdamW 状态下界</th><th>8 路完全分片后的理想下界</th></tr></thead><tbody><tr><td>7B</td><td>112 GB</td><td>14 GB / GPU</td></tr><tr><td>9B</td><td>144 GB</td><td>18 GB / GPU</td></tr><tr><td>14B</td><td>224 GB</td><td>28 GB / GPU</td></tr></tbody></table></div>
+<p>这张表<strong>没有</strong>计算 activation、临时 buffer、通信 bucket、视觉和音频 encoder、Talker、MTP、KV/cache、长序列 attention workspace，也没有计算碎片。8 卡下的 14 GB 绝不意味着 7B 全参数 Omni 可以舒适地运行在 8 张 24 GB 卡上。</p>
+<p>DeepSpeed ZeRO-1/2/3 分别分片 optimizer state、gradient 和 parameter；FSDP 也通过分片参数与训练状态降低数据并行复制。[4][5] 它们解决的是状态冗余，不会让长音频和长视频的 activation 自动消失。Activation checkpointing 用额外重计算换显存；tensor、pipeline、context 和 sequence parallel 则分别切模型维度、层、长序列与中间表示。选择并行策略必须从 profile 出发，而不是机械地把所有开关同时打开。</p>
+<h2 id="section-5-四档-gpu-配置-分别能做什么">5. 四档 GPU 配置：分别能做什么</h2>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/omni-training-gpu-budget.svg" data-image-alt="GPU budget ladder" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/omni-training-gpu-budget.svg" width="1200" height="660" alt="GPU budget ladder" loading="lazy" decoding="async"></button><figcaption>图 2：卡数不是模型规模的唯一函数。随着训练目标从 LoRA 走向全参数 CPT 与 RL，资源从单一 trainer 扩展为数据、训练、rollout 和评测多个池。</figcaption></figure>
+<p>NVIDIA 官方规格中，H100 SXM 为 80 GB，H200 为 141 GB，A100 也有 80 GB 版本。[6][7][8] 下面是本文建议，不是论文最低配置。</p>
+<h3 id="section-5-1-学习与最小实验-1-80-gb">5.1 学习与最小实验：1×80 GB</h3>
+<p>推荐起点：<code>1×H100 80GB</code> 或 <code>1×A100 80GB</code>；有条件时 H200 141GB 会显著增加长序列余量。</p>
+<p>适合：</p>
+<ul><li>Moshi 7B LoRA；</li><li>codec 编解码、双声道数据管线和 cache 一致性测试；</li><li>10–100 小时数据 smoke test；</li><li>冻结主体后的 WAIT/SPEAK/STOP 控制 token SFT；</li><li>小模型或文本化轨迹上的 reward 消融。</li></ul>
+<p>Moshi 官方微调仓库给出的配置使用 LoRA rank 128、100 秒 duration、batch size 16；官方实测 <code>1×H100</code> 峰值显存 39.6 GB，<code>8×H100</code> 每卡峰值 23.7 GB。[9] 这是 LoRA 微调实测，不是 Moshi 基础预训练成本。仓库还明确提醒：OOM 时可先减 batch，再减 duration；过度缩短训练 duration 可能让模型推理时更早沉默。</p>
+<p>24 GB 或 48 GB 卡可以做 codec 预处理、短序列 QLoRA、小模型控制实验，但不应作为 7B 原生长音频双工训练的默认承诺。两张消费卡也不会自动变成一张共享显存卡；缺少 NVLink/NVSwitch 时，频繁跨卡通信会进一步损害长序列训练效率。</p>
+<h3 id="section-5-2-研究型中等规模-4-8-80-141-gb">5.2 研究型中等规模：4–8×80/141 GB</h3>
+<p>推荐：<code>4–8×H100 80GB</code>，或 <code>4–8×H200 141GB</code>。</p>
+<p>适合：</p>
+<ul><li>7B LoRA、adapter 或 partial fine-tuning；</li><li>Thinker 与 Talker 分阶段训练；</li><li>数百到数千小时双工数据的多轮实验；</li><li>冻结 Talker 的 control/action GRPO；</li><li>较长 duration、较大有效 batch 和系统性消融。</li></ul>
+<p>这一档最适合论文研究，因为它允许同时保留 baseline、ablation 与 evaluation，而不是把所有卡只用来勉强装下一个 job。建议先用 1–2 卡做 memory/throughput sweep，再决定 4、8 卡如何分配。</p>
+<h3 id="section-5-3-7b-9b-全参数-mid-training-8-卡能试-16-32-卡更现实">5.3 7B–9B 全参数 Mid-training：8 卡能试，16–32 卡更现实</h3>
+<p><code>8×H100 80GB</code> 在充分分片、checkpointing、合理序列长度下可以尝试 7B–9B 全参数训练，但“能启动”不等于“能在合理周期内完成”。如果要同时训练音频/视觉 adapter、Thinker、Talker，并保持较长连续序列与有效全局 batch，更现实的区间是 <code>16–32×H100/H200</code>。</p>
+<p>决定卡数的四个变量是：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>memory fit      可训练参数 + activation + temporary buffers
+global batch    每次更新需要多少有效秒数/帧数/token
+throughput      目标 wall-clock 是否允许反复消融
+reliability     是否留出验证、转换和故障恢复资源</code></pre></div>
+<h3 id="section-5-4-论文级完整-omni-与双工-rl-32-64-公开锚点为-128-h20">5.4 论文级完整 Omni 与双工 RL：32–64+，公开锚点为 128×H20</h3>
+<p>DuplexOmni 的公开训练配置是 <code>128×NVIDIA H20</code>、batch size 128、Thinker LR <code>1e-5</code>、Talker LR <code>1e-4</code>，两类优化数据 1:1。[3] 这可以作为完整 Qwen3-Omni 双工训练的论文级锚点，但不能反推“所有 Omni 必须 128 卡”。模型、序列、数据和工期不同，资源也会不同。</p>
+<p>带实时语音/视频 rollout 的 RL 还要单独预算：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>training pool: actor update, optimizer, reference/log-prob
+rollout pool: streaming generation, tool environment, simulators
+reward pool: ASR, audio quality, judge, verifier, safety checks
+data pool: preprocessing, codec extraction, replay storage</code></pre></div>
+<p>本文建议：4–8 卡只做决策 head 或小规模 GRPO 原型；16–32 卡做 7B 多轮 agent RL；32–64+ 卡再考虑语音/视频 rollout 与 policy update 并行。真正的瓶颈常常不是 backward，而是低 batch、长时程、不可批处理的环境交互。</p>
+<h2 id="section-6-节点-网络和存储不能最后再补">6. 节点、网络和存储不能最后再补</h2>
+<p>单节点优先选择带 NVLink/NVSwitch 的 8-GPU 服务器。跨节点训练建议使用 200/400 Gb/s InfiniBand 或等价 RDMA 网络；每节点配置 64–128 个 CPU core、512 GB–1 TB RAM 和本地 NVMe scratch。音视频 decode、resample、codec、Parquet scan 与随机读取会把 CPU 和存储拖成瓶颈，因此数据预处理 GPU 与主训练 GPU 最好分开调度。</p>
+<p>未压缩音频的体积可以直接估算：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>24,000 samples/s × 2 bytes × 2 channels × 3,600 s
+≈ 0.346 GB / hour</code></pre></div>
+<p>一万小时双声道 24 kHz PCM 已约 3.46 TB，还未包含原文件、transcript、codec token、多个数据版本和 shuffle shard。DuplexOmni 官方称完整可训练数据约 9 TB，并公开 metadata 与一个完成 shard，而不是直接托管全部产物。[10] 对这种规模，本文建议准备 20–30 TB scratch，以容纳源数据、PCM、codec、Parquet、索引、checkpoint 和临时副本。</p>
+<h2 id="section-7-stage-0-先冻结数据-contract-和-codec">7. Stage 0：先冻结数据 contract 和 codec</h2>
+<p>训练前先定义一个不会随实验脚本漂移的数据 contract：</p>
+<div class="code-block"><span class="code-language">json</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>{
+  &quot;session_id&quot;: &quot;...&quot;,
+  &quot;streams&quot;: {
+    &quot;user_audio&quot;: &quot;...&quot;,
+    &quot;assistant_audio&quot;: &quot;...&quot;,
+    &quot;video&quot;: &quot;...&quot;
+  },
+  &quot;timeline&quot;: [
+    {&quot;t_ms&quot;: 1440, &quot;speaker&quot;: &quot;user&quot;, &quot;text&quot;: &quot;...&quot;},
+    {&quot;t_ms&quot;: 1600, &quot;control&quot;: &quot;LISTEN&quot;},
+    {&quot;t_ms&quot;: 2080, &quot;action&quot;: &quot;CALL_TOOL&quot;, &quot;args&quot;: {}}
+  ],
+  &quot;playback&quot;: {&quot;generated_until_ms&quot;: 0, &quot;played_until_ms&quot;: 0},
+  &quot;codec_version&quot;: &quot;...&quot;,
+  &quot;loss_mask_version&quot;: &quot;...&quot;
+}</code></pre></div>
+<p>必须保存原始时间戳、speaker、采样率、codec 版本、增强参数、合成来源、工具事件和 loss mask。只保存最终拼接 token 会让后续无法重算对齐、无法定位泄漏，也无法区分用户真正听到的内容。</p>
+<p>Codec 在进入大模型训练前至少要通过：</p>
+<ul><li>因果 encode/decode，不读取未来帧；</li><li>chunk 边界无明显 click、音量跳变或状态重置；</li><li>单独测量重建 intelligibility、音质和说话人一致性；</li><li>在目标硬件上 <code>RTF &lt; 1</code>，否则实时输出会持续欠债；</li><li>训练 chunk 与推理 cache contract 一致；</li><li>codec/token 版本可追溯，旧 shard 不与新 tokenizer 静默混用。</li></ul>
+<p>Codec 没过门时，不要用大模型训练去“修音质”。那会把表示缺陷扩散到 Thinker、Talker 和 reward。</p>
+<h2 id="section-8-stage-1-文本底座与模态对齐">8. Stage 1：文本底座与模态对齐</h2>
+<p>对大多数团队，Stage 1 不是从零训练一个文本 LLM，而是从强 checkpoint 做 Continual Pretraining 与 modality alignment。先冻结 LLM 和 encoder，只训练 projector/aligner，让音频、图像、视频表示进入语言空间；再逐步解冻 LLM 顶层或小范围 LoRA。</p>
+<p>本文建议的 <strong>alignment/CPT 启动采样概率</strong>：</p>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>数据类型</th><th>起始比例</th><th>目的</th></tr></thead><tbody><tr><td>text replay</td><td>30%</td><td>保留知识、指令与句法能力</td></tr><tr><td>single-stream audio-text</td><td>35%</td><td>ASR、caption、speech QA、语义对齐</td></tr><tr><td>image/video-text</td><td>20%</td><td>视觉与时间语义</td></tr><tr><td>mixed audio-video-text</td><td>10%</td><td>跨模态绑定与联合证据</td></tr><tr><td>early streaming/duplex</td><td>5%</td><td>提前暴露时间轴和控制 token</td></tr></tbody></table></div>
+<p>可在 <code>25–35% text</code>、<code>30–40% single audio</code>、<code>15–25% vision</code>、<code>10–15% mixed</code>、<code>5–10% streaming</code> 范围内调节。Moshi 使用 50% 纯文本 batch 是一个强烈证据：音频训练会遗忘文本能力；但它不是所有 Omni 项目必须复制的比例。[1]</p>
+<p>晋级门：单模态 benchmark 明显提升，文本回归不超过预先约定阈值；projector 的输出 norm 与 LLM embedding 稳定；随机丢弃任一模态时，模型行为符合预期而不是完全崩溃。</p>
+<h2 id="section-9-stage-2-单流音频-视频-mid-training">9. Stage 2：单流音频/视频 Mid-training</h2>
+<p>这一阶段让模型在海量、相对容易获得的单流数据上学习声学、语义和时间先验。Moshi 的公开做法很有参考价值：700 万小时单流音频，batch 覆盖 16 小时音频，每个样本 5 分钟；文本 token 30% 随机 mask，文本与音频延迟在 <code>-0.6s</code> 到 <code>+0.6s</code> 随机化；训练 1M steps，同时 50% 使用纯文本 batch。[1]</p>
+<p>需要注意：700 万小时教会的是通用音频建模，不自动产生真实双工行为。单流阶段适合训练：</p>
+<ul><li>speech/audio understanding；</li><li>text-audio inner representation；</li><li>Talker 的基本 continuation；</li><li>视频和音频真实时间对齐；</li><li>长流 cache 稳定性。</li></ul>
+<p>关键 tricks：</p>
+<ul><li>按有效秒数、帧数或 token budget batching，不按样本条数；</li><li>duration bucketing，减少 silence/padding；</li><li>从短 chunk 到长 stream 做 curriculum；</li><li>temporal jitter、随机 chunk 起点和 cache reset；</li><li>semantic codebook 高权重，acoustic codebook 低权重；Moshi 评测中使用 semantic token 权重 100、acoustic token 权重 1。[1]</li><li>text、aligner、Talker 使用不同 optimizer group 与 LR；</li><li>分头记录 text/audio/codebook loss，不只看总 loss。</li></ul>
+<h2 id="section-10-stage-3-双流连续时间训练">10. Stage 3：双流连续时间训练</h2>
+<p>双工 Mid-training 的目标不是“在每个样本里放两个说话人”，而是学习连续时间中的并发关系：沉默、等待、重叠、backchannel、用户纠正、助手停止、重新接续。</p>
+<p>Moshi 先用 diarization 将单流音频模拟成多流，训练 100k steps、8 小时 audio batch，并保留 10% text-only batch；随后使用约 2,000 小时、分声道录制的 Fisher 电话对话训练 10k batches，40 分钟 audio batch。论文明确指出模拟流没有自然 overlap，inactive stream 又过于干净，因此真实双人数据不可替代。[1]</p>
+<p>本文建议的 <strong>Duplex Mid-training 启动配方</strong>：</p>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>数据类型</th><th>采样概率</th></tr></thead><tbody><tr><td>真实双声道自然对话</td><td>30%</td></tr><tr><td>Writer-Director 合成双工轨迹</td><td>25%</td></tr><tr><td>单流 speech instruction / ASR / QA</td><td>15%</td></tr><tr><td>音视频 grounded interaction</td><td>10%</td></tr><tr><td>text capability replay</td><td>10%</td></tr><tr><td>interruption / correction / noise / tool-delay hard cases</td><td>10%</td></tr></tbody></table></div>
+<p>真实双工数据不应被海量 TTS 淹没。合成轨迹擅长控制事件分布，真实录音负责声学、停顿、犹豫、串音和失败模式。最有效的组合往往是 <strong>synthetic timeline + real acoustics</strong>，而不是纯合成语音或未经结构化的真实通话。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/omni-training-data-mixture.svg" data-image-alt="Data mixture controller" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/omni-training-data-mixture.svg" width="1200" height="660" alt="Data mixture controller" loading="lazy" decoding="async"></button><figcaption>图 3：数据配比应从固定启动配方向基于失败桶的闭环采样演化；原始文件条数不能代表训练贡献。</figcaption></figure>
+<h2 id="section-11-配比的单位-不要按文件条数">11. 配比的单位：不要按文件条数</h2>
+<p>假设第 i 类数据的采样概率为 <code>p_i</code>，平均有效 token 为 <code>n_i</code>，loss 权重为 <code>lambda_i</code>，其梯度范数为 <code>g_i</code>，那么它对更新的粗略贡献更接近：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>contribution_i ∝ p_i × E[n_i] × lambda_i × E[g_i]</code></pre></div>
+<p>一条 5 分钟双流音频和一条 10 秒文本问答都算“一条”，显然没有意义。文章中的百分比指 <strong>sampler 的启动概率</strong>；训练时还要报告每类数据的有效秒数、有效 token、loss、gradient norm 和吞吐成本。</p>
+<p>每轮评测后，可按失败率调整：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>new_weight_i = clamp(
+  old_weight_i × exp(eta × normalized_failure_i / unit_cost_i),
+  lower_i,
+  upper_i
+)</code></pre></div>
+<p>这不是让困难数据无限增权。上下界用于防止训练分布被一个噪声 benchmark 劫持；unit cost 用于避免一个极慢视频桶耗尽全部 step time。</p>
+<h2 id="section-12-关键交互窗口要重采样">12. 关键交互窗口要重采样</h2>
+<p>长对话中多数时间是普通 speech 或 silence，而真正决定体验的窗口很稀少。可以在进入 batch 前围绕事件裁剪 4–20 秒窗口，使用以下启动分布：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>35% normal turn transition
+15% silence / wait
+15% overlap / backchannel
+15% interruption / correction
+10% delayed reasoning / tool result
+10% noise / multi-speaker / packet loss</code></pre></div>
+<p>silence 仍然重要，但不能让它主导梯度。对 LISTEN、WAIT、BACKCHANNEL、START、YIELD、STOP、REVISE 等 control token 做类别重加权，并分别报告 precision/recall。否则模型最容易学到的局部最优是“永远沉默”或“检测到任何声音就停止”。</p>
+<h2 id="section-13-stage-4-interaction-sft">13. Stage 4：Interaction SFT</h2>
+<p>此时才把产品行为显式写入 action space：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>LISTEN  WAIT  BACKCHANNEL  START_SPEAK
+CONTINUE  YIELD  STOP  REVISE
+CALL_TOOL  CANCEL_TOOL  ASK_CLARIFY
+PREPARE  COMMIT  ABORT  MEMORY_WRITE</code></pre></div>
+<p>SFT 样本不应只有最终回答，还要有 earliest legal action time、当前 belief、工具状态和 playback state。例如用户在助手说话时把“昨天”纠正为“前天”，标签应同时覆盖 speech stop、slot revision、旧查询取消和新查询发起。</p>
+<p>SFT 的目标是让动作空间可用，不是让每个决策都达到最优。晋级门至少包括：</p>
+<ul><li>ordinary turn 不被过度打断；</li><li>backchannel 不被当成抢话；</li><li>用户强打断后在目标延迟内静音；</li><li>correction 能撤销旧参数；</li><li>未播放内容不会被当成共同记忆；</li><li>不可逆操作不会在缺少确认时 COMMIT。</li></ul>
+<h2 id="section-14-stage-5-talker-稳定性-音色与-dpo">14. Stage 5：Talker 稳定性、音色与 DPO</h2>
+<p>Talker 的目标与 Thinker 不同。内容正确不代表语音可懂，WER 低也不代表停顿、韵律和延迟自然。本文建议的 Talker SFT 启动配方：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>60% clean neutral natural speech
+15% prosody / emotion / style
+10% multi-speaker / timbre
+10% channel and noise robustness
+ 5% pronunciation / number / entity hard cases</code></pre></div>
+<p>Qwen2.5-Omni 先用多模态上下文和口语回复做 speech continuation，再根据 WER 与 punctuation pause error 构造好坏语音对做 DPO，最后 speaker fine-tuning；它还使用 timbre disentanglement，避免特定音色与稀有文本模式错误绑定。[2] 这说明 Talker preference 的 reward 应尽量接近可观测语音缺陷，而不是只让一个通用 judge 评价“是否自然”。</p>
+<p>Talker 训练 tricks：</p>
+<ul><li>先冻结 Thinker，确保内容条件不漂移；</li><li>对第一或 semantic codebook 赋更高权重；</li><li>数字、实体、缩写和中英混读建立独立 hard set；</li><li>训练音色与用户音色严格隔离，避免 voice leakage；</li><li>监控 WER、pause、speaker similarity、UTMOS/人评和 RTF；</li><li>TTS 合成数据使用多样用户音色，但助手音色策略要与产品目标一致；</li><li>不让高噪声增强永久降低 clean speech 上限。</li></ul>
+<h2 id="section-15-stage-6-先优化控制策略-再优化整条语音">15. Stage 6：先优化控制策略，再优化整条语音</h2>
+<p>第一版 RL 建议冻结 codec、Talker 和大部分 Thinker，只训练 control/action head 或少量 policy adapter。原因很直接：时机 reward 本来就稀疏且噪声大，如果 Talker 同时更新，reward hacking 会把“说得短”“快速闭嘴”误当成更自然。</p>
+<p>一个基础 reward 可以写为：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>R = w1 × task_success
+  + w2 × semantic_quality
+  + w3 × timing_quality
+  + w4 × interruption_recovery
+  + w5 × safety
+  - w6 × response_delay
+  - w7 × false_start
+  - w8 × premature_action
+  - w9 × unnecessary_tool
+  - w10 × compute_cost</code></pre></div>
+<p>不要从用户结束说话才开始计算延迟。更合理的起点是 <code>t_ready</code>：模型已经获得足够语义信息、允许执行该动作的最早时刻。搜索、预取等可撤销动作可以早做；支付、退款、转账等高风险动作只能 PREPARE，经过确认后 COMMIT。</p>
+<p>适合 RL 的窗口包括 turn boundary、长停顿、抢话前后、用户纠正、工具返回和 commit 前。长达十分钟的完整语音 rollout 一开始就做 RL，会让信用分配、显存与环境吞吐同时失控。</p>
+<h2 id="section-16-stage-7-agentic-rl-是环境问题-不只是算法问题">16. Stage 7：Agentic RL 是环境问题，不只是算法问题</h2>
+<p>Agentic RL 与普通单轮 GRPO 的差别是策略会多次观察、行动、接收工具结果并继续决策。需要记录：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>observation: audio prefix, video, playback, memory, tool state
+action: control token, speech plan, tool call, cancel, commit
+environment: new chunk, user correction, timeout, tool result
+reward: task, timing, safety, effort, latency, compute</code></pre></div>
+<p>本文建议的 rollout 启动分布：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>40% normal tasks
+20% user interruption and parameter revision
+15% ambiguity and clarification
+10% tool latency, failure and cancellation
+10% high-risk confirmation and irreversible action
+ 5% noise, adversarial and multi-speaker interference</code></pre></div>
+<p>轨迹必须保存 prompt/token ID、loss mask、模型权重版本、工具版本、环境 seed、音频时间戳和 reward 分项。否则异步 rollout 产生的旧策略轨迹无法判断 staleness，失败也无法重放。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/omni-training-agentic-rl-loop.svg" data-image-alt="Agentic RL loop" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/omni-training-agentic-rl-loop.svg" width="1200" height="660" alt="Agentic RL loop" loading="lazy" decoding="async"></button><figcaption>图 4：Omni RL 需要把流式 rollout、环境事件、分项 reward、策略更新和回归晋级连成闭环，而不是只在最终语音上打一个总分。</figcaption></figure>
+<h2 id="section-17-rl-稳定性的具体技巧">17. RL 稳定性的具体技巧</h2>
+<ul><li><strong>场景内归一化 reward。</strong> 不要让简单 QA 的高分压过银行确认或长时工具任务。</li><li><strong>监控 KL、clip fraction、advantage 分布和 policy staleness。</strong> 只看平均 reward 会错过策略坍缩。</li><li><strong>保留 supervised replay。</strong> 每个 RL batch 混入稳定的 SFT/control 样本，限制行为漂移。</li><li><strong>分离 process 与 outcome reward。</strong> 任务成功不代表工具调用时机正确；时机正确也不代表最终任务完成。</li><li><strong>独立惩罚 false interruption。</strong> “能停止”不能靠见到任何声音都停止来实现。</li><li><strong>使用 playback-aware rollback。</strong> 已生成但未播放的尾部可以删除，已经播放给用户的承诺必须进入共同状态。</li><li><strong>环境先做 deterministic toy。</strong> 在可控延迟、固定用户脚本和可重放工具上验证 reward，再接真实电话或视频流。</li><li><strong>先做可取消只读工具。</strong> 搜索、查询和预加载比退款、删除、支付更适合最早一轮 Agentic RL。</li></ul>
+<h2 id="section-18-冻结-loss-和学习率如何分工">18. 冻结、loss 和学习率如何分工</h2>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/omni-training-freeze-loss-map.svg" data-image-alt="Freeze and loss map" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/omni-training-freeze-loss-map.svg" width="1200" height="660" alt="Freeze and loss map" loading="lazy" decoding="async"></button><figcaption>图 5：每一阶段只开放必要模块，并让 loss、学习率和回归门与该阶段的新增能力一一对应。</figcaption></figure>
+<p>下面是一套启动策略，不是通用最优超参数：</p>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>阶段</th><th>建议开放</th><th>建议冻结</th><th>LR 关系</th></tr></thead><tbody><tr><td>alignment</td><td>projector/aligner</td><td>codec、encoder、LLM</td><td>aligner 最高</td></tr><tr><td>CPT / single stream</td><td>aligner + LLM 部分或全部</td><td>codec，初期冻结 Talker</td><td>LLM 低，aligner 中</td></tr><tr><td>duplex mid-train</td><td>control + Thinker，随后 Talker</td><td>两者交替冻结</td><td>Talker 可高于 Thinker</td></tr><tr><td>Interaction SFT</td><td>control/action + 少量 backbone</td><td>codec，大部分 encoder</td><td>control 中，LLM 低</td></tr><tr><td>Talker DPO</td><td>Talker/MTP</td><td>Thinker、codec</td><td>小 LR，强 KL/参考约束</td></tr><tr><td>control RL</td><td>policy adapter/head</td><td>codec、Talker、大部分 Thinker</td><td>最小且独立</td></tr><tr><td>Agentic RL</td><td>action/control，必要时少量 Thinker</td><td>声学生成链</td><td>依据 KL 和 staleness 调整</td></tr></tbody></table></div>
+<p>DuplexOmni 的公开值是 Thinker <code>1e-5</code>、Talker <code>1e-4</code>，但它基于特定架构、batch 128 和 128×H20，不能直接复制到 1 卡 LoRA。[3] Moshi-finetune 对 LoRA 推荐从 <code>2e-6</code> 开始、weight decay 0.1、rank 不超过 128。[9] 超参数必须连同可训练参数、global batch、duration 和 optimizer 一起解释。</p>
+<h2 id="section-19-数据清洗比继续加小时更重要">19. 数据清洗比继续加小时更重要</h2>
+<p>至少做三层去重：</p>
+<ol><li>waveform fingerprint，去除重复录音与切片重叠；</li><li>transcript semantic dedup，避免同一脚本被大量 TTS 音色复制；</li><li>speaker/voice dedup，防止同一说话人跨 train/val/test。</li></ol>
+<p>还要检查：</p>
+<ul><li>transcript 与音频 timestamp 偏移分布；</li><li>两声道 speaker leakage、串音和声道反转；</li><li>silence、overlap、backchannel、interruption 的真实比例；</li><li>TTS 模型、voice ID 和脚本来源；</li><li>视频帧与音频时钟漂移；</li><li>许可、隐私、旁观者和声音克隆授权；</li><li>benchmark 污染和提示模板重复。</li></ul>
+<p>训练/验证/测试应按 speaker、session 和原始来源隔离，而不是切完 chunk 后随机分。否则相邻片段或同一个 TTS voice 会让验证结果虚高。</p>
+<h2 id="section-20-工程层面的常见稳定性-tricks">20. 工程层面的常见稳定性 tricks</h2>
+<ul><li><strong>prefix-streaming 一致性：</strong> 训练只允许看到当前前缀，不能离线偷看未来；推理 cache 的 mask 与训练完全一致。</li><li><strong>duration curriculum：</strong> 先短片段收敛动作和对齐，再逐步拉长；长期能力仍要用目标 duration 验证。</li><li><strong>temporal jitter：</strong> 随机改变音频/文本延迟、chunk 边界和视频采样相位，防止模型记住固定格点。</li><li><strong>网络扰动：</strong> packet loss、jitter、短暂 cache reset、tool delay 进入训练或模拟器。</li><li><strong>声学增强分层：</strong> clean、noise、echo、reverb 分桶报告，不用一个平均分掩盖 clean regression。</li><li><strong>padding/silence 降权：</strong> Moshi 在音频 batch 中把 padding CE 权重降低 50%。[1]</li><li><strong>optimizer state 分离：</strong> Moshi 为 text-only 与 audio batch 使用独立 optimizer state，并在 audio batch 中把 text embedding/head LR 乘 0.75。[1]</li><li><strong>梯度监控：</strong> 按 encoder、aligner、Thinker、control、Talker、codebook 记录 norm 与 overflow。</li><li><strong>断点可复现：</strong> 保存 sampler state、shard cursor、codec 版本和随机增强 seed，不只保存权重。</li><li><strong>先 profile 后扩卡：</strong> 分别测 dataloader、forward、backward、all-reduce、checkpoint 与 eval 的时间占比。</li></ul>
+<h2 id="section-21-每阶段的晋级门">21. 每阶段的晋级门</h2>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>阶段</th><th>必须通过的核心门</th><th>不能被平均值掩盖的回归</th></tr></thead><tbody><tr><td>codec</td><td>重建、因果、chunk、RTF</td><td>数字与实体可懂度</td></tr><tr><td>alignment</td><td>单模态理解与跨模态绑定</td><td>文本能力、模态缺失鲁棒性</td></tr><tr><td>single stream</td><td>speech QA、长流 cache</td><td>文本遗忘、早停沉默</td></tr><tr><td>duplex</td><td>turn、overlap、interrupt</td><td>false stop、永远沉默、抢话</td></tr><tr><td>Interaction SFT</td><td>action validity、revision</td><td>未确认 commit、错误 memory</td></tr><tr><td>Talker</td><td>WER、pause、voice、RTF</td><td>内容正确性和 clean quality</td></tr><tr><td>control RL</td><td>timing、yield、repair</td><td>reward hacking、过短回复</td></tr><tr><td>Agentic RL</td><td>task success、tool correctness</td><td>rollback、审计、高风险误执行</td></tr></tbody></table></div>
+<p>最终评测至少报告 P50/P95/P99：首个有效语义动作延迟、<code>t_ready</code> 到工具触发、用户打断到助手静音、工具结果到回复修订，以及端到端任务完成时间。质量侧同时报告 content、speech、turn-taking、tool、memory 与 safety；不要合成一个无法诊断的总分。</p>
+<h2 id="section-22-三套可以执行的训练方案">22. 三套可以执行的训练方案</h2>
+<h3 id="section-22-1-一卡方案-先学会整个闭环">22.1 一卡方案：先学会整个闭环</h3>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>Hardware: 1×H100 80GB or A100 80GB
+Backbone: Moshi 7B or existing Omni checkpoint
+Train: LoRA/control head
+Data: 10–100 h curated dual-channel + text replay
+Goal: codec contract, data timeline, LISTEN/SPEAK/STOP baseline
+RL: text/state simulator only, no end-to-end audio RL</code></pre></div>
+<p>输出应是一套可重放数据管线、一组 failure buckets 和一个不会在真实流式推理中崩溃的 baseline，而不是追求通用模型榜单。</p>
+<h3 id="section-22-2-八卡方案-完成一篇严谨的交互训练论文">22.2 八卡方案：完成一篇严谨的交互训练论文</h3>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>Hardware: 8×H100 80GB or H200 141GB
+Train: LoRA/partial Thinker + alternating Talker
+Data: 500–3,000 h real/synthetic duplex + hard windows
+Experiments: freeze order, data mixture, text replay, timing policy
+RL: frozen Talker, control/action GRPO or DPO
+Evaluation: offline + real streaming + product task simulator</code></pre></div>
+<p>卡的分配不要始终 8 卡单 job。开发期可用 4 卡训练、2 卡 rollout、1 卡 reward、1 卡评测；稳定后再 8 卡扩大全局 batch。</p>
+<h3 id="section-22-3-32-卡以上-全参数-mid-training-与-agentic-rollout">22.3 32 卡以上：全参数 Mid-training 与 Agentic rollout</h3>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>Hardware: 16–32×H100/H200 for full-parameter 7B–9B mid-training
+Scale-up: 32–64+ for parallel speech/video rollout and policy update
+Reference: DuplexOmni reports 128×H20 for its complete training setup
+Data: multi-TB sharded dataset, independent preprocess and eval pools
+System: Megatron/FSDP/ZeRO + high-speed fabric + async rollout runtime</code></pre></div>
+<p>这一档必须先有 8 卡 profile 和 scaling curve。没有单节点 tokens/s、audio-seconds/s、MFU、通信占比、checkpoint 时间和 dataloader stall，直接申请 32 或 64 卡只是把未知问题放大。</p>
+<h2 id="section-23-框架如何选">23. 框架如何选</h2>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>目标</th><th>推荐起点</th><th>边界</th></tr></thead><tbody><tr><td>学原生双流与 LoRA</td><td>Moshi + moshi-finetune</td><td>主要是 speech-text，不是视觉 Omni；微调库不是完整预训练复现</td></tr><tr><td>CPT / SFT / DPO 原型</td><td>ms-swift</td><td>必须核对目标模型 Talker、codec 与 streaming loss 是否真正支持</td></tr><tr><td>简单 SFT/DPO 数据验证</td><td>LLaMA-Factory / TRL</td><td>不适合直接承担自定义多流 codec 与大规模异步语音 rollout</td></tr><tr><td>大规模 Mid-training</td><td>Megatron-LM / NeMo</td><td>工程复杂，适合从已验证 recipe 扩大</td></tr><tr><td>正式分布式 RL</td><td>verl</td><td>适合拆 rollout、reward、advantage、policy update、reference 与同步</td></tr><tr><td>高级大规模 RL</td><td>slime</td><td>更接近 Megatron + SGLang 与自定义 rollout，门槛更高</td></tr><tr><td>Agent 轨迹与环境</td><td>Agent Lightning / Agent-R1</td><td>是 trace、环境和 MDP 抽象，不自动替代权重训练后端</td></tr></tbody></table></div>
+<p>合理顺序是：用最简单框架验证 loss 和数据，再迁移到扩展性更强的训练栈。不要因为某框架“支持某模型名称”，就默认它覆盖完整 Thinker-Talker、codec 和双工推理 contract。[11][12][13][14][17][18][19]</p>
+<h2 id="section-24-最常见的失败-以及根因">24. 最常见的失败，以及根因</h2>
+<p><strong>模型永远沉默。</strong> 通常不是缺少语言能力，而是 silence/padding 数量、loss 权重或错误终点标签压倒了稀有 START/BACKCHANNEL。</p>
+<p><strong>模型一听到声音就停止。</strong> interruption reward 没有区分背景噪声、附和和抢话，false stop 缺少独立惩罚。</p>
+<p><strong>音频 benchmark 提升，文本推理下降。</strong> text replay 太少、共享 optimizer state 被音频梯度主导，或 oral-style SFT 过窄。Moshi 也观察到不保留 50% text-only batch 会明显损害问答能力。[1]</p>
+<p><strong>离线很好，流式崩溃。</strong> 训练看到了完整音频，推理只有 prefix；chunk mask、position、cache reset 或 codec state 不一致。</p>
+<p><strong>Talker 很自然，但说错数字。</strong> acoustic loss 主导，semantic codebook、实体 hard set 和 WER/punctuation preference 不足。</p>
+<p><strong>工具调用很快，但改口后无法恢复。</strong> 训练只有成功轨迹，没有 CANCEL、REVISE、ABORT 和 playback-aware rollback。</p>
+<p><strong>扩卡后吞吐不升反降。</strong> duration bucket 不合理、数据解码慢、跨节点 all-to-all、checkpoint 或 reward service 成为瓶颈。</p>
+<p><strong>平均 reward 上升，用户体验下降。</strong> reward 把短回复、保守沉默或频繁 backchannel 当成捷径，且缺少场景分桶和真实 streaming 回归。</p>
+<h2 id="section-25-最终推荐路线">25. 最终推荐路线</h2>
+<p>如果团队刚开始，我会采用：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>Moshi / existing Omni checkpoint
+→ codec and timeline contract
+→ single-GPU LoRA smoke test
+→ alignment with text replay
+→ synthetic duplex + real dual-channel mid-training
+→ Interaction SFT with explicit control/action tokens
+→ frozen-Thinker Talker stabilization and DPO
+→ frozen-Talker control-policy RL
+→ tool simulator and Agentic RL
+→ only then consider broader joint optimization</code></pre></div>
+<p>扩大训练规模前，应先用 toy experiment 检验根因假设，不能只看配置是否跑通。例如：“模型永远沉默是因为 silence 梯度占比过高”，先在可控数据上改变 silence 权重并验证；“用户纠正无法生效是因为轨迹没有 action invalidation”，先增加 CANCEL/REVISE 窗口并验证。只有根因实验成立，才值得扩到千小时和几十张卡。</p>
+<p>这份规划采用逐阶段训练：每次只加入必要的可训练部分，用数据配比控制遗忘与稀有事件，用冻结和分头 loss 控制漂移，再根据评测决定是否投入下一档算力。具体顺序仍需依据起始模型和目标任务调整。</p>
+<h2 id="参考资料">参考资料</h2>
+<ol><li>Défossez et al., <a href="https://arxiv.org/abs/2410.00037">Moshi: a speech-text foundation model for real-time dialogue</a>, 2024.</li><li>Xu et al., <a href="https://arxiv.org/abs/2503.20215">Qwen2.5-Omni Technical Report</a>, 2025.</li><li>Huang et al., <a href="https://arxiv.org/abs/2606.09186">DuplexOmni: A Scalable Framework for Real-Time Omni Interaction</a>, 2026.</li><li>DeepSpeed, <a href="https://www.deepspeed.ai/tutorials/zero/">ZeRO documentation</a>.</li><li>PyTorch, <a href="https://pytorch.org/docs/stable/fsdp.html">Fully Sharded Data Parallel documentation</a>.</li><li>NVIDIA, <a href="https://www.nvidia.com/en-us/data-center/h100/">H100 Tensor Core GPU</a>.</li><li>NVIDIA, <a href="https://www.nvidia.com/en-us/data-center/h200/">H200 Tensor Core GPU</a>.</li><li>NVIDIA, <a href="https://www.nvidia.com/en-us/data-center/a100/">A100 Tensor Core GPU</a>.</li><li>Kyutai, <a href="https://github.com/kyutai-labs/moshi-finetune">moshi-finetune</a>.</li><li>MuyeHuang, <a href="https://github.com/MuyeHuang/DuplexOmni">DuplexOmni repository and data pipeline</a>.</li><li>ModelScope, <a href="https://github.com/modelscope/ms-swift">ms-swift</a>.</li><li>NVIDIA, <a href="https://github.com/NVIDIA/Megatron-LM">Megatron-LM</a>.</li><li>verl project, <a href="https://github.com/verl-project/verl">verl</a>.</li><li>THUDM, <a href="https://github.com/THUDM/slime">slime</a>.</li><li>Microsoft, <a href="https://github.com/microsoft/agent-lightning">Agent Lightning</a>.</li><li>AgentR1, <a href="https://github.com/AgentR1/Agent-R1">Agent-R1</a>.</li><li>hiyouga, <a href="https://github.com/hiyouga/LLaMA-Factory">LLaMA-Factory</a>.</li><li>Hugging Face, <a href="https://github.com/huggingface/trl">TRL</a>.</li><li>NVIDIA, <a href="https://github.com/NVIDIA/NeMo">NeMo</a>.</li></ol>
+<blockquote>证据说明：Moshi、Qwen2.5-Omni、DuplexOmni 和 moshi-finetune 的数字均来自论文或官方仓库；其中 Moshi 未披露 H100 数量，Qwen2.5-Omni 未披露完整训练 GPU 数和数据配比。本文 GPU 档位、20–30 TB scratch、各阶段数据百分比、学习率分工与 RL 卡数属于工程启动建议，必须通过目标模型的显存与吞吐 profile 校准。</blockquote></div><script type="application/json" data-article-headings>[{"id":"section-1-训练规划要点","level":2,"text":"1. 训练规划要点"},{"id":"section-2-先定义-你到底在训练什么","level":2,"text":"2. 先定义：你到底在训练什么"},{"id":"section-3-为什么不应该一开始全部端到端打开","level":2,"text":"3. 为什么不应该一开始全部端到端打开"},{"id":"section-4-用显存公式建立下界","level":2,"text":"4. 用显存公式建立下界"},{"id":"section-5-四档-gpu-配置-分别能做什么","level":2,"text":"5. 四档 GPU 配置：分别能做什么"},{"id":"section-5-1-学习与最小实验-1-80-gb","level":3,"text":"5.1 学习与最小实验：1×80 GB"},{"id":"section-5-2-研究型中等规模-4-8-80-141-gb","level":3,"text":"5.2 研究型中等规模：4–8×80/141 GB"},{"id":"section-5-3-7b-9b-全参数-mid-training-8-卡能试-16-32-卡更现实","level":3,"text":"5.3 7B–9B 全参数 Mid-training：8 卡能试，16–32 卡更现实"},{"id":"section-5-4-论文级完整-omni-与双工-rl-32-64-公开锚点为-128-h20","level":3,"text":"5.4 论文级完整 Omni 与双工 RL：32–64+，公开锚点为 128×H20"},{"id":"section-6-节点-网络和存储不能最后再补","level":2,"text":"6. 节点、网络和存储不能最后再补"},{"id":"section-7-stage-0-先冻结数据-contract-和-codec","level":2,"text":"7. Stage 0：先冻结数据 contract 和 codec"},{"id":"section-8-stage-1-文本底座与模态对齐","level":2,"text":"8. Stage 1：文本底座与模态对齐"},{"id":"section-9-stage-2-单流音频-视频-mid-training","level":2,"text":"9. Stage 2：单流音频/视频 Mid-training"},{"id":"section-10-stage-3-双流连续时间训练","level":2,"text":"10. Stage 3：双流连续时间训练"},{"id":"section-11-配比的单位-不要按文件条数","level":2,"text":"11. 配比的单位：不要按文件条数"},{"id":"section-12-关键交互窗口要重采样","level":2,"text":"12. 关键交互窗口要重采样"},{"id":"section-13-stage-4-interaction-sft","level":2,"text":"13. Stage 4：Interaction SFT"},{"id":"section-14-stage-5-talker-稳定性-音色与-dpo","level":2,"text":"14. Stage 5：Talker 稳定性、音色与 DPO"},{"id":"section-15-stage-6-先优化控制策略-再优化整条语音","level":2,"text":"15. Stage 6：先优化控制策略，再优化整条语音"},{"id":"section-16-stage-7-agentic-rl-是环境问题-不只是算法问题","level":2,"text":"16. Stage 7：Agentic RL 是环境问题，不只是算法问题"},{"id":"section-17-rl-稳定性的具体技巧","level":2,"text":"17. RL 稳定性的具体技巧"},{"id":"section-18-冻结-loss-和学习率如何分工","level":2,"text":"18. 冻结、loss 和学习率如何分工"},{"id":"section-19-数据清洗比继续加小时更重要","level":2,"text":"19. 数据清洗比继续加小时更重要"},{"id":"section-20-工程层面的常见稳定性-tricks","level":2,"text":"20. 工程层面的常见稳定性 tricks"},{"id":"section-21-每阶段的晋级门","level":2,"text":"21. 每阶段的晋级门"},{"id":"section-22-三套可以执行的训练方案","level":2,"text":"22. 三套可以执行的训练方案"},{"id":"section-22-1-一卡方案-先学会整个闭环","level":3,"text":"22.1 一卡方案：先学会整个闭环"},{"id":"section-22-2-八卡方案-完成一篇严谨的交互训练论文","level":3,"text":"22.2 八卡方案：完成一篇严谨的交互训练论文"},{"id":"section-22-3-32-卡以上-全参数-mid-training-与-agentic-rollout","level":3,"text":"22.3 32 卡以上：全参数 Mid-training 与 Agentic rollout"},{"id":"section-23-框架如何选","level":2,"text":"23. 框架如何选"},{"id":"section-24-最常见的失败-以及根因","level":2,"text":"24. 最常见的失败，以及根因"},{"id":"section-25-最终推荐路线","level":2,"text":"25. 最终推荐路线"},{"id":"参考资料","level":2,"text":"参考资料"}]</script></article></main>
   <footer class="footer"><div class="footer-inner">© 2026 Tianyu Xie.</div></footer>
 </body>
 </html>

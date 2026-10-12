@@ -8,7 +8,7 @@ Zhiyuan Song、Weici Zhao、Yang Xiao、Suhao Yu、Cheng Zhu 与 Jiatao Gu 的�
 
 ![Wait-think-answer overview](/images/blog/when-to-think-controller.svg "图 1：wait-think-answer 控制器在 partial audio 上周期性决策。实验中 endpoint 前只允许 WAIT 或 THINK，ANSWER 固定发生在完整语音之后。")
 
-## 1. 核心结论
+## 1. 方法与实验要点
 
 - **研究对象是 reasoning placement。** 它不只是让模型“多想”，而是把一定量推理从 endpoint 后移动到用户说话期间。
 - **动作语言清晰。** `WAIT` 不改变可见 memory，`THINK` 追加短语义状态，后续决策同时读取完整音频前缀与此前 thought。
@@ -241,7 +241,7 @@ FLAIR 更连续、更容易抢占，但 state 难以审计；本文的 thought �
 
 Question Completeness 只估计“问题是否已经足够完整”，而本文还决定“虽然不能回答，是否值得更新中间 state”。这是重要差别：一个长问题可能在 30% 处就提供第一个可计算事实，但仍要等到 100% 才能回答。
 
-## 11. 论文真正证明了什么
+## 11. 实验证据的适用范围
 
 1. Qwen2.5-Omni 可以被训练成遵守显式 WAIT/THINK/final-THINK/ANSWER action protocol。
 2. semantic anchor、forced alignment 与 0.5 秒网格可以构造大规模 audio-grounded controller trace。
@@ -266,7 +266,7 @@ Question Completeness 只估计“问题是否已经足够完整”，而本文�
 
 **reward attribution 仍不充分。** 4/5/6 reward 是逐步堆叠而非全因子消融，没有多 seed，也没有 shuffled timing anchor 或 judge replacement 对照。
 
-## 13. 从第一性原理设计下一组 toy experiments
+## 13. 下一组小规模对照实验
 
 ### 13.1 Earliest sufficient evidence
 
@@ -328,7 +328,7 @@ MEMORY_WRITE / SUPERSEDE
 
 高频 latent update 可以持续吸收证据；低频 visible checkpoint 只在状态发生稳定变化时出现；tool action 则根据风险决定能否 speculative execution。`ANSWER` 不应机械绑定 endpoint，而应成为 optimal stopping action。
 
-这也回到我对 full-duplex omni model 的判断：**它不是一个会自然抢话的 Speech-to-Speech Model，而是一个在连续时间中分配感知、推理、表达和行动预算的 Agent Policy。** 这篇论文的重要性，在于把“何时思考”第一次明确变成可训练的 policy trajectory；它的下一步，是把 reasoning scheduler 接到真正的 action scheduler。
+这也回到我对 full-duplex omni model 的关注：它需要在连续时间中分配感知、推理、表达和行动的计算预算，接话自然度只是一个评测维度。 这篇论文的重要性，在于把“何时思考”第一次明确变成可训练的 policy trajectory；它的下一步，是把 reasoning scheduler 接到真正的 action scheduler。
 
 ## 15. 最终评价
 

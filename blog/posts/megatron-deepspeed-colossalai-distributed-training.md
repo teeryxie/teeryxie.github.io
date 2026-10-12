@@ -2,9 +2,9 @@
 
 Megatron-LM、DeepSpeed 和 Colossal-AI 都支持多设备训练，但它们管理模型结构、训练状态和执行过程的方式不同。张量并行拆分同一层的计算，流水线并行分配不同网络层，ZeRO 将参数、梯度或优化器状态分散存储。这些功能即使名称相同，也可能对应不同的模型改写、运行约束和检查点格式。
 
-最容易理解它们的方法，不是比较谁的功能勾选更多，而是先问：**谁在控制模型结构，谁在控制训练状态，谁在控制并行进程组，谁在控制执行引擎？**
+比较这三套框架时，我会先确认各自如何管理模型结构、训练状态、并行进程组和执行引擎。
 
-一句话概括：
+三者的设计侧重不同：
 
 - **Megatron-LM / Megatron Core** 是 performance-first 的 Transformer 并行内核与参考训练栈，擅长在 NVIDIA GPU 集群上把 TP、PP、DP、CP、EP 和高性能 kernel 深度组合。
 - **DeepSpeed** 是 runtime/memory-first 的训练引擎，核心优势是 ZeRO、CPU/NVMe offload、分布式 optimizer states、配置驱动接入，以及与 PyTorch/Hugging Face 生态的广泛整合。
@@ -52,7 +52,7 @@ Megatron 的起点是模型并行。2019 年的原始论文重点展示了在原
 
 它的优势来自纵向整合：模型结构知道自己如何切分，parallel state 知道 rank groups，kernel 知道 tensor layout，pipeline scheduler 知道 micro-batches，checkpoint 知道 sharded state。代价也是同一个：自定义模型必须进入这套结构契约，不能只把任意 PyTorch module 套一层 wrapper 就自动获得所有高性能路径。
 
-## DeepSpeed 的核心不是“另一个 Megatron”，而是 ZeRO Runtime
+## DeepSpeed：ZeRO 与训练运行时
 
 DeepSpeed 最具辨识度的能力是 ZeRO。标准 data parallel 在每张 GPU 上复制 optimizer states、gradients 和 parameters；ZeRO 分阶段消除这些副本：
 
@@ -375,7 +375,7 @@ DeepSpeed 从训练 runtime 和模型状态内存出发，用 ZeRO、offload、E
 
 Colossal-AI 从 Booster、Plugin 与 ShardFormer transformation 出发，强调在统一 API 下组合 DDP、FSDP、ZeRO、Gemini、TP、PP 和优化策略，适合研究型框架、Hugging Face 模型改写与快速策略实验；代价是实际能力取决于目标模型的 policy 与 plugin coverage。
 
-最实用的判断不是“哪个框架最好”，而是：**哪套系统应该拥有你的模型图、optimizer、parallel groups、pipeline schedule 和 checkpoint。** 先选唯一 control plane，再验证目标模型的正确性、性能和恢复路径，才是可维护的大模型训练工程。
+选型时需要明确由哪套系统管理模型图、optimizer、parallel groups、pipeline schedule 和 checkpoint。确定管理边界后，再验证目标模型的正确性、性能和恢复路径，比按功能数量判断更可靠。
 
 ## 参考资料
 

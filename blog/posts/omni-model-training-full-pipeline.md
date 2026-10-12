@@ -8,7 +8,7 @@
 
 ![Omni training stage map](/images/blog/omni-training-stage-map.svg "图 1：Omni 训练不是一次端到端联合优化，而是从表示、对齐、连续时间交互到 Agentic policy 的逐阶段晋级过程。")
 
-## 1. 核心结论
+## 1. 训练规划要点
 
 - **先定义训练任务，再谈卡数。** LoRA、partial tuning、全参数 CPT 和在线 RL 的资源模型完全不同；“7B 能不能用 8 卡训练”不是完整问题。
 - **默认不要从零预训练。** 对多数研究团队，合理起点是强文本或现有 Omni checkpoint；从零复现多万亿文本 token 和百万小时音频不属于普通论文预算。
@@ -254,7 +254,7 @@ Codec 没过门时，不要用大模型训练去“修音质”。那会把表�
 - text、aligner、Talker 使用不同 optimizer group 与 LR；
 - 分头记录 text/audio/codebook loss，不只看总 loss。
 
-## 10. Stage 3：从单流到真正双流
+## 10. Stage 3：双流连续时间训练
 
 双工 Mid-training 的目标不是“在每个样本里放两个说话人”，而是学习连续时间中的并发关系：沉默、等待、重叠、backchannel、用户纠正、助手停止、重新接续。
 
@@ -573,11 +573,9 @@ Moshi / existing Omni checkpoint
 → only then consider broader joint optimization
 ```
 
-真正应被规模化的不是第一次能跑通的配置，而是已经通过 toy experiment 的因果假设。例如：“模型永远沉默是因为 silence 梯度占比过高”，先在可控数据上改变 silence 权重并验证；“用户纠正无法生效是因为轨迹没有 action invalidation”，先增加 CANCEL/REVISE 窗口并验证。只有根因实验成立，才值得扩到千小时和几十张卡。
+扩大训练规模前，应先用 toy experiment 检验根因假设，不能只看配置是否跑通。例如：“模型永远沉默是因为 silence 梯度占比过高”，先在可控数据上改变 silence 权重并验证；“用户纠正无法生效是因为轨迹没有 action invalidation”，先增加 CANCEL/REVISE 窗口并验证。只有根因实验成立，才值得扩到千小时和几十张卡。
 
-一句话总结：
-
-> **Omni 训练的核心不是把所有模态、模块和 reward 一次性打开，而是建立一条可诊断的能力阶梯：每一步只增加必要自由度，用数据配比控制遗忘与稀有事件，用冻结和分头 loss 控制漂移，用晋级门决定是否值得投入下一档算力。**
+这份规划采用逐阶段训练：每次只加入必要的可训练部分，用数据配比控制遗忘与稀有事件，用冻结和分头 loss 控制漂移，再根据评测决定是否投入下一档算力。具体顺序仍需依据起始模型和目标任务调整。
 
 ## 参考资料
 

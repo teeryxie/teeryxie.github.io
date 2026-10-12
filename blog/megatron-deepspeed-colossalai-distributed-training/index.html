@@ -3,25 +3,264 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Megatron-LM、DeepSpeed 与 Colossal-AI：分布式训练框架比较 | Tianyu Xie</title><meta name="description" content="比较三类训练框架对模型、显存、并行执行与检查点的管理方式，讨论选型和恢复验证。">
+  <title>Megatron-LM、DeepSpeed 与 Colossal-AI：分布式训练框架比较 | Tianyu Xie</title><meta name="description" content="三套训练框架如何管理模型、显存、并行执行与检查点，以及选型前需要验证哪些恢复条件。">
   <link rel="icon" href="/images/profile.png">
-  <link rel="stylesheet" href="/site.css?v=20261012-unified">
-  <script src="/blog/blog-data.js?v=20261012-unified" defer></script>
-  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-unified" defer></script>
+  <link rel="stylesheet" href="/site.css?v=20261012-stable">
+  <script src="/blog/blog-data.js?v=20261012-stable" defer></script>
+  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-stable" defer></script>
 </head>
 <body class="blog-post" data-post-slug="megatron-deepspeed-colossalai-distributed-training">
-  <header class="masthead"><nav class="nav" aria-label="Primary navigation">
-    <a class="home-brand" href="/">Homepage</a>
-    <a href="/#about-me">About Me</a>
-    <a href="/#news">News</a>
-    <a href="/publications/">Publications</a>
-    <a href="/projects/">Projects</a>
-    <a href="/#education">Education</a>
-    <a href="/#service">Academic Service</a>
-    <a aria-current="page" href="/blog/">Research Notes</a>
-    <a href="/cv/">CV</a>
-  </nav></header>
-  <main class="shell blog-shell"><aside class="sidebar"><section class="profile-card"><img class="avatar" src="/images/profile.png" alt="Tianyu Xie profile photo"><h2 class="name">Blog</h2><p class="bio"><a href="/blog/">Back to Blog</a></p></section></aside><article class="content"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a><span aria-hidden="true">/</span><span data-breadcrumb-section>Article</span></nav><h1 class="page-title" data-post-title>Megatron-LM、DeepSpeed 与 Colossal-AI：分布式训练框架比较</h1><p class="lead" data-post-meta>Markdown article</p><div class="markdown-body" data-markdown-article></div></article></main>
+  <header class="masthead"><nav class="nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a aria-current="page" href="/blog/">Notes</a><a href="/cv/">CV</a></nav></header>
+  <main class="shell blog-shell"><aside class="sidebar" aria-label="Personal profile"><section class="profile-card">
+        <img class="avatar" src="/images/profile.png" alt="Portrait of Tianyu Xie" width="170" height="170">
+        <h2 class="name">Tianyu Xie <span lang="zh-CN">谢天宇</span></h2>
+        <p class="affiliation">Xiamen University</p><p class="bio">M.S. student · MAC Lab</p>
+        <ul class="profile-links">
+          <li><a href="mailto:teery@stu.xmu.edu.cn">Email</a></li><li><a href="https://github.com/teeryxie">GitHub</a></li>
+          <li><a href="https://scholar.google.com/citations?hl=en&amp;user=_vZWAnkAAAAJ">Google Scholar</a></li><li><a href="https://openreview.net/profile?id=~Tianyu_Xie2">OpenReview</a></li>
+        </ul></section><nav class="article-toc" aria-label="本文目录"><strong>本文目录</strong><div class="toc-links"><a class="toc-link toc-level-2" href="#先区分三个层次-library-runtime-与-training-stack" data-toc-id="先区分三个层次-library-runtime-与-training-stack">先区分三个层次：Library、Runtime 与 Training Stack</a>
+<a class="toc-link toc-level-2" href="#megatron-lm-与-megatron-core-是什么关系" data-toc-id="megatron-lm-与-megatron-core-是什么关系">Megatron-LM 与 Megatron Core 是什么关系</a>
+<a class="toc-link toc-level-2" href="#deepspeed-zero-与训练运行时" data-toc-id="deepspeed-zero-与训练运行时">DeepSpeed：ZeRO 与训练运行时</a>
+<a class="toc-link toc-level-2" href="#colossal-ai-的核心是-booster-plugin-与-shardformer" data-toc-id="colossal-ai-的核心是-booster-plugin-与-shardformer">Colossal-AI 的核心是 Booster、Plugin 与 ShardFormer</a>
+<a class="toc-link toc-level-2" href="#三种默认工作流" data-toc-id="三种默认工作流">三种默认工作流</a>
+<a class="toc-link toc-level-3" href="#megatron-lm-先进入并行模型规范" data-toc-id="megatron-lm-先进入并行模型规范">Megatron-LM：先进入并行模型规范</a>
+<a class="toc-link toc-level-3" href="#deepspeed-用-engine-接管训练状态" data-toc-id="deepspeed-用-engine-接管训练状态">DeepSpeed：用 Engine 接管训练状态</a>
+<a class="toc-link toc-level-3" href="#colossal-ai-用-plugin-选择注入策略" data-toc-id="colossal-ai-用-plugin-选择注入策略">Colossal-AI：用 Plugin 选择注入策略</a>
+<a class="toc-link toc-level-2" href="#并行能力不能只看勾选表" data-toc-id="并行能力不能只看勾选表">并行能力不能只看勾选表</a>
+<a class="toc-link toc-level-2" href="#megatron-的-parallelism-优势" data-toc-id="megatron-的-parallelism-优势">Megatron 的 Parallelism 优势</a>
+<a class="toc-link toc-level-2" href="#deepspeed-的-memory-优势" data-toc-id="deepspeed-的-memory-优势">DeepSpeed 的 Memory 优势</a>
+<a class="toc-link toc-level-2" href="#colossal-ai-的-composability-优势" data-toc-id="colossal-ai-的-composability-优势">Colossal-AI 的 Composability 优势</a>
+<a class="toc-link toc-level-2" href="#pipeline-parallel-的差异尤其大" data-toc-id="pipeline-parallel-的差异尤其大">Pipeline Parallel 的差异尤其大</a>
+<a class="toc-link toc-level-2" href="#checkpoint-才是长期成本中心" data-toc-id="checkpoint-才是长期成本中心">Checkpoint 才是长期成本中心</a>
+<a class="toc-link toc-level-2" href="#hugging-face-兼容意味着什么" data-toc-id="hugging-face-兼容意味着什么">Hugging Face 兼容意味着什么</a>
+<a class="toc-link toc-level-2" href="#三者可以混用吗" data-toc-id="三者可以混用吗">三者可以混用吗</a>
+<a class="toc-link toc-level-2" href="#调试体验的差异" data-toc-id="调试体验的差异">调试体验的差异</a>
+<a class="toc-link toc-level-3" href="#megatron-lm" data-toc-id="megatron-lm">Megatron-LM</a>
+<a class="toc-link toc-level-3" href="#deepspeed" data-toc-id="deepspeed">DeepSpeed</a>
+<a class="toc-link toc-level-3" href="#colossal-ai" data-toc-id="colossal-ai">Colossal-AI</a>
+<a class="toc-link toc-level-2" href="#不要用官网-benchmark-直接决定框架" data-toc-id="不要用官网-benchmark-直接决定框架">不要用官网 Benchmark 直接决定框架</a>
+<a class="toc-link toc-level-2" href="#选型矩阵" data-toc-id="选型矩阵">选型矩阵</a>
+<a class="toc-link toc-level-2" href="#一个分阶段选型方法" data-toc-id="一个分阶段选型方法">一个分阶段选型方法</a>
+<a class="toc-link toc-level-3" href="#阶段一-定义不可妥协约束" data-toc-id="阶段一-定义不可妥协约束">阶段一：定义不可妥协约束</a>
+<a class="toc-link toc-level-3" href="#阶段二-选择-control-plane" data-toc-id="阶段二-选择-control-plane">阶段二：选择 control plane</a>
+<a class="toc-link toc-level-3" href="#阶段三-做-1-卡与-8-卡正确性基线" data-toc-id="阶段三-做-1-卡与-8-卡正确性基线">阶段三：做 1 卡与 8 卡正确性基线</a>
+<a class="toc-link toc-level-3" href="#阶段四-做最小-hybrid-parallel-原型" data-toc-id="阶段四-做最小-hybrid-parallel-原型">阶段四：做最小 hybrid-parallel 原型</a>
+<a class="toc-link toc-level-3" href="#阶段五-验证拓扑变化与导出" data-toc-id="阶段五-验证拓扑变化与导出">阶段五：验证拓扑变化与导出</a>
+<a class="toc-link toc-level-3" href="#阶段六-固定版本" data-toc-id="阶段六-固定版本">阶段六：固定版本</a>
+<a class="toc-link toc-level-2" href="#我会怎样选择" data-toc-id="我会怎样选择">我会怎样选择</a>
+<a class="toc-link toc-level-2" href="#总结" data-toc-id="总结">总结</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></div></nav></aside><article class="content"><header class="inner-hero article-hero"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a></nav><h1 class="page-title" data-post-title>Megatron-LM、DeepSpeed 与 Colossal-AI：分布式训练框架比较</h1><p class="lead" data-post-meta>2026-08 · 综述</p></header><details class="mobile-toc"><summary>本文目录</summary><nav aria-label="移动端本文目录"><a class="toc-link toc-level-2" href="#先区分三个层次-library-runtime-与-training-stack" data-toc-id="先区分三个层次-library-runtime-与-training-stack">先区分三个层次：Library、Runtime 与 Training Stack</a>
+<a class="toc-link toc-level-2" href="#megatron-lm-与-megatron-core-是什么关系" data-toc-id="megatron-lm-与-megatron-core-是什么关系">Megatron-LM 与 Megatron Core 是什么关系</a>
+<a class="toc-link toc-level-2" href="#deepspeed-zero-与训练运行时" data-toc-id="deepspeed-zero-与训练运行时">DeepSpeed：ZeRO 与训练运行时</a>
+<a class="toc-link toc-level-2" href="#colossal-ai-的核心是-booster-plugin-与-shardformer" data-toc-id="colossal-ai-的核心是-booster-plugin-与-shardformer">Colossal-AI 的核心是 Booster、Plugin 与 ShardFormer</a>
+<a class="toc-link toc-level-2" href="#三种默认工作流" data-toc-id="三种默认工作流">三种默认工作流</a>
+<a class="toc-link toc-level-3" href="#megatron-lm-先进入并行模型规范" data-toc-id="megatron-lm-先进入并行模型规范">Megatron-LM：先进入并行模型规范</a>
+<a class="toc-link toc-level-3" href="#deepspeed-用-engine-接管训练状态" data-toc-id="deepspeed-用-engine-接管训练状态">DeepSpeed：用 Engine 接管训练状态</a>
+<a class="toc-link toc-level-3" href="#colossal-ai-用-plugin-选择注入策略" data-toc-id="colossal-ai-用-plugin-选择注入策略">Colossal-AI：用 Plugin 选择注入策略</a>
+<a class="toc-link toc-level-2" href="#并行能力不能只看勾选表" data-toc-id="并行能力不能只看勾选表">并行能力不能只看勾选表</a>
+<a class="toc-link toc-level-2" href="#megatron-的-parallelism-优势" data-toc-id="megatron-的-parallelism-优势">Megatron 的 Parallelism 优势</a>
+<a class="toc-link toc-level-2" href="#deepspeed-的-memory-优势" data-toc-id="deepspeed-的-memory-优势">DeepSpeed 的 Memory 优势</a>
+<a class="toc-link toc-level-2" href="#colossal-ai-的-composability-优势" data-toc-id="colossal-ai-的-composability-优势">Colossal-AI 的 Composability 优势</a>
+<a class="toc-link toc-level-2" href="#pipeline-parallel-的差异尤其大" data-toc-id="pipeline-parallel-的差异尤其大">Pipeline Parallel 的差异尤其大</a>
+<a class="toc-link toc-level-2" href="#checkpoint-才是长期成本中心" data-toc-id="checkpoint-才是长期成本中心">Checkpoint 才是长期成本中心</a>
+<a class="toc-link toc-level-2" href="#hugging-face-兼容意味着什么" data-toc-id="hugging-face-兼容意味着什么">Hugging Face 兼容意味着什么</a>
+<a class="toc-link toc-level-2" href="#三者可以混用吗" data-toc-id="三者可以混用吗">三者可以混用吗</a>
+<a class="toc-link toc-level-2" href="#调试体验的差异" data-toc-id="调试体验的差异">调试体验的差异</a>
+<a class="toc-link toc-level-3" href="#megatron-lm" data-toc-id="megatron-lm">Megatron-LM</a>
+<a class="toc-link toc-level-3" href="#deepspeed" data-toc-id="deepspeed">DeepSpeed</a>
+<a class="toc-link toc-level-3" href="#colossal-ai" data-toc-id="colossal-ai">Colossal-AI</a>
+<a class="toc-link toc-level-2" href="#不要用官网-benchmark-直接决定框架" data-toc-id="不要用官网-benchmark-直接决定框架">不要用官网 Benchmark 直接决定框架</a>
+<a class="toc-link toc-level-2" href="#选型矩阵" data-toc-id="选型矩阵">选型矩阵</a>
+<a class="toc-link toc-level-2" href="#一个分阶段选型方法" data-toc-id="一个分阶段选型方法">一个分阶段选型方法</a>
+<a class="toc-link toc-level-3" href="#阶段一-定义不可妥协约束" data-toc-id="阶段一-定义不可妥协约束">阶段一：定义不可妥协约束</a>
+<a class="toc-link toc-level-3" href="#阶段二-选择-control-plane" data-toc-id="阶段二-选择-control-plane">阶段二：选择 control plane</a>
+<a class="toc-link toc-level-3" href="#阶段三-做-1-卡与-8-卡正确性基线" data-toc-id="阶段三-做-1-卡与-8-卡正确性基线">阶段三：做 1 卡与 8 卡正确性基线</a>
+<a class="toc-link toc-level-3" href="#阶段四-做最小-hybrid-parallel-原型" data-toc-id="阶段四-做最小-hybrid-parallel-原型">阶段四：做最小 hybrid-parallel 原型</a>
+<a class="toc-link toc-level-3" href="#阶段五-验证拓扑变化与导出" data-toc-id="阶段五-验证拓扑变化与导出">阶段五：验证拓扑变化与导出</a>
+<a class="toc-link toc-level-3" href="#阶段六-固定版本" data-toc-id="阶段六-固定版本">阶段六：固定版本</a>
+<a class="toc-link toc-level-2" href="#我会怎样选择" data-toc-id="我会怎样选择">我会怎样选择</a>
+<a class="toc-link toc-level-2" href="#总结" data-toc-id="总结">总结</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></nav></details><div class="markdown-body" data-markdown-article data-rendered="true"><p>Megatron-LM、DeepSpeed 和 Colossal-AI 都支持多设备训练，但它们管理模型结构、训练状态和执行过程的方式不同。张量并行拆分同一层的计算，流水线并行分配不同网络层，ZeRO 将参数、梯度或优化器状态分散存储。这些功能即使名称相同，也可能对应不同的模型改写、运行约束和检查点格式。</p>
+<p>比较这三套框架时，我会先确认各自如何管理模型结构、训练状态、并行进程组和执行引擎。</p>
+<p>三者的设计侧重不同：</p>
+<ul><li><strong>Megatron-LM / Megatron Core</strong> 是 performance-first 的 Transformer 并行内核与参考训练栈，擅长在 NVIDIA GPU 集群上把 TP、PP、DP、CP、EP 和高性能 kernel 深度组合。</li><li><strong>DeepSpeed</strong> 是 runtime/memory-first 的训练引擎，核心优势是 ZeRO、CPU/NVMe offload、分布式 optimizer states、配置驱动接入，以及与 PyTorch/Hugging Face 生态的广泛整合。</li><li><strong>Colossal-AI</strong> 是 plugin/transformation-first 的组合式系统，用 Booster、Plugin 和 ShardFormer 把 DDP、ZeRO、TP、PP、SP、mixed precision 和模型替换策略注入现有训练代码。</li></ul>
+<p>它们不是简单的“高性能、中性能、易用”三级，也不存在对所有模型都成立的速度排名。模型架构、GPU 拓扑、并行度、sequence length、checkpoint 约束和团队维护能力，往往比框架名字更决定结果。</p>
+<p>本文依据 2026 年 8 月 24 日可访问的三方主分支与官方文档撰写。分布式训练框架变化很快，具体模型支持、checkpoint 兼容性和 backend 状态应在部署时固定 revision 重新验证。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/training-framework-control-surfaces.svg" data-image-alt="Three distributed training control surfaces" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/training-framework-control-surfaces.svg" width="1180" height="720" alt="Three distributed training control surfaces" loading="lazy" decoding="async"></button><figcaption>图 1：Megatron-LM、DeepSpeed 和 Colossal-AI 的默认控制面不同。</figcaption></figure>
+<h2 id="先区分三个层次-library-runtime-与-training-stack">先区分三个层次：Library、Runtime 与 Training Stack</h2>
+<p>一个完整大模型训练系统至少包含：</p>
+<ol><li>模型结构与 layer implementation；</li><li>参数、gradient、optimizer states 和 activation 的分片；</li><li>DP、TP、PP、EP、CP 等 process groups；</li><li>forward/backward 与 pipeline schedule；</li><li>mixed precision、fused kernels 和 communication overlap；</li><li>dataloader、loss、optimizer、scheduler 与训练 loop；</li><li>distributed checkpoint、故障恢复和拓扑变更；</li><li>profiling、logging 和作业运维。</li></ol>
+<p>三个项目覆盖这些层次的比例不同。</p>
+<p>Megatron Core 更接近专为 Transformer 训练打造的并行计算 library：它提供 tensor-parallel layer、pipeline schedules、distributed optimizer、context/expert parallel、Transformer model components 和 fused execution 路径。Megatron-LM 则在其上提供参考训练脚本、数据处理和完整例子。</p>
+<p>DeepSpeed 更接近包裹模型、optimizer 和训练 loop 的 runtime。调用 <code>deepspeed.initialize()</code> 后，返回的 engine 接管 backward、step、gradient accumulation、ZeRO state management 和 checkpoint。某些模型并行能力由 DeepSpeed 自己提供，另一些历史上会与 Megatron 等 model-parallel implementation 组合。</p>
+<p>Colossal-AI 的 Booster 位于两者之间。它通过一个 Plugin 选择分布式策略，再用 <code>booster.boost()</code> 同时转换 model、optimizer、criterion、dataloader 和 scheduler。TP/PP 等模型结构变换由 ShardFormer policy 完成，ZeRO、Gemini、DDP/FSDP 则由不同 plugins 提供。</p>
+<p>因此，同样写着“支持 TP+PP+DP”，真正的模型改写方式、schedule ownership 和 checkpoint schema 可能完全不同。</p>
+<h2 id="megatron-lm-与-megatron-core-是什么关系">Megatron-LM 与 Megatron Core 是什么关系</h2>
+<p>当前 Megatron-LM 仓库明确区分两个组件：</p>
+<ul><li><strong>Megatron-LM</strong>：包含 Megatron Core 和预配置训练脚本的 reference example；</li><li><strong>Megatron Core</strong>：面向自定义训练框架的可组合 GPU-optimized building blocks。</li></ul>
+<p>这一区分很重要。很多团队说“我们用了 Megatron”，可能指直接运行 <code>pretrain_gpt.py</code>，也可能只把 Megatron Core 的 tensor parallel、pipeline schedule、distributed checkpoint 或 transformer layer 接进自己的平台。</p>
+<p>Megatron 的起点是模型并行。2019 年的原始论文重点展示了在原生 PyTorch 中给 Transformer 插入少量 collective，实现高效 intra-layer tensor parallel。后续工作把 tensor、pipeline 和 data parallel 组合起来，现代 Megatron Core 又加入 context parallel、expert parallel、sequence parallel、FSDP/distributed optimizer、distributed checkpoint 和 MoE stack。</p>
+<p>它的优势来自纵向整合：模型结构知道自己如何切分，parallel state 知道 rank groups，kernel 知道 tensor layout，pipeline scheduler 知道 micro-batches，checkpoint 知道 sharded state。代价也是同一个：自定义模型必须进入这套结构契约，不能只把任意 PyTorch module 套一层 wrapper 就自动获得所有高性能路径。</p>
+<h2 id="deepspeed-zero-与训练运行时">DeepSpeed：ZeRO 与训练运行时</h2>
+<p>DeepSpeed 最具辨识度的能力是 ZeRO。标准 data parallel 在每张 GPU 上复制 optimizer states、gradients 和 parameters；ZeRO 分阶段消除这些副本：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>ZeRO-1: shard optimizer states
+ZeRO-2: shard optimizer states + gradients
+ZeRO-3: shard optimizer states + gradients + parameters</code></pre></div>
+<p>ZeRO-3 在 forward/backward 需要时 gather 参数，再重新 partition。ZeRO-Infinity 进一步把状态 offload 到 CPU 或 NVMe。它解决的第一问题是“现有模型如何装进有限显存”，而不是先要求用户把每个 Linear 改成 tensor-parallel layer。</p>
+<p>这也是 DeepSpeed 对研究代码友好的原因。对于只需要 ZeRO 的普通 PyTorch/Hugging Face 模型，主要改动通常集中在初始化、engine 调用和 JSON config；ZeRO 教程强调不需要改模型代码。但一旦进入 pipeline parallel、自定义 tensor parallel、MoE 或复杂 checkpoint 拓扑，模型结构和 runtime 约束仍然会出现，不能把“几行配置”泛化到所有场景。</p>
+<p>DeepSpeed 还提供 PipelineModule、AutoTP、AutoEP、Ulysses/long-sequence training、MoE、communication logging、Flops Profiler、offload 和 Universal Checkpointing。它覆盖的硬件与集成范围也更广；当前仓库 CI 列出了 NVIDIA、AMD、CPU、Intel Gaudi、Intel XPU、Ascend 和 Hugging Face/Accelerate 等 integration。但具体 op、性能路径和 feature parity 必须逐 backend 核对，CI 列表不等于所有功能在所有设备上完全一致。</p>
+<h2 id="colossal-ai-的核心是-booster-plugin-与-shardformer">Colossal-AI 的核心是 Booster、Plugin 与 ShardFormer</h2>
+<p>Colossal-AI 希望让用户保留熟悉的 PyTorch/Hugging Face 模型与训练组件，再通过统一入口注入分布式能力：</p>
+<div class="code-block"><span class="code-language">python</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>plugin = HybridParallelPlugin(
+    tp_size=2,
+    pp_size=4,
+    zero_stage=1,
+    precision=&quot;bf16&quot;,
+)
+
+booster = Booster(plugin=plugin)
+model, optimizer, criterion, dataloader, scheduler = booster.boost(
+    model, optimizer, criterion, dataloader, scheduler
+)</code></pre></div>
+<p>Booster 是统一 facade，Plugin 决定底层策略。官方文档列出的主要 plugins 包括 TorchDDPPlugin、TorchFSDPPlugin、LowLevelZeroPlugin、GeminiPlugin 和 HybridParallelPlugin。</p>
+<p>其中：</p>
+<ul><li>LowLevelZeroPlugin 提供 ZeRO-1/2；</li><li>GeminiPlugin 提供 chunk-based ZeRO-3 与 heterogeneous memory management；</li><li>HybridParallelPlugin 组合 TP、PP、DP/DDP/ZeRO、mixed precision 和多种 kernel 优化；</li><li>ShardFormer 按 policy 把原生 modules 替换成 distributed modules，并改写必要的 forward 行为。</li></ul>
+<p>这套设计的优点是入口统一、Python 组合感强。用户可以按场景更换 plugin，而不必重写整个上层训练框架。限制则来自 transformation coverage：如果目标 Hugging Face 模型已有 ShardFormer policy，接入会比较顺；如果是新的自定义架构，就需要写 policy、定义 module replacements，并验证 tied weights、forward signature、checkpoint 和 pipeline semantics。</p>
+<h2 id="三种默认工作流">三种默认工作流</h2>
+<p>三者的典型代码形态可以简化为：</p>
+<h3 id="megatron-lm-先进入并行模型规范">Megatron-LM：先进入并行模型规范</h3>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>define TransformerConfig and model provider
+initialize Megatron parallel state
+construct tensor/pipeline/expert-parallel modules
+run Megatron training loop and schedules
+save distributed checkpoint</code></pre></div>
+<p>用户的主要工作是把模型架构、数据和训练目标放入 Megatron contract。并行策略从一开始就是模型定义的一部分。</p>
+<h3 id="deepspeed-用-engine-接管训练状态">DeepSpeed：用 Engine 接管训练状态</h3>
+<div class="code-block"><span class="code-language">python</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>engine, optimizer, dataloader, scheduler = deepspeed.initialize(
+    model=model,
+    model_parameters=model.parameters(),
+    config=&quot;ds_config.json&quot;,
+)
+
+loss = engine(batch)
+engine.backward(loss)
+engine.step()</code></pre></div>
+<p>用户保留 PyTorch model，engine 接管 optimizer state、gradient accumulation、ZeRO、mixed precision 和 checkpoint 等 runtime 行为。</p>
+<h3 id="colossal-ai-用-plugin-选择注入策略">Colossal-AI：用 Plugin 选择注入策略</h3>
+<div class="code-block"><span class="code-language">python</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>plugin = GeminiPlugin(...)  # or HybridParallelPlugin / FSDP / ZeRO
+booster = Booster(plugin=plugin)
+model, optimizer, criterion, dataloader, scheduler = booster.boost(...)
+
+loss = criterion(model(batch))
+booster.backward(loss, optimizer)
+optimizer.step()</code></pre></div>
+<p>用户以 Plugin 作为策略边界。Booster 对外统一 API，Plugin 与 ShardFormer 决定内部改写。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/training-framework-execution-paths.svg" data-image-alt="Framework training paths" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/training-framework-execution-paths.svg" width="1180" height="700" alt="Framework training paths" loading="lazy" decoding="async"></button><figcaption>图 2：三套框架从用户模型到分布式执行的典型路径。</figcaption></figure>
+<h2 id="并行能力不能只看勾选表">并行能力不能只看勾选表</h2>
+<p>下面这张表描述“主路径”，不是声明某框架绝对不支持其他方式：</p>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>能力</th><th>Megatron-LM / Core</th><th>DeepSpeed</th><th>Colossal-AI</th></tr></thead><tbody><tr><td>DP / sharded DP</td><td>DDP、distributed optimizer、Megatron-FSDP</td><td>ZeRO-1/2/3 是核心路径</td><td>DDP、FSDP、LowLevelZero、Gemini</td></tr><tr><td>TP</td><td>原生 Transformer TP，深度集成</td><td>AutoTP 或与外部 model-parallel stack 组合</td><td>ShardFormer policy 注入 TP</td></tr><tr><td>PP</td><td>原生 schedules、virtual/interleaved pipeline</td><td>PipelineModule / PipelineEngine</td><td>HybridParallelPlugin + pipeline manager</td></tr><tr><td>CP / 长序列</td><td>原生 Context Parallel</td><td>Ulysses、ALST 等路径</td><td>Sequence/hybrid parallel，具体模型需核对</td></tr><tr><td>EP / MoE</td><td>原生 Megatron Core MoE 与 EP stack</td><td>DeepSpeed-MoE、AutoEP</td><td>ColossalMoE/相关模块，集成覆盖需按模型验证</td></tr><tr><td>Offload</td><td>activation/optimizer 等路径，偏 NVIDIA stack</td><td>CPU/NVMe offload 是核心优势</td><td>Gemini heterogeneous memory、ZeRO offload</td></tr><tr><td>HF 模型接入</td><td>Megatron Bridge 转换与 recipes</td><td>Transformers/Accelerate integrations</td><td>Booster + ShardFormer policies</td></tr></tbody></table></div>
+<p>“支持 TP”可能表示模型本身已经用 parallel linear 实现，也可能表示 runtime 自动替换模块；“支持 checkpoint resharding”可能只覆盖 weights，也可能覆盖 optimizer states；“支持 Hugging Face”可能只表示能加载权重，不表示任意模型都能做 pipeline parallel。</p>
+<p>所以选型时应该把功能问题改写成具体 contract：目标模型的哪些 modules 会被替换？tied parameters 怎样处理？optimizer states 怎样 shard？从 <code>TP=8</code> 改成 <code>TP=4</code> 能否带 optimizer 恢复？MoE expert weights 能否改变 EP size？这些问题比官网首页的功能名更有区分度。</p>
+<h2 id="megatron-的-parallelism-优势">Megatron 的 Parallelism 优势</h2>
+<p>Megatron Core 当前官方并行指南把 DP、TP、PP、CP、EP 和 FSDP 列为可组合策略。它最强的地方不是策略数量，而是这些策略共享统一 parallel state 和 Transformer execution model。</p>
+<p>TP 能深入到 QKV、attention output 和 MLP；SP 与 TP process group 配套；PP 有 schedules 与 virtual stages；CP 围绕 attention KV exchange；EP 有 router、token dispatcher、grouped GEMM、load balancing 和通信 overlap；distributed optimizer/FSDP 处理 data-parallel state sharding。</p>
+<p>在大规模 NVIDIA 集群上，这种统一性有利于：</p>
+<ul><li>把 TP/EP 放进 NVLink/NVSwitch 域；</li><li>对 DP、TP、PP、EP 通信做细粒度 overlap；</li><li>使用 Transformer Engine 的 BF16/FP8/FP4 与 fused kernels；</li><li>对 MoE、long context 和异构 parallel mapping 做专门优化；</li><li>让 profiling 指标直接对应 Megatron process groups。</li></ul>
+<p>但 Megatron 的学习曲线也来自这里。模型不是黑盒。新增 attention、Mamba-like block、multimodal connector、特殊 loss 或非标准 pipeline boundary 时，可能需要理解 ModuleSpec、parallel layers、tensor layouts、pipeline IO、RNG tracking、distributed optimizer 和 checkpoint mapping。</p>
+<h2 id="deepspeed-的-memory-优势">DeepSpeed 的 Memory 优势</h2>
+<p>DeepSpeed 最稳固的选型理由通常不是“它也支持 TP”，而是：现有模型太大，需要用 ZeRO 和 offload 尽快跑起来。</p>
+<p>ZeRO-1/2 对训练代码侵入较低，适合保留较大 compute granularity；ZeRO-3 进一步分 parameters，显存节省更大，却在每层引入 parameter gather/partition，对 bucket、prefetch、overlap、module granularity 和网络更敏感。CPU/NVMe offload 用更慢介质换 GPU 显存，能让模型可运行，但不保证高 MFU。</p>
+<p>JSON config 让 memory strategy 很容易实验：</p>
+<div class="code-block"><span class="code-language">json</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>{
+  &quot;bf16&quot;: {&quot;enabled&quot;: true},
+  &quot;zero_optimization&quot;: {
+    &quot;stage&quot;: 3,
+    &quot;overlap_comm&quot;: true,
+    &quot;contiguous_gradients&quot;: true,
+    &quot;offload_optimizer&quot;: {&quot;device&quot;: &quot;cpu&quot;}
+  }
+}</code></pre></div>
+<p>它也带来一类特有风险：配置文件、launcher arguments、Transformers TrainingArguments 和代码默认值可能同时决定同一参数。<code>auto</code>、global batch、micro-batch、gradient accumulation 和 scheduler step 如果在多层配置中不一致，训练可能能启动却语义错误。</p>
+<p>因此 DeepSpeed 项目需要在启动时打印并归档 resolved config，而不是只保存输入 JSON。</p>
+<h2 id="colossal-ai-的-composability-优势">Colossal-AI 的 Composability 优势</h2>
+<p>Colossal-AI 的吸引力在于它把策略选择做成 Plugin。对一个现有模型，可以先用 TorchDDPPlugin 建立基线，再切 LowLevelZeroPlugin、GeminiPlugin 或 HybridParallelPlugin，而训练 loop 的高层结构相对稳定。</p>
+<p>ShardFormer 进一步把“模型如何并行化”显式封装成 policy。它会替换原生 modules、parameters 或 methods，并可注入 fused normalization、FlashAttention、sequence parallel 等优化。相比完全手写 parallel model，policy 更适合复用；相比纯 runtime 黑盒，它又保留了明确的模型变换层。</p>
+<p>这种设计特别适合研究系统原型：团队想试验新的 sharding policy、pipeline split、sequence parallel 或 heterogeneous memory，而不想完全进入 Megatron 训练栈。它同样适合已经围绕 Hugging Face/PyTorch 组织模型代码的项目。</p>
+<p>不过，policy coverage 是实际边界。官方文档本身提醒 HybridParallelPlugin 的 TP/PP 只对 ShardFormer 支持的模型子集有效。模型家族、具体 revision、custom remote code 和新 attention implementation 都可能让静态“支持列表”失效。上线前必须用目标 checkpoint 和目标 forward path 做小规模收敛与 save/load 测试。</p>
+<h2 id="pipeline-parallel-的差异尤其大">Pipeline Parallel 的差异尤其大</h2>
+<p>PP 是最不能仅凭开关比较的功能。</p>
+<p>Megatron 把 pipeline stage 看作其模型结构和 schedule 的原生组成，支持 1F1B、interleaving、virtual pipeline、stage layout 和 distributed loss 语义。</p>
+<p>DeepSpeed PipelineModule 要求模型表达为 layer sequence；训练由 PipelineEngine 的 <code>train_batch()</code> 推进，因为 forward、backward 和 step 已被 schedule 交错。复杂模型可能需要重构 input/output，把 mask 等状态沿 stages 传递。</p>
+<p>Colossal-AI HybridParallelPlugin 通过 ShardFormer 和 pipeline manager 切模型；启用 PP 时，训练 loop 需要调用 <code>booster.execute_pipeline()</code>，并明确 criterion 与 last-stage 行为。</p>
+<p>这三个 API 都说明一个事实：pipeline parallel 必然改变 execution ownership。把已有训练 loop 里普通的 <code>loss.backward()</code> 换成一个配置开关，通常不足以正确处理 micro-batches、stage IO、loss、gradient accumulation 和 evaluation。</p>
+<h2 id="checkpoint-才是长期成本中心">Checkpoint 才是长期成本中心</h2>
+<p>训练第一次跑通只是开始。真正决定系统能否持续维护的，是 checkpoint 是否支持故障恢复、并行拓扑变化、模型转换和版本升级。</p>
+<p>Megatron Core 的 distributed checkpoint 使用 sharded state dict；官方文档说明 weights 可在不同 tensor/pipeline/data parallel 配置间加载。但 optimizer state 还有格式和版本边界，例如某些快速格式不支持任意 model-parallel reshard，需要切换 fully reshardable format；旧 optimizer checkpoint 也可能需要特定版本中转转换。</p>
+<p>DeepSpeed 常规 checkpoint 与 ZeRO partition 强相关。Universal Checkpointing 的流程通常是先保存常规 ZeRO checkpoint，再运行转换脚本得到 Universal format，然后在目标拓扑加载。当前文档还分别说明 AutoTP/AutoEP 的 metadata、ZeRO stage 与 EP size 限制。它不是“任意 checkpoint 自动兼容任意模型”。</p>
+<p>Colossal-AI Booster 提供统一 save/load API，支持 sharded model checkpoint，并说明其 sharded weight 格式兼容 Hugging Face <code>from_pretrained</code>。但 model weights 可加载，不自动意味着 optimizer states、PP layout 和所有 plugin 切换都可无损恢复。</p>
+<p>一个生产训练项目至少要提前验证四条路径：</p>
+<ol><li>同一配置中断后恢复；</li><li>改变 DP size 后恢复；</li><li>改变 TP/PP/EP 后恢复；</li><li>导出成标准 Hugging Face 或目标推理引擎格式。</li></ol>
+<p>没有这些演练，框架迁移成本会在训练跑了几周后才暴露。</p>
+<h2 id="hugging-face-兼容意味着什么">Hugging Face 兼容意味着什么</h2>
+<p>“兼容 Hugging Face”至少有四个层次：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>L1: 能读取 config 和 weights
+L2: 能包装原生 HF model 做 DP/ZeRO
+L3: 能自动把目标 model 变成 TP/PP/EP model
+L4: 能把分布式 checkpoint 稳定导回标准 HF 格式</code></pre></div>
+<p>DeepSpeed 在 L2 上通常最直接，Transformers Trainer 与 Accelerate 都有集成。AutoTP/AutoEP 尝试覆盖 L3，但仍有 model list 与结构要求。</p>
+<p>Colossal-AI 的 Booster 很适合 L2，ShardFormer policies 负责 L3；policy 不存在时需要自己实现。Booster sharded model checkpoint 的 HF 兼容有利于 L4，但复杂 optimizer/topology 仍需单独验证。</p>
+<p>Megatron Bridge 负责 Hugging Face 与 Megatron checkpoint 的双向转换和 recipes。进入 Megatron Core 后，模型通常不再是未经修改的 HF module；L3 更接近显式 Megatron implementation，而不是运行时自动包装。</p>
+<p>所以“我们代码基于 Transformers”并不能直接决定框架。还要问：只做 ZeRO finetuning，还是要把模型结构真正切成 TP/PP/EP？</p>
+<h2 id="三者可以混用吗">三者可以混用吗</h2>
+<p>可以，但需要明确 ownership。历史上 Megatron-DeepSpeed 就把 Megatron model parallel 与 DeepSpeed ZeRO/runtime 组合，DeepSpeed pipeline 文档也明确提到可以与 Megatron-LM model parallel 结合。</p>
+<p>组合的合理方式是让不同系统各自拥有清晰边界，例如：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>Megatron owns: TP model layers and model-parallel groups
+DeepSpeed owns: ZeRO optimizer states and data-parallel runtime</code></pre></div>
+<p>危险方式是两个系统同时初始化相同 process groups、同时 wrap optimizer、同时管理 gradient accumulation、同时保存 checkpoint。此时最常见的问题不是立刻 crash，而是 batch 语义、loss scaling、scheduler steps 或 checkpoint states 重复处理。</p>
+<p>Colossal-AI 也可以复用 PyTorch、Transformers、FlashAttention 等组件，但不应再把同一 model 同时交给另一个会重写 module graph 的 runtime，除非集成路径有明确支持和测试。</p>
+<p>现代项目里，优先选择一套训练 control plane，再通过它官方支持的桥接层接入其他组件，通常比自由叠加三个框架更可维护。</p>
+<h2 id="调试体验的差异">调试体验的差异</h2>
+<h3 id="megatron-lm">Megatron-LM</h3>
+<p>常见故障集中在 rank mapping、parallel group、tensor shape、pipeline stage、distributed optimizer 和 checkpoint metadata。错误可能非常底层，但一旦理解 parallel state，性能问题通常能映射到明确通信维度。</p>
+<h3 id="deepspeed">DeepSpeed</h3>
+<p>常见故障集中在 JIT ops、PyTorch/CUDA/ROCm 版本、ZeRO bucket、offload、launcher environment、JSON resolved values 和外部集成覆盖。它容易让模型先跑起来，但 performance tuning 需要把 runtime 自动行为重新展开。</p>
+<h3 id="colossal-ai">Colossal-AI</h3>
+<p>常见故障集中在 Plugin 约束、ShardFormer policy coverage、module replacement、pipeline IO 和 checkpoint plugin compatibility。抽象清楚时调试很顺；遇到新模型时，需要从 policy 到 distributed module 追踪变换。</p>
+<p>无论使用哪套框架，都应该保存：完整 resolved config、package revisions、NCCL/environment、rank mapping、模型 config、global/micro batch、并行度、checkpoint schema、首个 step profiler 和小规模 loss 对齐结果。</p>
+<h2 id="不要用官网-benchmark-直接决定框架">不要用官网 Benchmark 直接决定框架</h2>
+<p>三个项目都会展示高吞吐、大模型和大集群 benchmark。这些数字证明框架在特定配置上可以工作，但不能直接构成横向排名，因为它们往往使用不同：</p>
+<ul><li>模型大小、层数、hidden size 和 vocabulary；</li><li>sequence length、global batch 和 micro-batch；</li><li>GPU 型号、节点互联和集群规模；</li><li>BF16、FP8 或其他精度；</li><li>activation recomputation 与 offload；</li><li>是否包括 dataloader、optimizer、logging 和 checkpoint；</li><li>strong scaling 或 weak scaling口径；</li><li>收敛训练或只做性能压测。</li></ul>
+<p>选型 benchmark 应该在自己的模型、数据 shape 和集群上做。至少建立同 loss、同有效 token、同 global batch、同 precision 和同 checkpoint 要求的对照，再比较 tokens/s、MFU、peak memory、step p95 和恢复时间。</p>
+<h2 id="选型矩阵">选型矩阵</h2>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/training-framework-selection-map.svg" data-image-alt="Distributed training framework selection map" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/training-framework-selection-map.svg" width="1180" height="720" alt="Distributed training framework selection map" loading="lazy" decoding="async"></button><figcaption>图 3：根据模型控制权、显存压力、硬件与并行复杂度选择起点。</figcaption></figure>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>场景</th><th>更自然的起点</th><th>原因</th></tr></thead><tbody><tr><td>NVIDIA 集群上从头预训练 70B+ dense Transformer</td><td>Megatron Core</td><td>TP/PP/CP/DP 与 kernel 深度整合</td></tr><tr><td>NVIDIA 集群上训练大规模 MoE</td><td>Megatron Core</td><td>EP、dispatcher、grouped GEMM、parallel folding 路径完整</td></tr><tr><td>现有 Hugging Face 模型做 ZeRO finetuning</td><td>DeepSpeed</td><td>runtime 包装直接，Transformers/Accelerate 集成成熟</td></tr><tr><td>单机或小集群显存不足，需要 CPU/NVMe</td><td>DeepSpeed</td><td>ZeRO-Offload/Infinity 是核心设计路径</td></tr><tr><td>多种 accelerator backend 候选</td><td>DeepSpeed 优先评估</td><td>官方 CI 覆盖更广，但需验证具体 ops</td></tr><tr><td>想在 HF 模型上研究新的 sharding/plugin 策略</td><td>Colossal-AI</td><td>Booster、Plugin、ShardFormer 的策略边界清晰</td></tr><tr><td>想在统一 API 下切换 DDP、FSDP、ZeRO、Gemini</td><td>Colossal-AI</td><td>Plugin 模型适合快速实验</td></tr><tr><td>高度自定义非 Transformer 网络</td><td>DeepSpeed ZeRO 或 Colossal Booster</td><td>比进入 Megatron model contract 更自然</td></tr><tr><td>已有成熟 Megatron 模型，但 optimizer memory 不足</td><td>Megatron distributed optimizer/FSDP，或验证官方 DeepSpeed 集成</td><td>先避免重复 control plane</td></tr></tbody></table></div>
+<p>这张表只给“起点”，不是最终结论。比如 DeepSpeed 也能做大规模预训练，Colossal-AI 也能做 hybrid parallel，Megatron Core 也已有 FSDP 和 Hugging Face bridge。真正的选择取决于哪条路径对目标模型是第一方、经过持续测试的主路径。</p>
+<h2 id="一个分阶段选型方法">一个分阶段选型方法</h2>
+<h3 id="阶段一-定义不可妥协约束">阶段一：定义不可妥协约束</h3>
+<p>先写清楚模型是否为 dense/MoE、总参数和 active parameters、sequence length、目标 GPU、节点拓扑、最大训练规模、必须支持的 checkpoint 拓扑变化、是否依赖 Hugging Face custom code。</p>
+<h3 id="阶段二-选择-control-plane">阶段二：选择 control plane</h3>
+<p>需要模型并行性能与 NVIDIA 深度优化，优先用 Megatron Core；需要低侵入 ZeRO/offload，优先用 DeepSpeed；需要 plugin 化实验与模型 transformation，优先用 Colossal-AI。不要一开始就组合两套 engine。</p>
+<h3 id="阶段三-做-1-卡与-8-卡正确性基线">阶段三：做 1 卡与 8 卡正确性基线</h3>
+<p>对齐初始 weights、单步 loss、gradient norm、optimizer update 和固定 batch 的若干 step loss。然后验证 save/load 后继续训练与不中断 run 一致。</p>
+<h3 id="阶段四-做最小-hybrid-parallel-原型">阶段四：做最小 hybrid-parallel 原型</h3>
+<p>只启用必需并行维度。例如先 DP/ZeRO，再 TP，再 PP，最后 EP/CP。每增加一维就记录 peak memory、tokens/s、MFU、通信占比和 loss 对齐。</p>
+<h3 id="阶段五-验证拓扑变化与导出">阶段五：验证拓扑变化与导出</h3>
+<p>在投入长训练前，主动从一个并行配置保存，再用另一个配置加载；完成标准格式导出和目标推理引擎读取。Checkpoint 不通过，就不能把框架称为生产可用。</p>
+<h3 id="阶段六-固定版本">阶段六：固定版本</h3>
+<p>记录 Git revision、container digest、PyTorch/CUDA/ROCm、Transformer Engine、FlashAttention、NCCL 和编译 flags。三个项目都在快速演进，只写包名而不写 revision，无法复现实验。</p>
+<h2 id="我会怎样选择">我会怎样选择</h2>
+<p>如果目标是在 H100/H20/B200 等 NVIDIA 集群上训练一个标准或主流变体的大型 dense/MoE Transformer，并且团队愿意维护并行模型代码，我会从 Megatron Core 开始。它把最关键的高频通信和 Transformer kernel 放在同一个设计中，最适合追求规模与 MFU。</p>
+<p>如果目标是尽快把已有 PyTorch/Hugging Face 模型做多卡 finetuning，主要矛盾是 optimizer/parameter memory，或者必须用 CPU/NVMe 扩展容量，我会先用 DeepSpeed ZeRO。它把最常见的显存问题变成 runtime 配置，验证成本低于重写模型。</p>
+<p>如果目标是研究并行策略本身、需要在多种 plugins 之间切换、希望对 Hugging Face model 做显式但可复用的 module transformation，我会认真评估 Colossal-AI。Booster 与 ShardFormer 的抽象比“一堆训练 flags”更适合组织实验代码。</p>
+<p>我不会因为某个框架官网展示了最高 MFU 就直接迁移，也不会因为另一个框架只需几行代码就假设它适合千卡预训练。选型应该由目标模型的 first-class path、checkpoint contract、硬件 topology 和团队调试能力共同决定。</p>
+<h2 id="总结">总结</h2>
+<p>Megatron-LM、DeepSpeed 与 Colossal-AI 的核心差异，是默认控制面不同。</p>
+<p>Megatron Core 从 Transformer 模型结构和 process groups 出发，把 TP、PP、CP、EP、DP、FSDP、MoE 与 kernel 深度整合，适合 NVIDIA 大规模预训练和追求高 MFU 的团队；代价是模型与训练代码要进入 Megatron contract。</p>
+<p>DeepSpeed 从训练 runtime 和模型状态内存出发，用 ZeRO、offload、Engine、PipelineModule 和配置系统扩展现有 PyTorch 模型，适合 Hugging Face finetuning、显存受限训练和更广硬件生态；代价是自动 runtime 行为与多层配置需要严格审计。</p>
+<p>Colossal-AI 从 Booster、Plugin 与 ShardFormer transformation 出发，强调在统一 API 下组合 DDP、FSDP、ZeRO、Gemini、TP、PP 和优化策略，适合研究型框架、Hugging Face 模型改写与快速策略实验；代价是实际能力取决于目标模型的 policy 与 plugin coverage。</p>
+<p>选型时需要明确由哪套系统管理模型图、optimizer、parallel groups、pipeline schedule 和 checkpoint。确定管理边界后，再验证目标模型的正确性、性能和恢复路径，比按功能数量判断更可靠。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul><li><a href="https://github.com/NVIDIA/Megatron-LM">NVIDIA Megatron-LM / Megatron Core</a></li><li><a href="https://github.com/NVIDIA/Megatron-LM/blob/main/docs/user-guide/parallelism-guide.md">Megatron Core Parallelism Strategies Guide</a></li><li><a href="https://github.com/NVIDIA/Megatron-LM/blob/main/docs/api-guide/core/dist_checkpointing.md">Megatron Core Distributed Checkpointing</a></li><li><a href="https://arxiv.org/abs/1909.08053">Mohammad Shoeybi et al., Megatron-LM, 2019</a></li><li><a href="https://github.com/microsoft/DeepSpeed">Microsoft DeepSpeed</a></li><li><a href="https://www.deepspeed.ai/tutorials/zero/">DeepSpeed ZeRO Tutorial</a></li><li><a href="https://www.deepspeed.ai/tutorials/pipeline/">DeepSpeed Pipeline Parallelism</a></li><li><a href="https://www.deepspeed.ai/tutorials/universal-checkpointing/">DeepSpeed Universal Checkpointing</a></li><li><a href="https://arxiv.org/abs/1910.02054">Samyam Rajbhandari et al., ZeRO, 2019</a></li><li><a href="https://github.com/hpcaitech/ColossalAI">HPC-AI Tech Colossal-AI</a></li><li><a href="https://colossalai.org/docs/basics/booster_api/">Colossal-AI Booster API</a></li><li><a href="https://colossalai.org/docs/basics/booster_plugins/">Colossal-AI Booster Plugins</a></li><li><a href="https://github.com/hpcaitech/ColossalAI/tree/main/colossalai/shardformer">Colossal-AI ShardFormer</a></li><li><a href="https://arxiv.org/abs/2110.14883">Shenggui Li et al., Colossal-AI, 2021</a></li></ul></div><script type="application/json" data-article-headings>[{"id":"先区分三个层次-library-runtime-与-training-stack","level":2,"text":"先区分三个层次：Library、Runtime 与 Training Stack"},{"id":"megatron-lm-与-megatron-core-是什么关系","level":2,"text":"Megatron-LM 与 Megatron Core 是什么关系"},{"id":"deepspeed-zero-与训练运行时","level":2,"text":"DeepSpeed：ZeRO 与训练运行时"},{"id":"colossal-ai-的核心是-booster-plugin-与-shardformer","level":2,"text":"Colossal-AI 的核心是 Booster、Plugin 与 ShardFormer"},{"id":"三种默认工作流","level":2,"text":"三种默认工作流"},{"id":"megatron-lm-先进入并行模型规范","level":3,"text":"Megatron-LM：先进入并行模型规范"},{"id":"deepspeed-用-engine-接管训练状态","level":3,"text":"DeepSpeed：用 Engine 接管训练状态"},{"id":"colossal-ai-用-plugin-选择注入策略","level":3,"text":"Colossal-AI：用 Plugin 选择注入策略"},{"id":"并行能力不能只看勾选表","level":2,"text":"并行能力不能只看勾选表"},{"id":"megatron-的-parallelism-优势","level":2,"text":"Megatron 的 Parallelism 优势"},{"id":"deepspeed-的-memory-优势","level":2,"text":"DeepSpeed 的 Memory 优势"},{"id":"colossal-ai-的-composability-优势","level":2,"text":"Colossal-AI 的 Composability 优势"},{"id":"pipeline-parallel-的差异尤其大","level":2,"text":"Pipeline Parallel 的差异尤其大"},{"id":"checkpoint-才是长期成本中心","level":2,"text":"Checkpoint 才是长期成本中心"},{"id":"hugging-face-兼容意味着什么","level":2,"text":"Hugging Face 兼容意味着什么"},{"id":"三者可以混用吗","level":2,"text":"三者可以混用吗"},{"id":"调试体验的差异","level":2,"text":"调试体验的差异"},{"id":"megatron-lm","level":3,"text":"Megatron-LM"},{"id":"deepspeed","level":3,"text":"DeepSpeed"},{"id":"colossal-ai","level":3,"text":"Colossal-AI"},{"id":"不要用官网-benchmark-直接决定框架","level":2,"text":"不要用官网 Benchmark 直接决定框架"},{"id":"选型矩阵","level":2,"text":"选型矩阵"},{"id":"一个分阶段选型方法","level":2,"text":"一个分阶段选型方法"},{"id":"阶段一-定义不可妥协约束","level":3,"text":"阶段一：定义不可妥协约束"},{"id":"阶段二-选择-control-plane","level":3,"text":"阶段二：选择 control plane"},{"id":"阶段三-做-1-卡与-8-卡正确性基线","level":3,"text":"阶段三：做 1 卡与 8 卡正确性基线"},{"id":"阶段四-做最小-hybrid-parallel-原型","level":3,"text":"阶段四：做最小 hybrid-parallel 原型"},{"id":"阶段五-验证拓扑变化与导出","level":3,"text":"阶段五：验证拓扑变化与导出"},{"id":"阶段六-固定版本","level":3,"text":"阶段六：固定版本"},{"id":"我会怎样选择","level":2,"text":"我会怎样选择"},{"id":"总结","level":2,"text":"总结"},{"id":"参考资料","level":2,"text":"参考资料"}]</script></article></main>
   <footer class="footer"><div class="footer-inner">© 2026 Tianyu Xie.</div></footer>
 </body>
 </html>

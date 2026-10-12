@@ -4,25 +4,269 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>交互式 Omni 模型的连续时间策略：语音、语言与行动 | Tianyu Xie</title>
-  <meta name="description" content="提出联合建模语音、语言与行动的连续时间策略，讨论因果训练轨迹、异步工具和中断恢复。">
+  <meta name="description" content="让语音、语言与行动共享连续时间状态的研究提案，涉及训练轨迹、异步工具与中断恢复。">
   <link rel="icon" href="/images/profile.png">
-  <link rel="stylesheet" href="/site.css?v=20261012-unified">
-  <script src="/blog/blog-data.js?v=20261012-unified" defer></script>
-  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-unified" defer></script>
+  <link rel="stylesheet" href="/site.css?v=20261012-stable">
+  <script src="/blog/blog-data.js?v=20261012-stable" defer></script>
+  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-stable" defer></script>
 </head>
 <body class="blog-post" data-post-slug="continuous-time-speech-language-action-policy">
-  <header class="masthead"><nav class="nav" aria-label="Primary navigation">
-    <a class="home-brand" href="/">Homepage</a>
-    <a href="/#about-me">About Me</a>
-    <a href="/#news">News</a>
-    <a href="/publications/">Publications</a>
-    <a href="/projects/">Projects</a>
-    <a href="/#education">Education</a>
-    <a href="/#service">Academic Service</a>
-    <a aria-current="page" href="/blog/">Research Notes</a>
-    <a href="/cv/">CV</a>
-  </nav></header>
-  <main class="shell blog-shell"><aside class="sidebar"><section class="profile-card"><img class="avatar" src="/images/profile.png" alt="Tianyu Xie profile photo"><h2 class="name">Blog</h2><p class="bio"><a href="/blog/">Back to Blog</a></p></section></aside><article class="content"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a><span aria-hidden="true">/</span><span data-breadcrumb-section>Article</span></nav><h1 class="page-title" data-post-title>交互式 Omni 模型的连续时间策略：语音、语言与行动</h1><p class="lead" data-post-meta>Markdown article</p><div class="markdown-body" data-markdown-article></div></article></main>
+  <header class="masthead"><nav class="nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a aria-current="page" href="/blog/">Notes</a><a href="/cv/">CV</a></nav></header>
+  <main class="shell blog-shell"><aside class="sidebar" aria-label="Personal profile"><section class="profile-card">
+        <img class="avatar" src="/images/profile.png" alt="Portrait of Tianyu Xie" width="170" height="170">
+        <h2 class="name">Tianyu Xie <span lang="zh-CN">谢天宇</span></h2>
+        <p class="affiliation">Xiamen University</p><p class="bio">M.S. student · MAC Lab</p>
+        <ul class="profile-links">
+          <li><a href="mailto:teery@stu.xmu.edu.cn">Email</a></li><li><a href="https://github.com/teeryxie">GitHub</a></li>
+          <li><a href="https://scholar.google.com/citations?hl=en&amp;user=_vZWAnkAAAAJ">Google Scholar</a></li><li><a href="https://openreview.net/profile?id=~Tianyu_Xie2">OpenReview</a></li>
+        </ul></section><nav class="article-toc" aria-label="本文目录"><strong>本文目录</strong><div class="toc-links"><a class="toc-link toc-level-2" href="#section-1-减少推理关键路径上的串行等待" data-toc-id="section-1-减少推理关键路径上的串行等待">1. 减少推理关键路径上的串行等待</a>
+<a class="toc-link toc-level-2" href="#section-2-从-speech-to-speech-走向-speech-language-action" data-toc-id="section-2-从-speech-to-speech-走向-speech-language-action">2. 从 Speech-to-Speech 走向 Speech-Language-Action</a>
+<a class="toc-link toc-level-2" href="#section-3-为什么必须有独立-action-channel" data-toc-id="section-3-为什么必须有独立-action-channel">3. 为什么必须有独立 Action Channel</a>
+<a class="toc-link toc-level-2" href="#section-4-级联-agent-不应被丢弃-而应成为训练-teacher" data-toc-id="section-4-级联-agent-不应被丢弃-而应成为训练-teacher">4. 级联 Agent 不应被丢弃，而应成为训练 Teacher</a>
+<a class="toc-link toc-level-3" href="#section-4-1-显式轨迹蒸馏" data-toc-id="section-4-1-显式轨迹蒸馏">4.1 显式轨迹蒸馏</a>
+<a class="toc-link toc-level-3" href="#section-4-2-hindsight-latent-distillation" data-toc-id="section-4-2-hindsight-latent-distillation">4.2 Hindsight latent distillation</a>
+<a class="toc-link toc-level-2" href="#section-5-不能等用户说完才推理-训练-think-while-listening" data-toc-id="section-5-不能等用户说完才推理-训练-think-while-listening">5. 不能等用户说完才推理：训练 think while listening</a>
+<a class="toc-link toc-level-2" href="#section-6-训练数据需要时间对齐的-agent-轨迹" data-toc-id="section-6-训练数据需要时间对齐的-agent-轨迹">6. 训练数据需要时间对齐的 Agent 轨迹</a>
+<a class="toc-link toc-level-2" href="#section-7-六阶段训练方案" data-toc-id="section-7-六阶段训练方案">7. 六阶段训练方案</a>
+<a class="toc-link toc-level-3" href="#section-7-1-保留原模型智力" data-toc-id="section-7-1-保留原模型智力">7.1 保留原模型智力</a>
+<a class="toc-link toc-level-3" href="#section-7-2-学习连续双流与自然-dynamics" data-toc-id="section-7-2-学习连续双流与自然-dynamics">7.2 学习连续双流与自然 dynamics</a>
+<a class="toc-link toc-level-3" href="#section-7-3-加入独立-action-channel" data-toc-id="section-7-3-加入独立-action-channel">7.3 加入独立 Action Channel</a>
+<a class="toc-link toc-level-3" href="#section-7-4-蒸馏边听边想的-belief-与-plan" data-toc-id="section-7-4-蒸馏边听边想的-belief-与-plan">7.4 蒸馏边听边想的 belief 与 plan</a>
+<a class="toc-link toc-level-3" href="#section-7-5-在-critical-windows-做-interaction-rl" data-toc-id="section-7-5-在-critical-windows-做-interaction-rl">7.5 在 critical windows 做 interaction RL</a>
+<a class="toc-link toc-level-3" href="#section-7-6-用交互模拟与-dagger-纠正-exposure-bias" data-toc-id="section-7-6-用交互模拟与-dagger-纠正-exposure-bias">7.6 用交互模拟与 DAgger 纠正 exposure bias</a>
+<a class="toc-link toc-level-2" href="#section-8-多目标损失-内容-时机与回滚必须分开监督" data-toc-id="section-8-多目标损失-内容-时机与回滚必须分开监督">8. 多目标损失：内容、时机与回滚必须分开监督</a>
+<a class="toc-link toc-level-2" href="#section-9-playback-aware-rollback-模型历史不等于用户历史" data-toc-id="section-9-playback-aware-rollback-模型历史不等于用户历史">9. Playback-aware rollback：模型历史不等于用户历史</a>
+<a class="toc-link toc-level-2" href="#section-10-对不可逆工具使用两阶段提交" data-toc-id="section-10-对不可逆工具使用两阶段提交">10. 对不可逆工具使用两阶段提交</a>
+<a class="toc-link toc-level-2" href="#section-11-强化学习不能只奖励快" data-toc-id="section-11-强化学习不能只奖励快">11. 强化学习不能只奖励快</a>
+<a class="toc-link toc-level-2" href="#section-12-benchmark-应从局部交互走向完整-agent-trajectory" data-toc-id="section-12-benchmark-应从局部交互走向完整-agent-trajectory">12. Benchmark 应从局部交互走向完整 Agent trajectory</a>
+<a class="toc-link toc-level-2" href="#section-13-一条现实可做的中文研究路线" data-toc-id="section-13-一条现实可做的中文研究路线">13. 一条现实可做的中文研究路线</a>
+<a class="toc-link toc-level-2" href="#section-14-可以检验的研究假设" data-toc-id="section-14-可以检验的研究假设">14. 可以检验的研究假设</a>
+<a class="toc-link toc-level-2" href="#section-15-结论" data-toc-id="section-15-结论">15. 结论</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></div></nav></aside><article class="content"><header class="inner-hero article-hero"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a></nav><h1 class="page-title" data-post-title>交互式 Omni 模型的连续时间策略：语音、语言与行动</h1><p class="lead" data-post-meta>2026-07 · 研究笔记</p></header><details class="mobile-toc"><summary>本文目录</summary><nav aria-label="移动端本文目录"><a class="toc-link toc-level-2" href="#section-1-减少推理关键路径上的串行等待" data-toc-id="section-1-减少推理关键路径上的串行等待">1. 减少推理关键路径上的串行等待</a>
+<a class="toc-link toc-level-2" href="#section-2-从-speech-to-speech-走向-speech-language-action" data-toc-id="section-2-从-speech-to-speech-走向-speech-language-action">2. 从 Speech-to-Speech 走向 Speech-Language-Action</a>
+<a class="toc-link toc-level-2" href="#section-3-为什么必须有独立-action-channel" data-toc-id="section-3-为什么必须有独立-action-channel">3. 为什么必须有独立 Action Channel</a>
+<a class="toc-link toc-level-2" href="#section-4-级联-agent-不应被丢弃-而应成为训练-teacher" data-toc-id="section-4-级联-agent-不应被丢弃-而应成为训练-teacher">4. 级联 Agent 不应被丢弃，而应成为训练 Teacher</a>
+<a class="toc-link toc-level-3" href="#section-4-1-显式轨迹蒸馏" data-toc-id="section-4-1-显式轨迹蒸馏">4.1 显式轨迹蒸馏</a>
+<a class="toc-link toc-level-3" href="#section-4-2-hindsight-latent-distillation" data-toc-id="section-4-2-hindsight-latent-distillation">4.2 Hindsight latent distillation</a>
+<a class="toc-link toc-level-2" href="#section-5-不能等用户说完才推理-训练-think-while-listening" data-toc-id="section-5-不能等用户说完才推理-训练-think-while-listening">5. 不能等用户说完才推理：训练 think while listening</a>
+<a class="toc-link toc-level-2" href="#section-6-训练数据需要时间对齐的-agent-轨迹" data-toc-id="section-6-训练数据需要时间对齐的-agent-轨迹">6. 训练数据需要时间对齐的 Agent 轨迹</a>
+<a class="toc-link toc-level-2" href="#section-7-六阶段训练方案" data-toc-id="section-7-六阶段训练方案">7. 六阶段训练方案</a>
+<a class="toc-link toc-level-3" href="#section-7-1-保留原模型智力" data-toc-id="section-7-1-保留原模型智力">7.1 保留原模型智力</a>
+<a class="toc-link toc-level-3" href="#section-7-2-学习连续双流与自然-dynamics" data-toc-id="section-7-2-学习连续双流与自然-dynamics">7.2 学习连续双流与自然 dynamics</a>
+<a class="toc-link toc-level-3" href="#section-7-3-加入独立-action-channel" data-toc-id="section-7-3-加入独立-action-channel">7.3 加入独立 Action Channel</a>
+<a class="toc-link toc-level-3" href="#section-7-4-蒸馏边听边想的-belief-与-plan" data-toc-id="section-7-4-蒸馏边听边想的-belief-与-plan">7.4 蒸馏边听边想的 belief 与 plan</a>
+<a class="toc-link toc-level-3" href="#section-7-5-在-critical-windows-做-interaction-rl" data-toc-id="section-7-5-在-critical-windows-做-interaction-rl">7.5 在 critical windows 做 interaction RL</a>
+<a class="toc-link toc-level-3" href="#section-7-6-用交互模拟与-dagger-纠正-exposure-bias" data-toc-id="section-7-6-用交互模拟与-dagger-纠正-exposure-bias">7.6 用交互模拟与 DAgger 纠正 exposure bias</a>
+<a class="toc-link toc-level-2" href="#section-8-多目标损失-内容-时机与回滚必须分开监督" data-toc-id="section-8-多目标损失-内容-时机与回滚必须分开监督">8. 多目标损失：内容、时机与回滚必须分开监督</a>
+<a class="toc-link toc-level-2" href="#section-9-playback-aware-rollback-模型历史不等于用户历史" data-toc-id="section-9-playback-aware-rollback-模型历史不等于用户历史">9. Playback-aware rollback：模型历史不等于用户历史</a>
+<a class="toc-link toc-level-2" href="#section-10-对不可逆工具使用两阶段提交" data-toc-id="section-10-对不可逆工具使用两阶段提交">10. 对不可逆工具使用两阶段提交</a>
+<a class="toc-link toc-level-2" href="#section-11-强化学习不能只奖励快" data-toc-id="section-11-强化学习不能只奖励快">11. 强化学习不能只奖励快</a>
+<a class="toc-link toc-level-2" href="#section-12-benchmark-应从局部交互走向完整-agent-trajectory" data-toc-id="section-12-benchmark-应从局部交互走向完整-agent-trajectory">12. Benchmark 应从局部交互走向完整 Agent trajectory</a>
+<a class="toc-link toc-level-2" href="#section-13-一条现实可做的中文研究路线" data-toc-id="section-13-一条现实可做的中文研究路线">13. 一条现实可做的中文研究路线</a>
+<a class="toc-link toc-level-2" href="#section-14-可以检验的研究假设" data-toc-id="section-14-可以检验的研究假设">14. 可以检验的研究假设</a>
+<a class="toc-link toc-level-2" href="#section-15-结论" data-toc-id="section-15-结论">15. 结论</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></nav></details><div class="markdown-body" data-markdown-article data-rendered="true"><p>实时语音模型已经能够快速接话、停顿、附和和响应打断。然而，这些对话行为还不足以说明系统能否完成复杂任务。本文从语音、语言与行动的联合决策出发，讨论交互式 Omni 模型的训练和评测。Omni 在这里指联合处理文本、视觉和音频等信息的模型。</p>
+<p>用户目标可能随对话改变，语音和视频只提供部分证据，工具调用也有延迟和外部后果。因此，模型需要持续更新目标判断，在信息不足时保留多个假设，再决定等待、澄清、回答或检索。它还需要跟踪工具执行与实际播放位置，并在用户纠正后修订计划。</p>
+<p>因此，我把交互式 Omni Model 看作在连续时间中选择动作的策略模型：根据当前可获得的证据，决定倾听、接话、打断、回复或调用工具。自然对话只是这些决策的一部分表现。</p>
+<p>更完整的研究问题可以写成：如何训练一个以音频、视频、工具事件、记忆读取和播放状态为观测，以语音、对话控制、工具调用、工具撤销和记忆操作为动作的流式策略模型？</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/continuous-agent-policy-loop.svg" data-image-alt="Continuous-time policy loop" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/continuous-agent-policy-loop.svg" width="1180" height="620" alt="Continuous-time policy loop" loading="lazy" decoding="async"></button><figcaption>图 1：交互式 omni model 持续接收人、环境、工具和播放事件，在统一状态上并行决定语音、控制、工具和记忆动作。</figcaption></figure>
+<h2 id="section-1-减少推理关键路径上的串行等待">1. 减少推理关键路径上的串行等待</h2>
+<p>传统级联语音 Agent 的延迟通常来自一组同步 barrier：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>等待用户说完
+→ 等待 ASR final
+→ 等待 LLM 完整规划
+→ 等待工具返回
+→ 等待 TTS 首包
+→ 开始播放</code></pre></div>
+<p>问题不只是组件多，而是每一阶段必须等上一阶段“最终完成”。用户说话期间，大模型没有开始建立计划；工具执行期间，前台只能沉默；用户在 TTS 播放时补充信息，旧 action 仍可能继续执行。</p>
+<p>搜索、数据库、CRM、日历、支付系统和持久化记忆不可能全部塞进模型参数。工具需要独立权限、事务、日志和扩缩容。因此合理目标不是物理上做成一个不可拆分的程序，而是：</p>
+<p><strong>Policy monolithic, Execution modular。</strong></p>
+<p>这里的 monolithic 指感知、belief update、轮次控制、计划更新、工具调度和回复生成共享同一个因果流式状态，不再由多个互不知情的阶段串行做决定。Execution 仍然模块化：搜索和数据库异步返回事件，写操作保留权限与事务边界，长期记忆由外部存储负责。模型在等待事件时仍可以继续听、继续想、给出简短反馈或修正计划。</p>
+<p><a href="https://arxiv.org/abs/2410.21620">Asynchronous Tool Usage for Real-Time Agents</a> 已用事件驱动有限状态机展示异步工具与语音前端如何并行；<a href="https://arxiv.org/abs/2604.15710">VoxMind</a> 则让辅助 Agent 异步管理大量工具，使主 spoken model 不必同步遍历工具集。它们说明 modular execution 可以保留，但事件必须进入实时 policy，而不是成为阻塞调用。</p>
+<h2 id="section-2-从-speech-to-speech-走向-speech-language-action">2. 从 Speech-to-Speech 走向 Speech-Language-Action</h2>
+<p>最接近这一方向的公开架构是 <a href="https://arxiv.org/abs/2605.20755">DuplexSLA</a>。它将用户音频、助手音频与结构化 action 放到共享 <code>160 ms</code> chunk 时钟上。用户音频以 <code>80 ms</code> stride 提供因果特征；助手每个 chunk 生成一个文本锚点和四个 <code>40 ms</code> 音频 token；独立 action channel 每个 chunk 最多生成 10 个文本 token，用于延迟转录、短 planning、turn-taking 标签与 JSON 工具调用。</p>
+<p>同一个约 7B backbone 因而可以在持续输出助手语音时，另外发出 <code>interrupt</code>、<code>backchannel</code>、planning fragment 或工具调用。action 不需要占用语音 token 的位置，也不必等待助手停止说话。</p>
+<p>可以把目标模型抽象成：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>Observation o_t
+  user audio / video
+  tool result events
+  memory read results
+  playback position
+  previous actions
+          │
+          ▼
+  Causal streaming state h_t
+  intent · belief · plan · dialogue · tool state
+          │
+     ┌────┼──────────┬───────────┐
+     ▼    ▼          ▼           ▼
+  Speech  Control    Action      Memory
+  tokens  policy     channel     policy</code></pre></div>
+<p>每个时间片的状态更新与策略输出可以写成：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>h_t = f_theta(h_(t-1), o_t, a_(t-1))
+
+(control_t, action_t, speech_t, latent_t) = pi_theta(h_t)</code></pre></div>
+<p>这里不要求所有输出使用同一 token rate。音频可能以 12.5Hz 或更高频率生成；control head 每 80–160ms 做一次 listen / start / continue / backchannel / yield / abort 决策；action channel 只在出现语义事件时输出；belief 和 plan 大部分时间可以保留为不可见 latent state。</p>
+<p>关键设计是：<strong>共享统一隐状态，使用不同速率、不同职责的输出通道。</strong></p>
+<p>DuplexSLA 目前应被视为重要架构参考，而不是立即可复现基线。截至本文撰写时，其仓库已发布技术报告和 demo，README 仍明确标记 inference code、checkpoint、deployment recipe 与 DuplexSLA-Bench harness/data 为待发布。</p>
+<h2 id="section-3-为什么必须有独立-action-channel">3. 为什么必须有独立 Action Channel</h2>
+<p>假设助手正在说：“我正在帮您查询最近的订单……”用户插入一句：“查耳机那一单。”理想系统不需要先停止语音、生成完整转录、再把 JSON 插入同一个输出序列。它可以继续自然地给出前台反馈，同时 action channel 立即提交只读查询：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>speech:  &quot;我先帮您查一下。&quot;
+control: CONTINUE
+action:  CALL search_orders(item=&quot;headphones&quot;)</code></pre></div>
+<p>更困难的情况是用户改口：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>t = 0.80s
+user:    &quot;帮我查一下昨天买的耳机&quot;
+belief:  intent=search_order, date=yesterday, confidence=0.62
+control: LISTEN
+action:  CALL_SAFE_READ(search_orders, date=yesterday)
+
+t = 1.44s
+speech:  &quot;我先帮您查一下。&quot;
+action:  WAIT_TOOL(search_1)
+
+t = 2.08s
+user:    &quot;不对，是前天。&quot;
+belief:  date=day_before_yesterday, old_hypothesis=invalid
+control: YIELD_AND_REVISE
+action:  CANCEL(search_1)
+action:  CALL_SAFE_READ(search_orders, date=day_before_yesterday)
+speech:  stop old clause, then repair naturally</code></pre></div>
+<p>这说明“被打断”和“成为 Agent”不是两个独立能力。它们共享同一个判定：<strong>新的用户证据是否使当前 belief、plan、speech commitment 或 external action 失效？</strong></p>
+<p>只训练 <code>INTERRUPT</code> 标签最多让模型停下声音。真正的 Agent 还必须学习 slot revision、plan invalidation、tool cancellation、memory correction、speech repair 和 execution-state reconciliation。</p>
+<p>独立 action channel 还有三个工程优势。第一，结构化 JSON 不会破坏连续音频生成。第二，每个 action 有明确语义触发时间，可测 earliest legal action latency。第三，action 可以进入独立 grammar 和权限检查，不必信任任意自然语言 token 直接驱动业务系统。</p>
+<h2 id="section-4-级联-agent-不应被丢弃-而应成为训练-teacher">4. 级联 Agent 不应被丢弃，而应成为训练 Teacher</h2>
+<p>现有级联 Agent 虽然推理慢，却常常拥有更强 ASR、更强文本推理、成熟工具系统、RAG、长期记忆、显式 workflow 与可解释日志。它很适合离线生成专家轨迹。</p>
+<p>传统蒸馏通常只保留：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>完整用户问题 → 最终答案</code></pre></div>
+<p>连续时间 policy 需要的 supervision 是：</p>
+<div class="code-block"><span class="code-language">json</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>{
+  &quot;timestamp_ms&quot;: 1440,
+  &quot;observed_prefix&quot;: &quot;帮我取消昨天&quot;,
+  &quot;belief&quot;: {
+    &quot;intent&quot;: &quot;cancel_order&quot;,
+    &quot;date&quot;: &quot;yesterday&quot;,
+    &quot;order_id&quot;: null,
+    &quot;confidence&quot;: 0.62
+  },
+  &quot;control&quot;: &quot;LISTEN&quot;,
+  &quot;candidate_action&quot;: null,
+  &quot;earliest_legal_action&quot;: &quot;need_order_identifier&quot;,
+  &quot;response_plan&quot;: &quot;wait_or_clarify&quot;
+}</code></pre></div>
+<p>Teacher 可以读取完整 transcript、未来用户纠正和最终工具结果，构造高质量 posterior trajectory；student 在训练和推理时必须保持严格因果，只能看当前时间之前的音频和事件。未来信息用于生成 target，不得泄漏到 student observation。</p>
+<h3 id="section-4-1-显式轨迹蒸馏">4.1 显式轨迹蒸馏</h3>
+<p>Teacher 输出 partial intent、slot belief、候选 action、最早合法执行时间、是否可撤销、等待或澄清理由、计划修订和 memory operation。Student 以多任务分类、结构化 next-token prediction 或 compact planning token 学习。</p>
+<p>这种监督适合可审计的客服流程，也能直接计算 action precision、slot consistency 和 rollback correctness。缺点是人工 schema 有上限，Teacher 的自然语言 rationale 也可能冗长或不稳定。</p>
+<h3 id="section-4-2-hindsight-latent-distillation">4.2 Hindsight latent distillation</h3>
+<p><a href="https://arxiv.org/abs/2603.17837">FLAIR / The Silent Thought</a> 让监听阶段的 latent embedding 递归传递，在不输出外显 CoT 的情况下持续形成内部状态。其 global-aware expert 可利用完整对话提供 posterior latent target，再蒸馏给严格因果的 student；推理时丢弃 expert。</p>
+<p>这条路线给出一个重要训练原则：<strong>训练阶段可以使用强级联、未来信息和重计算，推理关键路径只保留已经蒸馏的 causal policy。</strong></p>
+<p>显式轨迹和 latent distillation 不需要二选一。业务 action、权限和 commit 条件应显式监督；难以穷举的语义假设、对话节奏和潜在计划可以由 latent target 承担。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/continuous-agent-distillation.svg" data-image-alt="Teacher-student trajectory" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/continuous-agent-distillation.svg" width="1180" height="620" alt="Teacher-student trajectory" loading="lazy" decoding="async"></button><figcaption>图 2：离线 Teacher 可观察完整对话和工具结果以生成后验轨迹，在线 Student 只能使用因果前缀学习连续 belief、control 和 action。</figcaption></figure>
+<h2 id="section-5-不能等用户说完才推理-训练-think-while-listening">5. 不能等用户说完才推理：训练 think while listening</h2>
+<p>实时 Agent 的大部分可感知延迟并不来自 vocoder，而来自“用户说完以后模型才开始理解”。如果一个 8 秒请求直到第 8 秒才开始建立计划，那么即使 TTS 首包只有 200ms，工具仍会迟到数秒。</p>
+<p><a href="https://arxiv.org/abs/2510.07497">Can Speech LLMs Think while Listening?</a> 发现文本空间 reasoning fine-tuning 可使多流 Speech LLM 在一组语音推理任务上的平均准确率提升 <code>2.4×</code>。该工作使用 question completeness 判断何时开始推理，再用基于 rejection sampling 的 DPO 推动准确率-延迟 Pareto frontier，报告在不损失准确率时降低约 <code>70%</code> 推理延迟。</p>
+<p><a href="https://arxiv.org/abs/2510.06917">SHANKS</a> 将语音切成连续 chunk，用户仍在说话时生成不可见 reasoning。数学讲解场景中，它比无 reasoning 的 interruption baseline 提高 <code>37.1%</code> 错误打断准确率；工具对话中，<code>56.9%</code> 的必要 API 调用在用户说完之前完成。</p>
+<p><a href="https://arxiv.org/abs/2510.02044">Stream RAG</a> 进一步训练 spoken model 在用户讲话期间预测检索 query。AudioCRAG 上，准确率从 <code>11.1%</code> 提升到 <code>34.2%</code>，工具延迟降低 <code>20%</code>。这说明提前 action 不只改善速度，也可以通过更早 grounding 改善答案。</p>
+<p>但不应在每个音频 chunk 后生成数百 token 的显式 CoT。它会与音频和 action 竞争计算，partial input 容易诱发错误假设，新证据到来后长 reasoning 难以撤销，而且生成链无法及时抢占。</p>
+<p>更合适的是三档状态更新：</p>
+<ul><li><strong>高频 latent belief</strong>：每 80–160ms 更新意图分布、slot 置信度、用户是否可能继续、当前计划是否失效、哪些工具参数已具备。</li><li><strong>低频 action token</strong>：只在事件发生时输出 <code>CALL_TOOL</code>、<code>CANCEL_TOOL</code>、<code>ASK_CLARIFY</code>、<code>MEMORY_WRITE</code>、<code>PREPARE_COMMIT</code>、<code>COMMIT</code>。</li><li><strong>更低频 compact plan</strong>：输出 <code>need_order_id</code>、<code>safe_to_prefetch</code>、<code>await_confirmation</code>、<code>tool_result_conflict</code> 等短锚点，而非长自然语言独白。</li></ul>
+<h2 id="section-6-训练数据需要时间对齐的-agent-轨迹">6. 训练数据需要时间对齐的 Agent 轨迹</h2>
+<p>普通客服文本日志缺少连续时间 policy 最关键的信息：谁何时开始说、重叠发生在哪、停顿是否意味着结束、工具最早何时可调用、用户何时纠正参数、助手哪些内容已经真正播放、哪些只在 server buffer 中生成。</p>
+<p>完整样本至少需要：</p>
+<ul><li>用户独立音频轨道与时间戳；</li><li>助手生成音频轨道；</li><li>助手实际播放进度与被取消区间；</li><li>用户增量 transcript 或语义特征；</li><li>助手文本锚点和 speech token；</li><li>listen / start / backchannel / yield / abort 控制标签；</li><li>belief 与 plan snapshot；</li><li>tool call、result、timeout、cancel、commit 时间线；</li><li>memory read / write / correction；</li><li>action 可撤销性、权限和确认要求。</li></ul>
+<p>中文 full-duplex 数据基础正在改善。<a href="https://arxiv.org/abs/2606.14528">BayLing-Duplex</a> 从 GLM-4-Voice 初始化，只加入少量特殊状态 token，将 listen、speak 和 stop 转为普通 next-token prediction。论文使用 <code>400K</code> 全双工对话做 SFT，再进行轻量 DPO；在 InstructS2S-Eval 上报告 <code>92%</code> turn-taking success 与 <code>100%</code> interruption success，同时保持通用问答能力。</p>
+<p>BayLing-Duplex 解决的主要是全双工 dynamics，不是完整 agentic tool policy。它证明成熟 turn-based SpeechLM 可以用相对可控的数据规模改造成 native duplex，但 action、rollback 和业务状态仍需新增轨迹。</p>
+<p><a href="https://github.com/qualialabsAI/SmoothConv-DuplexConv">SmoothConv / DuplexConv</a> 则提供约 2100 小时自然中文多通道对话。SmoothConv 为约 100 小时专家毫秒级标注，DuplexConv 为约 2000 小时 LLM 辅助标注，覆盖 tutoring、social chat、overlap、backchannel、interrupt、pause 与 turn transition。它们适合学习自然交互 prior，却仍需要和自建客服 action timeline 配对。</p>
+<p>DuplexSLA 的规模说明从零训练通用 backbone 成本很高：技术报告披露 continued pretraining 约 50 万小时音频加 192 万文本样本，其中 duplex dialogue 约 32 万小时；post-training 约 5 万小时，其中 interaction control 约 3.6 万小时、tool-call 约 1.4 万小时。对大多数团队，更现实的路线是从 BayLing-Duplex、GLM-4-Voice、Moshi 或 PersonaPlex 初始化，只学习新 action/control adapter 与领域轨迹。</p>
+<h2 id="section-7-六阶段训练方案">7. 六阶段训练方案</h2>
+<h3 id="section-7-1-保留原模型智力">7.1 保留原模型智力</h3>
+<p>从强文本或 SpeechLM 初始化，不从零训练。冻结 speech tokenizer、speech decoder 与 vocoder，先训练 backbone LoRA、action embedding、action decoder 和 control head。持续混入文本 instruction、spoken QA 和原始语音生成数据，防止 full-duplex 数据将模型训练成“反应自然但内容变弱”。</p>
+<p><a href="https://github.com/kyutai-labs/moshi">Moshi</a> 已提供完整推理栈和独立 fine-tuning repository。其 Mimi codec 使用 12.5Hz 表示，理论延迟 160ms，L4 上实际整体延迟可低至约 200ms，适合英文原型。中文则可从 BayLing-Duplex 或 GLM-4-Voice 衍生。</p>
+<h3 id="section-7-2-学习连续双流与自然-dynamics">7.2 学习连续双流与自然 dynamics</h3>
+<p>使用用户音频、助手历史音频、助手目标音频、对齐文本、静音与 overlap 区间训练 simultaneous listen-and-speak。目标是学会自然 silence、开始和停止、backchannel、用户抢话与背景声音过滤。</p>
+<p>silence 占比通常极高，均匀交叉熵容易让模型通过“永远沉默”取得低损失。需要降低 silence 权重、提高稀有 control state 权重，并按事件窗口采样。普通长静音用于校准，真正影响策略的边界事件需要过采样。</p>
+<h3 id="section-7-3-加入独立-action-channel">7.3 加入独立 Action Channel</h3>
+<p>先限定领域，不立即做万能 Agent。客服原型可只提供 10–20 个 API、5–10 种 memory operation 和 8–12 个 control action，例如订单查询、物流、取消、退款、地址修改、创建工单、身份验证和转人工。</p>
+<p>每个 action 应标注语义触发时间、最早合法执行时间、最晚有用时间、参数来源、依赖关系、是否只读、是否可撤销、是否需要确认。action decoding 使用 schema / grammar constraint，权限校验放在执行层。</p>
+<h3 id="section-7-4-蒸馏边听边想的-belief-与-plan">7.4 蒸馏边听边想的 belief 与 plan</h3>
+<p>让强级联 Teacher 在每个关键 chunk 输出 compact state，或由 global-aware expert 提供 latent target。训练 student 判断信息是否充分、当前意图是否稳定、什么可以提前读、什么必须等待、最新证据是否推翻旧 action。</p>
+<p>这里本质上是 optimal stopping：现在执行得到的延迟收益，是否大于错误 action 的期望代价。不是“越早调用越好”，而是“在最早合法且风险可接受的时刻调用”。</p>
+<h3 id="section-7-5-在-critical-windows-做-interaction-rl">7.5 在 critical windows 做 interaction RL</h3>
+<p>不要一开始对完整十分钟通话做 RL，长序列的时间信用分配会淹没关键动作。优先采样用户结束前后、句中停顿、backchannel、barge-in、参数纠正、工具最早可调用、结果返回和 irreversible commit 前的短窗口。</p>
+<p><a href="https://arxiv.org/abs/2607.07148">DuplexPO</a> 正是将 when to speak 与 what to say 解耦，在高影响窗口上用 factorized reward 和 GRPO-style objective 优化 turn initiation、backchannel、yielding 和 participation，同时保留推理与指令能力。这一思想可扩展到 action timing：单独奖励 earliest legal tool call、correct cancellation 和 safe commit。</p>
+<h3 id="section-7-6-用交互模拟与-dagger-纠正-exposure-bias">7.6 用交互模拟与 DAgger 纠正 exposure bias</h3>
+<p>让 student 自己 rollout，模拟用户主动制造中途改口、长停顿、backchannel、强打断、多请求、参数纠正、工具失败、超时、改变主意、背景人声和播放滞后。Student 进入错误状态后，由强 Teacher 对当前轨迹重新标注，再聚合回训练集。</p>
+<p>纯 teacher forcing 只教模型在正确历史上行动；真实部署最需要的是进入错误历史后恢复。DAgger-style data aggregation 能把“失败后的修复轨迹”变成训练分布。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/continuous-agent-training-stages.svg" data-image-alt="Six-stage training" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/continuous-agent-training-stages.svg" width="1180" height="620" alt="Six-stage training" loading="lazy" decoding="async"></button><figcaption>图 3：从保留基础智力、学习双流 dynamics，到 action channel、因果蒸馏、局部 RL 和交互式数据聚合的六阶段路线。</figcaption></figure>
+<h2 id="section-8-多目标损失-内容-时机与回滚必须分开监督">8. 多目标损失：内容、时机与回滚必须分开监督</h2>
+<p>可以使用以下概念性组合：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>L = lambda_audio    * L_audio
+  + lambda_text     * L_text
+  + lambda_control  * L_control
+  + lambda_action   * L_action
+  + lambda_belief   * L_belief
+  + lambda_latent   * L_latent
+  + lambda_rollback * L_rollback</code></pre></div>
+<p><code>L_audio</code> 负责语音 token、韵律和流畅度；<code>L_text</code> 保留原语言能力；<code>L_control</code> 学习 LISTEN / START / CONTINUE / BACKCHANNEL / YIELD / ABORT，并需要类别重加权；<code>L_action</code> 学习 grammar-constrained 工具和记忆操作；<code>L_belief</code> 监督 intent、slot、identity verification、action readiness 和 confirmation requirement；<code>L_latent</code> 将 posterior expert state 蒸馏给 causal student。</p>
+<p><code>L_rollback</code> 是现有 spoken model 经常缺少的一项。它专门训练：删除用户未听到的助手尾部承诺、取消依赖旧参数的工具、保留仍有效的上下文、修正错误 memory，并在恢复对话时不引用已经生成但没有播放的内容。</p>
+<h2 id="section-9-playback-aware-rollback-模型历史不等于用户历史">9. Playback-aware rollback：模型历史不等于用户历史</h2>
+<p>流式系统至少有三条不同时间线：模型已生成的位置、server 已发送的位置、扬声器已播放的位置。用户打断时，模型可能已经生成后续 3 秒音频，但用户只听到前 500ms。</p>
+<p>如果模型把全部 generated text 当作 common ground，就会产生典型错误：用户没听过某项确认，模型却说“正如我刚才解释的”；未播放的承诺进入长期记忆；已经在 buffer 中取消的语句继续影响后续计划。</p>
+<p>因此 observation 必须包含 playback event：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>generated_until = 8.4s
+sent_until      = 7.2s
+played_until    = 6.1s
+interrupt_at    = 6.3s</code></pre></div>
+<p>rollback policy 应将历史拆为：用户已听到的 committed speech、尚在播放的 revocable speech、从未播放的 discarded speech。只有 committed speech 默认进入共同语境；其余内容在被打断后应撤销或重新表达。</p>
+<p>这也是 serving 和 model policy 必须共享状态的原因。只在前端停止播放器、却不通知模型实际播放位置，无法实现语义级中断恢复。</p>
+<h2 id="section-10-对不可逆工具使用两阶段提交">10. 对不可逆工具使用两阶段提交</h2>
+<p>只读搜索、缓存和检索可以在 partial intent 稳定后提前执行；退款、支付、删除、取消订单和发送消息具有副作用，不能为了低延迟直接 commit。</p>
+<p>更合理的是：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>safe read:
+  CALL_EARLY → USE_OR_CANCEL_RESULT
+
+side-effect action:
+  PREPARE → USER_CONFIRMATION → COMMIT
+                         └────→ ABORT</code></pre></div>
+<p>例如用户说“取消我刚买的那个”，模型可以 <code>PREPARE_CANCEL(recent_order)</code> 并读取订单详情，再口头确认具体商品。用户确认后才 <code>COMMIT_CANCEL</code>；用户说“等一下”则 <code>ABORT_PREPARED_ACTION</code>。</p>
+<p><a href="https://arxiv.org/abs/2605.13360">Speculative Interaction Agents</a> 使用类似思想：只读工具可提前执行，有副作用的写操作等待 commit point；未执行的 tool call 可 modify/remove，依赖被取消结果的子 action 也级联取消。论文报告云端模型获得 <code>1.3–1.7×</code> 加速，小型 Qwen/Llama 模型获得 <code>1.6–2.2×</code> 加速，同时承认存在轻微准确率代价。</p>
+<p>两阶段提交使“提前思考”和“提前造成现实后果”解耦，是 agentic realtime system 必须具备的安全边界。</p>
+<h2 id="section-11-强化学习不能只奖励快">11. 强化学习不能只奖励快</h2>
+<p>概念性 reward 可以写成：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>R = R_task + R_tool + R_semantic + R_safety
+  - alpha * response_delay
+  - beta  * yield_delay
+  - gamma * false_interrupt
+  - delta * premature_action
+  - eta   * user_effort
+  - mu    * compute_cost</code></pre></div>
+<p>延迟不应只从“用户说完”开始计算，而应从 <code>t_ready</code> 开始：模型已经获得足够语义信息、允许发起该 action 的最早时间。若用户说“帮我查明天下午两点北京到上海的高铁，最好靠窗”，听到时间与路线后即可提前搜索；“最好靠窗”作为后续过滤。但购票必须等待完整约束、身份和确认。</p>
+<p>early action metric 也不能只算越早越高。需要同时报告 early tool-call precision、无效 speculative call 成本、撤销正确率和不可逆误执行率。否则模型可能通过对每个 partial prefix 都乱发 API 来获得低平均 latency。</p>
+<h2 id="section-12-benchmark-应从局部交互走向完整-agent-trajectory">12. Benchmark 应从局部交互走向完整 Agent trajectory</h2>
+<p><a href="https://arxiv.org/abs/2604.04847">Full-Duplex-Bench v3</a> 已开始测试真实人类音频中的五类 disfluency 与四个领域的 chained API。六种系统中，GPT-Realtime 的 Pass@1 为 <code>0.600</code>；Gemini Live 3.1 延迟最快，为 <code>4.25s</code>，但 turn-take rate 只有 <code>78.0%</code>；Whisper → GPT-4o → TTS 级联保持完美 turn-take，却有 <code>10.12s</code> 最高延迟。自我修正和困难多步 reasoning 是所有系统的共同弱点。</p>
+<p>该结果说明评测方向正在从“能否停止说话”转向“disfluency 下是否仍能正确使用工具”。但连续时间 Agent 还需增加以下指标：</p>
+<ul><li>相对于 <code>t_ready</code> 的 action trigger latency；</li><li>response、yield、cancel 的 P50/P95/P99；</li><li>early tool-call precision 与无效查询成本；</li><li>plan invalidation 和 slot revision 正确率；</li><li>speculative action cancellation success；</li><li>playback-aware common-ground consistency；</li><li>user-unheard content reference rate；</li><li>irreversible action false-commit rate；</li><li>tool timeout / failure 后 workflow recovery；</li><li>多轮 task success 与 belief consistency。</li></ul>
+<p>此外必须按 action 风险分层。搜索提前 500ms 和退款提前 500ms 不是同一收益；benchmark 应给副作用、可逆性与错误成本显式权重。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/continuous-agent-risk-latency.svg" data-image-alt="Risk-latency frontier" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/continuous-agent-risk-latency.svg" width="1180" height="620" alt="Risk-latency frontier" loading="lazy" decoding="async"></button><figcaption>图 4：实时 Agent 的目标不是无条件最早行动，而是在可逆性、置信度和任务风险约束下逼近 earliest legal action。</figcaption></figure>
+<h2 id="section-13-一条现实可做的中文研究路线">13. 一条现实可做的中文研究路线</h2>
+<p>直接复现 DuplexSLA 的 50 万小时 CPT 和 5 万小时 post-training 对多数研究团队不现实。更可行的最小系统是：</p>
+<ul><li>以 BayLing-Duplex / GLM-4-Voice 为中文基线，英文可使用 Moshi / PersonaPlex；</li><li>用 SmoothConv / DuplexConv 稳定自然 full-duplex dynamics；</li><li>限定 2–3 个客服领域和 10–20 个工具；</li><li>新增轻量 action/control adapter，不改 tokenizer 和 vocoder；</li><li>用成熟级联 Agent 生成约十万级、时间对齐的因果轨迹；</li><li>先做 SFT 与 latent distillation，再做 critical-window DPO/GRPO；</li><li>最后通过 user simulator、延迟注入与 DAgger 训练 rollback 和异常恢复。</li></ul>
+<p><a href="https://arxiv.org/abs/2602.06053">PersonaPlex</a> 提供一个领域适配规模参考：它从 Moshi 初始化，使用约 1840 小时客服互动和 410 小时通用 QA，共约 14.5 万段对话；论文实验配置在 8 张 A100 上训练约 6 小时。这个数字不能直接代表新增 action channel 的成本，但说明从成熟 duplex base 出发，角色和领域适配不一定需要预训练级预算。</p>
+<p>实验可先只实现订单查询、物流、取消、退款、地址修改、身份验证、工单与转人工。每个业务都设计 partial request、改口、ambiguous slot、overlap、tool dependency、delayed result、cancellation 和 confirmation。</p>
+<p>最小论文比较至少包含：同步级联 Agent、异步级联 Agent、full-duplex base + 外部工具 controller、共享 backbone + action channel，以及加入 latent distillation / critical-window RL / playback rollback 的完整模型。这样才能知道收益来自模型架构、异步系统，还是数据与训练。</p>
+<h2 id="section-14-可以检验的研究假设">14. 可以检验的研究假设</h2>
+<p>加入 function calling 之后，还需要研究工具时机与对话状态如何共同学习：</p>
+<p><strong>将 belief update、action scheduling、conversation control 和 speech generation 放到同一连续时间策略中，通过离线级联 Teacher 蒸馏与局部时序 RL，使模型在 partial observation 下提前行动、持续修正并安全回滚。</strong></p>
+<p>可以将其概括为 Continuous-Time Speech-Language-Action Agent，并提出六个可检验假设：</p>
+<ul><li>共享 backbone + 独立 audio/control/action channel，优于串行 speech-agent pipeline；</li><li>earliest-legal-action trajectory distillation 能让只读工具更早启动；</li><li>latent belief update 比 chunk-level 长 CoT 具有更好的准确率-延迟-算力权衡；</li><li>critical-window RL 改善交互和 action timing，同时保留基础模型智力；</li><li>playback-aware rollback 降低对用户未听内容的错误引用和承诺；</li><li>prepare/commit protocol 在降低 perceived latency 的同时抑制不可逆误执行。</li></ul>
+<p>这里最根本的转变是：不再把打断、工具调用、记忆和语音生成看成四个附加功能，而把它们视为同一 policy 在不同通道上的动作。模型不是“先理解，再规划，再行动，再说话”；它在同一个持续时间轴上不断感知、更新、行动、表达和撤销。</p>
+<h2 id="section-15-结论">15. 结论</h2>
+<p>声音自然度不足以衡量交互式 Omni Model 的任务能力。还需要检查它能否持续估计用户目标、维护不确定 belief、异步安排工具、跟踪执行和播放状态，并在新证据到来时撤销旧计划。</p>
+<p>因此，下一代模型不应只是 Speech-to-Speech，而应是 Speech-Language-Action。它可以保留模块化工具与存储，但必须消除推理关键路径上的同步 barrier；它可以使用强级联 Agent，但主要将其作为离线 Teacher；它可以提前思考和检索，但必须用可撤销 action、两阶段提交和 playback-aware rollback 约束现实后果。</p>
+<p>一个可尝试的训练路线，是先用现有 Agent pipeline 生成连续时间专家轨迹，再将理解、规划、行动、说话、停止与回滚蒸馏到共享状态、多通道输出的流式策略中。前文的假设需要分别验证，不能只凭整体演示判断有效。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul><li><a href="https://arxiv.org/abs/2605.20755">DuplexSLA</a></li><li><a href="https://github.com/hyzhang24/DuplexSLA">DuplexSLA repository</a></li><li><a href="https://arxiv.org/abs/2603.17837">FLAIR / The Silent Thought</a></li><li><a href="https://arxiv.org/abs/2510.07497">Can Speech LLMs Think while Listening?</a></li><li><a href="https://arxiv.org/abs/2510.06917">SHANKS</a></li><li><a href="https://arxiv.org/abs/2606.14528">BayLing-Duplex</a></li><li><a href="https://github.com/qualialabsAI/SmoothConv-DuplexConv">SmoothConv / DuplexConv</a></li><li><a href="https://github.com/kyutai-labs/moshi">Moshi</a></li><li><a href="https://arxiv.org/abs/2607.07148">DuplexPO</a></li><li><a href="https://arxiv.org/abs/2602.06053">PersonaPlex</a></li><li><a href="https://arxiv.org/abs/2510.02044">Stream RAG</a></li><li><a href="https://arxiv.org/abs/2604.04847">Full-Duplex-Bench v3</a></li><li><a href="https://arxiv.org/abs/2605.13360">Speculative Interaction Agents</a></li><li><a href="https://arxiv.org/abs/2410.21620">Asynchronous Tool Usage for Real-Time Agents</a></li><li><a href="https://arxiv.org/abs/2604.15710">VoxMind</a></li></ul></div><script type="application/json" data-article-headings>[{"id":"section-1-减少推理关键路径上的串行等待","level":2,"text":"1. 减少推理关键路径上的串行等待"},{"id":"section-2-从-speech-to-speech-走向-speech-language-action","level":2,"text":"2. 从 Speech-to-Speech 走向 Speech-Language-Action"},{"id":"section-3-为什么必须有独立-action-channel","level":2,"text":"3. 为什么必须有独立 Action Channel"},{"id":"section-4-级联-agent-不应被丢弃-而应成为训练-teacher","level":2,"text":"4. 级联 Agent 不应被丢弃，而应成为训练 Teacher"},{"id":"section-4-1-显式轨迹蒸馏","level":3,"text":"4.1 显式轨迹蒸馏"},{"id":"section-4-2-hindsight-latent-distillation","level":3,"text":"4.2 Hindsight latent distillation"},{"id":"section-5-不能等用户说完才推理-训练-think-while-listening","level":2,"text":"5. 不能等用户说完才推理：训练 think while listening"},{"id":"section-6-训练数据需要时间对齐的-agent-轨迹","level":2,"text":"6. 训练数据需要时间对齐的 Agent 轨迹"},{"id":"section-7-六阶段训练方案","level":2,"text":"7. 六阶段训练方案"},{"id":"section-7-1-保留原模型智力","level":3,"text":"7.1 保留原模型智力"},{"id":"section-7-2-学习连续双流与自然-dynamics","level":3,"text":"7.2 学习连续双流与自然 dynamics"},{"id":"section-7-3-加入独立-action-channel","level":3,"text":"7.3 加入独立 Action Channel"},{"id":"section-7-4-蒸馏边听边想的-belief-与-plan","level":3,"text":"7.4 蒸馏边听边想的 belief 与 plan"},{"id":"section-7-5-在-critical-windows-做-interaction-rl","level":3,"text":"7.5 在 critical windows 做 interaction RL"},{"id":"section-7-6-用交互模拟与-dagger-纠正-exposure-bias","level":3,"text":"7.6 用交互模拟与 DAgger 纠正 exposure bias"},{"id":"section-8-多目标损失-内容-时机与回滚必须分开监督","level":2,"text":"8. 多目标损失：内容、时机与回滚必须分开监督"},{"id":"section-9-playback-aware-rollback-模型历史不等于用户历史","level":2,"text":"9. Playback-aware rollback：模型历史不等于用户历史"},{"id":"section-10-对不可逆工具使用两阶段提交","level":2,"text":"10. 对不可逆工具使用两阶段提交"},{"id":"section-11-强化学习不能只奖励快","level":2,"text":"11. 强化学习不能只奖励快"},{"id":"section-12-benchmark-应从局部交互走向完整-agent-trajectory","level":2,"text":"12. Benchmark 应从局部交互走向完整 Agent trajectory"},{"id":"section-13-一条现实可做的中文研究路线","level":2,"text":"13. 一条现实可做的中文研究路线"},{"id":"section-14-可以检验的研究假设","level":2,"text":"14. 可以检验的研究假设"},{"id":"section-15-结论","level":2,"text":"15. 结论"},{"id":"参考资料","level":2,"text":"参考资料"}]</script></article></main>
   <footer class="footer"><div class="footer-inner">© 2026 Tianyu Xie.</div></footer>
 </body>
 </html>

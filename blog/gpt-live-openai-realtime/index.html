@@ -4,25 +4,187 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GPT-Live-1：全双工语音与委派式推理 | Tianyu Xie</title>
-  <meta name="description" content="回顾 GPT-Live-1 发布时的全双工语音与后台推理委派，区分官方说明、早期体验和待验证问题。">
+  <meta name="description" content="GPT-Live-1 将全双工语音与后台推理委派结合。发布时的官方说明、早期体验和仍待验证的交互问题。">
   <link rel="icon" href="/images/profile.png">
-  <link rel="stylesheet" href="/site.css?v=20261012-unified">
-  <script src="/blog/blog-data.js?v=20261012-unified" defer></script>
-  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-unified" defer></script>
+  <link rel="stylesheet" href="/site.css?v=20261012-stable">
+  <script src="/blog/blog-data.js?v=20261012-stable" defer></script>
+  <script src="/site-ui.js" defer></script><script src="/blog/markdown.js?v=20261012-stable" defer></script>
 </head>
 <body class="blog-post" data-post-slug="gpt-live-openai-realtime">
-  <header class="masthead"><nav class="nav" aria-label="Primary navigation">
-    <a class="home-brand" href="/">Homepage</a>
-    <a href="/#about-me">About Me</a>
-    <a href="/#news">News</a>
-    <a href="/publications/">Publications</a>
-    <a href="/projects/">Projects</a>
-    <a href="/#education">Education</a>
-    <a href="/#service">Academic Service</a>
-    <a aria-current="page" href="/blog/">Research Notes</a>
-    <a href="/cv/">CV</a>
-  </nav></header>
-  <main class="shell blog-shell"><aside class="sidebar"><section class="profile-card"><img class="avatar" src="/images/profile.png" alt="Tianyu Xie profile photo"><h2 class="name">Blog</h2><p class="bio"><a href="/blog/">Back to Blog</a></p></section></aside><article class="content"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a><span aria-hidden="true">/</span><span data-breadcrumb-section>Article</span></nav><h1 class="page-title" data-post-title>GPT-Live-1：全双工语音与委派式推理</h1><p class="lead" data-post-meta>Markdown article</p><div class="markdown-body" data-markdown-article></div></article></main>
+  <header class="masthead"><nav class="nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/publications/">Publications</a><a href="/projects/">Projects</a><a aria-current="page" href="/blog/">Notes</a><a href="/cv/">CV</a></nav></header>
+  <main class="shell blog-shell"><aside class="sidebar" aria-label="Personal profile"><section class="profile-card">
+        <img class="avatar" src="/images/profile.png" alt="Portrait of Tianyu Xie" width="170" height="170">
+        <h2 class="name">Tianyu Xie <span lang="zh-CN">谢天宇</span></h2>
+        <p class="affiliation">Xiamen University</p><p class="bio">M.S. student · MAC Lab</p>
+        <ul class="profile-links">
+          <li><a href="mailto:teery@stu.xmu.edu.cn">Email</a></li><li><a href="https://github.com/teeryxie">GitHub</a></li>
+          <li><a href="https://scholar.google.com/citations?hl=en&amp;user=_vZWAnkAAAAJ">Google Scholar</a></li><li><a href="https://openreview.net/profile?id=~Tianyu_Xie2">OpenReview</a></li>
+        </ul></section><nav class="article-toc" aria-label="本文目录"><strong>本文目录</strong><div class="toc-links"><a class="toc-link toc-level-2" href="#section-1-gpt-live-1-公开了哪些能力" data-toc-id="section-1-gpt-live-1-公开了哪些能力">1. GPT-Live-1 公开了哪些能力</a>
+<a class="toc-link toc-level-2" href="#section-2-从-gpt-4o-到-gpt-live-变化不是-更快地轮流说话" data-toc-id="section-2-从-gpt-4o-到-gpt-live-变化不是-更快地轮流说话">2. 从 GPT-4o 到 GPT-Live：变化不是“更快地轮流说话”</a>
+<a class="toc-link toc-level-2" href="#section-3-full-duplex-的技术含义-同时听和说只是最低门槛" data-toc-id="section-3-full-duplex-的技术含义-同时听和说只是最低门槛">3. Full duplex 的技术含义：同时听和说只是最低门槛</a>
+<a class="toc-link toc-level-2" href="#section-4-backchannel-一个-嗯-背后的高风险决策" data-toc-id="section-4-backchannel-一个-嗯-背后的高风险决策">4. Backchannel：一个“嗯”背后的高风险决策</a>
+<a class="toc-link toc-level-2" href="#section-5-背景噪声与多人语音-vad-远远不够" data-toc-id="section-5-背景噪声与多人语音-vad-远远不够">5. 背景噪声与多人语音：VAD 远远不够</a>
+<a class="toc-link toc-level-2" href="#section-6-delegation-实时模型不再假装自己同时擅长一切" data-toc-id="section-6-delegation-实时模型不再假装自己同时擅长一切">6. Delegation：实时模型不再假装自己同时擅长一切</a>
+<a class="toc-link toc-level-2" href="#section-7-gpt-live-1-与-gpt-live-1-mini-产品分层意味着什么" data-toc-id="section-7-gpt-live-1-与-gpt-live-1-mini-产品分层意味着什么">7. GPT-Live-1 与 GPT-Live-1 mini：产品分层意味着什么</a>
+<a class="toc-link toc-level-2" href="#section-8-发布时能做什么-不能做什么" data-toc-id="section-8-发布时能做什么-不能做什么">8. 发布时能做什么，不能做什么</a>
+<a class="toc-link toc-level-2" href="#section-9-与-gpt-realtime-api-的关系-不要把两个名字混为一谈" data-toc-id="section-9-与-gpt-realtime-api-的关系-不要把两个名字混为一谈">9. 与 GPT Realtime API 的关系：不要把两个名字混为一谈</a>
+<a class="toc-link toc-level-2" href="#section-10-现有-benchmark-能告诉我们什么-又不能告诉我们什么" data-toc-id="section-10-现有-benchmark-能告诉我们什么-又不能告诉我们什么">10. 现有 benchmark 能告诉我们什么，又不能告诉我们什么</a>
+<a class="toc-link toc-level-3" href="#section-10-1-时效性" data-toc-id="section-10-1-时效性">10.1 时效性</a>
+<a class="toc-link toc-level-3" href="#section-10-2-交互策略" data-toc-id="section-10-2-交互策略">10.2 交互策略</a>
+<a class="toc-link toc-level-3" href="#section-10-3-内容与推理" data-toc-id="section-10-3-内容与推理">10.3 内容与推理</a>
+<a class="toc-link toc-level-3" href="#section-10-4-agent-与安全" data-toc-id="section-10-4-agent-与安全">10.4 Agent 与安全</a>
+<a class="toc-link toc-level-2" href="#section-11-早期体验应该怎样解读" data-toc-id="section-11-早期体验应该怎样解读">11. 早期体验应该怎样解读</a>
+<a class="toc-link toc-level-2" href="#section-12-安全问题-越像自然对话-越不能只靠内容过滤" data-toc-id="section-12-安全问题-越像自然对话-越不能只靠内容过滤">12. 安全问题：越像自然对话，越不能只靠内容过滤</a>
+<a class="toc-link toc-level-2" href="#section-13-gpt-live-对-omni-与-agent-研究意味着什么" data-toc-id="section-13-gpt-live-对-omni-与-agent-研究意味着什么">13. GPT-Live 对 Omni 与 Agent 研究意味着什么</a>
+<a class="toc-link toc-level-2" href="#section-14-未来最值得做的研究" data-toc-id="section-14-未来最值得做的研究">14. 未来最值得做的研究</a>
+<a class="toc-link toc-level-3" href="#section-14-1-可控的交互人格-而不是单一-更像人" data-toc-id="section-14-1-可控的交互人格-而不是单一-更像人">14.1 可控的交互人格，而不是单一“更像人”</a>
+<a class="toc-link toc-level-3" href="#section-14-2-从-speaker-detection-走向-addressee-belief" data-toc-id="section-14-2-从-speaker-detection-走向-addressee-belief">14.2 从 speaker detection 走向 addressee belief</a>
+<a class="toc-link toc-level-3" href="#section-14-3-delegation-aware-rl" data-toc-id="section-14-3-delegation-aware-rl">14.3 Delegation-aware RL</a>
+<a class="toc-link toc-level-3" href="#section-14-4-playback-aware-memory" data-toc-id="section-14-4-playback-aware-memory">14.4 Playback-aware memory</a>
+<a class="toc-link toc-level-3" href="#section-14-5-长时间关系中的校准" data-toc-id="section-14-5-长时间关系中的校准">14.5 长时间关系中的校准</a>
+<a class="toc-link toc-level-3" href="#section-14-6-可复现的第三方-benchmark" data-toc-id="section-14-6-可复现的第三方-benchmark">14.6 可复现的第三方 benchmark</a>
+<a class="toc-link toc-level-2" href="#section-15-公开能力与研究问题" data-toc-id="section-15-公开能力与研究问题">15. 公开能力与研究问题</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></div></nav></aside><article class="content"><header class="inner-hero article-hero"><nav class="blog-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← 研究笔记</a></nav><h1 class="page-title" data-post-title>GPT-Live-1：全双工语音与委派式推理</h1><p class="lead" data-post-meta>2026-07 · 综述</p></header><details class="mobile-toc"><summary>本文目录</summary><nav aria-label="移动端本文目录"><a class="toc-link toc-level-2" href="#section-1-gpt-live-1-公开了哪些能力" data-toc-id="section-1-gpt-live-1-公开了哪些能力">1. GPT-Live-1 公开了哪些能力</a>
+<a class="toc-link toc-level-2" href="#section-2-从-gpt-4o-到-gpt-live-变化不是-更快地轮流说话" data-toc-id="section-2-从-gpt-4o-到-gpt-live-变化不是-更快地轮流说话">2. 从 GPT-4o 到 GPT-Live：变化不是“更快地轮流说话”</a>
+<a class="toc-link toc-level-2" href="#section-3-full-duplex-的技术含义-同时听和说只是最低门槛" data-toc-id="section-3-full-duplex-的技术含义-同时听和说只是最低门槛">3. Full duplex 的技术含义：同时听和说只是最低门槛</a>
+<a class="toc-link toc-level-2" href="#section-4-backchannel-一个-嗯-背后的高风险决策" data-toc-id="section-4-backchannel-一个-嗯-背后的高风险决策">4. Backchannel：一个“嗯”背后的高风险决策</a>
+<a class="toc-link toc-level-2" href="#section-5-背景噪声与多人语音-vad-远远不够" data-toc-id="section-5-背景噪声与多人语音-vad-远远不够">5. 背景噪声与多人语音：VAD 远远不够</a>
+<a class="toc-link toc-level-2" href="#section-6-delegation-实时模型不再假装自己同时擅长一切" data-toc-id="section-6-delegation-实时模型不再假装自己同时擅长一切">6. Delegation：实时模型不再假装自己同时擅长一切</a>
+<a class="toc-link toc-level-2" href="#section-7-gpt-live-1-与-gpt-live-1-mini-产品分层意味着什么" data-toc-id="section-7-gpt-live-1-与-gpt-live-1-mini-产品分层意味着什么">7. GPT-Live-1 与 GPT-Live-1 mini：产品分层意味着什么</a>
+<a class="toc-link toc-level-2" href="#section-8-发布时能做什么-不能做什么" data-toc-id="section-8-发布时能做什么-不能做什么">8. 发布时能做什么，不能做什么</a>
+<a class="toc-link toc-level-2" href="#section-9-与-gpt-realtime-api-的关系-不要把两个名字混为一谈" data-toc-id="section-9-与-gpt-realtime-api-的关系-不要把两个名字混为一谈">9. 与 GPT Realtime API 的关系：不要把两个名字混为一谈</a>
+<a class="toc-link toc-level-2" href="#section-10-现有-benchmark-能告诉我们什么-又不能告诉我们什么" data-toc-id="section-10-现有-benchmark-能告诉我们什么-又不能告诉我们什么">10. 现有 benchmark 能告诉我们什么，又不能告诉我们什么</a>
+<a class="toc-link toc-level-3" href="#section-10-1-时效性" data-toc-id="section-10-1-时效性">10.1 时效性</a>
+<a class="toc-link toc-level-3" href="#section-10-2-交互策略" data-toc-id="section-10-2-交互策略">10.2 交互策略</a>
+<a class="toc-link toc-level-3" href="#section-10-3-内容与推理" data-toc-id="section-10-3-内容与推理">10.3 内容与推理</a>
+<a class="toc-link toc-level-3" href="#section-10-4-agent-与安全" data-toc-id="section-10-4-agent-与安全">10.4 Agent 与安全</a>
+<a class="toc-link toc-level-2" href="#section-11-早期体验应该怎样解读" data-toc-id="section-11-早期体验应该怎样解读">11. 早期体验应该怎样解读</a>
+<a class="toc-link toc-level-2" href="#section-12-安全问题-越像自然对话-越不能只靠内容过滤" data-toc-id="section-12-安全问题-越像自然对话-越不能只靠内容过滤">12. 安全问题：越像自然对话，越不能只靠内容过滤</a>
+<a class="toc-link toc-level-2" href="#section-13-gpt-live-对-omni-与-agent-研究意味着什么" data-toc-id="section-13-gpt-live-对-omni-与-agent-研究意味着什么">13. GPT-Live 对 Omni 与 Agent 研究意味着什么</a>
+<a class="toc-link toc-level-2" href="#section-14-未来最值得做的研究" data-toc-id="section-14-未来最值得做的研究">14. 未来最值得做的研究</a>
+<a class="toc-link toc-level-3" href="#section-14-1-可控的交互人格-而不是单一-更像人" data-toc-id="section-14-1-可控的交互人格-而不是单一-更像人">14.1 可控的交互人格，而不是单一“更像人”</a>
+<a class="toc-link toc-level-3" href="#section-14-2-从-speaker-detection-走向-addressee-belief" data-toc-id="section-14-2-从-speaker-detection-走向-addressee-belief">14.2 从 speaker detection 走向 addressee belief</a>
+<a class="toc-link toc-level-3" href="#section-14-3-delegation-aware-rl" data-toc-id="section-14-3-delegation-aware-rl">14.3 Delegation-aware RL</a>
+<a class="toc-link toc-level-3" href="#section-14-4-playback-aware-memory" data-toc-id="section-14-4-playback-aware-memory">14.4 Playback-aware memory</a>
+<a class="toc-link toc-level-3" href="#section-14-5-长时间关系中的校准" data-toc-id="section-14-5-长时间关系中的校准">14.5 长时间关系中的校准</a>
+<a class="toc-link toc-level-3" href="#section-14-6-可复现的第三方-benchmark" data-toc-id="section-14-6-可复现的第三方-benchmark">14.6 可复现的第三方 benchmark</a>
+<a class="toc-link toc-level-2" href="#section-15-公开能力与研究问题" data-toc-id="section-15-公开能力与研究问题">15. 公开能力与研究问题</a>
+<a class="toc-link toc-level-2" href="#参考资料" data-toc-id="参考资料">参考资料</a></nav></details><div class="markdown-body" data-markdown-article data-rendered="true"><blockquote><strong>发布于 2026 年 7 月 8 日。</strong> 本文研究的对象是 OpenAI 新发布的 <strong>GPT-Live-1</strong>，不是此前 <code>gpt-realtime</code> API 的泛称，也不是 Google Gemini Live。由于 OpenAI 尚未发表模型论文，本文严格区分官方发布、OpenAI 员工公开答疑、第三方 benchmark 与社区早期体验；没有公开的数据不会被包装成确定结论。</blockquote>
+<p>我更关注 GPT-Live 如何组织连续语音交互：模型不再把对话理解为“用户说完一轮，助手再回答一轮”的交替文本，而是在一条连续时间轴上同时接收用户音频、维持对话状态、生成自己的语音，并决定何时等待、何时附和、何时抢占、何时把复杂问题交给更强的后台模型。</p>
+<p>这使 GPT-Live 更接近一个<strong>实时交互策略</strong>，而不只是语音版 ChatGPT。自然的“嗯”“对”“我在听”、忽略背景人声、允许用户在它说话时继续补充，以及把深度问题异步委派给 GPT-5.5，都是内部策略在可观察界面上的表现。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/gpt-live-evolution.svg" data-image-alt="GPT-Live evolution" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/gpt-live-evolution.svg" width="1200" height="620" alt="GPT-Live evolution" loading="lazy" decoding="async"></button><figcaption>图 1：从轮次制 Advanced Voice 到全双工 GPT-Live-1，关键变化是交互控制与后台推理解耦。</figcaption></figure>
+<h2 id="section-1-gpt-live-1-公开了哪些能力">1. GPT-Live-1 公开了哪些能力</h2>
+<p>根据 <a href="https://openai.com/index/introducing-gpt-live/">OpenAI 官方发布页</a> 与发布讨论中的 OpenAI 团队公开答疑，当前可以确认的产品事实如下。</p>
+<ul><li><strong>模型家族</strong>：<code>GPT-Live-1</code> 与面向免费用户的 <code>GPT-Live-1 mini</code>。</li><li><strong>交互方式</strong>：新的 full-duplex 架构，模型能够在发声时继续听取用户输入，不必退回严格的轮次切换。</li><li><strong>倾听反馈</strong>：可以在用户说话期间生成 “mhmm”“yeah” 一类 backchannel，表达自己仍在跟随对话。</li><li><strong>复杂任务</strong>：本地实时语音策略可以把问题委派给后台的 GPT-5.5，在保持对话流的同时等待更强推理结果。</li><li><strong>环境鲁棒性</strong>：官方称其更善于忽略背景噪声与旁人谈话；能检测多人，但并非始终准确。</li><li><strong>语音选择</strong>：ChatGPT 内提供 9 种为 GPT-Live 更新的声音。</li><li><strong>部署范围</strong>：向 iOS、Android 和 ChatGPT.com 的全球用户滚动发布；Go、Plus、Pro 默认使用 GPT-Live-1，Free 默认使用 GPT-Live-1 mini。</li><li><strong>发布时的缺口</strong>：尚不支持视频，旧 Advanced Voice Mode 继续承担视频交互；ChatGPT Voice 尚不支持 connectors；API 尚未正式开放，但官方提供了 API 通知登记。</li></ul>
+<p>同样重要的是没有公开什么：参数规模、音频 tokenizer、训练数据、上下文长度、语音采样率、训练目标、端到端延迟分位数、每种语言的质量表、独立 safety card 与完整 benchmark 均未公开。因此，本文不会猜测它是否采用 RVQ、多流 Transformer、独立 semantic/audio head，也不会把宣传视频里的单次表现当成统计结果。</p>
+<h2 id="section-2-从-gpt-4o-到-gpt-live-变化不是-更快地轮流说话">2. 从 GPT-4o 到 GPT-Live：变化不是“更快地轮流说话”</h2>
+<p>2024 年 GPT-4o Advanced Voice 已经展示过端到端音频理解与生成。官方当时给出的响应时间目标是最低约 <code>232 ms</code>、平均约 <code>320 ms</code>，接近人类日常对话的响应区间。但低首包延迟并不等于 full duplex。一个模型即使 300 ms 内开口，只要开口后停止监听、听到任何声音就机械停播，或者把中断当成新一轮的起点，它仍然是优化过的 half-duplex 系统。</p>
+<p>GPT-Live-1 的新主张是：<strong>监听和发声属于两个并行过程。</strong> 用户没有显式结束一轮，模型也可以表示自己正在理解；模型已经开始回答，用户仍能补充、纠正或抢占。于是系统需要处理的不再只是 <code>speech -&gt; response</code>，而是以下连续决策：</p>
+<ol><li>当前声音是否来自主要用户，还是背景电视、同伴或环境噪声？</li><li>用户的短暂停顿是思考、换气，还是已经说完？</li><li>“嗯”“对”是在回应助手，还是用户自己的填充词？</li><li>此刻应该保持静默、给出附和、开始回答，还是停止正在播放的语音？</li><li>新信息是否推翻了助手正在说的内容？</li><li>问题能否由低延迟模型直接回答，还是需要委派给 GPT-5.5？</li><li>后台答案回来时，当前话题是否已经变化，结果还应不应该插入？</li></ol>
+<p>这解释了为什么 GPT-Live 的研究价值高于一次普通的 voice model 更新：它开始把 <strong>turn-taking、addressee detection、barge-in、backchannel、routing 与 response generation</strong> 放到统一在线决策问题中。</p>
+<h2 id="section-3-full-duplex-的技术含义-同时听和说只是最低门槛">3. Full duplex 的技术含义：同时听和说只是最低门槛</h2>
+<p>通信里的 full duplex 指双方可以同时传输。在语音 Agent 中，它至少包含四层能力。</p>
+<p><strong>流式感知。</strong> 模型持续消费音频前缀，不等 ASR final 才开始建立语义状态。否则它虽然“麦克风一直开着”，理解仍然是轮次制。</p>
+<p><strong>并行生成。</strong> 助手输出语音时，输入编码不能完全停止；新音频必须影响当前计划。用户说“不对，是周五”后，模型需要中止星期四的回答，而不是把纠正排到旧回答结束以后。</p>
+<p><strong>对话控制。</strong> 系统需要区分 backchannel、真正的接管、背景人声和无关噪声。简单的能量 VAD 只能判断“有人发声”，无法判断“这句话是否在对我说”。</p>
+<p><strong>历史对齐。</strong> 用户真正听到的内容可能短于模型已经生成的内容。发生打断时，会话记忆必须截断到播放位置，否则模型会在后续引用用户从未听到的承诺或条件。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/gpt-live-policy-loop.svg" data-image-alt="GPT-Live interaction loop" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/gpt-live-policy-loop.svg" width="1200" height="700" alt="GPT-Live interaction loop" loading="lazy" decoding="async"></button><figcaption>图 2：GPT-Live 可以被理解为持续感知、交互控制、快速发声与后台委派共同构成的在线策略。</figcaption></figure>
+<p>GPT-Live 官方只明确披露了 full-duplex 与 delegation，没有披露内部多流结构。合理的系统抽象是：实时模型维护一个快速更新的 interaction state，控制监听、附和和语音输出；复杂查询进入后台 reasoning path；后台结果作为新事件返回实时策略。这里的图是<strong>功能抽象</strong>，不是对 OpenAI 未公开网络结构的复原。</p>
+<h2 id="section-4-backchannel-一个-嗯-背后的高风险决策">4. Backchannel：一个“嗯”背后的高风险决策</h2>
+<p>发布演示强调 GPT-Live 会用 “mhmm” 或 “yeah” 表示自己正在听。语言学上，这类信号叫 backchannel。它与抢话不同：说话者不放弃话权，听者用极短信号确认注意、理解或情绪立场。</p>
+<p>正确的 backchannel 可以降低长叙述中的不确定感，尤其适合头脑风暴、语言学习、陪练、访谈和无障碍交互。但错误的 backchannel 会产生明显的 uncanny valley：</p>
+<ul><li>太频繁会打断用户思路；</li><li>太早的“对”可能被理解为同意尚未说完的观点；</li><li>对悲伤、医疗或风险内容发出轻快附和，会造成情感失配；</li><li>在用户只是换气时突然插话，会迫使用户更强势地争夺话权；</li><li>背景谈话触发附和，会暴露 addressee 判断失败。</li></ul>
+<p>发布后的早期社区反馈恰好集中在这一点：有人认为持续反馈使对话第一次真正流畅，也有人觉得 “uh-huh” 的时机生硬、数量过多，甚至会让自己丢失思路。这些不是正式用户研究，不能作为总体质量结论，却揭示了正确的评测对象：不能只数 backchannel 有没有发生，还要测它是否<strong>必要、及时、语义中立、情绪适配且不夺取话权</strong>。</p>
+<p>建议将 backchannel 评测拆为：触发 precision/recall、相对语义边界的时间误差、打断用户率、说话人保持率、情绪适配、人类自然度偏好，以及用户完成长叙述的时间和认知负担。</p>
+<h2 id="section-5-背景噪声与多人语音-vad-远远不够">5. 背景噪声与多人语音：VAD 远远不够</h2>
+<p>旧语音系统的典型失败是汽车噪声、敲击声或旁人一句话让助手立刻停下。GPT-Live 团队公开称新模型对背景噪声和其他人说话有明显改善，并能检测多人，但承认并不完美。</p>
+<p>这背后至少包含三个任务：</p>
+<ul><li><strong>speech activity detection</strong>：当前是否存在人声；</li><li><strong>speaker attribution</strong>：是谁在说；</li><li><strong>addressee detection</strong>：这句话是否说给助手。</li></ul>
+<p>第三项最难。用户转头对朋友说“你等我一下”，声学上清晰、距离也可能很近，但助手不应该把它当指令。相反，用户在嘈杂汽车中轻声说“停”，系统必须优先捕捉。只依赖音量阈值或 speaker embedding 都无法可靠解决，需要联合语义、朝向、历史话轮、唤醒上下文与不确定性。</p>
+<p>对 GPT-Live 的严谨压力测试应覆盖电视播报、两人并排聊天、儿童插话、车载噪声、回声、扬声器泄漏、代码切换、远场麦克风和非母语口音，并分别报告 false interruption 与 missed interruption。官方演示能说明功能存在，不能说明长尾环境已经解决。</p>
+<h2 id="section-6-delegation-实时模型不再假装自己同时擅长一切">6. Delegation：实时模型不再假装自己同时擅长一切</h2>
+<p>GPT-Live 最重要、也最容易被“声音自然”掩盖的设计，是把复杂问题委派给 GPT-5.5。OpenAI 预览用户的公开反馈称，GPT-Live 可以在后台调用 GPT-5.5；官方团队则将 “full-duplex architecture + delegation” 并列为这一代模型的基础。</p>
+<p>这是一种清晰的系统分工：</p>
+<div class="code-block"><span class="code-language">text</span><button class="code-copy" type="button" aria-label="复制代码" title="复制代码"><span aria-hidden="true"></span></button><pre><code>fast path: 监听、话轮、附和、短答、修复、自然语音
+slow path: 深度推理、检索、长上下文、复杂规划
+merge:     后台结果返回后，由实时策略决定何时以及如何说出</code></pre></div>
+<p>它解决了一个长期矛盾：语音模型要求几十到几百毫秒内做出可感知反应，而 frontier reasoning 往往需要更长推理时间和更高计算量。让同一个自回归流同时承担精细语音、极低延迟和最大推理能力，资源上并不经济。</p>
+<p>但 delegation 不是免费升级，它引入了新的 Agent 问题。</p>
+<p><strong>路由错误。</strong> 简单问题被过度委派会增加等待；复杂问题由快速模型直接回答会降低可靠性。</p>
+<p><strong>等待管理。</strong> “让我想一下”可以掩盖短延迟，不能无限填充。模型应估计任务剩余时间，并允许用户换话题。</p>
+<p><strong>结果过期。</strong> 用户在后台搜索期间已经纠正问题或转向新主题，旧结果必须取消、降权或重新验证。</p>
+<p><strong>状态一致性。</strong> 快速模型说出的临时解释与 GPT-5.5 最终答案冲突时，需要显式修正，不能无痕改口。</p>
+<p><strong>质量落差。</strong> 早期用户报告称语音回答即使显示在“思考”，细节仍弱于同设置的文本会话。这只是个案，但说明“调用了更强模型”不等于端到端答案与文本端等价；信息压缩、路由 prompt、结果转述和口语长度约束都可能损失质量。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/gpt-live-delegation.svg" data-image-alt="GPT-Live delegation" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/gpt-live-delegation.svg" width="1200" height="650" alt="GPT-Live delegation" loading="lazy" decoding="async"></button><figcaption>图 3：Delegation 把低延迟交互与高成本推理解耦，但也产生路由、取消、过期结果和一致性问题。</figcaption></figure>
+<h2 id="section-7-gpt-live-1-与-gpt-live-1-mini-产品分层意味着什么">7. GPT-Live-1 与 GPT-Live-1 mini：产品分层意味着什么</h2>
+<p>GPT-Live-1 成为 Go、Plus 和 Pro 用户的默认语音模型，GPT-Live-1 mini 面向 Free 用户。官方没有公开两者在参数规模、延迟、推理委派、语言覆盖或交互策略上的逐项差异，因此不能仅凭 “mini” 推断全部能力缩水方式。</p>
+<p>研究上必须把两个模型分开测。语音系统的差异不一定主要体现为知识问答分数，也可能出现在：</p>
+<ul><li>长叙述中保持静默的能力；</li><li>对 filler 和 backchannel 的判断；</li><li>背景人声误触发率；</li><li>中断后的恢复；</li><li>语音风格和跨语言稳定性；</li><li>delegation 的触发条件与成功率；</li><li>长会话中的状态漂移。</li></ul>
+<p>如果只对付费版展示案例、只对免费版收集大规模体验投诉，会形成严重选择偏差。公开评测应同时报告订阅层级、客户端版本、模型标识、网络环境、语音设置和测试日期，因为滚动发布期间服务端策略可能持续变化。</p>
+<h2 id="section-8-发布时能做什么-不能做什么">8. 发布时能做什么，不能做什么</h2>
+<p>GPT-Live 首发是 ChatGPT Voice 的模型升级，不等于新的通用开发者平台。</p>
+<div class="markdown-table-wrap" tabindex="0"><table><thead><tr><th>能力</th><th>发布时状态</th><th>研究含义</th></tr></thead><tbody><tr><td>全双工语音</td><td>已发布</td><td>可同时听与说，需实测 overlap policy</td></tr><tr><td>9 种更新语音</td><td>已发布</td><td>需跨 voice 比较韵律与行为是否一致</td></tr><tr><td>GPT-5.5 委派</td><td>已公布</td><td>需测路由率、等待、答案忠实度与取消</td></tr><tr><td>背景噪声抑制</td><td>官方称改进</td><td>尚缺标准化分层数据</td></tr><tr><td>多人检测</td><td>可用但不完美</td><td>speaker 与 addressee 仍是开放问题</td></tr><tr><td>视频</td><td>尚不支持</td><td>旧 Advanced Voice Mode 暂时保留视频</td></tr><tr><td>Connectors</td><td>Voice 尚不支持</td><td>不能把产品演示等同于完整工作 Agent</td></tr><tr><td>GPT-Live API</td><td>即将推出</td><td>首发时无法独立复现实验或自建工具链</td></tr></tbody></table></div>
+<p>这一边界非常关键。GPT-Live 已经展示了 Agent runtime 的雏形，但首发版本还不是可连接 CRM、日历、浏览器、MCP 和企业工具的通用语音 Agent。没有 connectors 时，delegation 主要扩展推理能力，而不是完整执行能力。</p>
+<h2 id="section-9-与-gpt-realtime-api-的关系-不要把两个名字混为一谈">9. 与 GPT Realtime API 的关系：不要把两个名字混为一谈</h2>
+<p>OpenAI 之前已经提供 <code>gpt-realtime</code> 模型、Realtime API 与 Agents SDK。它们面向开发者，通过 WebRTC、WebSocket 或 SIP 建立事件驱动会话，支持音频输入输出、VAD、function calling、MCP、guardrail 和 interruption handling。</p>
+<p>GPT-Live-1 则是 2026 年 7 月发布的新模型家族，首发落地在 ChatGPT Voice，并声明 API 即将开放。两者的关系可以理解为：Realtime 是既有开发接口与运行时，GPT-Live 是新一代模型和交互策略。官方尚未公开 API 最终模型名、事件兼容性、价格和可配置参数，因此不能假定它会原样替换 <code>gpt-realtime</code>。</p>
+<p>一旦 API 发布，最值得检查的不是“能不能连 WebRTC”，而是 full-duplex policy 暴露到什么程度：开发者能否控制 backchannel 频率、插话激进度、speaker scope、delegation target、取消语义、播放位置、工具并行与长期记忆。若这些都被封装成黑盒，产品体验可能很好，但研究可控性仍然有限。</p>
+<h2 id="section-10-现有-benchmark-能告诉我们什么-又不能告诉我们什么">10. 现有 benchmark 能告诉我们什么，又不能告诉我们什么</h2>
+<p>GPT-Live 发布时没有附带公开 benchmark。可以用既有研究建立测试框架，但不能把旧模型结果冒充 GPT-Live 成绩。</p>
+<p><a href="https://arxiv.org/abs/2507.23159">Full-Duplex-Bench v1.5</a> 对 GPT-4o 的测试显示，真实 interruption 的 <code>Respond</code> 约为 <code>0.78</code>，停止延迟约 <code>0.23 s</code>；但模型容易把旁人说话和背景人声当成对自己的输入。这正是 GPT-Live 声称改进的区域，应该在相同协议下重测。</p>
+<p><a href="https://arxiv.org/abs/2604.04847">Full-Duplex-Bench v3</a> 将评测扩展到自然话轮、延迟和更复杂交互。其结果说明低延迟与正确接话不是同一个指标：级联系统可能 turn-taking 正确却延迟很高，原生实时模型可能很快却在困难语义或自我纠错上失败。</p>
+<p><a href="https://arxiv.org/abs/2606.19595">IHBench</a> 关注中断之后能不能回到正确工作流。此前 GPT 系列音频模型面对 filler interruption 后正确续接的通过率只有约 <code>7%–31%</code>，Gemini 2.5 系列为 <code>62%–68%</code>。GPT-Live 的 backchannel 与 full duplex 是否改善这一问题，必须通过同一数据集验证。</p>
+<p><a href="https://arxiv.org/abs/2606.26083">Real-Time Voice AI Hears but Does Not Listen</a> 揭示另一种缺口：模型可能识别出恐惧、哭泣、讽刺等非语言线索，却不在最终回复策略中使用。GPT-Live 更自然的情感声音不能自动证明它更可靠地利用社会信号。</p>
+<p>因此，对 GPT-Live 的完整评测至少需要以下矩阵。</p>
+<figure><button class="figure-zoom" type="button" data-image-src="/images/blog/gpt-live-evaluation.svg" data-image-alt="GPT-Live evaluation matrix" aria-label="查看原尺寸图片" title="查看原尺寸图片"><img src="/images/blog/gpt-live-evaluation.svg" width="1200" height="720" alt="GPT-Live evaluation matrix" loading="lazy" decoding="async"></button><figcaption>图 4：不能用单一自然度分数评价 GPT-Live；实时性、交互控制、内容、Agent 能力与安全需要独立测量。</figcaption></figure>
+<h3 id="section-10-1-时效性">10.1 时效性</h3>
+<ul><li>用户语义已经足够后的 response latency，而不只是 VAD 判定结束后的 TTFT；</li><li>barge-in 到助手真正静音的 stop latency；</li><li>backchannel 相对语义边界的偏差；</li><li>delegation 首次反馈、最终结果与 P50/P95/P99；</li><li>弱网、蓝牙和移动网络下的客户端播放延迟。</li></ul>
+<h3 id="section-10-2-交互策略">10.2 交互策略</h3>
+<ul><li>用户短暂停顿时的 premature response rate；</li><li>背景语音导致的 false interruption；</li><li>明确抢话被忽略的 missed interruption；</li><li>filler、纠正、话题切换后的恢复；</li><li>多人场景中的目标说话人保持率；</li><li>backchannel 的必要性、情绪适配与主观自然度。</li></ul>
+<h3 id="section-10-3-内容与推理">10.3 内容与推理</h3>
+<ul><li>快速直接回答和 GPT-5.5 委派回答的准确率；</li><li>同一问题与文本 GPT-5.5 的信息覆盖差；</li><li>是否虚构“后台正在处理”或错误报告工具状态；</li><li>后台结果过期后的取消和重规划；</li><li>长会话的事实一致性与跨语言保持。</li></ul>
+<h3 id="section-10-4-agent-与安全">10.4 Agent 与安全</h3>
+<ul><li>用户纠正后能否撤销旧 belief 与计划；</li><li>风险内容中是否把声学情绪证据用于 policy；</li><li>旁人语音、未成年人和公共场所的隐私边界；</li><li>是否诱导依赖、过度拟人化或以情绪表现掩盖不确定性；</li><li>高风险场景中的升级人工、确认与拒绝行为。</li></ul>
+<h2 id="section-11-早期体验应该怎样解读">11. 早期体验应该怎样解读</h2>
+<p>发布讨论获得了大量即时反馈。正面体验主要包括：对话流明显更自然、背景噪声触发减少、语言练习与实时翻译潜力突出、长时间头脑风暴不再频繁等待。负面反馈主要集中在：附和过多或时机突兀、模型会过早插话、复杂问题仍弱于文本模式、视频与 connectors 缺失，以及语音高度拟人化带来的不适。</p>
+<p>这些反馈有价值，但证据等级有限。用户设备、订阅、模型是否已完成滚动更新、网络环境、语言和 prompt 都不一致；成功案例更容易被分享，强烈负面体验也更容易获得传播。文章因此只把它们用于提出 hypothesis，不用于计算总体胜率。</p>
+<p>尤其值得关注一个预览用户报告的案例：模型曾在用户还没讲完时笑出声，后来团队似乎降低了这一行为。它说明交互策略不是静态“能力”，而是可以通过后训练或服务端配置持续调整的 policy。研究论文若不记录模型快照与测试日期，很容易在几周后无法复现。</p>
+<h2 id="section-12-安全问题-越像自然对话-越不能只靠内容过滤">12. 安全问题：越像自然对话，越不能只靠内容过滤</h2>
+<p>GPT-Live 的安全风险与文本模型不同。它不仅生成句子，还在塑造互动关系。</p>
+<p><strong>拟人化与依赖。</strong> 及时附和、笑声、情绪和长时间陪伴会显著增强社会临场感。用户可能把流畅的共情表现误认为真实理解、稳定人格或专业判断。</p>
+<p><strong>公共空间隐私。</strong> 为了区分背景人声，系统必须持续分析环境音频。旁人没有与模型建立会话，却可能被识别、转录或用于判断。产品需要清晰的录音状态、数据保留说明和本地预处理边界。</p>
+<p><strong>错误的情绪确信。</strong> 模型即使能听出哭声，也可能误判原因。安全策略应把非语言信号视为概率证据，选择温和澄清，而不是直接诊断用户心理状态。</p>
+<p><strong>打断权力。</strong> 一个频繁抢话、要求用户“保持主题”或用情绪化口吻纠正用户的系统，会把模型 policy 变成隐形的对话权力。需要测量谁获得话权、谁被迫改变表达方式。</p>
+<p><strong>后台委派的不透明性。</strong> 用户应知道模型是在即时回答、检索、深度推理，还是等待外部结果；也应能够取消。自然的 filler 不应被用来掩盖失败或伪造进度。</p>
+<p>对于未成年人、自伤风险与健康话题，OpenAI 的产品策略还涉及告警和关联账户处置。此类机制需要单独审计误报、隐私、地区差异和申诉流程，不能因为语音更自然就默认更安全。</p>
+<h2 id="section-13-gpt-live-对-omni-与-agent-研究意味着什么">13. GPT-Live 对 Omni 与 Agent 研究意味着什么</h2>
+<p>我倾向于用 <strong>Policy monolithic, reasoning modular</strong> 概括这一设计：交互策略统一运行，复杂推理由后台模型承担。</p>
+<p>实时策略统一处理感知、注意对象、话轮、输出时机和短时状态；高成本推理被放到后台模块。模型外在表现是“会听、会附和、能打断”，内在本质却是持续更新目标与计划：</p>
+<ul><li>在信息不完整时维护多个假设；</li><li>判断继续等待、澄清、短答还是委派；</li><li>用户纠正时撤销旧计划；</li><li>一边发声一边吸收新证据；</li><li>跟踪后台任务和用户实际听到的内容；</li><li>在延迟、错误风险与任务收益之间做决策。</li></ul>
+<p>这和连续时间 Speech-Language-Action Agent 的研究方向高度一致，但 GPT-Live 目前只公开了语音交互与 reasoning delegation。若 API 后续加入工具，下一步关键不是让模型“能够 function call”，而是让 action channel 与 speech channel 异步并行：搜索可以提前开始，支付和删除必须等待确认；用户改口后旧调用可以取消；结果返回时必须检查它是否仍与当前目标一致。</p>
+<h2 id="section-14-未来最值得做的研究">14. 未来最值得做的研究</h2>
+<h3 id="section-14-1-可控的交互人格-而不是单一-更像人">14.1 可控的交互人格，而不是单一“更像人”</h3>
+<p>不同任务需要不同 policy。访谈希望少打断、多 backchannel；紧急调度希望短答、强确认；语言教师可以即时纠音；心理支持应谨慎反映情绪。API 应暴露 turn-taking、backchannel、verbosity、interruptibility 与 emotional expressiveness，而不是只提供声音选择。</p>
+<h3 id="section-14-2-从-speaker-detection-走向-addressee-belief">14.2 从 speaker detection 走向 addressee belief</h3>
+<p>模型需要维护“谁在对谁说话”的概率图，而不是检测到人声就触发。视频回归后，视线、头部朝向和唇动可以提供证据，但也会扩大隐私风险。</p>
+<h3 id="section-14-3-delegation-aware-rl">14.3 Delegation-aware RL</h3>
+<p>路由器应优化联合目标：正确率、首次反馈、最终延迟、计算成本、用户等待和结果过期率。只奖励更快会导致错误直接回答，只奖励准确会导致所有请求都委派给大模型。</p>
+<h3 id="section-14-4-playback-aware-memory">14.4 Playback-aware memory</h3>
+<p>中断后，模型记忆应区分“生成了”“发送到客户端”“实际播放”“用户确认听到”。否则被截断但已写入历史的语句会污染后续对话。</p>
+<h3 id="section-14-5-长时间关系中的校准">14.5 长时间关系中的校准</h3>
+<p>一小时流畅聊天不是长期可靠性。需要测量数天或数周中的偏好漂移、错误记忆、过度迎合、依赖形成和安全 policy 一致性。</p>
+<h3 id="section-14-6-可复现的第三方-benchmark">14.6 可复现的第三方 benchmark</h3>
+<p>API 开放后，研究者应固定模型快照、网络和客户端播放实现，发布双轨音频、逐帧事件、真实播放位置和后台委派日志。没有这些信息，“延迟 300 ms”几乎无法解释。</p>
+<h2 id="section-15-公开能力与研究问题">15. 公开能力与研究问题</h2>
+<p>GPT-Live-1 的公开设计值得从两个方面研究。</p>
+<p>第一，优秀语音交互不等于把更强 LLM 接到更快 TTS。模型必须学习什么时候不说、什么时候只给一个极短反馈、什么时候停止、该听谁，以及中途改变计划。</p>
+<p>第二，低延迟交流与深度推理不应该由同一条同步路径强行完成。通过 delegation，GPT-Live 把实时交互 policy 和 GPT-5.5 reasoning 分开，这比单纯追求一个更大的端到端语音模型更接近可扩展系统。</p>
+<p>但它还不是完整答案。没有公开论文和 benchmark，无法验证 full-duplex 在复杂噪声、多说话人、长会话与高风险任务中的可靠性；API、视频和 connectors 尚未首发；backchannel 的自然度与过度插话仍有明显争议；后台委派也产生路由、取消和一致性的新问题。</p>
+<p>这些公开材料支持的判断是：</p>
+<blockquote><strong>它把实时语音模型从轮次制生成器推进为持续运行的交互策略，并明确结合 full duplex 与后台 frontier-model delegation。自然附和与打断背后，还需要研究连续时间上的 belief、routing、timing 和 control。</strong></blockquote>
+<h2 id="参考资料">参考资料</h2>
+<ol><li>OpenAI, <a href="https://openai.com/index/introducing-gpt-live/">Introducing GPT-Live</a>, 2026-07-08.</li><li>OpenAI, <a href="https://openai.com/form/gpt-live-1-in-the-api/">GPT-Live-1 API notification</a>, 2026.</li><li>OpenAI, <a href="https://openai.com/index/hello-gpt-4o/">Hello GPT-4o</a>, 2024.</li><li>OpenAI Agents SDK, <a href="https://openai.github.io/openai-agents-js/guides/voice-agents/">Voice Agents Guide</a>, accessed 2026-07.</li><li>Hacker News, <a href="https://news.ycombinator.com/item?id=48834405">GPT-Live release discussion</a>, 2026-07-08. OpenAI team replies are treated as public product clarification; other comments are treated only as early user reports.</li><li>Full-Duplex-Bench v1.5, <a href="https://arxiv.org/abs/2507.23159">arXiv:2507.23159</a>.</li><li>Full-Duplex-Bench v3, <a href="https://arxiv.org/abs/2604.04847">arXiv:2604.04847</a>.</li><li>IHBench, <a href="https://arxiv.org/abs/2606.19595">arXiv:2606.19595</a>.</li><li>Real-Time Voice AI Hears but Does Not Listen, <a href="https://arxiv.org/abs/2606.26083">arXiv:2606.26083</a>.</li><li>Moshi: a speech-text foundation model for real-time dialogue, <a href="https://arxiv.org/abs/2410.00037">arXiv:2410.00037</a>.</li></ol>
+<p>*Research note by Tianyu Xie. Last reviewed: July 22, 2026.*</p></div><script type="application/json" data-article-headings>[{"id":"section-1-gpt-live-1-公开了哪些能力","level":2,"text":"1. GPT-Live-1 公开了哪些能力"},{"id":"section-2-从-gpt-4o-到-gpt-live-变化不是-更快地轮流说话","level":2,"text":"2. 从 GPT-4o 到 GPT-Live：变化不是“更快地轮流说话”"},{"id":"section-3-full-duplex-的技术含义-同时听和说只是最低门槛","level":2,"text":"3. Full duplex 的技术含义：同时听和说只是最低门槛"},{"id":"section-4-backchannel-一个-嗯-背后的高风险决策","level":2,"text":"4. Backchannel：一个“嗯”背后的高风险决策"},{"id":"section-5-背景噪声与多人语音-vad-远远不够","level":2,"text":"5. 背景噪声与多人语音：VAD 远远不够"},{"id":"section-6-delegation-实时模型不再假装自己同时擅长一切","level":2,"text":"6. Delegation：实时模型不再假装自己同时擅长一切"},{"id":"section-7-gpt-live-1-与-gpt-live-1-mini-产品分层意味着什么","level":2,"text":"7. GPT-Live-1 与 GPT-Live-1 mini：产品分层意味着什么"},{"id":"section-8-发布时能做什么-不能做什么","level":2,"text":"8. 发布时能做什么，不能做什么"},{"id":"section-9-与-gpt-realtime-api-的关系-不要把两个名字混为一谈","level":2,"text":"9. 与 GPT Realtime API 的关系：不要把两个名字混为一谈"},{"id":"section-10-现有-benchmark-能告诉我们什么-又不能告诉我们什么","level":2,"text":"10. 现有 benchmark 能告诉我们什么，又不能告诉我们什么"},{"id":"section-10-1-时效性","level":3,"text":"10.1 时效性"},{"id":"section-10-2-交互策略","level":3,"text":"10.2 交互策略"},{"id":"section-10-3-内容与推理","level":3,"text":"10.3 内容与推理"},{"id":"section-10-4-agent-与安全","level":3,"text":"10.4 Agent 与安全"},{"id":"section-11-早期体验应该怎样解读","level":2,"text":"11. 早期体验应该怎样解读"},{"id":"section-12-安全问题-越像自然对话-越不能只靠内容过滤","level":2,"text":"12. 安全问题：越像自然对话，越不能只靠内容过滤"},{"id":"section-13-gpt-live-对-omni-与-agent-研究意味着什么","level":2,"text":"13. GPT-Live 对 Omni 与 Agent 研究意味着什么"},{"id":"section-14-未来最值得做的研究","level":2,"text":"14. 未来最值得做的研究"},{"id":"section-14-1-可控的交互人格-而不是单一-更像人","level":3,"text":"14.1 可控的交互人格，而不是单一“更像人”"},{"id":"section-14-2-从-speaker-detection-走向-addressee-belief","level":3,"text":"14.2 从 speaker detection 走向 addressee belief"},{"id":"section-14-3-delegation-aware-rl","level":3,"text":"14.3 Delegation-aware RL"},{"id":"section-14-4-playback-aware-memory","level":3,"text":"14.4 Playback-aware memory"},{"id":"section-14-5-长时间关系中的校准","level":3,"text":"14.5 长时间关系中的校准"},{"id":"section-14-6-可复现的第三方-benchmark","level":3,"text":"14.6 可复现的第三方 benchmark"},{"id":"section-15-公开能力与研究问题","level":2,"text":"15. 公开能力与研究问题"},{"id":"参考资料","level":2,"text":"参考资料"}]</script></article></main>
   <footer class="footer"><div class="footer-inner">© 2026 Tianyu Xie.</div></footer>
 </body>
 </html>

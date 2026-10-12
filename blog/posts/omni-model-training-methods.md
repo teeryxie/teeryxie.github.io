@@ -108,7 +108,7 @@ Omni RL 的难点是 reward design。一个模型可能学会让语音更讨好 
 
 第三，long-video RLHF。长视频任务的 reward 可以结合 temporal grounding、event retrieval、caption consistency 和 human preference。这个方向和 long-video understanding 非常接近。
 
-第四，omni-modal orchestration training。不是所有能力都要端到端塞进一个模型。可以训练 router 或 controller，协调 vision expert、audio expert、LLM、speech generator 和 memory。你的 training-free orchestration 可以作为低成本起点。
+第四，omni-modal orchestration training。不是所有能力都要端到端塞进一个模型。可以训练 router 或 controller，协调 vision expert、audio expert、LLM、speech generator 和 memory。我关注的 training-free orchestration 可以作为一种低成本起点。
 
 第五，safe full-duplex interaction。模型边听边说时，安全策略也必须实时生效。未来需要训练模型识别危险语音、隐私泄露、身份冒充、视觉敏感内容，并能在不中断正常交互的情况下处理。
 

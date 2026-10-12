@@ -346,57 +346,43 @@ function renderBlogIndex() {
 }
 
 function tocLinks(headings) {
-  return headings.map((heading) => `
-    <a class="toc-link toc-level-${heading.level}" href="#${escapeHtml(heading.id)}" data-toc-id="${escapeHtml(heading.id)}">
-      ${escapeHtml(heading.text)}
-    </a>
-  `).join("");
+  return headings.map((heading) => `<a class="toc-link toc-level-${heading.level}" href="#${escapeHtml(heading.id)}" data-toc-id="${escapeHtml(heading.id)}">${escapeHtml(heading.text)}</a>`).join("\n");
 }
 
-function settleLayoutBefore(target) {
-  if (!target) return Promise.resolve([]);
-  const precedingImages = [...document.querySelectorAll(".markdown-body img")].filter((image) => (
-    image.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING
-  ));
-  return Promise.allSettled(precedingImages.map((image) => image.decode()));
-}
-
-async function scrollToHeading(id) {
+function scrollToHeading(id) {
   const target = document.getElementById(id);
   if (!target) return;
   history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${encodeURIComponent(id)}`);
-  target.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
-  await settleLayoutBefore(target);
-  requestAnimationFrame(() => target.scrollIntoView({ behavior: "auto", block: "start" }));
+  target.scrollIntoView({ behavior: "auto", block: "start" });
 }
 
 function buildArticleToc(headings) {
   const sidebar = document.querySelector(".blog-post .sidebar");
   const breadcrumb = document.querySelector(".blog-breadcrumb");
-  if (!sidebar || !breadcrumb || !headings.length) {
-    if (sidebar) sidebar.innerHTML = '<a class="toc-back" href="/blog/">← 研究笔记</a>';
-    return;
-  }
+  if (!sidebar || !breadcrumb || !headings.length) return;
 
   const links = tocLinks(headings);
-  sidebar.innerHTML = `
+  if (!sidebar.querySelector('.article-toc')) sidebar.insertAdjacentHTML('beforeend', `
     <nav class="article-toc" aria-label="本文目录">
       <a class="toc-back" href="/blog/">← 研究笔记</a>
       <strong>本文目录</strong>
       <div class="toc-links">${links}</div>
     </nav>
-  `;
+  `);
 
-  const mobileToc = document.createElement("details");
-  mobileToc.className = "mobile-toc";
-  mobileToc.innerHTML = `<summary>本文目录 <span>${headings.length} 节</span></summary><nav aria-label="移动端本文目录">${links}</nav>`;
-  breadcrumb.insertAdjacentElement("afterend", mobileToc);
+  let mobileToc = document.querySelector('.mobile-toc');
+  if (!mobileToc) {
+    mobileToc = document.createElement("details");
+    mobileToc.className = "mobile-toc";
+    mobileToc.innerHTML = `<summary>本文目录</summary><nav aria-label="移动端本文目录">${links}</nav>`;
+    document.querySelector('.article-hero').insertAdjacentElement("afterend", mobileToc);
+  }
 
   document.querySelectorAll("[data-toc-id]").forEach((link) => {
     link.addEventListener("click", (event) => {
       event.preventDefault();
-      scrollToHeading(link.dataset.tocId);
       mobileToc.open = false;
+      scrollToHeading(link.dataset.tocId);
     });
   });
 
@@ -418,12 +404,7 @@ function buildArticleToc(headings) {
   if (window.location.hash) {
     const id = decodeURIComponent(window.location.hash.slice(1));
     const target = document.getElementById(id);
-    const restoreHashPosition = () => target?.scrollIntoView({ behavior: "auto", block: "start" });
-    requestAnimationFrame(restoreHashPosition);
-    window.setTimeout(restoreHashPosition, 120);
-    settleLayoutBefore(target).then(() => {
-      requestAnimationFrame(restoreHashPosition);
-    });
+    requestAnimationFrame(() => target?.scrollIntoView({ behavior: "auto", block: "start" }));
   }
 }
 
@@ -518,7 +499,7 @@ function buildArticleFooter(post) {
   const previous = index > 0 ? window.BLOG_POSTS[index - 1] : null;
   const next = index < window.BLOG_POSTS.length - 1 ? window.BLOG_POSTS[index + 1] : null;
   const related = window.BLOG_POSTS.filter((item) => item.slug !== post.slug && item.section === post.section).slice(0, 3);
-  const link = (item, label) => item ? `<a href="/blog/${item.slug}/"><span>${label}</span><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(item.category)} · ${escapeHtml(item.date)}</small></a>` : '<span class="article-nav-empty" aria-hidden="true"></span>';
+  const link = (item, label) => item ? `<a href="/blog/${item.slug}/"><span>${label}</span><strong>${escapeHtml(item.displayTitle || item.title)}</strong><small>${escapeHtml(item.date)}</small></a>` : '<span class="article-nav-empty" aria-hidden="true"></span>';
 
   const footer = document.createElement("footer");
   footer.className = "article-footer-nav";
@@ -570,6 +551,12 @@ async function renderBlogArticle() {
     return;
   }
 
+  if (article.dataset.rendered === "true") {
+    const headings = JSON.parse(document.querySelector('[data-article-headings]').textContent);
+    bindArticleFeatures(article, post, headings);
+    return;
+  }
+
   document.title = `${post.displayTitle || post.title} | Tianyu Xie`;
   const title = document.querySelector("[data-post-title]");
   const meta = document.querySelector("[data-post-meta]");
@@ -583,35 +570,30 @@ async function renderBlogArticle() {
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const rendered = renderMarkdown(await response.text());
       const primaryTitle = rendered.title || post.title;
-      const showEnglishSubtitle = hasChinese(primaryTitle) && primaryTitle !== post.title;
       if (title) {
         title.textContent = primaryTitle;
         title.lang = hasChinese(primaryTitle) ? "zh-CN" : "en";
       }
       document.querySelector("[data-post-subtitle]")?.remove();
-      if (showEnglishSubtitle && title) {
-        const subtitle = document.createElement("p");
-        subtitle.className = "post-subtitle";
-        subtitle.dataset.postSubtitle = "";
-        subtitle.lang = "en";
-        subtitle.textContent = post.title;
-        title.insertAdjacentElement("afterend", subtitle);
-      }
       if (meta) meta.textContent = hasChinese(primaryTitle)
-        ? `${SECTION_LABELS[post.section]} · ${post.date} · 约 ${rendered.readingTime} 分钟 · ${rendered.wordCount.toLocaleString()} 字词`
-        : `${post.category} · ${post.date} · ${rendered.readingTime} min read · ${rendered.wordCount.toLocaleString()} words`;
+        ? `${post.date} · ${SECTION_LABELS[post.section]}`
+        : `${post.date} · ${post.category}`;
       article.innerHTML = rendered.html;
-      buildArticleToc(rendered.headings);
-      buildReadingControls(article);
-      window.SiteUI?.bindLightboxes(article);
-      bindCodeCopy(article);
-      buildArticleFooter(post);
+      bindArticleFeatures(article, post, rendered.headings);
     } catch (_error) {
       renderArticleError(article, load);
     }
   };
 
   await load();
+}
+
+function bindArticleFeatures(article, post, headings) {
+  buildArticleToc(headings);
+  buildReadingControls(article);
+  window.SiteUI?.bindLightboxes(article);
+  bindCodeCopy(article);
+  buildArticleFooter(post);
 }
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -14,7 +14,7 @@
 
 从工程架构看，VeRL-Omni 的核心抓手包括：用 `vLLM-Omni` 做高吞吐多模态 rollout；用 flexible reward pipeline 支持规则奖励、模型奖励、HTTP scorer 和多 reward 组合；用 FSDP2 或 VeOmni 做 actor/ref 的分布式训练；用 async reward 把 reward latency 从关键路径里部分隐藏；用 rollout correction、deterministic rollout/reward/trainer 等工具提高稳定性。它不是把所有功能塞进一个大 trainer，而是保持 `verl` 式的角色拆分和 resource pool 设计，让 rollout、reward、trainer 可以按任务重新摆放。
 
-## 支持模型和算法：不是单点 demo，而是模型族矩阵
+## 模型与算法的支持矩阵
 
 VeRL-Omni 官方模型表里，Qwen-Image 是当前最完整的 diffusion image 样例，支持 FlowGRPO、Flow-DPPO、MixGRPO、GRPO-Guard、DiffusionNFT 和 Diffusion DPO 等训练方式。SD3.5 Medium 支持 FlowGRPO 和 DPO。Wan2.2-TI2V-5B 作为 text-to-video diffusion model，示例使用 DanceGRPO 和 HPSv3 reward。BAGEL 则代表 unified multimodal understanding + generation，用 FlowGRPO 做 OCR 或 PickScore 类 reward。Qwen3-Omni-30B-A3B Thinker 代表 omni-modality，使用 GSPO + LoRA 做数学推理后训练。
 
@@ -82,13 +82,13 @@ VeRL-Omni 和我关注的 multimodal systems、long-video understanding、effici
 
 当然，VeRL-Omni 仍然是一个快速演进中的工程框架，不能把它理解成已经完全成熟的黑盒平台。首先，很多 recipe 对环境版本非常敏感。例如 Qwen3-Omni GSPO README 明确 pin 了 vLLM、vLLM-Omni、transformers、torch、flash-attn 和 verl commit，并说明 transformers 5.x 会触发权重加载问题。这说明 omni RL 的软件栈还处在快速变化阶段，复现实验时需要严格记录版本。
 
-其次，支持矩阵里的“可跑”不等于“已调优到最优”。官方 Qwen3-Omni GSPO 示例也把初步结果定位为 plumbing-correctness signal，而不是最终性能结论。对于研究者来说，能跑通、loss 正常、actor-rollout 相关性高、没有 OOM，只是第一步。真正的 research contribution 仍然需要设计任务、reward、数据和评测。
+其次，支持矩阵里的“可跑”不等于“已调优到最优”。官方 Qwen3-Omni GSPO 示例也把初步结果定位为 plumbing-correctness signal，而不是最终性能结论。对于研究者来说，能跑通、loss 正常、actor-rollout 相关性高、没有 OOM，只是第一步。任务、reward、数据和评测的有效性仍需要单独验证。
 
 再次，多模态 reward 本身仍然是核心难点。OCR reward、HPSv3、PickScore、VLM judge 都有偏差。RL 会放大奖励模型的偏差，特别是在生成模型里，模型可能学会 exploit reward 而不是提升真实质量。因此，VeRL-Omni 解决的是“如何训练”的基础设施问题，不自动解决“reward 是否正确”的研究问题。
 
 ## 我对 VeRL-Omni 的理解
 
-我倾向于把 VeRL-Omni 看作多模态生成 RL 的基础设施原型。它不是某一个算法的附属代码，而是把多模态 RL 训练中最难绕开的部分系统化：rollout 要快，reward 要灵活，资源要可分池，trainer 要能支撑 diffusion 和 omni model，稳定性问题要有监控和修正。对于一个研究者来说，这类框架的意义在于降低“把想法跑起来”的工程门槛，让更多精力可以放在 reward design、benchmark construction、long-video reasoning 和 omni interaction 上。
+我倾向于把 VeRL-Omni 看作多模态生成 RL 的基础设施原型。它将多模态 RL 训练的几项工程工作放入同一框架：rollout 要快，reward 要灵活，资源要可分池，trainer 要能支撑 diffusion 和 omni model，稳定性问题要有监控和修正。对于一个研究者来说，这类框架的意义在于降低“把想法跑起来”的工程门槛，让更多精力可以放在 reward design、benchmark construction、long-video reasoning 和 omni interaction 上。
 
 如果说 TMRoPE 解决的是 omni token 的时间坐标问题，Hybrid Attention MoE 解决的是长上下文计算结构问题，那么 VeRL-Omni 解决的是后训练阶段的系统组织问题。一个完整的 omni AI 系统不只需要会看、会听、会说，还需要能通过 reward 持续改进。而要让这种改进发生，必须有稳定、高吞吐、可扩展的训练基础设施。VeRL-Omni 正是在这个方向上迈出的一步。
 

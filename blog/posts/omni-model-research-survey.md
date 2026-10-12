@@ -60,7 +60,7 @@ Qwen2.5-Omni 是目前开源 omni 研究中非常适合重点讲的模型。它�
 
 第一，native audio 和 speech-to-speech。代表工作包括 GPT-4o、Mini-Omni、LLaMA-Omni、Moshi、Qwen2.5-Omni。核心问题是低延迟、流式输出、音色自然度、情绪表达、打断和 full-duplex。未来要解决的是 speech reasoning，而不只是 speech response。
 
-第二，audio-video temporal alignment。代表工作包括 Qwen2.5-Omni 的 TMRoPE、音视频 interleaving、长视频 frame selection 和 event boundary 研究。核心问题是让声音、画面、文本在同一时间坐标里推理。你的 long-video understanding 方向可以自然接到这里。
+第二，audio-video temporal alignment。代表工作包括 Qwen2.5-Omni 的 TMRoPE、音视频 interleaving、长视频 frame selection 和 event boundary 研究。核心问题是让声音、画面、文本在同一时间坐标里推理。这也是我关注的 long-video understanding 与 Omni 研究之间的连接。
 
 第三，Thinker-Talker 和多头生成架构。Qwen2.5-Omni 把 reasoning 和 speech generation 拆成 Thinker/Talker；Qwen3.5-Omni 又把 Hybrid Attention MoE 用到 Thinker 和 Talker，面向长序列推理。这个方向的核心问题是：如何让文本推理和语音生成互相支持，而不是互相干扰。
 
@@ -74,7 +74,7 @@ Qwen2.5-Omni 是目前开源 omni 研究中非常适合重点讲的模型。它�
 
 ## 分享时建议讲哪些论文
 
-如果你要做一次完整分享，我建议按“体验突破 -> 开源复现 -> 架构深化 -> 评测与未来”的顺序讲，而不是按时间硬排。
+做研究分享时，我倾向于按“体验突破 -> 开源复现 -> 架构深化 -> 评测与未来”组织，把每阶段要解决的问题讲清楚。
 
 第一组是起点和定义：
 
@@ -130,7 +130,7 @@ Qwen2.5-Omni 是目前开源 omni 研究中非常适合重点讲的模型。它�
 
 第七，安全和身份边界。Voice cloning、情绪操控、隐私泄露、摄像头实时输入、环境声音采集都会带来风险。Omni model 的安全不能只靠文本拒答，还要有语音、视觉和实时交互层面的策略。
 
-第八，efficient omni orchestration。不是所有任务都需要一个巨大的端到端模型。未来系统可能会结合 omni backbone、specialist experts、tool agents、retrieval 和 streaming memory。你的 training-free multimodal LLM orchestration 可以放在这个方向里：在不昂贵重训的情况下，让不同模态专家高效协同。
+第八，efficient omni orchestration。不是所有任务都需要一个巨大的端到端模型。未来系统可能会结合 omni backbone、specialist experts、tool agents、retrieval 和 streaming memory。我关注的 training-free multimodal LLM orchestration 属于这个方向：在不昂贵重训的情况下，让不同模态专家高效协同。
 
 ## 我的理解
 
