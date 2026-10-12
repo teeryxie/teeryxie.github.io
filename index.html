@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tianyu Xie / 谢天宇 | Academic Homepage</title>
-  <meta name="description" content="Tianyu Xie's academic homepage on multimodal AI, omni models, agentic systems, long-video reasoning, and efficient inference.">
+  <meta name="description" content="Tianyu Xie, M.S. student at Xiamen University, researching omni-modal modeling, full-duplex human–AI interaction, and multimodal evaluation.">
   <link rel="icon" href="/images/profile.png">
   <link rel="stylesheet" href="/site.css">
   <link rel="stylesheet" href="/home-academic.css">
@@ -28,7 +28,7 @@
         <img class="avatar" src="/images/profile.png" alt="Portrait of Tianyu Xie" width="156" height="156">
         <h2 class="name">Tianyu Xie</h2>
         <p class="cn-name" lang="zh-CN">谢天宇</p>
-        <p class="bio">M.S. student at the MAC Lab, Xiamen University, advised by <a href="https://sites.google.com/view/zhengxiawu">Prof. Xiawu Zheng</a>.</p>
+        <p class="bio">M.S. student at the MAC Lab, Xiamen University, advised by <a href="https://zhengxiawu.github.io/">Prof. Xiawu Zheng</a>.</p>
         <ul class="profile-links">
           <li><span class="icon" aria-hidden="true">✉</span><a href="mailto:teery@stu.xmu.edu.cn">Email</a></li>
           <li><span class="icon" aria-hidden="true">G</span><a href="https://scholar.google.com/citations?hl=zh-CN&amp;user=_vZWAnkAAAAJ">Google Scholar</a></li>
@@ -40,37 +40,43 @@
 
     <article class="content home-content">
       <header class="home-intro">
-        <p class="home-kicker">Academic homepage</p>
         <h1>Tianyu Xie <span lang="zh-CN">/ 谢天宇</span></h1>
-        <p class="hero-intro">I build efficient and extensible multimodal AI systems that perceive, reason, act, and revise across language, vision, audio, and video.</p>
-        <p class="home-affiliation">I am an M.S. student in Artificial Intelligence at Xiamen University, working with the Media Analytics and Computing Lab.</p>
+        <p class="home-affiliation">I am a master's student in Artificial Intelligence at the Media Analytics and Computing (MAC) Lab, Xiamen University, advised by <a href="https://zhengxiawu.github.io/">Prof. Xiawu Zheng</a>. I joined the lab in September 2025.</p>
+        <p class="hero-intro">My research focuses on <strong>omni-modal modeling</strong> across language, vision, audio, and video, and <strong>full-duplex human–AI interaction</strong>, where a system can listen while generating a response and react to interruptions.</p>
+        <p class="home-affiliation">I study how to coordinate specialized models without additional alignment training, reuse context across modalities and turns, and evaluate participation in audio-visual dialogue. My work spans method design, model pre-training and post-training, and reproducible inference and evaluation.</p>
       </header>
 
       <section class="section home-section" aria-labelledby="publications-title">
-        <div class="section-head"><h2 id="publications-title">Representative work</h2><a href="/publications/">View all publications</a></div>
+        <div class="section-head"><h2 id="publications-title">Selected publications</h2><a href="/publications/">View all publications</a></div>
         <div class="home-publications">
           <article class="home-publication">
-            <p class="home-publication-meta">ICML 2026 · First author · CCF-A</p>
+            <p class="home-publication-meta">ICML 2026 · First author</p>
             <h3><a href="https://openreview.net/forum?id=V2fTGbSD7Q">Training-Free Multimodal Large Language Model Orchestration</a></h3>
             <p class="home-authors"><strong>Tianyu Xie</strong>, Yuexiao Ma, Yuhang Wu, Wang Chen, Jiayi Ji, Tat-Seng Chua, Xiawu Zheng, Rongrong Ji</p>
-            <p>Training-free coordination of modality experts through explicit LLM routing, cross-modal memory, and streaming interaction.</p>
+            <p>Coordinates vision and audio experts through a large language model (LLM) controller, shared cross-modal memory, and full-duplex streaming interaction, without additional training to integrate the experts. My contributions focus on scheduling, streaming speech interaction, and unified memory.</p>
             <div class="home-links"><a href="https://openreview.net/forum?id=V2fTGbSD7Q">OpenReview</a><a href="https://arxiv.org/abs/2508.10016">arXiv</a><a href="https://github.com/MAC-AutoML/Trainingfree-LLM-Orchestration">Code</a></div>
           </article>
           <article class="home-publication">
-            <p class="home-publication-meta">arXiv 2026 · First author</p>
+            <p class="home-publication-meta">arXiv 2026 · Under review · First author</p>
             <h3><a href="https://arxiv.org/abs/2603.16859">SocialOmni: Benchmarking Audio-Visual Social Interactivity in Omni Models</a></h3>
-            <p class="home-authors"><strong>Tianyu Xie</strong>, Jinfa Huang, Yuexiao Ma, Rongfang Luo, Yan Yang, Wang Chen, Yuhui Zeng, Yixuan Zou, Qingchuan Ma, Zhiqiang Lu, Ruize Fang, Xiawu Zheng, Jiebo Luo, Rongrong Ji</p>
-            <p>An audio-visual benchmark for speaker awareness, interruption timing, and natural interactive responses.</p>
-            <div class="home-links"><a href="https://arxiv.org/abs/2603.16859">arXiv</a><a href="/socialomni/">Leaderboard</a><a href="https://github.com/MAC-AutoML/SocialOmni">Code</a><a href="/blog/socialomni/">Research note</a></div>
+            <p class="home-authors"><strong>Tianyu Xie</strong>, Jinfa Huang, Yuexiao Ma, Rongfang Luo, Yan Yang, Qingchuan Ma, Wang Chen, Yuhui Zeng, Yixuan Zou, Zhiqiang Lu, Ruize Fang, Jiebo Luo, Rongrong Ji, Xiawu Zheng</p>
+            <p>An offline diagnostic benchmark for speaker identification, turn-entry decisions, and response generation. The current release contains 2,000 perception items and 200 interaction-generation items, with query-time-bounded evidence and evaluation of 11 omni models.</p>
+            <div class="home-links"><a href="https://arxiv.org/abs/2603.16859">arXiv</a><a href="/socialomni/">Leaderboard</a><a href="https://github.com/MAC-AutoML/SocialOmni">Code</a><a href="https://huggingface.co/datasets/alexisty/SocialOmni">Dataset</a><a href="/blog/socialomni/">Research note</a></div>
           </article>
           <article class="home-publication">
-            <p class="home-publication-meta">CVPR 2026 · Fourth author · CCF-A</p>
+            <p class="home-publication-meta">CVPR 2026</p>
             <h3><a href="https://arxiv.org/abs/2603.00512">Wavelet-based Frame Selection by Detecting Semantic Boundary for Long Video Understanding</a></h3>
             <p class="home-authors">Wang Chen, Yuhui Zeng, Yongdong Luo, <strong>Tianyu Xie</strong>, Luojun Lin, Jiayi Ji, Yan Zhang, Xiawu Zheng</p>
             <p>Wavelet-based semantic boundary detection for efficient long-video frame selection.</p>
             <div class="home-links"><a href="https://arxiv.org/abs/2603.00512">arXiv</a><a href="https://github.com/MAC-AutoML/WFS-SB">Code</a><a href="/blog/wfs-sb/">Research note</a></div>
           </article>
         </div>
+      </section>
+
+      <section class="section home-section" aria-labelledby="systems-title">
+        <div class="section-head"><h2 id="systems-title">Research engineering</h2></div>
+        <p class="home-body">I develop training and evaluation pipelines for multimodal systems and have submitted over 4,000 lines of code to <a href="https://github.com/sgl-project/sglang-omni/pulls?q=is%3Apr+author%3Ateeryxie">SGLang-Omni</a> and <a href="https://github.com/vllm-project/vllm-omni/pulls?q=is%3Apr+author%3Ateeryxie">vLLM-Omni</a>. My engineering work includes evaluation automation, regression testing, and inference optimization, with code review and validation on GPU systems.</p>
+        <p class="home-body">I work with PyTorch, Megatron-LM, DeepSpeed, and LLaMA-Factory for distributed training, supervised fine-tuning, and reinforcement learning, including multi-GPU training on Slurm clusters.</p>
       </section>
 
       <section class="section home-section" aria-labelledby="news-title">

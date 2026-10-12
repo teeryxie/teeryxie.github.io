@@ -22,7 +22,7 @@
       <header class="inner-hero">
         <p class="inner-kicker">Academic profile</p>
         <h1 class="page-title">Curriculum Vitae</h1>
-        <p class="lead">Research profile spanning omni-modal systems, VLMs, agents, long-video understanding, post-training, efficient inference, and benchmark construction.</p>
+        <p class="lead">Research in omni-modal modeling across language, vision, audio, and video, and full-duplex human–AI interaction: systems that listen while responding and handle interruptions. Experience spans method design, model pre-training and post-training, and inference evaluation.</p>
       </header>
 
       <section class="section">
@@ -33,6 +33,7 @@
             <div>
               <h3>Xiamen University</h3>
               <p>MAC Lab · Artificial Intelligence · M.S. student · 2025.09 - Present</p>
+              <p>Advisor: <a href="https://zhengxiawu.github.io/">Prof. Xiawu Zheng</a></p>
               <div class="tag-row"><span class="tag prestige">985</span><span class="tag prestige">211</span><span class="tag prestige">Double First-Class</span><span class="tag">Multimodal AI</span></div>
             </div>
           </article>
@@ -43,7 +44,7 @@
         <div class="section-head"><h2><svg class="section-icon" aria-hidden="true"><use href="/images/icons.svg#paper"></use></svg>Publications &amp; Research</h2></div>
         <div class="cv-list">
           <article><svg class="cv-icon" aria-hidden="true"><use href="/images/icons.svg#orchestration"></use></svg><div><strong><a href="https://openreview.net/forum?id=V2fTGbSD7Q">Training-Free Multimodal Large Language Model Orchestration</a></strong><p>ICML 2026 · CCF-A · First Author. Training-free omni-modal orchestration with LLM routing, full-duplex streaming speech interaction, and cross-modal memory.</p></div></article>
-          <article><svg class="cv-icon" aria-hidden="true"><use href="/images/icons.svg#agent"></use></svg><div><strong><a href="https://arxiv.org/abs/2603.16859">SocialOmni: Benchmarking Audio-Visual Social Interactivity in Omni Models</a></strong><p>arXiv · First Author. Audio-visual social-interaction benchmark with standardized temporal constraints, open data, and reproducible evaluation code.</p></div></article>
+          <article><svg class="cv-icon" aria-hidden="true"><use href="/images/icons.svg#agent"></use></svg><div><strong><a href="https://arxiv.org/abs/2603.16859">SocialOmni: Benchmarking Audio-Visual Social Interactivity in Omni Models</a></strong><p>arXiv 2026 · Under review · First author. Offline evaluation of speaker identification, turn-entry decisions, and response generation using query-time-bounded evidence; 2,000 perception items, 200 interaction-generation items, and 11 evaluated omni models.</p></div></article>
           <article><svg class="cv-icon" aria-hidden="true"><use href="/images/icons.svg#video"></use></svg><div><strong><a href="https://arxiv.org/abs/2603.00512">Wavelet-based Frame Selection by Detecting Semantic Boundary for Long Video Understanding</a></strong><p>CVPR 2026 · CCF-A · Fourth Author. Training-free long-video frame selection with wavelet-based semantic-boundary detection and adaptive frame allocation.</p></div></article>
           <article><svg class="cv-icon" aria-hidden="true"><use href="/images/icons.svg#database"></use></svg><div><strong><a href="https://arxiv.org/abs/2605.17278">A2RBench: An Automatic Paradigm for Formally Verifiable Abstract Reasoning Benchmark Generation</a></strong><p>ICML 2026 · CCF-A · Fourth Author. Automatic generation, augmentation, verification, and analysis for formally grounded abstract reasoning benchmarks.</p></div></article>
           <article><svg class="cv-icon" aria-hidden="true"><use href="/images/icons.svg#vision"></use></svg><div><strong><a href="https://www.mdpi.com/2077-0472/12/10/1659">An Attention Mechanism-Improved YOLOv7 Object Detection Algorithm for Hemp Duck Count Estimation</a></strong><p>SCI · JCR Q1 · Second Author. CBAM-enhanced YOLOv7 for dense hemp duck counting and intelligent livestock monitoring.</p></div></article>
@@ -108,10 +109,16 @@
       </section>
 
       <section class="section">
+        <div class="section-head"><h2>Open-source Research Engineering</h2></div>
+        <p>Submitted over 4,000 lines of code to <a href="https://github.com/sgl-project/sglang-omni/pulls?q=is%3Apr+author%3Ateeryxie">SGLang-Omni</a> and <a href="https://github.com/vllm-project/vllm-omni/pulls?q=is%3Apr+author%3Ateeryxie">vLLM-Omni</a>, supporting multimodal inference and reproducible evaluation. Experience includes integrating specialized audio and vision models with language-model controllers, debugging semantic alignment between models, and validating changes through code review, regression checks, and GPU execution.</p>
+        <p>I use Cursor, Claude Code, and Codex to assist development, with code review and testing on target systems before delivery.</p>
+      </section>
+
+      <section class="section">
         <div class="section-head"><h2><svg class="section-icon" aria-hidden="true"><use href="/images/icons.svg#skills"></use></svg>Skills</h2></div>
         <div class="skill-groups">
-          <section><h3>Models &amp; Training</h3><div class="tag-row"><span class="tag">PyTorch</span><span class="tag">LLaMA-Factory</span><span class="tag">DeepSpeed</span><span class="tag">PPO</span><span class="tag">GRPO</span><span class="tag">LoRA / SFT</span></div></section>
-          <section><h3>Inference &amp; Agents</h3><div class="tag-row"><span class="tag">vLLM</span><span class="tag">LangGraph</span><span class="tag">LangChain</span></div></section>
+          <section><h3>Models &amp; Training</h3><div class="tag-row"><span class="tag">PyTorch</span><span class="tag">Megatron-LM</span><span class="tag">LLaMA-Factory</span><span class="tag">DeepSpeed</span><span class="tag">PPO</span><span class="tag">GRPO</span><span class="tag">LoRA / SFT</span></div></section>
+          <section><h3>Inference &amp; Agents</h3><div class="tag-row"><span class="tag">vLLM-Omni</span><span class="tag">SGLang-Omni</span><span class="tag">Evaluation automation</span><span class="tag">Regression testing</span><span class="tag">LangGraph</span><span class="tag">LangChain</span></div></section>
           <section><h3>Systems</h3><div class="tag-row"><span class="tag">SLURM multi-GPU training</span><span class="tag">Python</span><span class="tag">Linux</span><span class="tag">C++</span></div></section>
           <section><h3>Research</h3><div class="tag-row"><span class="tag">Computer Vision</span><span class="tag">Generative LLMs</span></div></section>
         </div>

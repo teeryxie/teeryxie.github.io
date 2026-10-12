@@ -34,8 +34,8 @@
             <div class="project-kicker">Multimodal Systems · ICML 2026</div>
             <h2>Training-Free Multimodal LLM Orchestration</h2>
             <p class="project-problem"><strong>Problem.</strong> How can an interactive omni-modal assistant coordinate heterogeneous expert models without retraining a monolithic model?</p>
-            <p><strong>Method.</strong> LLM-based routing composes off-the-shelf modality experts with persistent cross-modal memory and interruption-aware streaming interaction.</p>
-            <dl class="project-facts"><div><dt>Role</dt><dd>First author</dd></div><div><dt>Status</dt><dd>Paper, code, and research note available</dd></div></dl>
+            <p><strong>Method.</strong> A large language model (LLM) controller schedules vision and audio experts without additional integration training. Shared cross-modal memory supports context reuse, while the interaction layer supports simultaneous listening and response generation, including interruptions.</p>
+            <dl class="project-facts"><div><dt>Role</dt><dd>First author; scheduling, full-duplex speech interaction, and cross-modal memory</dd></div><div><dt>Status</dt><dd>Paper, code, and research note available</dd></div></dl>
             <div class="actions"><a class="action" href="https://openreview.net/forum?id=V2fTGbSD7Q">OpenReview</a><a class="action" href="https://github.com/MAC-AutoML/Trainingfree-LLM-Orchestration">Code</a><a class="action" href="/blog/training-free-orchestration/">Blog</a></div>
             <div class="tag-row"><span class="tag">Orchestration</span><span class="tag">Omni-modal</span><span class="tag">Streaming</span></div>
           </div>
@@ -47,9 +47,10 @@
             <div class="project-kicker">Benchmark · arXiv</div>
             <h2>SocialOmni</h2>
             <p class="project-problem"><strong>Problem.</strong> Existing omni-model benchmarks underrepresent time-sensitive audio-visual social interaction.</p>
-            <p><strong>Method.</strong> A standardized benchmark and dataset evaluate social perception, temporal grounding, and interactive response behavior across audio and video.</p>
-            <dl class="project-facts"><div><dt>Role</dt><dd>First author</dd></div><div><dt>Status</dt><dd>Paper, code, and dataset available</dd></div></dl>
+            <p><strong>Method.</strong> Query-time-bounded audio-visual evidence supports separate evaluation of speaker identification, turn-entry decisions, and response generation. The current release includes 2,000 perception items, 200 interaction-generation items, and results for 11 omni models.</p>
+            <dl class="project-facts"><div><dt>Role</dt><dd>First author</dd></div><div><dt>Status</dt><dd>arXiv 2026; under review; code and dataset available</dd></div></dl>
             <div class="actions"><a class="action" href="https://arxiv.org/abs/2603.16859">arXiv</a><a class="action" href="https://github.com/MAC-AutoML/SocialOmni">Code</a><a class="action" href="https://huggingface.co/datasets/alexisty/SocialOmni">Dataset</a><a class="action" href="/blog/socialomni/">Blog</a></div>
+            <p><strong>Finding.</strong> Performance varies across perception, turn entry, and response generation. This offline protocol does not measure persistent streaming state or wall-clock latency.</p>
             <div class="tag-row"><span class="tag">Social Interaction</span><span class="tag">Audio-Visual</span><span class="tag">Evaluation</span></div>
           </div>
         </article>
