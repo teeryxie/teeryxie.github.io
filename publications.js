@@ -26,7 +26,7 @@
         button.classList.toggle("active", selected);
         button.setAttribute("aria-pressed", String(selected));
       });
-      resultCount.textContent = `${visible} publication${visible === 1 ? "" : "s"}`;
+      resultCount.textContent = `${visible} ${visible === 1 ? "entry" : "entries"}`;
 
       if (updateUrl) {
         const next = new URL(window.location.href);
