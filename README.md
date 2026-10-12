@@ -17,4 +17,3 @@ After editing article Markdown or blog metadata, run `node blog/build.mjs`.
 It renders the published HTML with the same Markdown renderer used by the
 browser and reserves local image dimensions, so opening an article does not
 wait for a second content download. Keep the generated article pages in Git.
-
