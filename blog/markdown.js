@@ -207,6 +207,7 @@ function renderMarkdown(markdown) {
 }
 
 const SECTION_NAMES = ["Research Notes", "Surveys", "Paper Readings", "Publications", "Logs"];
+const SECTION_LABELS = { "Research Notes": "研究笔记", "Surveys": "综述", "Paper Readings": "论文阅读", "Publications": "论文说明", "Logs": "记录" };
 
 function splitTags(status) {
   return [...new Set(status.split("·").map((tag) => tag.trim()).filter(Boolean))];
@@ -216,25 +217,10 @@ function hasChinese(value) {
   return /[\u3400-\u9fff]/.test(value);
 }
 
-function extractMarkdownTitle(markdown) {
-  const match = /^#\s+(.+)$/m.exec(markdown);
-  return match ? match[1].trim() : "";
-}
-
-async function loadIndexTitles(posts) {
-  const titles = await Promise.all(posts.map(async (post) => {
-    try {
-      const response = await fetch(`/blog/posts/${post.slug}.md`, { cache: "no-cache" });
-      if (!response.ok) return "";
-      return extractMarkdownTitle(await response.text());
-    } catch (_error) {
-      return "";
-    }
-  }));
-
-  return posts.map((post, index) => ({
+function indexPosts(posts) {
+  return posts.map((post) => ({
     ...post,
-    markdownTitle: titles[index],
+    markdownTitle: post.displayTitle || post.title,
     tags: splitTags(post.status),
   }));
 }
@@ -243,18 +229,16 @@ function renderPostRow(post) {
   const markdownTitle = post.markdownTitle || "";
   const useChineseTitle = hasChinese(markdownTitle);
   const primaryTitle = useChineseTitle ? markdownTitle : post.title;
-  const secondaryTitle = useChineseTitle && markdownTitle !== post.title ? post.title : "";
   const visibleTags = post.tags.slice(0, 2);
 
   return `
     <a class="blog-row" href="/blog/${post.slug}/" data-slug="${escapeHtml(post.slug)}">
       <span class="blog-row-main">
         <strong${useChineseTitle ? "" : ' lang="en"'}>${escapeHtml(primaryTitle)}</strong>
-        ${secondaryTitle ? `<span class="blog-row-subtitle" lang="en">${escapeHtml(secondaryTitle)}</span>` : ""}
-        <span class="blog-row-summary" lang="en">${escapeHtml(post.summary)}</span>
+        <span class="blog-row-summary" lang="${hasChinese(post.summary) ? "zh-CN" : "en"}">${escapeHtml(post.summary)}</span>
       </span>
       <span class="blog-row-meta">
-        <span class="blog-row-category">${escapeHtml(post.category)}</span>
+        <span class="blog-row-category">${escapeHtml(useChineseTitle ? SECTION_LABELS[post.section] : post.category)}</span>
         <time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>
         ${visibleTags.map((tag, index) => `<span class="blog-row-tag blog-row-tag-${index + 1}">${escapeHtml(tag)}</span>`).join("")}
       </span>
@@ -262,7 +246,7 @@ function renderPostRow(post) {
   `;
 }
 
-async function renderBlogIndex() {
+function renderBlogIndex() {
   const list = document.querySelector("[data-blog-list]");
   if (!list || !window.BLOG_POSTS) return;
 
@@ -275,7 +259,7 @@ async function renderBlogIndex() {
   const resetButtons = [...document.querySelectorAll("[data-blog-reset]")];
   if (!searchForm || !searchInput || !filter || !resultCount || !emptyState) return;
 
-  const posts = await loadIndexTitles(window.BLOG_POSTS);
+  const posts = indexPosts(window.BLOG_POSTS);
   const buttons = [...filter.querySelectorAll("[data-section]")];
   const params = new URLSearchParams(window.location.search);
   const requestedSection = params.get("section") || "all";
@@ -390,14 +374,14 @@ function buildArticleToc(headings) {
   const sidebar = document.querySelector(".blog-post .sidebar");
   const breadcrumb = document.querySelector(".blog-breadcrumb");
   if (!sidebar || !breadcrumb || !headings.length) {
-    if (sidebar) sidebar.innerHTML = '<a class="toc-back" href="/blog/">← Back to Blog</a>';
+    if (sidebar) sidebar.innerHTML = '<a class="toc-back" href="/blog/">← 研究笔记</a>';
     return;
   }
 
   const links = tocLinks(headings);
   sidebar.innerHTML = `
     <nav class="article-toc" aria-label="本文目录">
-      <a class="toc-back" href="/blog/">← Back to Blog</a>
+      <a class="toc-back" href="/blog/">← 研究笔记</a>
       <strong>本文目录</strong>
       <div class="toc-links">${links}</div>
     </nav>
@@ -553,7 +537,7 @@ function renderArticleError(article, retry) {
     <div class="article-error" role="alert">
       <strong>文章内容加载失败</strong>
       <p>Markdown 文件暂时无法读取，请重试或返回博客索引。</p>
-      <div><button type="button" data-article-retry>重试</button><a href="/blog/">返回 Blog</a></div>
+      <div><button type="button" data-article-retry>重试</button><a href="/blog/">返回研究笔记</a></div>
     </div>
   `;
   article.querySelector("[data-article-retry]").addEventListener("click", retry);
@@ -570,18 +554,9 @@ function ensureArticleHero() {
 
   const hero = document.createElement("header");
   hero.className = "inner-hero article-hero";
-  const kicker = document.createElement("p");
-  kicker.className = "inner-kicker";
-  kicker.textContent = "Research note";
-  hero.append(kicker, breadcrumb, title, meta);
+  hero.append(breadcrumb, title, meta);
   content.prepend(hero);
 
-  const shell = content.closest(".blog-shell");
-  if (shell) {
-    const syncHeight = () => shell.style.setProperty("--article-hero-height", `${hero.offsetHeight}px`);
-    new ResizeObserver(syncHeight).observe(hero);
-    syncHeight();
-  }
 }
 
 async function renderBlogArticle() {
@@ -595,11 +570,11 @@ async function renderBlogArticle() {
     return;
   }
 
-  document.title = `${post.title} | Tianyu Xie`;
+  document.title = `${post.displayTitle || post.title} | Tianyu Xie`;
   const title = document.querySelector("[data-post-title]");
   const meta = document.querySelector("[data-post-meta]");
   const breadcrumbSection = document.querySelector("[data-breadcrumb-section]");
-  if (breadcrumbSection) breadcrumbSection.textContent = post.section;
+  if (breadcrumbSection) breadcrumbSection.textContent = hasChinese(post.displayTitle || post.title) ? SECTION_LABELS[post.section] : post.section;
 
   const load = async () => {
     article.innerHTML = '<div class="article-skeleton" aria-label="正在加载文章"><span></span><span></span><span></span><span></span><span></span></div>';
@@ -622,7 +597,9 @@ async function renderBlogArticle() {
         subtitle.textContent = post.title;
         title.insertAdjacentElement("afterend", subtitle);
       }
-      if (meta) meta.textContent = `${post.category} · ${post.date} · ${rendered.readingTime} min read · ${rendered.wordCount.toLocaleString()} 字词`;
+      if (meta) meta.textContent = hasChinese(primaryTitle)
+        ? `${SECTION_LABELS[post.section]} · ${post.date} · 约 ${rendered.readingTime} 分钟 · ${rendered.wordCount.toLocaleString()} 字词`
+        : `${post.category} · ${post.date} · ${rendered.readingTime} min read · ${rendered.wordCount.toLocaleString()} words`;
       article.innerHTML = rendered.html;
       buildArticleToc(rendered.headings);
       buildReadingControls(article);

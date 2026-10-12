@@ -1,4 +1,4 @@
-# Omni 模型训练全流程：算力、数据配比、阶段配方与从 SFT 到 Agentic RL
+# Omni 模型训练：算力、数据与分阶段评测
 
 “训练一个 Omni 模型需要多少张卡？”这个问题没有脱离训练目标的固定答案。同一个 7B 模型，做 LoRA 行为微调、冻结 codec 的双工 Mid-training、全参数多模态继续预训练，以及带 reference model 和实时音频 rollout 的 RL，所需显存和吞吐可能相差一个数量级。数据配比也不是“文本 30%、音频 40%”这样一次写死的采购清单，而是一个由能力退化、交互失败和 loss 贡献共同驱动的控制变量。
 
@@ -8,7 +8,7 @@
 
 ![Omni training stage map](/images/blog/omni-training-stage-map.svg "图 1：Omni 训练不是一次端到端联合优化，而是从表示、对齐、连续时间交互到 Agentic policy 的逐阶段晋级过程。")
 
-## 1. 一页结论
+## 1. 核心结论
 
 - **先定义训练任务，再谈卡数。** LoRA、partial tuning、全参数 CPT 和在线 RL 的资源模型完全不同；“7B 能不能用 8 卡训练”不是完整问题。
 - **默认不要从零预训练。** 对多数研究团队，合理起点是强文本或现有 Omni checkpoint；从零复现多万亿文本 token 和百万小时音频不属于普通论文预算。

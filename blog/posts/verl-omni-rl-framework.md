@@ -1,6 +1,6 @@
-# VeRL-Omni: 面向多模态生成模型的 RL 后训练基础设施
+# VeRL-Omni：多模态强化学习后训练基础设施
 
-`verl-project/verl-omni` 是一个很值得关注的开源项目。它表面上是 `verl` 生态里的一个多模态 RL 训练仓库，但如果从研究系统的角度看，它真正重要的地方不只是“又支持了几个模型”，而是把多模态生成模型的后训练问题拆成了几个可以组合的工程层：高吞吐 rollout、异步 reward、分布式 actor 训练、模型族适配、奖励服务、稳定性修正和端到端 recipe。对于 diffusion、统一多模态理解生成模型、以及 Qwen3-Omni 这样的 omni model，这种拆分比单独讨论某个算法更关键。
+`verl-project/verl-omni` 是面向多模态生成模型的强化学习（Reinforcement Learning，RL）训练框架。它把训练过程拆成样本生成、奖励计算、分布式模型更新和模型适配等工程层，覆盖扩散模型、统一理解与生成模型，以及 Qwen3-Omni 这类全模态模型。本文关注各层的职责、性能约束与复现条件。
 
 我更愿意把 VeRL-Omni 看作一个面向 multimodal generative RL 的系统框架，而不是单一算法库。传统 RLHF 或 PPO 框架主要围绕文本 LLM 展开：action 是离散 token，rollout 是自回归生成，reward 多数是规则、RM 或 LLM judge，训练瓶颈也主要在序列长度、KV cache 和 actor/reference/critic 的资源编排。多模态生成模型则完全不同：diffusion model 的 action 可以是连续去噪轨迹，video generation 的样本很重，reward 可能是 OCR、VLM judge、HPSv3 或外部 HTTP scorer，rollout 后端还要能处理图像、视频、音频和复杂 pipeline。因此，直接把文本 RLHF 框架套到多模态生成上，通常会在 I/O、显存、吞吐、reward latency 和数值稳定性上遇到问题。
 

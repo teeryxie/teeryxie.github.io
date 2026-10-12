@@ -1,4 +1,4 @@
-# GPT-Live-1：全双工语音、委派式推理与交互策略的新范式
+# GPT-Live-1：全双工语音与委派式推理
 
 > **发布于 2026 年 7 月 8 日。** 本文研究的对象是 OpenAI 新发布的 **GPT-Live-1**，不是此前 `gpt-realtime` API 的泛称，也不是 Google Gemini Live。由于 OpenAI 尚未发表模型论文，本文严格区分官方发布、OpenAI 员工公开答疑、第三方 benchmark 与社区早期体验；没有公开的数据不会被包装成确定结论。
 
@@ -8,7 +8,7 @@ GPT-Live 最值得研究的地方，并不是声音“更像人”了。它真�
 
 ![GPT-Live evolution](/images/blog/gpt-live-evolution.svg "图 1：从轮次制 Advanced Voice 到全双工 GPT-Live-1，关键变化是交互控制与后台推理解耦。")
 
-## 1. 一页结论：GPT-Live-1 到底发布了什么
+## 1. 核心结论：GPT-Live-1 到底发布了什么
 
 根据 [OpenAI 官方发布页](https://openai.com/index/introducing-gpt-live/) 与发布讨论中的 OpenAI 团队公开答疑，当前可以确认的产品事实如下。
 
@@ -270,7 +270,7 @@ API 开放后，研究者应固定模型快照、网络和客户端播放实现�
 
 ## 15. 最终判断
 
-GPT-Live-1 是 OpenAI 自 GPT-4o 以来最重要的一次语音交互更新，因为它承认了两个事实。
+GPT-Live-1 的公开设计值得从两个方面研究。
 
 第一，优秀语音交互不等于把更强 LLM 接到更快 TTS。模型必须学习什么时候不说、什么时候只给一个极短反馈、什么时候停止、该听谁，以及中途改变计划。
 
@@ -280,7 +280,7 @@ GPT-Live-1 是 OpenAI 自 GPT-4o 以来最重要的一次语音交互更新，�
 
 因此，对 GPT-Live 最准确的评价不是“语音聊天终于像人”，而是：
 
-> **它把实时语音模型从轮次制生成器推进为持续运行的交互策略，并首次在主流产品中明确结合 full duplex 与后台 frontier-model delegation。自然附和与打断只是表面，真正的研究对象是连续时间上的 belief、routing、timing 和 control。**
+> **它把实时语音模型从轮次制生成器推进为持续运行的交互策略，并明确结合 full duplex 与后台 frontier-model delegation。自然附和与打断只是表面，真正的研究对象是连续时间上的 belief、routing、timing 和 control。**
 
 ## 参考资料
 

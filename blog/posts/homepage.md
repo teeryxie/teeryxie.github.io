@@ -1,6 +1,6 @@
-# Building a Research Homepage That Does Not Feel Like a Template
+# Designing and Maintaining an Academic Homepage
 
-An academic homepage should answer three questions quickly: who the researcher is, what they work on, and where the strongest artifacts are. It should not force visitors to decode a long paragraph or dig through a CV before seeing the research identity.
+An academic homepage should answer three questions quickly: who the researcher is, what they work on, and where to find their publications, code, and research materials. A concise introduction and direct links help visitors locate this information without reading the full CV.
 
 This version uses a compact structure: profile, research focus, representative publications, projects, blog, and CV. The blog is Markdown-based so paper introductions and daily writing can be edited without touching layout code.
 

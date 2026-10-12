@@ -1,10 +1,10 @@
-# SocialOmni: Benchmarking Audio-Visual Social Interactivity
+# SocialOmni: Audio-Visual Social Interactivity
 
 Social interaction is naturally multimodal. Facial expressions, gaze, body movement, speech tone, timing, and scene context all matter. A model that reads only text or isolated frames can miss the social signals people use to understand what is happening.
 
 **SocialOmni** is built around this gap. It evaluates omni models on audio-visual social interactivity, asking whether a system can reason over synchronized cues rather than treating each modality as a separate input stream.
 
-## What the benchmark emphasizes
+## Evaluation scope
 
 - Audio-visual alignment in social scenes.
 - Interaction understanding beyond static object recognition.

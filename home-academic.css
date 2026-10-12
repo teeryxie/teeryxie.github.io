@@ -1,31 +1,21 @@
+@import url('/academic.css');
 /* Hallmark · theme: studied-DNA (source: https://howardli1984.github.io/)
  * pre-emit critique: P5 H5 E4 S5 R5 V4
  * Academic profile column and illustrated publication list; uses the user's own research assets. */
 :root {
-  --home-paper: #fff;
-  --home-ink: #494e52;
-  --home-muted: #737d85;
-  --home-accent: #224b8d;
-  --home-accent-hover: #173562;
-  --home-rule: #f0f1f2;
-  --home-frame: #e7e9eb;
-  --home-venue: #083d9e;
-  --home-font: "Trebuchet MS", Helvetica, Arial, sans-serif;
-  --home-header-height: 54px;
+  --home-paper: var(--color-paper);
+  --home-ink: var(--color-ink);
+  --home-muted: var(--color-muted);
+  --home-accent: var(--color-accent);
+  --home-accent-hover: var(--color-accent-hover);
+  --home-rule: var(--color-rule);
+  --home-frame: var(--color-rule);
+  --home-venue: var(--color-venue);
+  --home-font: var(--font-body);
+  --home-header-height: var(--header-height);
 }
-* { box-sizing: border-box; }
 html { scroll-padding-top: calc(var(--home-header-height) + 20px); overflow-x: clip; }
-body { margin: 0; background: var(--home-paper); color: var(--home-ink); font: 15px/1.55 var(--home-font); overflow-x: clip; }
-a { color: var(--home-accent); text-decoration: underline; text-underline-offset: 2px; }
-a:hover { color: var(--home-accent-hover); }
-a:focus-visible { outline: 2px solid var(--home-accent); outline-offset: 4px; }
-p { margin: 0 0 12px; }
-h1, h2, h3 { min-width: 0; overflow-wrap: anywhere; font-style: normal; }
-.masthead { position: sticky; top: 0; z-index: 10; background: var(--home-paper); border-bottom: 1px solid var(--home-rule); }
-.nav { display: flex; align-items: center; flex-wrap: wrap; gap: 0 30px; min-height: var(--home-header-height); max-width: 1440px; margin: auto; padding: 8px 24px; }
-.nav a { color: var(--home-muted); padding: 6px 0; font-weight: 600; text-decoration: none; white-space: nowrap; }
-.nav a:hover { color: var(--home-accent); }
-.nav .home-brand { margin-right: 20px; }
+
 .home-shell { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 48px; max-width: 1360px; margin: 0 auto; padding: 28px 30px 40px; }
 .sidebar { position: sticky; top: calc(var(--home-header-height) + 28px); align-self: start; }
 .avatar { display: block; width: 170px; height: 170px; object-fit: cover; border: 4px solid var(--home-paper); outline: 1px solid var(--home-frame); border-radius: 50%; margin: 10px 0 18px; }
@@ -61,14 +51,10 @@ h1, h2, h3 { min-width: 0; overflow-wrap: anywhere; font-style: normal; }
 .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--home-rule); color: var(--home-muted); font-size: 13px; }
 .footer a { white-space: nowrap; }
 @media (max-width: 1000px) {
-  .nav { gap: 0 22px; }
-  .nav .home-brand { margin-right: 0; }
   .home-shell { grid-template-columns: 185px minmax(0, 1fr); gap: 30px; padding-inline: 24px; }
   .home-publication { grid-template-columns: minmax(0, 0.35fr) minmax(0, 0.65fr); gap: 20px; }
 }
 @media (max-width: 800px) {
-  :root { --home-header-height: 90px; }
-  .nav { gap: 0 22px; padding: 7px 18px; font-size: 14px; }
   .home-shell { grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 24px 20px 32px; }
   .sidebar { position: static; display: grid; grid-template-columns: 106px minmax(0, 1fr); gap: 0 22px; }
   .avatar { width: 100px; height: 100px; grid-row: 1 / 5; margin: 0; }
@@ -81,8 +67,6 @@ h1, h2, h3 { min-width: 0; overflow-wrap: anywhere; font-style: normal; }
   .profile-links li { margin: 5px 0; }
 }
 @media (max-width: 540px) {
-  :root { --home-header-height: 116px; }
-  .nav { gap: 0 19px; padding-inline: 16px; }
   .home-shell { padding-inline: 16px; }
   .sidebar { grid-template-columns: 80px minmax(0, 1fr); gap: 0 16px; }
   .avatar { width: 76px; height: 76px; }

@@ -1,6 +1,6 @@
-# Multi-Query Attention 与 RoPE：从 KV Cache 带宽到旋转位置编码
+# 多查询注意力、旋转位置编码与 KV 缓存
 
-Multi-Query Attention（MQA，多查询注意力）和 Rotary Position Embedding（RoPE，旋转位置编码）经常同时出现在现代大语言模型的架构说明里。它们都作用于 attention，却解决完全不同的问题：MQA 改变 query head 与 key/value head 的数量关系，目标是减少自回归解码时的 KV Cache 和内存带宽；RoPE 改变 query 与 key 携带位置的方式，目标是让注意力分数自然依赖 token 之间的相对距离。
+**多查询注意力（Multi-Query Attention，MQA）** 让多个查询头共享键和值，减少逐步生成文本时需要读取的历史缓存。**旋转位置编码（Rotary Position Embedding，RoPE）** 则把位置信息注入查询与键，使注意力分数依赖序列中的相对距离。这里的 **KV 缓存（KV Cache）** 保存历史输入的键和值表示，避免每次生成新内容时重新计算。两种设计分别处理缓存开销和位置表达。
 
 一句话概括：**MQA 决定“要缓存多少组 K/V”，RoPE 决定“Q/K 如何知道自己处在什么位置”。** 一个模型可以同时使用两者，也可以只使用其中一个。
 

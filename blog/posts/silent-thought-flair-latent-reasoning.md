@@ -1,6 +1,6 @@
-# The Silent Thought 论文精读：全双工语音模型如何在倾听时进行隐式推理
+# FLAIR：全双工语音模型中的隐空间推理
 
-人在对话中并不是等对方说完最后一个字，才从零开始理解。我们会随着语音展开持续修正意图判断：听到“帮我订一张明天……”时先形成出行假设，听到“去上海的高铁”后补全目的地与交通方式，听到“算了，改后天”时撤销旧日期。真正自然的交互，依赖的不是一句话结束后的单次推理，而是**监听期间不断演化的内部状态**。
+人在倾听时会持续修正对目标的判断。例如，“帮我订一张明天……”提出初步出行意图，“去上海的高铁”补全目的地与方式，“算了，改后天”则修正日期。全双工语音研究关注模型能否在输入尚未结束时完成类似的状态更新，而不必等待完整话轮后重新推理。
 
 《[The Silent Thought: Modeling Internal Cognition in Full-Duplex Spoken Dialogue Models via Latent Reasoning](https://arxiv.org/abs/2603.17837)》正面研究了这个空白。Donghang Wu、Tianyu Zhang、Yuxin Li、Hexin Liu、Chen Chen、Eng Siong Chng 与 Yoshua Bengio 提出的 **FLAIR（Full-duplex LAtent and Internal Reasoning）**，不让全双工模型在用户说话时反复生成没有信息的 `<SIL>`，也不强迫它输出一条可见的流式 Chain-of-Thought，而是把上一时刻的词表概率分布投影回 embedding 空间，递归地作为下一时刻输入。训练时，一个能看到完整用户语音和未来助手回复的非因果 Global-aware Expert 提供“后验”latent target；推理时移除 Expert，只留下严格因果的流式模型。
 
@@ -8,7 +8,7 @@
 
 ![Listening-time computation problem](/images/blog/silent-thought-problem.svg "图 1：传统全双工模型、显式流式 CoT 与 FLAIR 在用户说话期间采用的三种计算路径。本文根据论文机制整理。")
 
-## 1. 一页结论：这篇论文做了什么
+## 1. 核心结论：这篇论文做了什么
 
 先给出我的总体判断。
 

@@ -3,42 +3,46 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Blog | Tianyu Xie</title>
-  <meta name="description" content="Blog posts and research notes by Tianyu Xie.">
+  <title>Research Notes | Tianyu Xie</title>
+  <meta name="description" content="Research notes on omni-modal modeling, full-duplex interaction, training, and inference by Tianyu Xie.">
   <link rel="icon" href="/images/profile.png">
   <link rel="stylesheet" href="/site.css">
   <script src="/blog/blog-data.js" defer></script>
   <script src="/site-ui.js" defer></script><script src="/blog/markdown.js" defer></script>
 </head>
 <body class="blog-index">
-  <header class="masthead">
-    <nav class="nav" aria-label="Primary navigation">
-      <a class="brand" href="/">Tianyu Xie <small>谢天宇</small></a>
-      <div class="links">
-        <a href="/publications/">Publications</a>
-        <a href="/projects/">Projects</a>
-        <a class="active" aria-current="page" href="/blog/">Blog</a>
-        <a href="/cv/">CV</a>
-      </div>
-    </nav>
-  </header>
+  <header class="masthead"><nav class="nav" aria-label="Primary navigation">
+    <a class="home-brand" href="/">Homepage</a>
+    <a href="/#about-me">About Me</a>
+    <a href="/#news">News</a>
+    <a href="/publications/">Publications</a>
+    <a href="/projects/">Projects</a>
+    <a href="/#education">Education</a>
+    <a href="/#service">Academic Service</a>
+    <a aria-current="page" href="/blog/">Research Notes</a>
+    <a href="/cv/">CV</a>
+  </nav></header>
 
   <main class="shell blog-shell">
-    <aside class="sidebar blog-author-rail">
-      <section class="profile-card blog-author">
-        <img class="avatar" src="/images/profile.png" alt="Tianyu Xie profile photo">
-        <div class="blog-author-copy">
-          <h2 class="name">Tianyu Xie <span lang="zh-CN">/ 谢天宇</span></h2>
-          <p class="bio">Research notes, paper readings, surveys, and project logs.</p>
-        </div>
+    <aside class="sidebar" aria-label="Personal profile">
+      <section class="profile-card">
+        <img class="avatar" src="/images/profile.png" alt="Portrait of Tianyu Xie" width="170" height="170">
+        <h2 class="name">Tianyu Xie</h2><p class="cn-name" lang="zh-CN">谢天宇</p>
+        <p><strong>Xiamen University</strong></p>
+        <p class="bio">Master's student at the Media Analytics and Computing (MAC) Lab, advised by <a href="https://zhengxiawu.github.io/">Prof. Xiawu Zheng</a>.</p>
+        <ul class="profile-links">
+          <li><svg class="ui-icon" aria-hidden="true"><use href="/images/icons.svg#mail"></use></svg><a href="mailto:teery@stu.xmu.edu.cn">Email</a></li>
+          <li><svg class="ui-icon" aria-hidden="true"><use href="/images/icons.svg#github"></use></svg><a href="https://github.com/teeryxie">GitHub</a></li>
+          <li><svg class="ui-icon" aria-hidden="true"><use href="/images/icons.svg#scholar"></use></svg><a href="https://scholar.google.com/citations?hl=en&amp;user=_vZWAnkAAAAJ">Google Scholar</a></li>
+          <li><svg class="ui-icon" aria-hidden="true"><use href="/images/icons.svg#review"></use></svg><a href="https://openreview.net/profile?id=~Tianyu_Xie2">OpenReview</a></li>
+        </ul>
       </section>
     </aside>
 
     <article class="content">
       <header class="inner-hero">
-        <p class="inner-kicker">Research journal</p>
-        <h1 class="page-title">Blog</h1>
-        <p class="lead">Research notes, paper readings, surveys, publications, and project logs.</p>
+        <h1 class="page-title">Research Notes <span lang="zh-CN">/ 研究笔记</span></h1>
+        <p class="lead">论文阅读、研究综述与实验记录，涵盖全模态建模、实时交互、模型训练与推理。</p>
       </header>
       <form class="blog-search" role="search" data-blog-search>
         <label for="blog-search-input">搜索文章</label>
@@ -47,12 +51,12 @@
         <button class="blog-search-clear" type="button" data-search-clear aria-label="清空搜索" title="清空搜索" hidden>×</button>
       </form>
       <div class="blog-filter" data-blog-filter aria-label="Blog category filters">
-        <button class="active" type="button" data-section="all" aria-pressed="true">All <span>37</span></button>
-        <button type="button" data-section="Research Notes" aria-pressed="false">Research Notes <span>16</span></button>
-        <button type="button" data-section="Surveys" aria-pressed="false">Surveys <span>9</span></button>
-        <button type="button" data-section="Paper Readings" aria-pressed="false">Paper Readings <span>7</span></button>
-        <button type="button" data-section="Publications" aria-pressed="false">Publications <span>4</span></button>
-        <button type="button" data-section="Logs" aria-pressed="false">Logs <span>1</span></button>
+        <button class="active" type="button" data-section="all" aria-pressed="true">全部 <span>37</span></button>
+        <button type="button" data-section="Research Notes" aria-pressed="false">研究笔记 <span>16</span></button>
+        <button type="button" data-section="Surveys" aria-pressed="false">综述 <span>9</span></button>
+        <button type="button" data-section="Paper Readings" aria-pressed="false">论文阅读 <span>7</span></button>
+        <button type="button" data-section="Publications" aria-pressed="false">论文说明 <span>4</span></button>
+        <button type="button" data-section="Logs" aria-pressed="false">记录 <span>1</span></button>
       </div>
       <div class="blog-results-bar">
         <p data-blog-result-count aria-live="polite">37 篇文章</p>

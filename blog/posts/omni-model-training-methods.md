@@ -1,6 +1,6 @@
-# How to Train Omni Models: 从模态对齐到 RL 后训练
+# Omni 模型训练方法：模态对齐与后训练
 
-Omni model 的训练方法不能简单理解成“把图像、音频、视频数据都喂给 LLM”。真正困难的是：不同模态有不同采样率、不同 token 形式、不同输出空间、不同延迟约束和不同 reward。文本是离散 token，图像是空间 patch 或视觉 embedding，音频是高频连续信号或 codec token，视频是时间和空间的组合，语音输出还要求低延迟、自然 prosody、可被打断。训练一个 omni model，本质上是在训练一个能够跨模态感知、跨时间对齐、跨输出形式生成、并能在真实交互中持续优化的系统。
+Omni 模型的训练需要联合处理文本、图像、音频和视频的表示。不同模态在采样率、编码方式、输出空间和延迟约束上存在差异；语音生成还需要兼顾韵律、流式输出和打断响应。因此，训练目标不仅包括跨模态理解，也包括时间对齐、生成质量与交互行为。
 
 从 GPT-4o 之后的公开研究看，omni model 的训练大致形成了五层流程：模态编码与 tokenization、模态对齐预训练、多模态指令微调、流式语音/音视频生成训练、以及 reward-based post-training。不同论文会强调不同层。例如 AnyGPT 关注离散 token 统一建模，VITA 和 Baichuan-Omni 关注多阶段 multimodal alignment + instruction tuning，Mini-Omni 和 LLaMA-Omni 关注 speech interaction 的低延迟训练，Moshi 关注 full-duplex speech-to-speech，Qwen2.5-Omni 关注 TMRoPE、Thinker-Talker 和 streaming，VeRL-Omni 则把 RL 后训练工程化。
 
@@ -116,7 +116,7 @@ Omni RL 的难点是 reward design。一个模型可能学会让语音更讨好 
 
 Omni model 的训练方法正在从“多模态 SFT”走向“实时交互系统训练”。早期训练关注的是把视觉和音频接进 LLM；现在训练要同时考虑流式输入、自然语音输出、音视频时间对齐、长上下文、高效推理、用户偏好和安全边界。
 
-如果用一句话概括：训练 omni model 不是训练一个会接收多种模态的模型，而是训练一个能在不确定、连续、嘈杂、实时的人类环境中稳定协作的系统。这也是为什么它和普通 VLM 不同。VLM 的核心问题是理解，omni model 的核心问题是交互。
+面向交互的 Omni 训练应同时评估多模态理解、流式生成和行为控制。输入模态数量本身不足以说明交互质量；实时任务还需要检验系统在噪声、不确定信息和用户纠正下是否稳定。
 
 ## 参考资料
 

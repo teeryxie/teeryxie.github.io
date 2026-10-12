@@ -1,8 +1,8 @@
-# DataFlow-Harness：从可编辑数据流水线到 Benchmark-Grounded 数据飞轮
+# DataFlow-Harness：可编辑数据流水线与评测反馈
 
 > **论文**：[DataFlow-Harness: A Grounded Code-Agent Platform for Constructing Editable LLM Data Pipelines](https://arxiv.org/abs/2607.16617)，arXiv:2607.16617v2，2026 年 7 月。作者来自北京大学、上海算法创新研究院与北京中关村学院。本文不只介绍论文，还回答一个更具体的问题：能否用 DataFlow-Harness 结合数据飞轮，参照 benchmark 的标准协议自动生成、筛选和回流训练数据？
 
-我的结论是：**可以，而且 DataFlow-Harness 很适合作为飞轮的“可编辑控制平面”；但它本身还不是完整的数据飞轮，也不能仅靠 DAG 校验和 LLM-as-a-Judge 保证数据质量。** 真正可用的方案，需要在 DataFlow-Harness 之上增加机器可读的 Benchmark Contract、数据级 provenance、确定性验证器、污染隔离、难度与覆盖控制、shadow training 和 promotion gate。
+DataFlow-Harness 可以作为数据改进循环的编辑与管理层，但它本身不构成完整的数据飞轮。这里的“数据飞轮”指根据评测错误生成候选数据，再通过训练和独立评测验证效果的循环。可靠的方案还需要固定评测协议、记录数据来源、确定性验证、污染隔离、难度与覆盖控制，以及进入正式训练前的小规模验证。仅检查流水线结构或由大模型打分，不能保证数据质量。
 
 一句话概括这项工作的价值：
 

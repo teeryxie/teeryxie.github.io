@@ -1,8 +1,8 @@
-# TMRoPE in Qwen2.5-Omni: 面向 Omni 模型的时间对齐位置编码
+# Qwen2.5-Omni 中的 TMRoPE：时间对齐位置编码
 
-Qwen2.5-Omni 是 Qwen 团队在 omni-modal 方向上的一个重要系统：它不仅接收文本、图像、音频和视频，还能够以流式方式生成文本和自然语音。相比传统的 VLM 或者 speech LLM，omni 模型最麻烦的地方并不只是“模态更多”，而是这些模态天然处在不同的时间尺度上。图像是空间结构，视频是离散帧序列，音频是高频连续信号，文本又是离散 token 序列。如果模型只是把它们粗暴拼接成一个长序列，再丢给 Transformer，那么模型很容易知道“谁在前谁在后”，却不一定知道“哪个声音对应哪个画面”“某一帧与哪段语音发生在同一时刻”。
+Qwen2.5-Omni 接收文本、图像、音频和视频，并流式生成文本与语音。不同模态具有不同的空间结构和时间尺度：图像由空间区域组成，视频是帧序列，音频是连续信号，文本则被切成离散处理单位。简单拼接可以保留前后顺序，却不能明确表达哪个声音与哪个画面同时发生。
 
-TMRoPE，全称 **Time-aligned Multimodal RoPE**，就是 Qwen2.5-Omni 技术报告中为解决音视频时间同步而提出的位置编码方法。它不是一个孤立的小 trick，而是服务于整个 omni 架构的关键接口：前端编码器负责把音频、图像、视频切成可被 LLM 消化的表示，TMRoPE 负责把这些表示放到一个统一的时空坐标系里，Thinker 再基于这些对齐后的 token 做语言层面的理解与推理，Talker 则利用 Thinker 的隐状态生成语音 token。换句话说，TMRoPE 的作用不是直接提升某个 benchmark 分数，而是让多模态 token 在进入共享注意力之前具备更合理的时间参照。
+**TMRoPE（Time-aligned Multimodal Rotary Position Embedding，时间对齐多模态旋转位置编码）** 为这些表示建立共同的时空坐标。前端编码器把各模态转成模型输入，TMRoPE 提供位置与时间参照，Thinker 进行多模态理解，Talker 根据其内部表示生成语音。它提供融合前的坐标约束，但不能单独保证语义对齐或交互能力。
 
 ![TMRoPE overview](/images/blog/tmrope-overview.svg "图 1：TMRoPE 在 Qwen2.5-Omni 管线中的位置。")
 

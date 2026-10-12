@@ -1,6 +1,6 @@
-# Megatron-LM、DeepSpeed 与 Colossal-AI：大模型分布式训练框架怎么选
+# Megatron-LM、DeepSpeed 与 Colossal-AI：分布式训练框架比较
 
-Megatron-LM、DeepSpeed 和 Colossal-AI 经常出现在同一张“大模型训练框架”列表里。它们都能做分布式训练，都谈 tensor parallel、pipeline parallel、ZeRO、mixed precision 和 checkpoint，却不是三个完全对位的产品。
+Megatron-LM、DeepSpeed 和 Colossal-AI 都支持多设备训练，但它们管理模型结构、训练状态和执行过程的方式不同。张量并行拆分同一层的计算，流水线并行分配不同网络层，ZeRO 将参数、梯度或优化器状态分散存储。这些功能即使名称相同，也可能对应不同的模型改写、运行约束和检查点格式。
 
 最容易理解它们的方法，不是比较谁的功能勾选更多，而是先问：**谁在控制模型结构，谁在控制训练状态，谁在控制并行进程组，谁在控制执行引擎？**
 

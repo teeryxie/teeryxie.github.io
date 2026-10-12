@@ -1,6 +1,6 @@
-# MFU 与 MoE 4D/5D 混合并行：从利用率公式到 DP、TP、PP、EP、CP
+# MoE 训练中的计算利用率与混合并行
 
-训练大模型时，人们经常同时讨论两类问题：一类是“这批 GPU 到底跑得好不好”，对应 Model FLOPs Utilization（MFU，模型 FLOPs 利用率）；另一类是“模型和数据应该怎样切到这些 GPU 上”，对应 Data Parallelism（DP）、Tensor Parallelism（TP）、Pipeline Parallelism（PP）、Expert Parallelism（EP）以及 Context Parallelism（CP）。
+大模型训练需要同时回答两个问题：算力利用得怎样，以及模型和数据如何分配到各张卡。**模型计算利用率（Model FLOPs Utilization，MFU）** 衡量模型必要计算量相对设备理论峰值算力的比例，其中 FLOPs 指浮点运算量。并行策略包括：数据并行（DP）分配不同训练样本，张量并行（TP）拆分同一层的计算，流水线并行（PP）分配不同网络层，专家并行（EP）分配混合专家模型的子网络，上下文并行（CP）拆分长序列。
 
 这两类问题必须放在一起看。并行度不是越多越先进，每增加一个并行维度，都会用新的通信、同步或流水线空泡换取显存容量与可扩展性。MFU 则把这些代价最终压缩成一个效率信号：理想模型计算量占设备理论峰值算力的多少。
 

@@ -1,0 +1,37 @@
+/* Shared academic typography and navigation. All page families consume these tokens. */
+:root {
+  --color-paper: #fff;
+  --color-ink: #494e52;
+  --color-muted: #68727b;
+  --color-accent: #224b8d;
+  --color-accent-hover: #173562;
+  --color-rule: #e7e9ec;
+  --color-soft: #f6f7f9;
+  --color-venue: #083d9e;
+  --color-error: #a53d48;
+  --color-backdrop: rgba(20, 28, 38, 0.72);
+  --font-body: "Trebuchet MS", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", Helvetica, Arial, sans-serif;
+  --font-mono: "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+  --header-height: 54px;
+  --max-width: 1360px;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { overflow-x: clip; scroll-padding-top: calc(var(--header-height) + 20px); }
+body { margin: 0; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: 15px; line-height: 1.6; overflow-x: clip; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
+a:hover { color: var(--color-accent-hover); }
+a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }
+p { margin: 0 0 12px; }
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-body); font-style: normal; line-height: 1.4; min-width: 0; overflow-wrap: anywhere; }
+.masthead { position: sticky; top: 0; z-index: 20; background: var(--color-paper); border-bottom: 1px solid var(--color-rule); }
+.nav { display: flex; align-items: center; flex-wrap: wrap; gap: 0 24px; min-height: 54px; max-width: 1440px; margin: auto; padding: 8px 24px; }
+.nav a { padding: 6px 0; font-weight: 600; color: var(--color-muted); text-decoration: none; white-space: nowrap; }
+.nav .home-brand { margin-right: 14px; }
+.nav a:hover, .nav a[aria-current="page"] { color: var(--color-accent); }
+.ui-icon, .section-icon { width: 1.15em; height: 1.15em; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 1100px) { :root { --header-height: 88px; } .nav { gap: 0 22px; } .nav .home-brand { margin-right: 0; } }
+@media (max-width: 800px) { .nav { padding-inline: 18px; font-size: 14px; gap: 0 20px; } }
+@media (max-width: 540px) { :root { --header-height: 144px; } .nav { padding-inline: 16px; gap: 0 18px; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }

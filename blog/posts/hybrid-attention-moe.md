@@ -1,8 +1,8 @@
-# Hybrid Attention MoE: 面向长上下文 Omni 模型的高效架构
+# 长上下文 Omni 模型中的混合注意力与稀疏专家
 
-Hybrid Attention Mixture-of-Experts，简称 Hybrid Attention MoE，可以理解为新一代长上下文大模型在“注意力成本”和“模型容量”之间做出的系统级折中。它不是一个单独模块，而是一组架构思想的组合：一方面，模型不再把所有层都设计成昂贵的全局 self-attention，而是把全局注意力、滑动窗口注意力、线性或递归状态更新、门控注意力等机制混合起来；另一方面，前馈网络部分不再让每个 token 都激活全部参数，而是用稀疏 MoE 路由到少量专家，让模型拥有更大的总容量，但保持相对可控的每 token 计算量。
+**混合注意力（Hybrid Attention）** 在同一模型中组合全局注意力、局部注意力或高效状态更新机制，以降低长序列处理成本。**混合专家（Mixture-of-Experts，MoE）** 为每个输入单位选择少量参数组参与计算，在控制计算量的同时扩大总容量。两者分别处理序列成本和条件容量，是长上下文模型中互补的设计。
 
-这类设计在纯文本长上下文模型里已经很重要，在 omni 模型里更是几乎不可避免。原因很直接：omni 输入不是普通文本，而是文本、图像、视频、音频、语音输出历史、工具调用、用户交互状态共同组成的长流。一个 400 秒视频、一段 10 小时音频或一个持续多轮的实时助手会话，都可能迅速把上下文推到几十万 token 级别。如果继续依赖每层完整 self-attention，成本会非常高；如果完全放弃全局注意力，又容易丢掉跨时间、跨模态、跨事件的关键依赖。Hybrid Attention MoE 的核心价值就在这里：把“全局建模能力”保留下来，同时把长序列处理的主要负担交给更高效的混合层和稀疏专家。
+这类设计在纯文本长上下文模型里已经很重要，在 Omni 模型中也具有重要应用价值。原因很直接：omni 输入不是普通文本，而是文本、图像、视频、音频、语音输出历史、工具调用、用户交互状态共同组成的长流。一个 400 秒视频、一段 10 小时音频或一个持续多轮的实时助手会话，都可能迅速把上下文推到几十万 token 级别。如果继续依赖每层完整 self-attention，成本会非常高；如果完全放弃全局注意力，又容易丢掉跨时间、跨模态、跨事件的关键依赖。Hybrid Attention MoE 的核心价值就在这里：把“全局建模能力”保留下来，同时把长序列处理的主要负担交给更高效的混合层和稀疏专家。
 
 ![Hybrid Attention MoE overview](/images/blog/hybrid-attention-moe-overview.svg "图 1：Hybrid Attention MoE 在长上下文 omni 模型中的基本位置。")
 
@@ -74,11 +74,11 @@ Talker 使用类似思想则更多服务于低延迟语音生成。语音输出�
 
 第三，Hybrid Attention 可以和事件边界结合。长视频中的关键不是每一秒都同等重要，而是事件发生变化的位置更重要。如果模型能够在事件边界附近使用更强的全局注意力，在平稳片段使用更高效的状态更新，那么计算资源会更符合视频本身的结构。这与 frame selection、semantic boundary detection 和 long-video grounding 都有天然联系。
 
-从我自己的研究兴趣看，Hybrid Attention MoE 和 training-free multimodal orchestration 也有关联。Orchestration 关注的是系统层面如何选择、组合和调用不同模型或专家；MoE 则是在模型内部做 token-level expert routing。一个在外部调度专家，一个在内部路由专家。二者都指向同一个趋势：未来多模态系统不会是单一 dense 模型包打天下，而会越来越依赖条件计算、动态选择和结构化协同。
+从我自己的研究兴趣看，Hybrid Attention MoE 和 training-free multimodal orchestration 也有关联。Orchestration 关注的是系统层面如何选择、组合和调用不同模型或专家；MoE 则是在模型内部做 token-level expert routing。一个在外部调度专家，一个在内部路由专家。二者都指向同一个趋势：这些设计为多模态系统中的条件计算、动态选择和结构化协同提供了不同层次的实现路径。
 
 ## 局限与需要谨慎的地方
 
-Hybrid Attention MoE 很有吸引力，但不能把它神化。首先，混合注意力的设计空间很大，不同模型的具体实现差异可能非常大。Gated attention、linear attention、sliding window、DeltaNet、state-space layer、global attention 的组合比例都会影响性能。公开博客或模型卡通常只给出高层描述，不能据此推断所有内部细节。
+Hybrid Attention MoE 的收益取决于具体架构与系统实现。首先，混合注意力的设计空间很大，不同模型的具体实现差异可能非常大。Gated attention、linear attention、sliding window、DeltaNet、state-space layer、global attention 的组合比例都会影响性能。公开博客或模型卡通常只给出高层描述，不能据此推断所有内部细节。
 
 其次，MoE 的实际收益取决于训练和系统实现。路由不均衡、专家退化、通信开销、推理框架支持不足，都可能抵消理论收益。尤其在多模态场景里，token 分布比纯文本更复杂，专家负载也可能随输入类型大幅变化。如果没有良好的负载均衡和部署优化，MoE 可能在论文指标上好看，但在线推理体验不稳定。
 

@@ -1,4 +1,4 @@
-# 全双工 Omni 的心智理论：从 MeetingToM 标签到 Mental World Modeling 轨迹
+# 全双工 Omni 模型的心智理论：从离线标签到在线状态
 
 > 联合精读 [MeetingToM](https://arxiv.org/abs/2607.19235) 与 [Mental World Modeling](https://arxiv.org/abs/2607.27201)。本文关注的不是模型能否猜中一个心理标签，而是标签究竟如何构造、它代表谁的判断、模型在什么时间获得了哪些证据，以及这种心智假设如何进入全双工交互策略。
 

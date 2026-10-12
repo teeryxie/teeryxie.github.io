@@ -1,8 +1,8 @@
-# Harness 工程：把模型能力变成可靠执行，以及四个值得研究的开源项目
+# Agent Harness 工程：执行验证、恢复与四个开源项目
 
-Claude Code 装好了，Skills 配了，MCP 也接了，为什么 Agent 仍会做到一半就宣布完成、声称已经发布但线上什么都没有，或者换一个会话便忘记昨天的决定？最直觉的解释是“模型不够强”。但在很多真实任务里，失败并不是因为模型不会写代码，而是因为系统没有给它**完成定义、真实环境、权限边界、外部状态、验证证据和失败恢复路径**。
+编码 Agent 可能在任务尚未完成时宣布交付，或在切换会话后丢失关键决定。这类失败不仅取决于模型能力，也与系统是否提供明确的完成条件、真实环境反馈、权限边界、验证证据和恢复路径有关。
 
-这正是 Harness Engineering 想解决的问题。
+**Agent Harness** 指支撑模型执行任务的运行环境与控制机制：它管理状态和工具操作，接收外部反馈，并帮助系统验证结果、从失败中恢复。
 
 本文从一份流传很广的 Harness 入门教程出发，但不复述其中未经核实的排行榜数字，也不把 `CLAUDE.md + Skills + MCP` 当作完整答案。我查阅了 Mitchell Hashimoto 的原始文章、Anthropic 关于有效 Agent 与长任务 Harness 的工程文章，并逐项阅读 OpenHands、mini-SWE-agent、Aider、Goose 的官方仓库和文档。我的核心判断是：
 
@@ -12,7 +12,7 @@ Claude Code 装好了，Skills 配了，MCP 也接了，为什么 Agent 仍会�
 
 ![Harness control loop](/images/blog/harness-control-loop.svg "图 1：Harness 不是模型外围的一圈配置，而是从任务契约、上下文、执行到验证、恢复和经验沉淀的闭环。")
 
-## 1. 一页结论
+## 1. 核心结论
 
 - `Agent = Model + Harness` 是有用的入门公式，但 **Harness 不能被无限扩张成“除权重外的一切”**，否则它失去工程边界。
 - Prompt、`CLAUDE.md`、Skills 和 MCP 都只是 Harness 的部件。它们分别提供指令、可复用过程和工具接口，不天然提供完成证明、权限隔离或失败恢复。
@@ -411,7 +411,7 @@ Harness 自己可能制造失败：
 
 ## 18. 最终判断
 
-Harness Engineering 的价值不在于发明一个流行名词，而在于把 Agent 工程从“提示词抽卡”推进到可检验系统设计。它迫使我们回答：
+Harness Engineering 将执行环境、反馈、验证和恢复作为可检验的系统设计问题。它迫使我们回答：
 
 - 目标如何被外部检查？
 - 模型能看见哪些真实环境反馈？

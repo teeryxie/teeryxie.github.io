@@ -1,4 +1,4 @@
-# SeedRealtime 音视频全双工大模型：从轮次问答走向连续世界中的自然交互
+# SeedRealtime：音视频全双工交互与公开证据
 
 2026 年 8 月 5 日，字节跳动 Seed 团队发布 [SeedRealtime](https://seed.bytedance.com/zh/SeedRealtime)，将其定义为原生音视频全双工大模型（native audio-visual full-duplex LLM）。与“摄像头拍一张图，再围绕图片问答”不同，它面向持续到来的音频和视频流：模型在用户说话、镜头移动、旁人插话和环境变化时继续更新状态，并决定何时沉默、何时回答、何时主动提醒。
 
@@ -8,7 +8,7 @@
 
 ![SeedRealtime system view](/images/blog/seedrealtime-system-view.svg "图 1：SeedRealtime 的研究对象不是单次音视频问答，而是连续观测、统一状态、交互控制与回复生成构成的闭环。虚线框表示官方尚未公开的内部实现。")
 
-## 1. 一页结论
+## 1. 核心结论
 
 - **核心变化是从 turn state 到 world state。** 模型不仅要理解用户刚说了什么，还要维护谁在说话、用户在看什么、先前交代的目标是否仍有效，以及现在是否应该介入。
 - **音视频联合理解的难点是绑定，不只是识别。** 看见四个人、转写四段语音并不等于知道“哪张脸、哪个名字、哪段声音、哪个偏好”属于同一实体。

@@ -1,6 +1,6 @@
-# Learning When to Think While Listening：大音频语言模型如何学习“何时思考”
+# Learning When to Think While Listening：倾听期间的推理时机
 
-实时语音模型面临一个无法回避的决策：用户还在说话时，模型应该继续等，还是已经可以开始整理答案？如果永远等到 endpoint 才推理，回答可能更可靠，却把全部计算暴露为用户可感知的停顿；如果每 0.5 秒都思考一次，模型会被不完整语义反复误导，也会浪费算力；如果太早提交答案，又可能在决定性证据到来前犯错。
+实时音频模型需要决定何时投入推理计算。等到语音结束点（endpoint）才处理问题，会增加用户感知的停顿；每 0.5 秒更新一次判断，则可能浪费算力，或反复依赖尚未完整的语义。研究目标是在输入逐步到达时选择等待、更新推理状态或回答，并避免在关键证据出现前过早提交结论。
 
 Zhiyuan Song、Weici Zhao、Yang Xiao、Suhao Yu、Cheng Zhu 与 Jiatao Gu 的《[Learning When to Think While Listening in Large Audio-Language Models](https://arxiv.org/abs/2605.27190)》把这个问题写成一个显式的在线控制任务：在每个音频决策点，Qwen2.5-Omni-7B 从 `<wait/>` 与 `<think>...</think>` 中选择；语音结束后再生成一次 final think 和 `<answer>...</answer>`。作者先用 75,723 条对齐的音频-文本轨迹做 SFT，再用 DAPO 和六类轨迹奖励优化准确率、动作合法性、更新时间、残余延迟、局部 thought quality 与整条 reasoning chain consistency。
 
@@ -8,7 +8,7 @@ Zhiyuan Song、Weici Zhao、Yang Xiao、Suhao Yu、Cheng Zhu 与 Jiatao Gu 的�
 
 ![Wait-think-answer overview](/images/blog/when-to-think-controller.svg "图 1：wait-think-answer 控制器在 partial audio 上周期性决策。实验中 endpoint 前只允许 WAIT 或 THINK，ANSWER 固定发生在完整语音之后。")
 
-## 1. 一页结论
+## 1. 核心结论
 
 - **研究对象是 reasoning placement。** 它不只是让模型“多想”，而是把一定量推理从 endpoint 后移动到用户说话期间。
 - **动作语言清晰。** `WAIT` 不改变可见 memory，`THINK` 追加短语义状态，后续决策同时读取完整音频前缀与此前 thought。

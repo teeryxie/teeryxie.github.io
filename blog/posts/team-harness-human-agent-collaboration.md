@@ -1,6 +1,6 @@
-# Human + Harness = Group：团队 Vibe Coding 的协作控制平面
+# 人机协作团队的 Harness：任务状态、证据与交接
 
-当一个人同时带着多个 Coding Agent 工作时，瓶颈很快不再是“Codex 对话数量不够”，而是人已经没有精力持续查看每条管线。再增加 Agent 只会增加未读结果、互相冲突的修改和需要人工判断的异常。真正自然的下一步不是给负责人继续加会话，而是让更多成员各自带着 Agent 工作，再给整个团队增加一层协作 Harness。
+多人使用编码 Agent 时，协调成本来自未读结果、修改冲突和需要人工判断的异常。仅增加会话数量无法解决这些问题。本文提出一层团队 Harness，即用于组织任务状态、证据、权限和交接的协作机制，让成员及其 Agent 围绕可验证的任务进度工作。
 
 这个想法可以从一句很直观的话开始：
 
@@ -19,7 +19,7 @@ Human + Agent + Team Harness = Group
 
 ![Team alignment layers](/images/blog/team-harness-alignment-layers.svg "图 1：Git、聊天、Agent trace 和 CI 分别保存结果、讨论、过程和证据；Team Harness 的作用是把四者绑定到同一个任务契约。")
 
-## 1. 一页结论
+## 1. 核心结论
 
 - **Git 不够，但不是因为 Git 落后。** Git 很擅长保存可合并的代码结果，不负责解释任务为何这样拆、成员当前相信什么、Agent 正在验证哪条假设，以及领导应在何时介入。
 - **全量对话记录也不够。** Prompt transcript 既可能信息过度，也可能信息不完整；它记录了说过什么，却不天然证明做过什么、结果是否真实、用户是否接受了结论。
@@ -635,7 +635,7 @@ enterprise identity and audit integration
 
 ## 26. 最终判断
 
-你提出的直觉是对的：个人 Harness 已经把 LLM 变成更可靠的 Agent，下一层自然是让多个“人 + Agent”形成可协调的团队。只是公式不能停在：
+个人 Harness 为单个 Agent 提供执行约束和反馈。团队层的研究问题，是如何让多名成员及其 Agent 共享任务状态，在保留局部权限的同时完成协调与交接。只是公式不能停在：
 
 ```text
 human + harness = group
