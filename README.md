@@ -36,8 +36,8 @@ They use a full-width text layout until a real first-page thumbnail is added man
 Existing records match by Scholar ID, then unique normalized title, so newly
 indexed manuscripts are linked rather than duplicated. A profile reaching the
 100-record page limit fails explicitly rather than silently importing a partial list.
-The Pages workflow refreshes it daily at **00:20 Asia/Shanghai** (16:20 UTC),
-with a **04:20** recovery run. Scheduled runs skip fetching when a successful
+The Pages workflow refreshes it weekly on **Monday at 00:20 Asia/Shanghai**
+(Sunday 16:20 UTC). Scheduled runs skip fetching when a successful
 snapshot already exists for that date in Beijing; manual **Run workflow** always
 refreshes. GitHub may start scheduled runs late. Public Scholar requests can be blocked; failed,
 incomplete, or ambiguous responses fail the run and preserve the last successful
@@ -48,7 +48,7 @@ when the repository Actions secret `SERPAPI_API_KEY` is configured. This third-p
 service retrieves Scholar's original HTML, so counts, record IDs, full author
 metadata, and existing validation all continue to come from Scholar. No OpenAlex
 or Semantic Scholar citation totals are substituted. Only new records request
-article details; existing papers need one profile request per successful day.
+article details; existing papers need one profile request per weekly refresh.
 Transient network errors, HTTP 429, and server errors have bounded retries.
 Authentication errors do not retry, and errors never print the API key or its URL.
 
@@ -56,8 +56,8 @@ To configure: create a SerpApi account, choose its free plan, and save the priva
 key under the repository's **Settings → Secrets and variables → Actions → New
 repository secret**, named `SERPAPI_API_KEY`. Do not put it in source, JSON, HTML,
 or workflow YAML. The [current free plan](https://serpapi.com/pricing) includes 250
-searches per month. At the current profile size, normal daily operation needs
-about 30–31 profile searches per month plus one detail search per new paper.
+searches per month. At the current profile size, normal weekly operation needs
+about 4–5 profile searches per month plus one detail search per new paper.
 Without a key, local use still attempts the public Scholar page directly and
 reports a clear setup instruction if access is refused.
 

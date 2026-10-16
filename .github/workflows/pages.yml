@@ -4,9 +4,9 @@ on:
   push:
     branches: [main]
   schedule:
-    # 00:20 Asia/Shanghai, with a 04:20 recovery run if today is still stale.
+    # Monday 00:20 Asia/Shanghai = Sunday 16:20 UTC.
     # GitHub schedules may start later when busy.
-    - cron: '20 16,20 * * *'
+    - cron: '20 16 * * 0'
   workflow_dispatch:
 
 permissions:
