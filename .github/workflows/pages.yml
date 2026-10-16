@@ -4,8 +4,9 @@ on:
   push:
     branches: [main]
   schedule:
-    # 00:20 Asia/Shanghai (UTC+8); GitHub schedules may start later when busy.
-    - cron: '20 16 * * *'
+    # 00:20 Asia/Shanghai, with a 04:20 recovery run if today is still stale.
+    # GitHub schedules may start later when busy.
+    - cron: '20 16,20 * * *'
   workflow_dispatch:
 
 permissions:
@@ -18,17 +19,27 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
       pages: read
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          enable-cache: false
       - name: Check Scholar matching and cache preservation
         run: uv run --no-project --python 3.12 python -m unittest discover -s scripts -p 'test_*.py'
-      - name: Refresh public Scholar citation counts
+      - name: Refresh Scholar publications and citation counts
         if: github.event_name != 'push'
-        run: uv run --script scripts/update_scholar.py
+        env:
+          SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            uv run --script scripts/update_scholar.py --skip-if-current
+          else
+            uv run --script scripts/update_scholar.py
+          fi
       - name: Save refreshed publications and counts
         if: github.event_name != 'push'
         run: |

@@ -1,9 +1,18 @@
 import json
 import tempfile
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
+from unittest.mock import patch
 
-from update_scholar import PROFILE_ID, matched_counts, parse_profile, update_cache
+from update_scholar import (
+    PROFILE_ID,
+    cache_is_current,
+    main,
+    matched_counts,
+    parse_profile,
+    update_cache,
+)
 
 
 def row(identifier="one", title="Test: Omni &amp; Audio", count="7", count_cell=True):
@@ -106,6 +115,58 @@ class DiscoveryTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 update_cache(self.profile, self.metadata, self.cache, self.archive, lambda _, detail=detail: detail)
             self.assertEqual([path.read_text() for path in (self.metadata, self.cache, self.archive)], before)
+
+    def test_network_failure_for_new_details_preserves_all_files(self):
+        before = [path.read_text() for path in (self.metadata, self.cache, self.archive)]
+        def failed_fetch(_):
+            raise RuntimeError("SerpApi returned HTTP 403. Cached files retained.")
+        with self.assertRaises(RuntimeError):
+            update_cache(self.profile, self.metadata, self.cache, self.archive, failed_fetch)
+        self.assertEqual([path.read_text() for path in (self.metadata, self.cache, self.archive)], before)
+
+
+class DailySnapshotTests(unittest.TestCase):
+    def setUp(self):
+        self.folder = tempfile.TemporaryDirectory()
+        self.addCleanup(self.folder.cleanup)
+        self.root = Path(self.folder.name)
+        (self.root / "data").mkdir()
+        self.cache = self.root / "data/citations.json"
+        self.now = datetime(2026, 10, 16, 16, 20, tzinfo=timezone.utc)
+
+    def snapshot(self, timestamp):
+        self.cache.write_text(json.dumps({"updatedAt": timestamp, "papers": {"one": {"count": 1}}}))
+
+    def test_same_shanghai_day_skips_but_previous_day_does_not(self):
+        self.snapshot("2026-10-16T16:00:00+00:00")
+        self.assertTrue(cache_is_current(self.cache, self.now))
+        self.snapshot("2026-10-16T15:59:59+00:00")
+        self.assertFalse(cache_is_current(self.cache, self.now))
+
+    def test_invalid_missing_or_naive_timestamp_is_not_current(self):
+        self.assertFalse(cache_is_current(self.cache, self.now))
+        for timestamp in ("invalid", "2026-10-17T00:00:00", None):
+            self.snapshot(timestamp)
+            self.assertFalse(cache_is_current(self.cache, self.now))
+        self.cache.write_text("invalid JSON")
+        self.assertFalse(cache_is_current(self.cache, self.now))
+
+    def test_invalid_counts_are_not_successful_snapshots(self):
+        for papers in ({}, {"one": None}, {"one": {"count": True}}, {"one": {"count": -1}}):
+            self.cache.write_text(json.dumps({"updatedAt": self.now.isoformat(), "papers": papers}))
+            self.assertFalse(cache_is_current(self.cache, self.now))
+
+    def test_scheduled_current_snapshot_avoids_network_but_manual_fetch_does_not(self):
+        self.snapshot(datetime.now(timezone.utc).isoformat())
+        with patch("update_scholar.ROOT", self.root), patch("update_scholar.fetch_html", return_value="profile") as fetch, patch("update_scholar.update_cache") as update:
+            with patch("sys.argv", ["update_scholar.py", "--skip-if-current"]):
+                main()
+            fetch.assert_not_called()
+            update.assert_not_called()
+            with patch("sys.argv", ["update_scholar.py"]):
+                main()
+            fetch.assert_called_once()
+            update.assert_called_once()
 
 
 if __name__ == "__main__":

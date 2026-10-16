@@ -13,7 +13,9 @@ from html import escape
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import parse_qs, urljoin, urlparse
-from urllib.request import Request, urlopen
+from zoneinfo import ZoneInfo
+
+from scholar_http import fetch_html
 
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE_ID = "_vZWAnkAAAAJ"
@@ -148,10 +150,20 @@ class DetailParser(HTMLParser):
             self.capture = None
 
 
-def fetch_html(url):
-    request = Request(url, headers={"User-Agent": "TianyuXieHomepage/1.0"})
-    with urlopen(request, timeout=30) as response:
-        return response.read().decode(response.headers.get_content_charset() or "utf-8")
+def cache_is_current(cache_path, now=None):
+    try:
+        snapshot = json.loads(cache_path.read_text())
+        updated = datetime.fromisoformat(snapshot["updatedAt"])
+        if updated.tzinfo is None or not isinstance(snapshot["papers"], dict) or not snapshot["papers"]:
+            return False
+        for paper in snapshot["papers"].values():
+            if not isinstance(paper, dict) or type(paper.get("count")) is not int or paper["count"] < 0:
+                return False
+    except (OSError, ValueError, KeyError, TypeError):
+        return False
+    shanghai = ZoneInfo("Asia/Shanghai")
+    today = (now or datetime.now(timezone.utc)).astimezone(shanghai).date()
+    return updated.astimezone(shanghai).date() == today
 
 
 def bibtex_text(text):
@@ -253,14 +265,23 @@ def update_cache(html, metadata_path, cache_path, archive_path=None, fetch_detai
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--html", type=Path, help="Parse a saved public profile for offline verification.")
+    parser.add_argument("--skip-if-current", action="store_true",
+                        help="Skip when a successful snapshot already exists for today in Asia/Shanghai.")
     args = parser.parse_args()
+    cache_path = ROOT / "data/citations.json"
+    if args.skip_if_current and cache_is_current(cache_path):
+        print("A successful citation snapshot already exists for today (Asia/Shanghai); skipped.")
+        return
     if args.html:
         html = args.html.read_text()
     else:
         html = fetch_html(PROFILE_URL)
-    update_cache(html, ROOT / "data/publications.json", ROOT / "data/citations.json",
+    update_cache(html, ROOT / "data/publications.json", cache_path,
                  ROOT / "publications/index.html", fetch_html)
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except RuntimeError as error:
+        raise SystemExit(str(error)) from None
