@@ -1,0 +1,62 @@
+name: Publish site and refresh Scholar citations
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # 00:20 Asia/Shanghai (UTC+8); GitHub schedules may start later when busy.
+    - cron: '20 16 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+      - name: Check Scholar matching and cache preservation
+        run: uv run --no-project --python 3.12 python -m unittest discover -s scripts -p 'test_*.py'
+      - name: Refresh public Scholar citation counts
+        if: github.event_name != 'push'
+        run: uv run --script scripts/update_scholar.py
+      - name: Save refreshed counts
+        if: github.event_name != 'push'
+        run: |
+          if ! git diff --quiet -- data/citations.json; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add data/citations.json
+            git commit -m 'Update Google Scholar citation counts'
+            git push origin HEAD:main
+          fi
+      - uses: actions/configure-pages@v6
+      - name: Prepare tracked site files
+        run: |
+          mkdir _site
+          git archive HEAD | tar -x -C _site --exclude='.github' --exclude='scripts'
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

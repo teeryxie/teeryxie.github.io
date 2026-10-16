@@ -1,0 +1,137 @@
+{
+  "papers": [
+    {
+      "id": "duplex-mpe",
+      "title": "Duplex-MPE: Benchmarking Multi-Party Interaction in Full-Duplex Dialogue",
+      "scholarId": "_vZWAnkAAAAJ:0EnyYjriUFMC",
+      "sourceUrl": "https://arxiv.org/abs/2609.31948",
+      "bibtex": "@misc{ma2026duplexmpe,\n  title = {{Duplex-MPE: Benchmarking Multi-Party Interaction in Full-Duplex Dialogue}},\n  author = {Chengqian Ma and Wenhao Feng and Weixuan Jin and Gaole Dai and Tianyu Xie and Yuexiao Ma and Zhaolu Kang and Xiangyu Zhao and Xiawu Zheng and Fei Chao},\n  year = {2026},\n  eprint = {2609.31948},\n  archivePrefix = {arXiv},\n  url = {https://arxiv.org/abs/2609.31948}\n}"
+    },
+    {
+      "id": "misalignment",
+      "title": "Diagnosing and Mitigating Perception-Decision Misalignment in Omni-LLMs via Modality Subspace Activation",
+      "scholarId": "_vZWAnkAAAAJ:UebtZRa9Y70C",
+      "sourceUrl": "https://arxiv.org/abs/2608.14655",
+      "bibtex": "@misc{jiang2026misalignment,\n  title = {{Diagnosing and Mitigating Perception-Decision Misalignment in Omni-LLMs via Modality Subspace Activation}},\n  author = {Hongbo Jiang and Jie Li and Yunhang Shen and Tianyu Xie and Pingyang Dai},\n  year = {2026},\n  eprint = {2608.14655},\n  archivePrefix = {arXiv},\n  url = {https://arxiv.org/abs/2608.14655}\n}"
+    },
+    {
+      "id": "wavezip",
+      "title": "WaveZip: Wavelet-Driven Space-Time Decoupling for Video Token Condensation",
+      "scholarId": "_vZWAnkAAAAJ:LkGwnXOMwfcC",
+      "sourceUrl": "https://arxiv.org/abs/2607.23265",
+      "bibtex": "@misc{zeng2026wavezip,\n  title = {{WaveZip: Wavelet-Driven Space-Time Decoupling for Video Token Condensation}},\n  author = {Yuhui Zeng and Wang Chen and Jinfa Huang and Tianyu Xie and Yongdong Luo and Jiayi Ji and Xiawu Zheng and Jiebo Luo},\n  year = {2026},\n  eprint = {2607.23265},\n  archivePrefix = {arXiv},\n  url = {https://arxiv.org/abs/2607.23265}\n}"
+    },
+    {
+      "id": "reid",
+      "title": "Unleashing MLLMs on the Edge: A Unified Framework for Cross-Modal ReID via Adaptive SVD Distillation",
+      "scholarId": "_vZWAnkAAAAJ:hqOjcs7Dif8C",
+      "sourceUrl": "https://arxiv.org/abs/2602.12936",
+      "bibtex": "@misc{jiang2026reid,\n  title = {{Unleashing MLLMs on the Edge: A Unified Framework for Cross-Modal ReID via Adaptive SVD Distillation}},\n  author = {Hongbo Jiang and Jie Li and Xinqi Cai and Tianyu Xie and Yunhang Shen and Pingyang Dai and Liujuan Cao},\n  year = {2026},\n  eprint = {2602.12936},\n  archivePrefix = {arXiv},\n  url = {https://arxiv.org/abs/2602.12936}\n}"
+    },
+    {
+      "id": "fold",
+      "title": "FOLD: Fast Correct Speculative Decoding",
+      "scholarId": "_vZWAnkAAAAJ:Se3iqnhoufwC",
+      "sourceUrl": "https://openreview.net/forum?id=zm35dmBdok",
+      "bibtex": "@misc{sun2025fold,\n  title = {{FOLD: Fast Correct Speculative Decoding}},\n  author = {Haocheng Sun and Ruilin Wang and Yuxin Zhang and Yan Zhang and Tianyu Xie and Rongrong Ji and Xiawu Zheng},\n  year = {2025},\n  note = {ICLR 2026 withdrawn submission},\n  url = {https://openreview.net/forum?id=zm35dmBdok}\n}"
+    },
+    {
+      "id": "orchestration",
+      "title": "Training-Free Multimodal Large Language Model Orchestration",
+      "scholarId": "_vZWAnkAAAAJ:zYLM7Y9cAGgC",
+      "sourceUrl": "https://proceedings.mlr.press/v306/xie26t.html",
+      "bibtex": "@inproceedings{xie2026orchestration,\n  title = {{Training-Free Multimodal Large Language Model Orchestration}},\n  author = {Tianyu Xie and Yuexiao Ma and Yuhang Wu and Wang Chen and Jiayi Ji and Tat-Seng Chua and Xiawu Zheng and Rongrong Ji},\n  year = {2026},\n  booktitle = {Proceedings of the 43rd International Conference on Machine Learning},\n  series = {Proceedings of Machine Learning Research},\n  volume = {306},\n  pages = {139620--139636},\n  publisher = {PMLR},\n  url = {https://proceedings.mlr.press/v306/xie26t.html}\n}"
+    },
+    {
+      "id": "a2rbench",
+      "title": "A2RBench: An Automatic Paradigm for Formally Verifiable Abstract Reasoning Benchmark Generation",
+      "scholarId": "_vZWAnkAAAAJ:_FxGoFyzp5QC",
+      "sourceUrl": "https://proceedings.mlr.press/v306/ma26y.html",
+      "bibtex": "@inproceedings{ma2026a2rbench,\n  title = {{A2RBench: An Automatic Paradigm for Formally Verifiable Abstract Reasoning Benchmark Generation}},\n  author = {Qingchuan Ma and Yuexiao Ma and Yongkang Xie and Tianyu Xie and Xiawu Zheng and Rongrong Ji},\n  year = {2026},\n  booktitle = {Proceedings of the 43rd International Conference on Machine Learning},\n  series = {Proceedings of Machine Learning Research},\n  volume = {306},\n  pages = {84739--84765},\n  publisher = {PMLR},\n  url = {https://proceedings.mlr.press/v306/ma26y.html}\n}"
+    },
+    {
+      "id": "correct-while-verifying",
+      "title": "Correct While Verifying: Intermediate Target Predictions for Speculative Draft Correction",
+      "scholarId": null,
+      "sourceUrl": "https://teeryxie.github.io/blog/fold/",
+      "bibtex": "@misc{sun2026correctwhileverifying,\n  title = {{Correct While Verifying: Intermediate Target Predictions for Speculative Draft Correction}},\n  author = {Haocheng Sun and Ruilin Wang and Yuexiao Ma and Yuxin Zhang and Tianyu Xie and Jianxin Lin and Zhixiang Ren and Xiawu Zheng},\n  year = {2026},\n  note = {Manuscript submitted to AAAI 2027},\n  url = {https://teeryxie.github.io/blog/fold/}\n}"
+    },
+    {
+      "id": "event-anchored-submission",
+      "title": "Event-Anchored Frame Selection for Efficient Long-Video Understanding",
+      "scholarId": "_vZWAnkAAAAJ:Tyk-4Ss8FVUC",
+      "sourceUrl": "https://openreview.net/forum?id=43Ycr1QZXr",
+      "bibtex": "@misc{chen2025eventanchoredsubmission,\n  title = {{Event-Anchored Frame Selection for Efficient Long-Video Understanding}},\n  author = {Wang Chen and Yongdong Luo and Yuhui Zeng and Luojun Lin and Tianyu Xie and Yan Zhang and Fei Chao and Rongrong Ji and Xiawu Zheng},\n  year = {2025},\n  note = {ICLR 2026 withdrawn submission},\n  url = {https://openreview.net/forum?id=43Ycr1QZXr}\n}"
+    },
+    {
+      "id": "sparse-finetuning",
+      "title": "Mitigating Gradient Interference for Efficient Sparse Fine-Tuning of Large Language Models",
+      "scholarId": "_vZWAnkAAAAJ:roLk4NBRz8UC",
+      "sourceUrl": "https://openreview.net/forum?id=53MDeiZ9mC",
+      "bibtex": "@misc{wu2024sparsefinetuning,\n  title = {{Mitigating Gradient Interference for Efficient Sparse Fine-Tuning of Large Language Models}},\n  author = {Yuhang Wu and Tianyu Xie and Weizhong Huang and Xiawu Zheng and Fei Chao and Rongrong Ji},\n  year = {2024},\n  note = {Submitted to ICLR 2025},\n  url = {https://openreview.net/forum?id=53MDeiZ9mC}\n}"
+    },
+    {
+      "id": "socialomni",
+      "title": "SocialOmni: Benchmarking Audio-Visual Social Interactivity in Omni Models",
+      "scholarId": "_vZWAnkAAAAJ:WF5omc3nYNoC",
+      "sourceUrl": "https://arxiv.org/abs/2603.16859",
+      "bibtex": "@misc{xie2026socialomni,\n  title = {{SocialOmni: Benchmarking Audio-Visual Social Interactivity in Omni Models}},\n  author = {Tianyu Xie and Jinfa Huang and Yuexiao Ma and Rongfang Luo and Yan Yang and Qingchuan Ma and Wang Chen and Yuhui Zeng and Yixuan Zou and Zhiqiang Lu and Ruize Fang and Jiebo Luo and Rongrong Ji and Xiawu Zheng},\n  year = {2026},\n  eprint = {2603.16859},\n  archivePrefix = {arXiv},\n  url = {https://arxiv.org/abs/2603.16859}\n}"
+    },
+    {
+      "id": "wfs-sb",
+      "title": "Wavelet-based Frame Selection by Detecting Semantic Boundary for Long Video Understanding",
+      "scholarId": "_vZWAnkAAAAJ:eQOLeE2rZwMC",
+      "sourceUrl": "https://openaccess.thecvf.com/content/CVPR2026/html/Chen_Wavelet-based_Frame_Selection_by_Detecting_Semantic_Boundary_for_Long_Video_CVPR_2026_paper.html",
+      "bibtex": "@inproceedings{chen2026wfssb,\n  title = {{Wavelet-based Frame Selection by Detecting Semantic Boundary for Long Video Understanding}},\n  author = {Wang Chen and Yuhui Zeng and Yongdong Luo and Tianyu Xie and Luojun Lin and Jiayi Ji and Yan Zhang and Xiawu Zheng},\n  year = {2026},\n  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},\n  pages = {24052--24061},\n  url = {https://openaccess.thecvf.com/content/CVPR2026/html/Chen_Wavelet-based_Frame_Selection_by_Detecting_Semantic_Boundary_for_Long_Video_CVPR_2026_paper.html}\n}"
+    },
+    {
+      "id": "event-anchored",
+      "title": "Event-Anchored Frame Selection for Effective Long-Video Understanding",
+      "scholarId": "_vZWAnkAAAAJ:W7OEmFMy1HYC",
+      "sourceUrl": "https://arxiv.org/abs/2603.00983",
+      "bibtex": "@misc{chen2026eventanchored,\n  title = {{Event-Anchored Frame Selection for Effective Long-Video Understanding}},\n  author = {Wang Chen and Yongdong Luo and Yuhui Zeng and Luojun Lin and Tianyu Xie and Fei Chao and Rongrong Ji and Xiawu Zheng},\n  year = {2026},\n  eprint = {2603.00983},\n  archivePrefix = {arXiv},\n  url = {https://arxiv.org/abs/2603.00983}\n}"
+    },
+    {
+      "id": "crystal",
+      "title": "CrystaL: Spontaneous Emergence of Visual Latents in MLLMs",
+      "scholarId": "_vZWAnkAAAAJ:ufrVoPGSRksC",
+      "sourceUrl": "https://arxiv.org/abs/2602.20980",
+      "bibtex": "@misc{zhang2026crystal,\n  title = {{CrystaL: Spontaneous Emergence of Visual Latents in MLLMs}},\n  author = {Yang Zhang and Danyang Li and Yuxuan Li and Xin Zhang and Tianyu Xie and Mingming Cheng and Xiang Li},\n  year = {2026},\n  eprint = {2602.20980},\n  archivePrefix = {arXiv},\n  url = {https://arxiv.org/abs/2602.20980}\n}"
+    },
+    {
+      "id": "hemp-duck",
+      "title": "An Attention Mechanism-Improved YOLOv7 Object Detection Algorithm for Hemp Duck Count Estimation",
+      "scholarId": "_vZWAnkAAAAJ:u-x6o8ySG0sC",
+      "sourceUrl": "https://doi.org/10.3390/agriculture12101659",
+      "bibtex": "@article{jiang2022hempduck,\n  title = {{An Attention Mechanism-Improved YOLOv7 Object Detection Algorithm for Hemp Duck Count Estimation}},\n  author = {Kailin Jiang and Tianyu Xie and Rui Yan and Xi Wen and Danyang Li and Hongbo Jiang and Ning Jiang and Ling Feng and Xuliang Duan and Jianjun Wang},\n  year = {2022},\n  journal = {Agriculture},\n  volume = {12},\n  number = {10},\n  pages = {1659},\n  doi = {10.3390/agriculture12101659},\n  url = {https://doi.org/10.3390/agriculture12101659}\n}"
+    },
+    {
+      "id": "fish-yolov5",
+      "title": "A Multitask Model for Realtime Fish Detection and Segmentation Based on YOLOv5",
+      "scholarId": "_vZWAnkAAAAJ:d1gkVwhDpl0C",
+      "sourceUrl": "https://doi.org/10.7717/peerj-cs.1262",
+      "bibtex": "@article{liu2023fishyolov5,\n  title = {{A Multitask Model for Realtime Fish Detection and Segmentation Based on YOLOv5}},\n  author = {QinLi Liu and Xinyao Gong and Jiao Li and Hongjie Wang and Ran Liu and Dan Liu and Ruoran Zhou and Tianyu Xie and Ruijie Fu and Xuliang Duan},\n  year = {2023},\n  journal = {PeerJ Computer Science},\n  volume = {9},\n  pages = {e1262},\n  doi = {10.7717/peerj-cs.1262},\n  url = {https://doi.org/10.7717/peerj-cs.1262}\n}"
+    },
+    {
+      "id": "sheep-yolo",
+      "title": "GAM-YOLOv7-tiny and Soft-NMS-AlexNet: Improved Lightweight Sheep Body Object Detection and Pose Estimation Network",
+      "scholarId": "_vZWAnkAAAAJ:2osOgNQ5qMEC",
+      "sourceUrl": "https://doi.org/10.21203/rs.3.rs-4008441/v1",
+      "bibtex": "@misc{gong2024sheepyolo,\n  title = {{GAM-YOLOv7-tiny and Soft-NMS-AlexNet: Improved Lightweight Sheep Body Object Detection and Pose Estimation Network}},\n  author = {Xinyao Gong and Qinli Liu and Ruijie Fu and Ruoran Zhou and Tianyu Xie and Xiaoyan Chen},\n  year = {2024},\n  publisher = {Research Square},\n  doi = {10.21203/rs.3.rs-4008441/v1},\n  note = {Preprint},\n  url = {https://doi.org/10.21203/rs.3.rs-4008441/v1}\n}"
+    },
+    {
+      "id": "sdscnet",
+      "title": "SDSCNet: An Instance Segmentation Network for Efficient Monitoring of Goose Breeding Conditions",
+      "scholarId": "_vZWAnkAAAAJ:9yKSN-GCB0IC",
+      "sourceUrl": "https://doi.org/10.1007/s10489-023-04743-w",
+      "bibtex": "@article{li2023sdscnet,\n  title = {{SDSCNet: An Instance Segmentation Network for Efficient Monitoring of Goose Breeding Conditions}},\n  author = {Jiao Li and Houcheng Su and Jianing Li and Tianyu Xie and Yijie Chen and Jianan Yuan and Kailin Jiang and Xuliang Duan},\n  year = {2023},\n  journal = {Applied Intelligence},\n  volume = {53},\n  number = {21},\n  pages = {25435--25449},\n  doi = {10.1007/s10489-023-04743-w},\n  url = {https://doi.org/10.1007/s10489-023-04743-w}\n}"
+    },
+    {
+      "id": "ducksegmentation",
+      "title": "DuckSegmentation: A Segmentation Model Based on the AnYue Hemp Duck Dataset",
+      "scholarId": "_vZWAnkAAAAJ:qjMakFHDy7sC",
+      "sourceUrl": "https://arxiv.org/abs/2503.21323",
+      "bibtex": "@misc{feng2025ducksegmentation,\n  title = {{DuckSegmentation: A Segmentation Model Based on the AnYue Hemp Duck Dataset}},\n  author = {Ling Feng and Tianyu Xie and Wei Ma and Ruijie Fu and Yingxiao Zhang and Jun Li and Bei Zhou},\n  year = {2025},\n  eprint = {2503.21323},\n  archivePrefix = {arXiv},\n  url = {https://arxiv.org/abs/2503.21323}\n}"
+    }
+  ]
+}
