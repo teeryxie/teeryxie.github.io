@@ -1,0 +1,40 @@
+name: Check public Scholar HTTP access
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          enable-cache: false
+      - name: Compare public HTTP clients without changing site data
+        run: |
+          uv run --no-project --python 3.12 python - <<'PY'
+          import sys
+          from urllib.error import HTTPError
+          sys.path.insert(0, 'scripts')
+          from update_scholar import PROFILE_URL, fetch_html, parse_profile
+          try:
+              print('urllib:', len(parse_profile(fetch_html(PROFILE_URL))), 'records')
+          except HTTPError as error:
+              print('urllib HTTP status:', error.code)
+          PY
+          curl --silent --show-error --location --max-time 30 \
+            --user-agent 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36' \
+            --output /tmp/scholar-public.html --write-out 'curl HTTP status: %{http_code}\n' \
+            'https://scholar.google.com/citations?user=_vZWAnkAAAAJ&hl=en&pagesize=100'
+          uv run --no-project --python 3.12 python - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from update_scholar import parse_profile
+          try:
+              print('curl:', len(parse_profile(Path('/tmp/scholar-public.html').read_text(encoding='latin-1'))), 'records')
+          except ValueError:
+              print('curl: response contains no valid public Scholar records')
+          PY
