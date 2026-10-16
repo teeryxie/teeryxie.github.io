@@ -29,14 +29,14 @@ jobs:
       - name: Refresh public Scholar citation counts
         if: github.event_name != 'push'
         run: uv run --script scripts/update_scholar.py
-      - name: Save refreshed counts
+      - name: Save refreshed publications and counts
         if: github.event_name != 'push'
         run: |
-          if ! git diff --quiet -- data/citations.json; then
+          if ! git diff --quiet -- data/citations.json data/publications.json publications/index.html; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add data/citations.json
-            git commit -m 'Update Google Scholar citation counts'
+            git add data/citations.json data/publications.json publications/index.html
+            git commit -m 'Update Google Scholar publications and citation counts'
             git push origin HEAD:main
           fi
       - uses: actions/configure-pages@v6

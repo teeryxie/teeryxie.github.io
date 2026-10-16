@@ -62,14 +62,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-body); font-style: normal; line
 [data-cite] { border: 0; padding: 0; background: none; color: var(--color-accent); font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
 [data-cite]:hover { color: var(--color-accent-hover); }
 [data-cite]:disabled { color: var(--color-muted); cursor: wait; }
-[data-citation-count] { min-width: 8em; white-space: nowrap; }
+[data-citation-count] { display: inline-block; margin-left: 8px; font-size: 11px; font-weight: 400; line-height: 1; white-space: nowrap; vertical-align: super; }
 [data-citations-updated] { color: var(--color-muted); font-size: 13px; }
-.citation-dialog { width: min(720px, calc(100% - 32px)); max-height: calc(100dvh - 48px); padding: 22px; border: 1px solid var(--color-rule); color: var(--color-ink); background: var(--color-paper); overflow: auto; }
-.citation-dialog::backdrop { background: var(--color-backdrop); }
-.citation-dialog header { display: flex; align-items: start; justify-content: space-between; gap: 20px; }
-.citation-dialog h2 { margin: 0; font-size: 19px; }
-.citation-dialog button { border: 1px solid var(--color-rule); background: var(--color-paper); padding: 5px 10px; color: var(--color-accent); cursor: pointer; white-space: nowrap; }
-.citation-dialog pre { margin: 20px 0; max-height: 50dvh; overflow: auto; padding: 14px; background: var(--color-soft); font: 13px/1.6 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; }
-.citation-dialog footer { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 16px; }
-.citation-dialog [role="status"] { color: var(--color-muted); font-size: 13px; }
-@media (max-width: 540px) { .citation-dialog { padding: 16px; } .citation-dialog header { gap: 12px; } .citation-dialog h2 { font-size: 17px; } }
+
+[data-citation-count][hidden] { display: none; }

@@ -23,16 +23,26 @@ wait for a second content download. Keep the generated article pages in Git.
 `data/publications.json` contains stable paper IDs, verified BibTeX, and Google
 Scholar article IDs. Match new HTML buttons (`data-cite`) and count links
 (`data-citation-count`) to those IDs on the homepage and publication archive.
-Do not label submissions as published conference papers in BibTeX.
+Cite copies BibTeX directly; the small number above each title links to its
+Google Scholar citations. Do not label submissions as published conference papers in BibTeX.
 
 `data/citations.json` caches counts fetched from the public Scholar profile.
+The same job discovers new Scholar records, fetches full author/date/venue
+metadata from their detail pages, and adds them to the marked import region of
+`publications/index.html` with working Cite and count controls. The homepage
+selection remains curated. Imported records use conservative `@misc` BibTeX
+and the venue exactly as indexed; they do not infer acceptance or CCF status.
+They use a paper symbol until a real first-page thumbnail is added manually.
+Existing records match by Scholar ID, then unique normalized title, so newly
+indexed manuscripts are linked rather than duplicated. A profile reaching the
+100-record page limit fails explicitly rather than silently importing a partial list.
 The Pages workflow refreshes it daily at **00:20 Asia/Shanghai** (16:20 UTC),
 and can also be started from GitHub Actions with **Run workflow**. GitHub may
 start scheduled runs late. Public Scholar requests can be blocked; failed,
 incomplete, or ambiguous responses fail the run and preserve the last successful
 snapshot. The page displays that snapshot's date. A missing record is not zero.
 
-The workflow commits refreshed counts and explicitly deploys the updated site;
+The workflow commits new publications, metadata, and refreshed counts and explicitly deploys the updated site;
 it does not rely on bot commits triggering another Pages build. Pages publishing
 must use **GitHub Actions** rather than the legacy branch build.
 

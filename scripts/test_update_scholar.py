@@ -52,6 +52,61 @@ class ScholarTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             parse_profile(row() + row())
 
+class DiscoveryTests(unittest.TestCase):
+    def setUp(self):
+        self.folder = tempfile.TemporaryDirectory()
+        self.addCleanup(self.folder.cleanup)
+        root = Path(self.folder.name)
+        self.metadata, self.cache, self.archive = (root / name for name in ("papers.json", "counts.json", "index.html"))
+        self.metadata.write_text(json.dumps({"papers": [{"id": "old", "title": "Existing paper", "scholarId": f"{PROFILE_ID}:old"}]}))
+        self.cache.write_text("old counts")
+        self.archive.write_text('<p data-publication-count aria-live="polite">1 entries</p><!-- scholar-imports:start --><!-- scholar-imports:end -->')
+        self.profile = row("old", "Existing paper") + row("new", "New &amp; useful paper")
+        self.detail = '''<a class="gsc_oci_title_link" href="https://arxiv.org/abs/1234.56789">New paper</a>
+        <div class="gsc_oci_field">Authors</div><div class="gsc_oci_value">Tianyu Xie, Someone Else</div>
+        <div class="gsc_oci_field">Publication date</div><div class="gsc_oci_value">2027/1/2</div>
+        <div class="gsc_oci_field">Journal</div><div class="gsc_oci_value"><span>arXiv preprint</span> &amp; notes</div>'''
+
+    def test_discovery_renders_safe_html_and_citable_metadata_once(self):
+        detail_requests = []
+
+        def fetch(url):
+            detail_requests.append(url)
+            return self.detail
+
+        update_cache(self.profile, self.metadata, self.cache, self.archive, fetch)
+        papers = json.loads(self.metadata.read_text())["papers"]
+        self.assertEqual(len(papers), 2)
+        self.assertIn("Tianyu Xie and Someone Else", papers[1]["bibtex"])
+        self.assertIn("@misc{", papers[1]["bibtex"])
+        self.assertIn("year = {2027}", papers[1]["bibtex"])
+        archive = self.archive.read_text()
+        self.assertIn("New &amp; useful paper", archive)
+        self.assertIn('data-cite="scholar-new"', archive)
+        self.assertIn('data-citation-count="scholar-new"', archive)
+        self.assertIn("2 entries", archive)
+        self.assertNotIn("Accepted", archive)
+        update_cache(self.profile, self.metadata, self.cache, self.archive, fetch)
+        self.assertEqual(len(detail_requests), 1)
+        self.assertEqual(self.archive.read_text(), archive)
+
+    def test_newly_indexed_existing_manuscript_is_not_duplicated(self):
+        metadata = json.loads(self.metadata.read_text())
+        metadata["papers"].append({"id": "manuscript", "title": "New & useful paper", "scholarId": None})
+        self.metadata.write_text(json.dumps(metadata))
+        update_cache(self.profile, self.metadata, self.cache, self.archive,
+                     lambda _: self.fail("Existing manuscript should not request new metadata"))
+        papers = json.loads(self.metadata.read_text())["papers"]
+        self.assertEqual(len(papers), 2)
+        self.assertEqual(papers[1]["scholarId"], f"{PROFILE_ID}:new")
+
+    def test_blocked_new_details_preserve_all_files(self):
+        before = [path.read_text() for path in (self.metadata, self.cache, self.archive)]
+        for detail in ("<h1>Access denied</h1>", self.detail.replace("Tianyu Xie, Someone Else", "Tianyu Xie, ...")):
+            with self.assertRaises(ValueError):
+                update_cache(self.profile, self.metadata, self.cache, self.archive, lambda _, detail=detail: detail)
+            self.assertEqual([path.read_text() for path in (self.metadata, self.cache, self.archive)], before)
+
 
 if __name__ == "__main__":
     unittest.main()
