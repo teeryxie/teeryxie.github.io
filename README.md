@@ -32,7 +32,7 @@ metadata from their detail pages, and adds them to the marked import region of
 `publications/index.html` with working Cite and count controls. The homepage
 selection remains curated. Imported records use conservative `@misc` BibTeX
 and the venue exactly as indexed; they do not infer acceptance or CCF status.
-They use a paper symbol until a real first-page thumbnail is added manually.
+They use a full-width text layout until a real first-page thumbnail is added manually.
 Existing records match by Scholar ID, then unique normalized title, so newly
 indexed manuscripts are linked rather than duplicated. A profile reaching the
 100-record page limit fails explicitly rather than silently importing a partial list.

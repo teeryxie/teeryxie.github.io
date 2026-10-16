@@ -195,8 +195,7 @@ def render_imports(papers, archive):
         identifier, title, url, authors, year, venue = (
             escape(str(paper[key]), quote=True) for key in ("id", "title", "sourceUrl", "authors", "year", "venue"))
         filters = "preprints" if "arxiv" in paper["venue"].casefold() else ""
-        articles.append(f'''<article class="paper" data-paper-filters="{filters}">
-          <div class="paper-symbol"><svg class="ui-icon" aria-hidden="true"><use href="/images/icons.svg#paper"></use></svg></div>
+        articles.append(f'''<article class="paper paper-imported" data-paper-filters="{filters}">
           <div><div class="paper-status"><span class="venue gray">{year}</span></div>
             <h3><a href="{url}">{title}</a> <a class="citation-count" data-citation-count="{identifier}" href="{url}" hidden></a></h3>
             <div class="meta">{authors}</div><p>{venue}</p>
