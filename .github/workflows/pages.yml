@@ -23,7 +23,7 @@ jobs:
       pages: read
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.3.0
       - name: Check Scholar matching and cache preservation
         run: uv run --no-project --python 3.12 python -m unittest discover -s scripts -p 'test_*.py'
       - name: Refresh public Scholar citation counts

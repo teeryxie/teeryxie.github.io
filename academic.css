@@ -62,7 +62,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-body); font-style: normal; line
 [data-cite] { border: 0; padding: 0; background: none; color: var(--color-accent); font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
 [data-cite]:hover { color: var(--color-accent-hover); }
 [data-cite]:disabled { color: var(--color-muted); cursor: wait; }
-[data-citation-count] { white-space: nowrap; }
+[data-citation-count] { min-width: 8em; white-space: nowrap; }
 [data-citations-updated] { color: var(--color-muted); font-size: 13px; }
 .citation-dialog { width: min(720px, calc(100% - 32px)); max-height: calc(100dvh - 48px); padding: 22px; border: 1px solid var(--color-rule); color: var(--color-ink); background: var(--color-paper); overflow: auto; }
 .citation-dialog::backdrop { background: var(--color-backdrop); }
