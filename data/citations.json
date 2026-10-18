@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-10-16T11:13:27+00:00",
+  "updatedAt": "2026-10-18T18:39:14+00:00",
   "profileUrl": "https://scholar.google.com/citations?user=_vZWAnkAAAAJ&hl=en&pagesize=100",
   "papers": {
     "duplex-mpe": {
-      "count": 0,
-      "url": "https://scholar.google.com/citations?view_op=view_citation&user=_vZWAnkAAAAJ&citation_for_view=_vZWAnkAAAAJ:0EnyYjriUFMC"
+      "count": 1,
+      "url": "https://scholar.google.com/scholar?cites=11637860186328316760"
     },
     "misalignment": {
       "count": 0,
@@ -27,8 +27,8 @@
       "url": "https://scholar.google.com/scholar?cites=16149899782200590237"
     },
     "a2rbench": {
-      "count": 0,
-      "url": "https://scholar.google.com/citations?view_op=view_citation&user=_vZWAnkAAAAJ&citation_for_view=_vZWAnkAAAAJ:_FxGoFyzp5QC"
+      "count": 1,
+      "url": "https://scholar.google.com/scholar?cites=2137183387274657871"
     },
     "event-anchored-submission": {
       "count": 0,
@@ -73,6 +73,10 @@
     "ducksegmentation": {
       "count": 1,
       "url": "https://scholar.google.com/scholar?cites=8787998606345653162"
+    },
+    "scholar-5nxA0vEk-isC": {
+      "count": 0,
+      "url": "https://scholar.google.com/citations?view_op=view_citation&user=_vZWAnkAAAAJ&citation_for_view=_vZWAnkAAAAJ:5nxA0vEk-isC"
     }
   }
 }

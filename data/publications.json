@@ -132,6 +132,17 @@
       "scholarId": "_vZWAnkAAAAJ:qjMakFHDy7sC",
       "sourceUrl": "https://arxiv.org/abs/2503.21323",
       "bibtex": "@misc{feng2025ducksegmentation,\n  title = {{DuckSegmentation: A Segmentation Model Based on the AnYue Hemp Duck Dataset}},\n  author = {Ling Feng and Tianyu Xie and Wei Ma and Ruijie Fu and Yingxiao Zhang and Jun Li and Bei Zhou},\n  year = {2025},\n  eprint = {2503.21323},\n  archivePrefix = {arXiv},\n  url = {https://arxiv.org/abs/2503.21323}\n}"
+    },
+    {
+      "id": "scholar-5nxA0vEk-isC",
+      "title": "RoTA-Bench: Evaluating 3D Spatial Reasoning through Interactive Projection Alignment",
+      "scholarId": "_vZWAnkAAAAJ:5nxA0vEk-isC",
+      "sourceUrl": "https://arxiv.org/abs/2610.17665",
+      "bibtex": "@misc{scholar-5nxA0vEk-isC,\n  title = {RoTA-Bench: Evaluating 3D Spatial Reasoning through Interactive Projection Alignment},\n  author = {Qingchuan Ma and Yuexiao Ma and Xiang Meng and Yixuan Zou and Tianyu Xie and Wang Chen and Yuhui Zeng and Yuhang Wu and Xiawu Zheng and Rongrong Ji},\n  year = {2026},\n  url = {https://arxiv.org/abs/2610.17665},\n  howpublished = {arXiv preprint arXiv:2610.17665}\n}",
+      "imported": true,
+      "authors": "Qingchuan Ma, Yuexiao Ma, Xiang Meng, Yixuan Zou, Tianyu Xie, Wang Chen, Yuhui Zeng, Yuhang Wu, Xiawu Zheng, Rongrong Ji",
+      "year": "2026",
+      "venue": "arXiv preprint arXiv:2610.17665"
     }
   ]
 }
