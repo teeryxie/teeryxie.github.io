@@ -138,9 +138,8 @@
       "title": "RoTA-Bench: Evaluating 3D Spatial Reasoning through Interactive Projection Alignment",
       "scholarId": "_vZWAnkAAAAJ:5nxA0vEk-isC",
       "sourceUrl": "https://arxiv.org/abs/2610.17665",
-      "bibtex": "@misc{scholar-5nxA0vEk-isC,\n  title = {RoTA-Bench: Evaluating 3D Spatial Reasoning through Interactive Projection Alignment},\n  author = {Qingchuan Ma and Yuexiao Ma and Xiang Meng and Yixuan Zou and Tianyu Xie and Wang Chen and Yuhui Zeng and Yuhang Wu and Xiawu Zheng and Rongrong Ji},\n  year = {2026},\n  url = {https://arxiv.org/abs/2610.17665},\n  howpublished = {arXiv preprint arXiv:2610.17665}\n}",
-      "imported": true,
-      "authors": "Qingchuan Ma, Yuexiao Ma, Xiang Meng, Yixuan Zou, Tianyu Xie, Wang Chen, Yuhui Zeng, Yuhang Wu, Xiawu Zheng, Rongrong Ji",
+      "bibtex": "@misc{ma2026rotabenchevaluating3dspatial,\n  title = {{RoTA-Bench: Evaluating 3D Spatial Reasoning through Interactive Projection Alignment}},\n  author = {Qingchuan Ma and Yuexiao Ma and Xiang Meng and Yixuan Zou and Tianyu Xie and Wang Chen and Yuhui Zeng and Yuhang Wu and Rongrong Ji and Xiawu Zheng},\n  year = {2026},\n  eprint = {2610.17665},\n  archivePrefix = {arXiv},\n  primaryClass = {cs.AI},\n  url = {https://arxiv.org/abs/2610.17665}\n}",
+      "authors": "Qingchuan Ma, Yuexiao Ma, Xiang Meng, Yixuan Zou, Tianyu Xie, Wang Chen, Yuhui Zeng, Yuhang Wu, Rongrong Ji, Xiawu Zheng",
       "year": "2026",
       "venue": "arXiv preprint arXiv:2610.17665"
     }

@@ -1,0 +1,16 @@
+/* Hallmark · design-system: design.md · theme: studied-DNA
+ * pre-emit critique: P5 H5 E4 S5 R5 V4. Two editorial service rows, not display ads. */
+.resource-entry { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 28px; padding: 26px 0 30px; border-bottom: 1px solid var(--color-rule); }
+.resource-entry:first-of-type { padding-top: 4px; }
+.resource-heading h2 { font-size: 23px; margin: 4px 0 7px; }
+.resource-kicker, .resource-name { color: var(--color-muted); font-size: 13px; margin: 0; }
+.resource-intro { font-size: 18px; font-weight: 600; line-height: 1.5; }
+.resource-details { margin: 18px 0; }
+.resource-details > div { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 16px; margin: 10px 0; }
+.resource-details dt { font-size: 14px; font-weight: 600; }
+.resource-details dd { margin: 0; }
+.resource-links { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 20px; font-size: 14px; font-weight: 600; }
+@media (max-width: 700px) {
+  .resource-entry { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .resource-details > div { grid-template-columns: minmax(0, 1fr); gap: 3px; margin: 14px 0; }
+}

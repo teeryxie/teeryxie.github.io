@@ -1,6 +1,6 @@
 # Academic website design
 
-Applies to the homepage, publication archive, projects, CV, blog index, and all blog articles. The public reference is https://howardli1984.github.io/. Use its restrained academic structure with Tianyu Xie's own content and images.
+Applies to the homepage, publication archive, projects, CV, recommended resources, blog index, and all blog articles. The public reference is https://howardli1984.github.io/. Use its restrained academic structure with Tianyu Xie's own content and images.
 
 ## Shared system
 
@@ -13,7 +13,7 @@ Applies to the homepage, publication archive, projects, CV, blog index, and all 
 - Shared navigation and personal profile. Articles keep the same profile and add a compact table of contents below it.
 - Maximum page width 1360px, 210px profile column, 48px gap. Article prose is at most 780px wide.
 - Publication and project rows use research images beside text. Blog index uses compact text rows. CV uses plain sections.
-- On small screens: stack profile, content, and research images; use the same compact profile and a five-link navigation bar on every route. Filters may wrap; navigation labels stay on one line.
+- On small screens: stack profile, content, and research images; use the same compact profile and a six-link navigation bar on every route, including Resources. Below 540px, navigation uses two rows of three links so every destination remains visible; individual labels stay on one line. Filters may wrap.
 
 ## Content and behavior
 

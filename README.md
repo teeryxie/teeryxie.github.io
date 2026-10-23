@@ -33,6 +33,9 @@ metadata from their detail pages, and adds them to the marked import region of
 selection remains curated. Imported records use conservative `@misc` BibTeX
 and the venue exactly as indexed; they do not infer acceptance or CCF status.
 They use a full-width text layout until a real first-page thumbnail is added manually.
+To curate an imported paper, retain its `id` and `scholarId`, remove its `imported`
+flag, and move its article outside the `scholar-imports` markers. Citation counts
+will keep updating without replacing the curated layout, images, or links.
 Existing records match by Scholar ID, then unique normalized title, so newly
 indexed manuscripts are linked rather than duplicated. A profile reaching the
 100-record page limit fails explicitly rather than silently importing a partial list.
