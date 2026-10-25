@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-18T18:39:14+00:00",
+  "updatedAt": "2026-10-25T19:04:28+00:00",
   "profileUrl": "https://scholar.google.com/citations?user=_vZWAnkAAAAJ&hl=en&pagesize=100",
   "papers": {
     "duplex-mpe": {
@@ -39,7 +39,7 @@
       "url": "https://scholar.google.com/citations?view_op=view_citation&user=_vZWAnkAAAAJ&citation_for_view=_vZWAnkAAAAJ:roLk4NBRz8UC"
     },
     "socialomni": {
-      "count": 7,
+      "count": 8,
       "url": "https://scholar.google.com/scholar?cites=14606069435682749565"
     },
     "wfs-sb": {
@@ -51,7 +51,7 @@
       "url": "https://scholar.google.com/scholar?cites=10709395015111702978"
     },
     "crystal": {
-      "count": 5,
+      "count": 6,
       "url": "https://scholar.google.com/scholar?cites=11495045322070215264"
     },
     "hemp-duck": {
@@ -77,6 +77,10 @@
     "scholar-5nxA0vEk-isC": {
       "count": 0,
       "url": "https://scholar.google.com/citations?view_op=view_citation&user=_vZWAnkAAAAJ&citation_for_view=_vZWAnkAAAAJ:5nxA0vEk-isC"
+    },
+    "scholar-8k81kl-MbHgC": {
+      "count": 0,
+      "url": "https://scholar.google.com/citations?view_op=view_citation&user=_vZWAnkAAAAJ&citation_for_view=_vZWAnkAAAAJ:8k81kl-MbHgC"
     }
   }
 }

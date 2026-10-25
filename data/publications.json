@@ -142,6 +142,17 @@
       "authors": "Qingchuan Ma, Yuexiao Ma, Xiang Meng, Yixuan Zou, Tianyu Xie, Wang Chen, Yuhui Zeng, Yuhang Wu, Rongrong Ji, Xiawu Zheng",
       "year": "2026",
       "venue": "arXiv preprint arXiv:2610.17665"
+    },
+    {
+      "id": "scholar-8k81kl-MbHgC",
+      "title": "SCOPE: Semantic Bounded Credit Optimization for Prompt Engineering in Text-to-image Generation",
+      "scholarId": "_vZWAnkAAAAJ:8k81kl-MbHgC",
+      "sourceUrl": "https://arxiv.org/abs/2610.22264",
+      "bibtex": "@misc{scholar-8k81kl-MbHgC,\n  title = {SCOPE: Semantic Bounded Credit Optimization for Prompt Engineering in Text-to-image Generation},\n  author = {Yufei Jiao and Jinfa Huang and Zeyue Xue and Tianyu Xie and Yuexiao Ma and Rongrong Ji and Xiawu Zheng and Jiebo Luo},\n  year = {2026},\n  url = {https://arxiv.org/abs/2610.22264},\n  howpublished = {arXiv preprint arXiv:2610.22264}\n}",
+      "imported": true,
+      "authors": "Yufei Jiao, Jinfa Huang, Zeyue Xue, Tianyu Xie, Yuexiao Ma, Rongrong Ji, Xiawu Zheng, Jiebo Luo",
+      "year": "2026",
+      "venue": "arXiv preprint arXiv:2610.22264"
     }
   ]
 }
