@@ -26,26 +26,35 @@
       </header>
       <section class="section" aria-labelledby="contributions-title">
         <div class="section-head"><h2 id="contributions-title">Open-source Contributions</h2></div>
+        <div class="project-showcase">
         <article class="project-entry">
-          <a class="project-media" href="https://github.com/sgl-project/sglang-omni"><img src="/images/logos/sglang-omni.svg" alt="SGLang-Omni logo" width="680" height="216"></a>
+          <a class="project-media" href="https://github.com/sgl-project/sglang-omni"><img width="680" height="216" src="/images/logos/sglang-omni.svg" alt="SGLang-Omni logo"></a>
           <div class="project-copy">
             <div class="project-kicker">Inference Infrastructure · Contributor</div>
             <h2>SGLang-Omni</h2>
-            <p>I contribute audio-visual input handling and benchmark infrastructure to SGLang-Omni.</p>
-            <ul>
-              <li><a href="https://github.com/sgl-project/sglang-omni/pull/1950">SocialOmni evaluation · #1950</a> — merged October 2026. Dataset loading, time-bounded video evidence, turn-entry evaluation, and three-judge response scoring.</li>
-              <li><a href="https://github.com/sgl-project/sglang-omni/pull/2002">Embedded video audio · #2002</a> — merged October 2026. Qwen3-Omni chat support for video soundtracks, mixed audio/video ordering, and media error and cancellation handling.</li>
-              <li><a href="https://github.com/sgl-project/sglang-omni/pull/2569">Configurable SocialOmni judges · #2569</a> — open PR. User-selected three-model panels with recorded inference settings and the existing scoring contract.</li>
-            </ul>
+            <p>I contribute audio-visual input handling and evaluation infrastructure. My work covers media preprocessing, mixed-modality input alignment, streaming error handling, and reproducible benchmark execution.</p>
+            <dl class="project-facts"><div><dt>Status</dt><dd>Merged contributions and ongoing development.</dd></div></dl>
             <div class="actions"><a class="action" href="https://github.com/sgl-project/sglang-omni">Upstream repository</a><a class="action" href="https://github.com/sgl-project/sglang-omni/pulls?q=is%3Apr+author%3Ateeryxie">My pull requests</a><a class="action" href="https://sgl-project.github.io/sglang-omni/">Documentation</a></div>
           </div>
         </article>
+
+        <article class="project-entry">
+          <a class="project-media" href="https://github.com/vllm-project/vllm-omni"><img src="/images/logos/vllm-omni.jpg" width="1584" height="290" alt="vLLM-Omni logo"></a>
+          <div class="project-copy">
+            <div class="project-kicker">Inference Infrastructure · Contributor</div>
+            <h2>vLLM-Omni</h2>
+            <p>I develop evaluation tooling for omni-modal model serving, including multimodal request construction, asynchronous execution, metric accounting, and automated regression tests. The work also covers reproducible run records and continuous integration.</p>
+            <dl class="project-facts"><div><dt>Status</dt><dd>Upstream contribution under review.</dd></div></dl>
+            <div class="actions"><a class="action" href="https://github.com/vllm-project/vllm-omni">Upstream repository</a><a class="action" href="https://github.com/vllm-project/vllm-omni/pulls?q=is%3Apr+author%3Ateeryxie">My pull requests</a><a class="action" href="https://vllm-omni.readthedocs.io/en/latest/">Documentation</a></div>
+          </div>
+        </article>
+        </div>
       </section>
       <section class="section" aria-labelledby="research-projects-title">
         <div class="section-head"><h2 id="research-projects-title">Research Projects</h2></div>
       <div class="project-showcase">
         <article class="project-entry">
-          <a class="project-media" href="/images/research/orchestration.png" data-lightbox data-caption="Training-Free Orchestration framework"><img loading="lazy" decoding="async" src="/images/research/orchestration.png" alt="Training-Free Orchestration framework"></a>
+          <a class="project-media" href="/images/research/orchestration.png" data-lightbox data-caption="Training-Free Orchestration framework"><img width="2367" height="1191" loading="lazy" decoding="async" src="/images/research/orchestration.png" alt="Training-Free Orchestration framework"></a>
           <div class="project-copy">
             <div class="project-kicker">Multimodal Systems · ICML 2026</div>
             <h2>Training-Free Multimodal LLM Orchestration</h2>
@@ -58,7 +67,7 @@
         </article>
 
         <article class="project-entry">
-          <a class="project-media" href="/images/research/socialomni.png" data-lightbox data-caption="SocialOmni overview"><img loading="lazy" decoding="async" src="/images/research/socialomni.png" alt="SocialOmni overview"></a>
+          <a class="project-media" href="/images/research/socialomni.png" data-lightbox data-caption="SocialOmni overview"><img width="1395" height="685" loading="lazy" decoding="async" src="/images/research/socialomni.png" alt="SocialOmni overview"></a>
           <div class="project-copy">
             <div class="project-kicker">Benchmark · arXiv</div>
             <h2>SocialOmni</h2>
@@ -72,7 +81,7 @@
         </article>
 
         <article class="project-entry">
-          <a class="project-media" href="/images/research/wfs-sb.png" data-lightbox data-caption="WFS-SB framework"><img loading="lazy" decoding="async" src="/images/research/wfs-sb.png" alt="WFS-SB framework"></a>
+          <a class="project-media" href="/images/research/wfs-sb.png" data-lightbox data-caption="WFS-SB framework"><img width="2047" height="1094" loading="lazy" decoding="async" src="/images/research/wfs-sb.png" alt="WFS-SB framework"></a>
           <div class="project-copy">
             <div class="project-kicker">Long Video · CVPR 2026</div>
             <h2>Long-video Frame Selection</h2>
@@ -85,7 +94,7 @@
         </article>
 
         <article class="project-entry">
-          <a class="project-media" href="/images/papers/default-paper.jpg" data-lightbox data-caption="Correct While Verifying · paper preview"><img loading="lazy" decoding="async" src="/images/papers/default-paper.jpg" alt="Correct While Verifying paper preview"></a>
+          <a class="project-media" href="/images/papers/default-paper.jpg" data-lightbox data-caption="Correct While Verifying · paper preview"><img width="1275" height="1650" loading="lazy" decoding="async" src="/images/papers/default-paper.jpg" alt="Correct While Verifying paper preview"></a>
           <div class="project-copy">
             <div class="project-kicker">Efficient Inference · AAAI 2027</div>
             <h2>Correct While Verifying</h2>
@@ -100,14 +109,35 @@
       </section>
       <section class="section" aria-labelledby="repositories-title">
         <div class="section-head"><h2 id="repositories-title">Paper Code &amp; Resources</h2><a href="/publications/">All publications</a></div>
-        <div class="cv-list">
-          <article><svg class="cv-icon" aria-hidden="true"><use href="/images/icons.svg#paper"></use></svg><div><strong><a href="https://arxiv.org/abs/2610.22264">SCOPE</a></strong><p>Semantic span-level credit assignment for prompt rewriting, with training and image-generation evaluation code.</p><div class="actions"><a class="action" href="https://github.com/MAC-AutoML/SCOPE">Code</a><a class="action" href="https://arxiv.org/abs/2610.22264">Paper</a></div></div></article>
-          <article><svg class="cv-icon" aria-hidden="true"><use href="/images/icons.svg#paper"></use></svg><div><strong><a href="https://arxiv.org/abs/2610.17665">RoTA-Bench</a></strong><p>Interactive 3D projection alignment, with evaluation code and the fixed 674-task dataset.</p><div class="actions"><a class="action" href="https://github.com/MAC-AutoML/RoTA-Bench">Code</a><a class="action" href="https://arxiv.org/abs/2610.17665">Paper</a></div></div></article>
-          <article><svg class="cv-icon" aria-hidden="true"><use href="/images/icons.svg#paper"></use></svg><div><strong><a href="https://proceedings.mlr.press/v306/ma26y.html">A2RBench</a></strong><p>Generation, formal verification, augmentation, and evaluation of abstract reasoning tasks.</p><div class="actions"><a class="action" href="https://github.com/MAC-AutoML/A2Rbench">Code</a><a class="action" href="https://proceedings.mlr.press/v306/ma26y.html">Paper</a></div></div></article>
-          <article><svg class="cv-icon" aria-hidden="true"><use href="/images/icons.svg#paper"></use></svg><div><strong><a href="https://arxiv.org/abs/2607.23265">WaveZip</a></strong><p>Training-free video token compression, with model integrations, benchmark loaders, and evaluation launchers.</p><div class="actions"><a class="action" href="https://github.com/MAC-AutoML/WaveZip">Code</a><a class="action" href="https://arxiv.org/abs/2607.23265">Paper</a></div></div></article>
-          <article><svg class="cv-icon" aria-hidden="true"><use href="/images/icons.svg#paper"></use></svg><div><strong><a href="https://arxiv.org/abs/2602.20980">CrystaL</a></strong><p>Visual latent reasoning, with training scripts, evaluation tools, and a released model checkpoint.</p><div class="actions"><a class="action" href="https://github.com/yangzhangok/crystal">Code</a><a class="action" href="https://arxiv.org/abs/2602.20980">Paper</a></div></div></article>
-          <article><svg class="cv-icon" aria-hidden="true"><use href="/images/icons.svg#paper"></use></svg><div><strong><a href="https://arxiv.org/abs/2602.12936">MLLMEmbed-ReID</a></strong><p>Unified cross-modal retrieval and teacher-to-student distillation for edge deployment.</p><div class="actions"><a class="action" href="https://github.com/KingH12138/MLLMEmbed_ReID">Code</a><a class="action" href="https://arxiv.org/abs/2602.12936">Paper</a></div></div></article>
-          <article><svg class="cv-icon" aria-hidden="true"><use href="/images/icons.svg#paper"></use></svg><div><strong><a href="https://arxiv.org/abs/2609.31948">Duplex-MPE</a></strong><p>Multi-party full-duplex dialogue evaluation. The project page provides audio examples, results, and benchmark construction details.</p><div class="actions"><a class="action" href="https://step-out.github.io/Duplex-MPE-Page/">Project</a><a class="action" href="https://arxiv.org/abs/2609.31948">Paper</a></div></div></article>
+        <div class="project-showcase">
+          <article class="project-entry">
+          <a class="project-media" href="/images/research/scope.png" data-lightbox data-caption="SCOPE semantic span credit assignment"><img src="/images/research/scope.png" width="2613" height="1344" alt="SCOPE semantic span credit assignment" loading="lazy" decoding="async"></a>
+          <div class="project-copy"><div class="project-kicker">arXiv 2026 · Co-author</div><h2><a href="https://arxiv.org/abs/2610.22264">SCOPE</a></h2><p>Semantic span-level credit assignment for prompt rewriting, with training and image-generation evaluation code.</p><div class="actions"><a class="action" href="https://github.com/MAC-AutoML/SCOPE">Code</a><a class="action" href="https://arxiv.org/abs/2610.22264">Paper</a></div></div>
+        </article>
+          <article class="project-entry">
+          <a class="project-media" href="/images/research/rotabench.png" data-lightbox data-caption="RoTA-Bench overview"><img src="/images/research/rotabench.png" width="1926" height="857" alt="RoTA-Bench overview" loading="lazy" decoding="async"></a>
+          <div class="project-copy"><div class="project-kicker">arXiv 2026 · Co-author</div><h2><a href="https://arxiv.org/abs/2610.17665">RoTA-Bench</a></h2><p>Interactive 3D projection alignment, with evaluation code and the fixed 674-task dataset.</p><div class="actions"><a class="action" href="https://github.com/MAC-AutoML/RoTA-Bench">Code</a><a class="action" href="https://arxiv.org/abs/2610.17665">Paper</a></div></div>
+        </article>
+          <article class="project-entry">
+          <a class="project-media" href="/images/research/a2rbench.png" data-lightbox data-caption="A2RBench reasoning task generation framework"><img src="/images/research/a2rbench.png" width="1200" height="675" alt="A2RBench reasoning task generation framework" loading="lazy" decoding="async"></a>
+          <div class="project-copy"><div class="project-kicker">ICML 2026 · Co-author</div><h2><a href="https://proceedings.mlr.press/v306/ma26y.html">A2RBench</a></h2><p>Generation, formal verification, augmentation, and evaluation of abstract reasoning tasks.</p><div class="actions"><a class="action" href="https://github.com/MAC-AutoML/A2Rbench">Code</a><a class="action" href="https://proceedings.mlr.press/v306/ma26y.html">Paper</a></div></div>
+        </article>
+          <article class="project-entry">
+          <a class="project-media" href="/images/research/wavezip.png" data-lightbox data-caption="WaveZip video token compression framework"><img src="/images/research/wavezip.png" width="1445" height="452" alt="WaveZip video token compression framework" loading="lazy" decoding="async"></a>
+          <div class="project-copy"><div class="project-kicker">arXiv 2026 · Co-author</div><h2><a href="https://arxiv.org/abs/2607.23265">WaveZip</a></h2><p>Training-free video token compression, with model integrations, benchmark loaders, and evaluation launchers.</p><div class="actions"><a class="action" href="https://github.com/MAC-AutoML/WaveZip">Code</a><a class="action" href="https://arxiv.org/abs/2607.23265">Paper</a></div></div>
+        </article>
+          <article class="project-entry">
+          <a class="project-media" href="/images/research/crystal.png" data-lightbox data-caption="CrystaL visual latent reasoning architecture"><img src="/images/research/crystal.png" width="1539" height="540" alt="CrystaL visual latent reasoning architecture" loading="lazy" decoding="async"></a>
+          <div class="project-copy"><div class="project-kicker">arXiv 2026 · Co-author</div><h2><a href="https://arxiv.org/abs/2602.20980">CrystaL</a></h2><p>Visual latent reasoning, with training scripts, evaluation tools, and a released model checkpoint.</p><div class="actions"><a class="action" href="https://github.com/yangzhangok/crystal">Code</a><a class="action" href="https://arxiv.org/abs/2602.20980">Paper</a></div></div>
+        </article>
+          <article class="project-entry">
+          <a class="project-media" href="/images/research/reid.png" data-lightbox data-caption="MLLMEmbed-ReID cloud-edge distillation framework"><img src="/images/research/reid.png" width="1600" height="733" alt="MLLMEmbed-ReID cloud-edge distillation framework" loading="lazy" decoding="async"></a>
+          <div class="project-copy"><div class="project-kicker">arXiv 2026 · Co-author</div><h2><a href="https://arxiv.org/abs/2602.12936">MLLMEmbed-ReID</a></h2><p>Unified cross-modal retrieval and teacher-to-student distillation for edge deployment.</p><div class="actions"><a class="action" href="https://github.com/KingH12138/MLLMEmbed_ReID">Code</a><a class="action" href="https://arxiv.org/abs/2602.12936">Paper</a></div></div>
+        </article>
+          <article class="project-entry">
+          <a class="project-media" href="/images/research/duplex-mpe.png" data-lightbox data-caption="Duplex-MPE benchmark overview"><img src="/images/research/duplex-mpe.png" width="2033" height="1017" alt="Duplex-MPE benchmark overview" loading="lazy" decoding="async"></a>
+          <div class="project-copy"><div class="project-kicker">arXiv 2026 · Co-author</div><h2><a href="https://arxiv.org/abs/2609.31948">Duplex-MPE</a></h2><p>Multi-party full-duplex dialogue evaluation. The project page provides audio examples, results, and benchmark construction details.</p><div class="actions"><a class="action" href="https://step-out.github.io/Duplex-MPE-Page/">Project</a><a class="action" href="https://arxiv.org/abs/2609.31948">Paper</a></div></div>
+        </article>
         </div>
       </section>
     </article>
