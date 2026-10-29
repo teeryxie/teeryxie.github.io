@@ -3,10 +3,16 @@
 .coauthor-institutions { margin: 24px 0; padding-bottom: 24px; border-bottom: 1px solid var(--color-rule); }
 .coauthor-institutions h2 { margin: 0 0 5px; font-size: 17px; }
 .coauthor-institutions > p { margin: 0; color: var(--color-muted); font-size: 13px; }
-.institution-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 20px 12px; margin: 20px 0 0; padding: 0; list-style: none; }
+.institution-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px 16px; margin: 18px 0 0; padding: 0; list-style: none; }
+.institution-grid li { flex: 0 0 calc((100% - 96px) / 7); min-width: 0; }
 .institution-grid a { display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; color: var(--color-muted); font-size: 12px; line-height: 1.4; text-align: center; text-decoration: none; }
 .institution-grid a:hover { color: var(--color-accent); text-decoration: underline; }
-.institution-grid img { display: block; width: 100%; max-width: 100px; height: 48px; object-fit: contain; }
-.institution-grid .institution-icon-small { width: 32px; height: 48px; object-fit: scale-down; }
-.institution-text { display: flex; align-items: center; justify-content: center; height: 48px; font-size: 24px; font-weight: 600; color: var(--color-ink); }
-@media (max-width: 700px) { .institution-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px 12px; } }
+.institution-mark { display: flex; align-items: center; justify-content: center; width: 100%; height: 80px; }
+.institution-mark img { display: block; width: 56px; height: 56px; max-width: 100%; object-fit: contain; }
+.institution-mark--wide img { width: 112px; height: 64px; }
+/* The full lockups contain more internal white space than the circular seals. */
+.institution-mark--padded img { width: 84px; height: 84px; }
+.institution-mark--vertical img { width: 96px; height: 96px; }
+.institution-mark--compact img { width: 64px; height: 64px; }
+@media (max-width: 1000px) { .institution-grid li { flex-basis: calc((100% - 64px) / 5); } }
+@media (max-width: 540px) { .institution-grid { gap: 16px; } .institution-grid li { flex-basis: calc((100% - 32px) / 3); } }
