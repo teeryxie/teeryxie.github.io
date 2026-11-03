@@ -350,16 +350,6 @@ window.BLOG_POSTS = [
     summary: "Generating abstract reasoning tasks with formal verification to make benchmark answers explicit and auditable.",
   },
   {
-    slug: "fold",
-    displayTitle: "Correct While Verifying: Intermediate Target Predictions for Speculative Draft Correction",
-    title: "Correct While Verifying: Speculative Draft Correction",
-    date: "2026-07",
-    category: "Paper Intro",
-    section: "Paper Readings",
-    status: "AAAI-27 · Submitted · Fifth Author",
-    summary: "Using intermediate target-model predictions to correct speculative drafts during verification; the submission reports up to 4.53× speedup.",
-  },
-  {
     slug: "homepage",
     displayTitle: "Designing and Maintaining an Academic Homepage",
     title: "Designing and Maintaining an Academic Homepage",

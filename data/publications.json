@@ -53,8 +53,8 @@
       "id": "correct-while-verifying",
       "title": "Correct While Verifying: Intermediate Target Predictions for Speculative Draft Correction",
       "scholarId": null,
-      "sourceUrl": "https://teeryxie.github.io/blog/fold/",
-      "bibtex": "@misc{sun2026correctwhileverifying,\n  title = {{Correct While Verifying: Intermediate Target Predictions for Speculative Draft Correction}},\n  author = {Haocheng Sun and Ruilin Wang and Yuexiao Ma and Yuxin Zhang and Tianyu Xie and Jianxin Lin and Zhixiang Ren and Xiawu Zheng},\n  year = {2026},\n  note = {Manuscript submitted to AAAI 2027},\n  url = {https://teeryxie.github.io/blog/fold/}\n}"
+      "sourceUrl": "https://teeryxie.github.io/publications/#correct-while-verifying",
+      "bibtex": "@misc{sun2026correctwhileverifying,\n  title = {{Correct While Verifying: Intermediate Target Predictions for Speculative Draft Correction}},\n  author = {Haocheng Sun and Ruilin Wang and Yuexiao Ma and Yuxin Zhang and Tianyu Xie and Jianxin Lin and Zhixiang Ren and Xiawu Zheng},\n  year = {2026},\n  note = {Manuscript submitted to AAAI 2027}\n}"
     },
     {
       "id": "event-anchored-submission",
