@@ -210,7 +210,12 @@ def render_imports(papers, archive):
         authors = authors.replace("Tianyu Xie", "<strong>Tianyu Xie</strong>")
         venue_label = f"arXiv {year}" if "arxiv" in paper["venue"].casefold() else year
         status = '<span class="status-badge">Preprint</span>' if filters == "preprints" else ""
-        articles.append(f'''<article class="paper paper-imported" data-paper-filters="{filters}">
+        image = escape(str(paper.get("image", "")), quote=True)
+        article_class = "paper paper-with-thumb" if image else "paper paper-imported"
+        thumb = (f'<a class="paper-thumb" href="{image}" data-lightbox data-caption="{title} · first page">'
+                 f'<img loading="lazy" decoding="async" src="{image}" alt="{title} paper first page" width="857" height="1109"></a>') if image else ""
+        articles.append(f'''<article class="{article_class}" data-paper-filters="{filters}">
+          {thumb}
           <div><div class="paper-status"><span class="venue gray">{venue_label}</span>{status}</div>
             <h3><a href="{url}">{title}</a> <a class="citation-count" data-citation-count="{identifier}" href="{url}" hidden></a></h3>
             <div class="meta">{authors}</div><p>{venue}</p>

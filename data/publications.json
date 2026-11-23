@@ -160,6 +160,7 @@
       "sourceUrl": "https://arxiv.org/abs/2611.11452",
       "bibtex": "@misc{scholar-MXK_kJrjxJIC,\n  title = {Semantically Aligned KV Cache Compression for Efficient Agentic Autoregressive Video Generation},\n  author = {Weizhong Huang and Huaijia Kou and Tianyu Xie and Xiawu Zheng and Liujuan Cao},\n  year = {2026},\n  url = {https://arxiv.org/abs/2611.11452},\n  howpublished = {arXiv preprint arXiv:2611.11452}\n}",
       "imported": true,
+      "image": "/images/papers/semantic-kv.jpg",
       "authors": "Weizhong Huang, Huaijia Kou, Tianyu Xie, Xiawu Zheng, Liujuan Cao",
       "year": "2026",
       "venue": "arXiv preprint arXiv:2611.11452"
